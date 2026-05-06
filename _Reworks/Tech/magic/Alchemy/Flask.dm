@@ -19,7 +19,7 @@
     var/Searing=0 // Damage Buffs
     var/Flowy=0 // Flow Buffs
     var/Hard=0 // Tank Buffs
-    var/Quicksilver // Speed Buffs
+    var/Quicksilver=0 // Speed Buffs
     // Misc stuff
     var/Tier = 0 // This will be used to upgrade your flask
     var/DrinkMessage
@@ -42,7 +42,7 @@
     CooldownStatic = 1 // No, you will not use technique mastery. 
     Cooldown = 0 // THIS IS HANDLED IN ADJUST FUCK MY CHUD LIFE
     adjust(mob/P)
-        Cooldown = P.GetFlaskCD()
+        Cooldown = P.GetFlaskCD() 
         // I am so fucking sorry for what is about to happen
         if(P.equippedFlask == 1) // if you chose a  herb, your value for said herb should be 1 and ONLY 1
             InstantAffect=1

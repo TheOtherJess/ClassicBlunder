@@ -1340,7 +1340,7 @@ mob/Admin2/verb
 	Test_Mode(mob/M in players)
 		set category = "Admin"
 		set name = "Test Mode"
-		set desc = "Toggle negligible skill cooldowns on a player (applies TestMode passive)."
+		set desc = "Toggle off skill cooldowns on a player (applies TestMode passive)."
 		if(!M.passive_handler)
 			M.passive_handler = new
 		if(M.HasTestMode())
@@ -2644,10 +2644,6 @@ mob/Admin4/verb
 
 		// Recalculate Magatama passives now that the Reason has changed
 		target.refreshMagatama()
-
-		// Retroactively grant the Asc 5 True Demon HellPower bonus if already ascended that far
-		if(target.AscensionsAcquired >= 5)
-			target.passive_handler?.Increase("HellPower", 1)
 
 		target << "<font color='#cc0000'><b>The chains of Reason have been cast aside. You walk the True Demon path.</b></font>"
 		Log("Admin", "[ExtractInfo(src)] placed [ExtractInfo(target)] on the True Demon path.")

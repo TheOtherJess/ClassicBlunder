@@ -1,6 +1,3 @@
-// Passives introduced for the Demi-fiend Magatama system.
-// Mirrors Nocturne mechanics that had no prior DBR equivalent.
-
 passiveInfo/ShockImmunity
     setLines()
         lines = list("You are completely immune to the Shock debuff. Electrical attacks cannot Shock you.");

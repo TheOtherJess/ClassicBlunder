@@ -4476,8 +4476,8 @@ obj
 
 					Super_Kamehameha
 						PreRequisite=list("/obj/Skills/Projectile/Beams/Kamehameha")
-						StrRate = 1
-						ForRate = 0
+						StrRate = 0
+						ForRate = 1
 						SignatureTechnique=2
 						DamageMult=8
 						ChargeRate=3

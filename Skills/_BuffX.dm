@@ -1674,6 +1674,24 @@ NEW VARIABLES
 			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2)
 			verb/Saiyan_Fervor()
 				src.Trigger(usr)
+		The_Unbreakable_Fist
+			SignatureTechnique=3
+			Mastery=1
+			UnrestrictedBuff=1
+			OffMult=1.4
+			DefMult=1.4
+			SpdMult=1.25
+			StrMult=1.3
+			ForMult=1.3
+			EndMult=1.3
+			KenWave=5
+			KenWaveSize=0.5
+			KenWaveIcon='KenShockwaveLegend.dmi'
+			ActiveMessage="grasps the sun in their hands, manifesting the unbreakable fist of the Fabled King!"
+			OffMessage="contains their excitement."
+			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2, "PhysPleroma" = 1, "Steady" = 1, "UnderDog" = 5, "Perseverance" = 2, "CallousedHands" = 0.15)
+			verb/The_Unbreakable_Fist()
+				src.Trigger(usr)
 		SaiyanCarnage
 			SignatureTechnique=3
 			Mastery=1

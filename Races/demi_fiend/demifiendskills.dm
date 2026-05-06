@@ -1,7 +1,7 @@
 /obj/Skills/AutoHit/DemiFiend/Lunge
 	Area="Wave"
 	Distance=5
-	DamageMult=3
+	DamageMult=6
 	Rush=5
 	ControlledRush=1
 	Cooldown=30
@@ -20,7 +20,7 @@
 	adjust(mob/p)
 		var/scaling = round(p.Potential / 25)
 		Distance = 5 + scaling
-		DamageMult = 3 + scaling
+		DamageMult = 6 + scaling
 		Rush = 5 + scaling
 
 /obj/Skills/AutoHit/DemiFiend/Ice_Breath
@@ -30,7 +30,7 @@
 	ForOffense=2
 	SpecialAttack=1
 	GuardBreak=0
-	DamageMult=4
+	DamageMult=10
 	Chilling=20
 	Freezing=20
 	TurfIce=1
@@ -48,7 +48,7 @@
 	verb/Ice_Breath()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 4 + (0.75 * usr.AscensionsAcquired)
+			DamageMult = 10 + (0.75 * usr.AscensionsAcquired)
 			Distance = 20 + (2 * usr.AscensionsAcquired)
 			ForOffense = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
@@ -72,7 +72,7 @@
 	verb/Flame_Breath()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 5 + (1.5 * usr.AscensionsAcquired)
+			DamageMult = 10 + (1.5 * usr.AscensionsAcquired)
 			Distance = 10 + (3 * usr.AscensionsAcquired)
 			ForOffense = 1 + (0.25 * usr.AscensionsAcquired)
 			StrOffense = 1 + (0.25 * usr.AscensionsAcquired)
@@ -81,13 +81,14 @@
 /obj/Skills/AutoHit/DemiFiend/Fog_Breath
 	StrOffense=0
 	ForOffense=1
-	DamageMult=1
+	DamageMult=0.5
 	SpecialAttack=1
 	Slow=1
 	Chilling=20
 	Freezing=15
 	Confusing=35
 	Shocking=10
+	Silencing=5
 	TurfFog=1
 	TurfFogOffset=1
 	Area="Arc"
@@ -104,7 +105,7 @@
 		set category="Skills"
 		if(!altered)
 			Confusing = 35 + (5 * usr.AscensionsAcquired)
-			Chilling = 30 + (10 * usr.AscensionsAcquired)
+			Chilling = 10 + (10 * usr.AscensionsAcquired)
 		usr.Activate(src)
 
 // Target debuff skills - apply stat-reducing debuffs for 30 seconds
@@ -261,7 +262,7 @@ obj/Skills/Projectile/DemiFiend/Tornado
 	LockY = -32
 	Speed = 0.4
 	Distance = 25
-	DamageMult = 3
+	DamageMult = 15
 	StrRate = 0.5
 	ForRate = 0.5
 	HyperHoming = 1
@@ -277,12 +278,12 @@ obj/Skills/Projectile/DemiFiend/Tornado
 /obj/Skills/AutoHit/DemiFiend/Berserk
 	Area="Wave"
 	Distance=8
-	DamageMult=10
+	DamageMult=2
 	StrOffense=2
 	SpecialAttack=1
 	Cooldown=45
 	Slow=1
-	Rounds=10
+	Rounds=5
 	DelayTime=2
 	RoundMovement=0
 	ObjIcon=1
@@ -290,9 +291,9 @@ obj/Skills/Projectile/DemiFiend/Tornado
 	IconX=-16
 	IconY=-16
 	Size=1.5
-	HitSparkIcon='Hit Effect Wind.dmi'
-	HitSparkX=-32
-	HitSparkY=-32
+	HitSparkIcon='Impacts VFX3.dmi'
+	//HitSparkX=-32
+	//HitSparkY=-32
 	HitSparkTurns=1
 	HitSparkSize=1
 	HitSparkDispersion=1
@@ -303,7 +304,7 @@ obj/Skills/Projectile/DemiFiend/Tornado
 	verb/Berserk()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 5 + (1.5 * usr.AscensionsAcquired)
+			DamageMult = 2 + (0.25 * usr.AscensionsAcquired)
 			Distance = 8 + (2 * usr.AscensionsAcquired)
 			StrOffense = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
@@ -401,9 +402,9 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 		var/obj/Effects/HeatWaveShock/W = new(User.loc)
 		W.owner = User
 		if(!altered)
-			W.DamageMult = 7 + (1 * User.AscensionsAcquired)
+			W.DamageMult = 20 + (1 * User.AscensionsAcquired)
 		else
-			W.DamageMult = 7
+			W.DamageMult = 20
 		W.StrOffense = 2
 		User.OMessage(1, null, "[User] releases a devastating shockwave of scorching heat — Heat Wave!")
 		src.Cooldown(1, null, User)
@@ -412,7 +413,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 	ElementalClass="Ultima"
 	Area="Wave"
 	Distance=6
-	DamageMult=15
+	DamageMult=8
 	Rush=6
 	ControlledRush=1
 	StrOffense=2
@@ -441,7 +442,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 	ForOffense=2
 	SpecialAttack=1
 	GuardBreak=0
-	DamageMult=15
+	DamageMult=2
 	Shocking=50
 	Paralyzing=10
 	ObjIcon=1
@@ -461,7 +462,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 	verb/Thunder_Breath()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 3 + (1.5 * usr.AscensionsAcquired)
+			DamageMult = 2 + (0.25 * usr.AscensionsAcquired)
 			Distance = 6 + (3 * usr.AscensionsAcquired)
 			ForOffense = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
@@ -472,9 +473,9 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 	StrOffense=0
 	ForOffense=1
 	SpecialAttack=1
-	DamageMult=6
-	Shocking=60
-	Paralyzing=10
+	DamageMult=12
+	Shocking=20
+	Paralyzing=20
 	Bolt=4
 	BoltOffset=0
 	Area="Target"
@@ -488,7 +489,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Focus
 	verb/Shock()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 6 + (1 * usr.AscensionsAcquired)
+			DamageMult = 12 + (1 * usr.AscensionsAcquired)
 		usr.Activate(src)
 
 // =========================================================================
@@ -505,14 +506,14 @@ obj/Skills/Projectile/DemiFiend/Mamudo
 	LockY = -16
 	Speed = 0.3
 	Distance = 20
-	DamageMult = 4
+	DamageMult = 6
 	ForRate = 1
 	Homing = 1
 	Cooldown = 30
 	verb/Mamudo()
 		set category = "Skills"
 		if(!altered)
-			DamageMult = 4 + (1 * usr.AscensionsAcquired)
+			DamageMult = 6 + (1 * usr.AscensionsAcquired)
 			Distance = 20 + (2 * usr.AscensionsAcquired)
 		usr.UseProjectile(src)
 
@@ -549,7 +550,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Evil_Gaze
 	Area="Around Target"
 	Distance=12
 	DistanceAround=8
-	DamageMult=2.5
+	DamageMult=1.5
 	ForOffense=2
 	SpecialAttack=1
 	Doom=15
@@ -641,7 +642,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	LockY = -16
 	Speed = 0.7
 	Distance = 40
-	DamageMult = 8
+	DamageMult = 30
 	AccMult = 1.15
 	Blasts = 1
 	Charge = 1.5
@@ -653,7 +654,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	verb/Divine_Shot()
 		set category = "Skills"
 		if(!altered)
-			DamageMult = 8 + (1.5 * usr.AscensionsAcquired)
+			DamageMult = 30 + (1.5 * usr.AscensionsAcquired)
 		usr.UseProjectile(src)
 
 /obj/Skills/AutoHit/DemiFiend/Violet_Flash
@@ -662,7 +663,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	Area="Around Target"
 	Distance=10
 	DistanceAround=8
-	DamageMult=3
+	DamageMult=2
 	ForOffense=1
 	SpecialAttack=1
 	ObjIcon=1
@@ -682,7 +683,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	verb/Violet_Flash()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 3 + (0.25 * usr.AscensionsAcquired)
+			DamageMult = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
 
 // =========================================================================
@@ -693,7 +694,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	Area="Arc"
 	Distance=5
 	Size=2
-	DamageMult=3
+	DamageMult=2
 	StrOffense=1
 	ForOffense=1
 	SpecialAttack=1
@@ -711,7 +712,7 @@ obj/Skills/Projectile/DemiFiend/Divine_Shot
 	verb/Chaos_Blade()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 3 + (0.25 * usr.AscensionsAcquired)
+			DamageMult = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
 
 // =========================================================================
@@ -1036,7 +1037,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 /obj/Skills/AutoHit/DemiFiend/Xeros_Beat
 	Area="Wave"
 	Distance=8
-	DamageMult=3
+	DamageMult=2.5
 	StrOffense=2
 	SpecialAttack=1
 	CriticalChance=30
@@ -1061,7 +1062,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Xeros_Beat()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 10 + (2 * usr.AscensionsAcquired)
+			DamageMult = 2.5 + (0.25 * usr.AscensionsAcquired)
 			Distance = 8 + (2 * usr.AscensionsAcquired)
 			StrOffense = 2 + (0.5 * usr.AscensionsAcquired)
 		usr.Activate(src)
@@ -1075,7 +1076,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	SpellElement="Fire"
 	Area="Wave"
 	Distance=10
-	DamageMult=16
+	DamageMult=3
 	StrOffense=1
 	ForOffense=2
 	SpecialAttack=1
@@ -1100,7 +1101,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Hellfire()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 10 + (3 * usr.AscensionsAcquired)
+			DamageMult = 3 + (0.25 * usr.AscensionsAcquired)
 			Distance = 10 + (2 * usr.AscensionsAcquired)
 			ForOffense = 2 + (0.5 * usr.AscensionsAcquired)
 			StrOffense = 1 + (0.25 * usr.AscensionsAcquired)
@@ -1113,7 +1114,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	Distance=6
 	Rush=5
 	ControlledRush=1
-	DamageMult=14
+	DamageMult=3
 	StrOffense=2
 	ForOffense=1
 	SpecialAttack=1
@@ -1141,7 +1142,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Magma_Axis()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 10 + (2 * usr.AscensionsAcquired)
+			DamageMult = 3 + (0.25 * usr.AscensionsAcquired)
 			Distance = 6 + (2 * usr.AscensionsAcquired)
 			Rush = 5 + (1 * usr.AscensionsAcquired)
 			StrOffense = 2 + (0.5 * usr.AscensionsAcquired)
@@ -1157,7 +1158,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	Distance=3
 	Rush=3
 	ControlledRush=1
-	DamageMult=5
+	DamageMult=4
 	StrOffense=2
 	SpecialAttack=1
 	GuardBreak=1
@@ -1178,7 +1179,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Blight()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 5 + (1 * usr.AscensionsAcquired)
+			DamageMult = 4 + (0.5 * usr.AscensionsAcquired)
 			StrOffense = 2 + (0.25 * usr.AscensionsAcquired)
 		usr.Activate(src)
 
@@ -1291,7 +1292,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	DistanceAround=10
 	Bolt=4
 	BoltOffset=2
-	DamageMult=1
+	DamageMult=2
 	ForOffense=1
 	SpecialAttack=1
 	Paralyzing=8
@@ -1321,7 +1322,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	SpellElement="Wind"
 	Area="Wide Wave"
 	Distance=6
-	DamageMult=5
+	DamageMult=12
 	ForOffense=2
 	SpecialAttack=1
 	Shearing=50
@@ -1350,7 +1351,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	Area="Circle"
 	Distance=1
 	Wander=10
-	DamageMult=14
+	DamageMult=2.5
 	ForOffense=2
 	SpecialAttack=1
 	Shearing=50
@@ -1372,7 +1373,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Javelin_Rain()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 14 + (2 * usr.AscensionsAcquired)
+			DamageMult = 2.5 + (0.15 * usr.AscensionsAcquired)
 			Wander = 10 + (2 * usr.AscensionsAcquired)
 			ForOffense = 2 + (0.5 * usr.AscensionsAcquired)
 		usr.Activate(src)
@@ -1407,7 +1408,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	Distance=8
 	Rush=7
 	ControlledRush=1
-	DamageMult=16
+	DamageMult=5
 	StrOffense=2
 	ForOffense=1
 	SpecialAttack=1
@@ -1433,7 +1434,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Makajamon
 	verb/Spiral_Viper()
 		set category="Skills"
 		if(!altered)
-			DamageMult = 16 + (2 * usr.AscensionsAcquired)
+			DamageMult = 5 + (0.5 * usr.AscensionsAcquired)
 			Distance = 8 + (2 * usr.AscensionsAcquired)
 			Rush = 7 + (1 * usr.AscensionsAcquired)
 			StrOffense = 2 + (0.5 * usr.AscensionsAcquired)
@@ -1508,7 +1509,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	DistanceAround=8
 	Erupt=1
 	EruptOffset=1
-	DamageMult=2
+	DamageMult=1.5
 	ForOffense=2
 	SpecialAttack=1
 	MortalBlow=1
@@ -1623,7 +1624,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	LockY = -16
 	IconSize = 1
 	Distance = 50
-	DamageMult = 30
+	DamageMult = 9
 	ChargeRate = 0.5
 	BeamTime = 25
 	AccMult = 1.175
@@ -1793,7 +1794,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	IconX = -64
 	IconY = -64
 	Size = 1.5
-	DamageMult = 2.5
+	DamageMult = 2
 	ForOffense = 1
 	Rounds = 8
 	DelayTime = 2
@@ -1807,7 +1808,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	ActiveMessage = "unleashes Wind Cutter!"
 	adjust(mob/p)
 		if(!altered)
-			DamageMult = 2.5 + (0.25 * p.AscensionsAcquired)
+			DamageMult = 2 + (0.25 * p.AscensionsAcquired)
 	verb/Wind_Cutter()
 		set category = "Skills"
 		adjust(usr)

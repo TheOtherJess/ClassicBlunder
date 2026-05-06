@@ -57,6 +57,7 @@ ascension
 			force = 0.5
 			offense = 0.5
 			defense = 0.5
+			anger = 0.15
 		two
 			unlock_potential = ASCENSION_TWO_POTENTIAL
 			postAscension(mob/owner)
@@ -70,6 +71,7 @@ ascension
 			force = 1
 			offense = 1
 			defense = 1
+			anger = 0.15
 		three
 			unlock_potential = ASCENSION_THREE_POTENTIAL
 			postAscension(mob/owner)
@@ -83,6 +85,7 @@ ascension
 			force = 1.5
 			offense = 1.5
 			defense = 1.5
+			anger = 0.1
 		four
 			unlock_potential = ASCENSION_FOUR_POTENTIAL
 			passives = list("HellPower" = 0.25, "KiControlMastery" = 1, "PureDamage" = 1, "PureReduction" = 1)
@@ -92,6 +95,7 @@ ascension
 			force = 2
 			offense = 2
 			defense = 2
+			anger = 0.1
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
 			passives = list("KiControlMastery" = 1, "PureDamage" = 3, "PureReduction" = 3)
@@ -101,6 +105,7 @@ ascension
 			force = 2.5
 			offense = 2.5
 			defense = 2.5
+			anger = 0.25
 			onAscension(mob/owner)
 				..()
 				if(owner.HasTrueDemonPath())
@@ -118,3 +123,4 @@ ascension
 			force = 3
 			offense = 3
 			defense = 3
+			anger = 0.25

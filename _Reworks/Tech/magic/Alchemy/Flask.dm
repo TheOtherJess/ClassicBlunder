@@ -14,18 +14,10 @@
     // Damaging effects
     var/Toxic=0
     // Passive Effects
-    var/Hallucinogen=0
-    var/Transform=0
-    var/Searing=0
-    var/Flowy=0
-    var/Hard=0
-    // Passive Finder
-    var/FoundHallucinogen=0
-    var/FoundSearing=0
-    var/FoundFlowy=0
-    var/FoundHard=0
-    // Mutagenic Icon
-    var/TransformIcon
+    var/Hallucinogen=0 // Anger Buffs
+    var/Searing=0 // Damage Buffs
+    var/Flowy=0 // Flow Buffs
+    var/Hard=0 // Tank Buffs
     // Misc stuff
     var/Tier = 0 // This will be used to upgrade your flask
     var/DrinkMessage
@@ -48,18 +40,31 @@
     AlwaysOn=1
     Cooldown=1
     adjust(mob/P)
-        var/obj/Items/Flask/BuffHolder = P.equippedFlask
         // I am so fucking sorry for what is about to happen
-        if(BuffHolder.Heal == 1) // if you chose a  herb, your value for said herb should be 1 and ONLY 1
+        if(P.equippedFlask == 1) // if you chose a  herb, your value for said herb should be 1 and ONLY 1
             InstantAffect=1
             StableHeal=1
-            src.HealthHeal = glob.POTIONHEAL //check glob.dm for POTIONHEAL value, line 445. See above for BuffHolder.Heal
-            src.ManaHeal -= glob.POTIONHEAL-BuffHolder.Tier // decreases mana penalty with tie
-            src.EnergyHeal -= glob.POTIONHEAL*2-BuffHolder.Tier// Same as above but you lose 10 energy, since it's easy to recharge
-        if(BuffHolder.Mana == 1) // same rule, ONLY THE VALUE OF 1 SHOULD BE HERE
+            //Check glob.dm for POTIONHEAL 
+            src.HealthHeal = glob.POTIONHEAL/2*(P.equippedFlask.Tier+1)  // 2.5, 5, 7.5 if POTIONHEAL is stil 5
+            src.ManaHeal -= glob.POTIONHEAL*5-(P.equippedFlask.Tier) // 25 Mana if POTIONHEAL is 5 
+            src.EnergyHeal -= glob.POTIONHEAL*2-(P.equippedFlask.Tier)// Same as above but you lose 10 energy, since it's easy to recharge
+        if(P.equippedFlask.Mana == 1) // same rule, ONLY THE VALUE OF 1 SHOULD BE HERE
             InstantAffect=1
-            src.ManaHeal = glob.POTIONHEAL 
-            src.EnergyHeal -= glob.POTIONHEAL*2-BuffHolder.Tier 
+            src.ManaHeal = glob.POTIONHEAL*5*(P.equippedFlask.Tier+1) // 25 50 75 mana regen based on tier provided potion heal is the same 
+            src.EnergyHeal -= glob.POTIONHEAL*2-(P.equippedFlask.Tier)
+        if(P.equippedFlask.Energy == 1) // Same as above
+            InstantAffect=1
+            src.EnergyHeal = glob.POTIONHEAL*(2+P.equippedFlask.Tier) // 15, 20, 25 energy 
+            src.ManaHeal -= glob.POTIONHEAL*5-(P.equippedFlask.Tier) // 25 Mana if POTIONHEAL is 5 
+        if(P.equippedFlask.Hallucinogen == 1) // This gives you immediate anger and anger buffs at expense of defense
+            AutoAnger=1 // Makes you angry instantly
+            // Please note: the comments will tell you what the math does   
+            AngerMult = 1 + ((P.equippedFlask.Tier+1)/3) // T0 = +33%, T1 = +66%  T2 = +100% anger multiplier
+            EndMult = 0.7 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 endurance mult 
+            DefMult = 0.7 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 endurance mult 
+            passives["PureReduction"] = -4 + (P.equippedFlask.Tier+1) // T0 = 3, T1 = -2 T2 = -1, PS: -1 PureReduction = 10% extra damage taken,
+            passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
+        if(P.equippedFlask.Hallucinogen)
 
     verb/Imbibe_Flask(mob/P) // We cosnume a charge from the flask!
         set category = "Skills"

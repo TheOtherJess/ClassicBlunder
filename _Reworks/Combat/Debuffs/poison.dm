@@ -130,6 +130,8 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 
 /mob/var/tmp/last_implode
 mob/proc/implodeDebuff(n, type)
+	var/DefReduction=sqrt(GetDef())
+	n/=DefReduction
 	if(last_implode + glob.IMPLODE_CD < world.time)
 		switch(type)
 			if("Burn")

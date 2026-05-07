@@ -6329,6 +6329,8 @@ obj
 								if(src.InstantDamageChance && m && !m.KO)
 									if(prob(src.InstantDamageChance))
 										var/divine_dmg = m.Health * 0.1
+										var/DefReduction=sqrt(GetDef())
+										divine_dmg/=DefReduction
 										m.LoseHealth(divine_dmg)
 										spawn()
 											LightningBolt(m)

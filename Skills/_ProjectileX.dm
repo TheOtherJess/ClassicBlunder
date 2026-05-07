@@ -5999,10 +5999,10 @@ obj
 									Rate = abs(Rate)/10*/
 								if(src.Deflectable&&!a:KO)
 									if(istype(a, /mob)) m = a;
-									if(m && m.hasMagmicShield())
+									/*if(m && m.hasMagmicShield())
 										Deflect = 1;
 										Stun(m, 3);
-										m.MagmicShieldOff();
+										m.MagmicShieldOff();*/
 									if(a:HasDeflection())
 										if(!Deflection_Formula(src.Owner, a, (accmult /** Rate*/ * ( min(0.1,1 - (src.MultiHit * 0.025) ) ) /(1+a:GetDeflection())), BaseChance=(glob.WorldDefaultAcc), Backfire=src.Backfire))
 											Deflect=1
@@ -6332,7 +6332,7 @@ obj
 								if(src.InstantDamageChance && m && !m.KO)
 									if(prob(src.InstantDamageChance))
 										var/divine_dmg = m.Health * 0.1
-										var/DefReduction=sqrt(GetDef())
+										var/DefReduction=sqrt(m.GetDef())
 										divine_dmg/=DefReduction
 										m.LoseHealth(divine_dmg)
 										spawn()

@@ -1624,7 +1624,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	LockY = -16
 	IconSize = 1
 	Distance = 50
-	DamageMult = 9
+	DamageMult = 40
 	ChargeRate = 0.5
 	BeamTime = 25
 	AccMult = 1.175
@@ -1635,7 +1635,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	ActiveMessage = "fires a devastating beam of almighty force - Freikugel!"
 	adjust(mob/p)
 		if(!altered)
-			DamageMult = 9 + (2 * p.AscensionsAcquired)
+			DamageMult = 40 + (2 * p.AscensionsAcquired)
 	verb/Freikugel()
 		set category = "Skills"
 		adjust(usr)
@@ -1724,7 +1724,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	ActiveMessage = "fires a blazing Magma Axis!"
 	adjust(mob/p)
 		if(!altered)
-			DamageMult = 20 + (1 * p.AscensionsAcquired)
+			DamageMult = 20 + (2 * p.AscensionsAcquired)
 			Scorching = 10 + (5 * p.AscensionsAcquired)
 	verb/Magma_Axis()
 		set category = "Skills"
@@ -1736,7 +1736,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	Area = "Beam"
 	IconLock = 'BeamFS.dmi'
 	Distance = 50
-	DamageMult = 10
+	DamageMult = 30
 	ChargeRate = 1
 	BeamTime = 15
 	AccMult = 1.175
@@ -1749,7 +1749,7 @@ obj/Skills/Buffs/SlotlessBuffs/DemiFiend/Mediarahan
 	ActiveMessage = "fires Spiral Viper with devastating force!"
 	adjust(mob/p)
 		if(!altered)
-			DamageMult = 10 + (1.5 * p.AscensionsAcquired)
+			DamageMult = 30 + (1.5 * p.AscensionsAcquired)
 	verb/Spiral_Viper()
 		set category = "Skills"
 		adjust(usr)

@@ -128,7 +128,15 @@ mob
 				if(!found)//If you don't find what you're supposed to hunt
 					DEBUGMSG("[src] is attacking a pure target and so value is set to 0")
 					val = 0;
-
+			if(defender && defender.passive_handler["RoyalGuarding"])
+				var/obj/Skills/Buffs/SlotlessBuffs/RoyalGuard/RG = locate(/obj/Skills/Buffs/SlotlessBuffs/RoyalGuard) in defender.contents
+				if(RG)
+					defender << "<font color= 'green'>ATTACK PARRIED!</font>"
+					RG.SuccessfulParry = 2
+					var/meterGain = max(val * glob.ROYAL_GUARD_CHARGE_MULT, 1)
+					RG.RoyalMeter = min(RG.RoyalMeter + meterGain, 100)
+					val = 0
+					defender.client.updateRGMeter()
 			if(val==0)
 				DEBUGMSG("val is 0 so we're ending dodamage now")
 				return 0;
@@ -361,7 +369,7 @@ mob
 			if(FightingSeriously(src, defender) && src.isRace(/race/demi_fiend))
 				for(var/obj/Items/Magatama/M in src)
 					if(M.suffix == "*Equipped*" && M.mastery < 100)
-						M.gainMastery(val * 0.002)
+						M.gainMastery(val * 0.02)
 
 			if(passive_handler.Get("CorruptAffected"))
 				if(demon)
@@ -3455,12 +3463,16 @@ mob
 		CountSigs(var/Tier=0)
 			var/Count=0
 			var/list/combo_check=list()
+			var/is_demon_celestial = (src.isRace(CELESTIAL) && src.CelestialAscension == "Demon")
 			if(!Tier)
 				Log("Admin", "[ExtractInfo(src)] tried to count signatures without specifying a tier.")
 				return
 			for(var/obj/Skills/s in src.Skills)
 				if(istype(s, /obj/Skills/Buffs/NuStyle))
 					continue
+				if(Tier == 2 && is_demon_celestial)
+					if(istype(s, /obj/Skills/Buffs/SlotlessBuffs/RoyalGuard))
+						continue
 				if(s.SignatureTechnique==Tier)
 					if("[s.type]" in combo_check)
 						continue

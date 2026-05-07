@@ -4762,7 +4762,7 @@ obj
 				ABuffNeeded="Soul Resonance"
 				Distance=15
 				Gravity=5
-				WindUp=3
+				WindUp=1
 				WindupMessage="prepares to cut through the very space around them in defiance of everything..."
 				DamageMult = 4
 				StrOffense=1
@@ -4783,6 +4783,9 @@ obj
 				Cooldown= 60
 				EnergyCost=15
 				Instinct=1
+				adjust(mob/p)
+					DamageMult= 7 + p.SagaLevel
+					WindUp = 1
 				verb/WarGodDescent()
 					set name = "War God's Descent"
 					set category="Skills"

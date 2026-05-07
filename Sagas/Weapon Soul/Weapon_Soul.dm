@@ -121,8 +121,8 @@ mob/tierUpSaga(Path)
 
 					if("Green Dragon Crescent Blade")
 						src << "The Green Dragon Crescent Blade unveils the secrets to an unstoppable rush..."
-						passive_handler.Increase("Flow")
-						passive_handler.Increase("Extend")
+						passive_handler.Increase("Flow", 2)
+						passive_handler.Increase("Instinct", 2)
 						// SagaThreshold("Spd",2)
 
 
@@ -179,8 +179,8 @@ mob/tierUpSaga(Path)
 
 					if("Green Dragon Crescent Blade")
 						src << "The Green Dragon Crescent Blade shows how to counter any attack..."
-						passive_handler.Increase("Reversal", 0.25)
 						passive_handler.Increase("Adaptation")
+						passive_handler.Increase("Extend", 1)
 						// SagaThreshold("Spd",0.5)
 						// SagaThreshold("Str",0.5)
 						// SagaThreshold("End",0.5)
@@ -306,8 +306,11 @@ mob/tierUpSaga(Path)
 
 					if("Green Dragon Crescent Blade")
 						for(var/obj/Skills/Buffs/SpecialBuffs/Heavenly_Regalia/Guan_Yu/GuanYu in src.Buffs)
-							GuanYu.passives["Zornhau"] = 2
 							GuanYu.passives["Iaijutsu"] = 2
+							GuanYu.passives["Zornhau"] = 2
+							GuanYu.passives["TechniqueMastery"] = 2
+							GuanYu.passives["SwordAscension"] = 1
+							GuanYu.passives["LifeGeneration"] = 1
 							GuanYu.passives["GodKi"] = 0.25
 			if(6)
 				if(!locate(/obj/Skills/Buffs/SpecialBuffs/OverSoul, src))

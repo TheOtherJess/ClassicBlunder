@@ -1024,9 +1024,11 @@
 	if(demon_sensing) return   // already inside a pick dialog
 
 	var/list/eligible = list()
+	var/party_full = (demon_party && demon_party.len >= demon_party_cap)
 	for(var/dname in DEMON_DB)
 		if(!DemonEligibleForPick(dname)) continue
 		if(DemonInParty(dname)) continue
+		if(party_full && demon_compendium && (dname in demon_compendium)) continue
 		eligible.Add(dname)
 
 	if(!eligible.len)
@@ -1077,6 +1079,11 @@
 		src << "[picked_name] is already in your party."
 		demon_pending_picks++
 		return
+	if(demon_party && demon_party.len >= demon_party_cap)
+		if(demon_compendium && (picked_name in demon_compendium))
+			src << "[picked_name] is already recorded in your Compendium. Pick a different demon."
+			demon_pending_picks++
+			return
 
 	AddDemonToRoster(picked_name)
 

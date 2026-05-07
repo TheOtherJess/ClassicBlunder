@@ -2649,6 +2649,50 @@ mob/Admin4/verb
 		Log("Admin", "[ExtractInfo(src)] placed [ExtractInfo(target)] on the True Demon path.")
 		src << "<font color=yellow>[target] is now on the True Demon path.</font>"
 
+	Give_Demon(mob/Players/target in players)
+		set category = "Admin"
+		set name = "Give Demon"
+
+		if(!target || !target.ckey)
+			src << "<font color=red>Invalid target.</font>"
+			return
+
+		if(target.Saga != "Devil Summoner")
+			src << "<font color=red>[target] does not have the Devil Summoner Saga.</font>"
+			return
+
+		if(!DEMON_DB || !DEMON_DB.len)
+			src << "<font color=red>Demon database is empty.</font>"
+			return
+
+		var/list/demon_choices = list()
+		for(var/dname in DEMON_DB)
+			var/datum/demon_data/dd = DEMON_DB[dname]
+			if(!dd) continue
+			demon_choices["[dname] (Lv[dd.demon_lvl] [dd.demon_race])"] = dname
+
+		if(!demon_choices.len)
+			src << "<font color=red>No valid demons found in the database.</font>"
+			return
+
+		var/choice = input(src, "Select a demon to give [target]. If their party is full, it will be recorded in their Compendium instead.", "Give Demon") as null|anything in demon_choices
+		if(!choice) return
+
+		var/demon_name = demon_choices[choice]
+		if(!demon_name) return
+
+		if(target.DemonInParty(demon_name))
+			src << "<font color=red>[target] already has [demon_name] in their party.</font>"
+			return
+
+		if(target.demon_party && target.demon_party.len >= target.demon_party_cap)
+			if(target.demon_compendium && (demon_name in target.demon_compendium))
+				src << "<font color=red>[target]'s party is full and [demon_name] is already in their compendium.</font>"
+				return
+
+		target.AddDemonToRoster(demon_name)
+		Log("Admin", "[ExtractInfo(src)] gave [ExtractInfo(target)] demon [demon_name].")
+
 mob/Admin3/verb
 
 	SetGlobalDamage()

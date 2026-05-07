@@ -1,4 +1,5 @@
 obj/Skills/Grapple
+	canBeShortcut = 1;
 	var
 		removeAfter = FALSE
 
@@ -6,6 +7,7 @@ obj/Skills/Grapple
 		DamageMult=1
 		MultiHit=1//hit multiple times durr
 		EnergyDamage=0//do damage to energy+fatigue and heal self mana
+		GrabMaster=1
 
 		StrRate=1
 		ForRate=0
@@ -109,6 +111,15 @@ obj/Skills/Grapple
 					ThrowMult = max(1, usr.secretDatum?:getBoon(usr, "Throw") / 2)
 					ThrowSpeed = 2.5/usr.secretDatum?:getBoon(usr, "Throw")
 					DashAfter = TRUE
+				else if(usr.Secret=="Spiral")
+					Effect = "Shockwave"
+					var/secretLevel = usr.getSecretLevel()
+					EffectMult = 1
+					DamageMult = 3 * secretLevel
+					ThrowAdd = 2 + secretLevel
+					ThrowMult = 2
+					ThrowSpeed = 2
+					TriggerMessage = "launches"
 				else
 					resetValues()
 				src.Activate(usr)
@@ -292,6 +303,7 @@ obj/Skills/Grapple
 		NewCopyable = 3
 		SkillCost=120
 		Copyable=4
+		AlwaysAnnounceCooldown = 1
 		DamageMult=5.5
 		Stunner=3
 		StrRate=1
@@ -313,16 +325,38 @@ obj/Skills/Grapple
 				OneAndDone=1
 				StrRate=1
 				DamageMult = 2.5 + (p.Potential / 50)
+				EnergyDamage=0
+			else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/DarkMagic))
+				Effect="DarkSuplex"
+				TriggerMessage="channels dark energy into"
+				EffectMult=0.5
+				Stunner=5
+				OneAndDone=1
+				StrRate=1
+				DamageMult = 2.5 + (p.Potential / 50)
+				EnergyDamage=1
+			else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/Corruption))
+				Effect="CorruptSuplex"
+				TriggerMessage="curses with ruinous energy and slams"
+				EffectMult=0.5
+				Stunner=5
+				OneAndDone=1
+				StrRate=1
+				DamageMult = 2.5 + (p.Potential / 50)
+				EnergyDamage=0
 			else
 				Effect="Suplex"
-				DamageMult=3
+				DamageMult=5.5
 				EffectMult=1
 				Stunner=3
 				StrRate=1
+				EnergyDamage=0
 		verb/Suplex()
 			set category="Skills"
 			adjust(usr)
+			var/can_fire = !(Using || cooldown_remaining)
 			src.Activate(usr)
+			applyDemonInnovationEffect(usr, can_fire)
 	Burning_Finger
 		NewCost = TIER_2_COST
 		NewCopyable = 3
@@ -478,8 +512,19 @@ obj/Skills/Grapple
 			Stunner=3
 			Effect="Shockwave"
 			EffectMult=1
-			Cooldown=60
+			Cooldown=45
 			TriggerMessage="tries to commit double suicide with "
+		Dark_Binding
+			Copyable = 0
+			NeedsSword = 1
+			DamageMult=8
+			StrRate=1.5
+			Stunner=4
+			EnergyDamage=1
+			Effect="DarkSuplex"
+			EffectMult=1
+			Cooldown=45
+			TriggerMessage="binds with dark energy and slams "
 		Form_Ataru
 			Copyable=4
 			SkillCost=TIER_3_COST
@@ -597,11 +642,9 @@ obj/Skills/Grapple
 				User.log2text("Grapple Item Damage", itemDmg, "damageDebugs.txt", User.ckey)
 				#endif
 				var/endFactor = Trg.getEndStat(EndRate)
-				if(User.HasPridefulRage())
-					if(User.passive_handler.Get("PridefulRage") >= 2)
-						endFactor = 1
-					else
-						endFactor = clamp(Trg.getEndStat(1)/2, 1, Trg.getEndStat(1))
+				var/pride = User.HasPridefulRage();
+				if(pride) endFactor = clamp(Trg.getEndStat(1)/2, 1, Trg.getEndStat(1));
+				if(pride >= 2) endFactor = 1;
 				#if DEBUG_GRAPPLE
 				User.log2text("Grapple End Factor", endFactor, "damageDebugs.txt", User.ckey)
 				#endif
@@ -664,7 +707,7 @@ obj/Skills/Grapple
 							Trg.MortallyWounded += 1
 							OMsg(User, "<b><font color=#ff0000>[User] has dealt a mortal blow to [Trg]!</font></b>")
 				OMsg(User, "[User] [src.TriggerMessage] [Trg]!")
-				if(src.Effect in list("Suplex", "Drain", "Lotus", "SuperSuplex"))
+				if(src.Effect in list("Suplex", "Drain", "Lotus", "SuperSuplex", "DarkSuplex", "CorruptSuplex"))
 					src.OneAndDone=1
 				var/Times=src.EffectMult
 				if(src.OneAndDone)
@@ -688,6 +731,18 @@ obj/Skills/Grapple
 						if("SuperSuplex")
 							LotusEffect(User, Trg, src.EffectMult)
 							SuplexEffect(User, Trg)
+						if("DarkSuplex")
+							SuplexEffect(User, Trg)
+							animate(Trg, color=list(0.5,0,0.5, 0,0,0, 0.5,0,0.5, 0,0,0), time=10, flags=ANIMATION_RELATIVE)
+							sleep(10)
+							animate(Trg, color=Trg.MobColor, time=10, flags=ANIMATION_RELATIVE)
+							sleep(10)
+						if("CorruptSuplex")
+							SuplexEffect(User, Trg)
+							var/obj/Skills/Buffs/SlotlessBuffs/Ruin/ruin = Trg.SlotlessBuffs["Ruin"]
+							if(!ruin)
+								ruin = new/obj/Skills/Buffs/SlotlessBuffs/Ruin()
+							ruin.applyStack(Trg)
 						if("Strike")
 							User.HitEffect(Trg)
 						if("Drain")
@@ -756,6 +811,18 @@ obj/Skills/Grapple
 			if("SuperSuplex")
 				LotusEffect(User, Trg, src.EffectMult)
 				SuplexEffect(User, Trg)
+			if("DarkSuplex")
+				SuplexEffect(User, Trg)
+				animate(Trg, color=list(0.5,0,0.5, 0,0,0, 0.5,0,0.5, 0,0,0), time=10, flags=ANIMATION_RELATIVE)
+				sleep(10)
+				animate(Trg, color=Trg.MobColor, time=10, flags=ANIMATION_RELATIVE)
+				sleep(10)
+			if("CorruptSuplex")
+				SuplexEffect(User, Trg)
+				var/obj/Skills/Buffs/SlotlessBuffs/Ruin/ruin = Trg.SlotlessBuffs["Ruin"]
+				if(!ruin)
+					ruin = new/obj/Skills/Buffs/SlotlessBuffs/Ruin()
+				ruin.applyStack(Trg)
 			if("Strike")
 				User.HitEffect(Trg)
 			if("Drain")

@@ -1,6 +1,12 @@
 mob/verb/Character_Sheet()
 	set category = "Other"
-	src<<browse(src.GetAssess(),"window=Assess;size=275x650")
+	src<<browse(src.GetAssess(),"window=Assess;size=275x700")
+
+// Unhinged Majins count their Power at MAJIN_UNHINGED_POWER_MULT (2x) in both offense and defense
+mob/proc/GetEffectivePower()
+	. = Power
+	if(isRace(MAJIN) && Class == "Unhinged")
+		. *= MAJIN_UNHINGED_POWER_MULT
 
 mob/proc/GetAssess()
 	var/PowerDisplay
@@ -102,19 +108,20 @@ mob/proc/GetAssess()
 	<tr><td>Real BP:</td><td>[Commas(src.potential_power_mult)]</td></tr>
 	<tr><td>Energy:</td><td>[Commas(round(src.EnergyMax))] (1)</td></tr>
 	<tr><td>Buffed Stat/True Stat (Mod)</td></tr>
-	<tr><td>Strength:</td><td> [round(src.GetStr(), 0.01)] ([src.BaseStr()])</td></tr>
-	<tr><td>Endurance:</td><td> [round(src.GetEnd(), 0.01)] ([src.BaseEnd()])</td></tr>
-	<tr><td>Speed:</td><td> [round(src.GetSpd(), 0.01)] ([src.BaseSpd()])</td></tr>
-	<tr><td>Force:</td><td> [round(src.GetFor(), 0.01)] ([src.BaseFor()])</td></tr>
-	<tr><td>Offense:</td><td> [round(src.GetOff(), 0.01)] ([src.BaseOff()])</td></tr>
-	<tr><td>Defense:</td><td> [round(src.GetDef(), 0.01)] ([src.BaseDef()])</td></tr>
+	<tr><td>Strength:</td><td> [round(src.GetStr(), 0.01)] ([round(src.BaseStr() + src.GetEquippedWeaponStrAdd(), 0.01)])</td></tr>
+	<tr><td>Endurance:</td><td> [round(src.GetEnd(), 0.01)] ([round(src.BaseEnd() + src.GetEquippedWeaponEndAdd(), 0.01)])</td></tr>
+	<tr><td>Speed:</td><td> [round(src.GetSpd(), 0.01)] ([round(src.BaseSpd() + src.GetEquippedWeaponSpdAdd(), 0.01)])</td></tr>
+	<tr><td>Force:</td><td> [round(src.GetFor(), 0.01)] ([round(src.BaseFor() + src.GetEquippedWeaponForAdd(), 0.01)])</td></tr>
+	<tr><td>Offense:</td><td> [round(src.GetOff(), 0.01)] ([round(src.BaseOff() + src.GetEquippedWeaponOffAdd(), 0.01)])</td></tr>
+	<tr><td>Defense:</td><td> [round(src.GetDef(), 0.01)] ([round(src.BaseDef() + src.GetEquippedWeaponDefAdd(), 0.01)])</td></tr>
 	<tr><td>Recovery:</td><td> [round(src.GetRecov(), 0.01)] ([src.BaseRecov()])</td></tr>
 	<tr><td>Anger:</td><td>[(src.AngerMax+src.AngerAdd)*100]%</td></tr>
 	<tr><td>Power Mult:</td><td>[round(src.potential_power_mult, 0.05) + src.PowerBoost]%</td></tr>
 	<tr><td>Potential:</td><td>[PotentialDisplay]/150</td></tr>
 	<tr><td>Transformation Potential:</td><td>[src.potential_trans]/100</td></tr>
 	<tr><td>Average Stats: [StatAverage]</td></tr>
-	<tr><td>Magic Level: [getTotalMagicLevel()]</td></tr>
+	<tr><td>Magic Level: [src.getTotalMagicLevel()]</td></tr>
+	<tr><td>Stat Enhancement Chips Installed(Max): [src.EnhanceChips]([src.EnhanceChipsMax])</td></tr>
 			</table></html>"}
 /*	<tr><td>True Tier:</td><td>[POWER_TIERS[potential_power_tier]]</td></tr>
 	<tr><td>Display Tier:</td><td>[POWER_TIERS[power_display]]</td></tr>*/
@@ -143,18 +150,12 @@ mob/proc/GetAssess()
 mob
 	proc
 		GetHealthBPMult()
-			var/Return=0
-			Return=min(src.TotalInjury/100,0.25)*(-1)
-			if(Return>0)
-				Return=0
+			var/Return = min(src.TotalInjury / 100, 0.25) * (-1)
 			return Return
 		GetEnergyBPMult()
-			var/Return=0
-			Return=min(src.TotalFatigue/100,0.5)*(-1)
-			if(Return>0)
-				Return=0
+			var/Return = min(src.TotalFatigue / 100, 0.5) * (-1)
 			if(src.passive_handler.Get("Anaerobic"))
-				Return=min(src.TotalFatigue-20/100,0.5)
+				Return = min((src.TotalFatigue - 20) / 100, 0.5)
 			return Return
 
 
@@ -209,29 +210,29 @@ mob/Players/Stat()
 				stat("Maims: ", "[src.Maimed]")
 
 			if(!src.StrTax&&!src.StrCut)
-				stat("Strength","[src.BaseStr()]")
+				stat("Strength","[round(src.BaseStr() + src.GetEquippedWeaponStrAdd(), 0.01)]")
 			else
-				stat("Strength","[src.BaseStr()] (Tax: [round((src.StrTax+src.StrCut)*100)]%)")
+				stat("Strength","[round(src.BaseStr() + src.GetEquippedWeaponStrAdd(), 0.01)] (Tax: [round((src.StrTax+src.StrCut)*100)]%)")
 			if(!src.EndTax&&!src.EndCut)
-				stat("Endurance","[src.BaseEnd()]")
+				stat("Endurance","[round(src.BaseEnd() + src.GetEquippedWeaponEndAdd(), 0.01)]")
 			else
-				stat("Endurance","[src.BaseEnd()] (Tax: [round((src.EndTax+src.EndCut)*100)]%)")
+				stat("Endurance","[round(src.BaseEnd() + src.GetEquippedWeaponEndAdd(), 0.01)] (Tax: [round((src.EndTax+src.EndCut)*100)]%)")
 			if(!src.SpdTax&&!src.SpdCut)
-				stat("Speed","[src.BaseSpd()]")
+				stat("Speed","[round(src.BaseSpd() + src.GetEquippedWeaponSpdAdd(), 0.01)]")
 			else
-				stat("Speed","[src.BaseSpd()] (Tax: [round((src.SpdTax+src.SpdCut)*100)]%)")
+				stat("Speed","[round(src.BaseSpd() + src.GetEquippedWeaponSpdAdd(), 0.01)] (Tax: [round((src.SpdTax+src.SpdCut)*100)]%)")
 			if(!src.ForTax&&!src.ForCut)
-				stat("Force","[src.BaseFor()]")
+				stat("Force","[round(src.BaseFor() + src.GetEquippedWeaponForAdd(), 0.01)]")
 			else
-				stat("Force","[src.BaseFor()] (Tax: [round((src.ForTax+src.ForCut)*100)]%)")
+				stat("Force","[round(src.BaseFor() + src.GetEquippedWeaponForAdd(), 0.01)] (Tax: [round((src.ForTax+src.ForCut)*100)]%)")
 			if(!src.OffTax&&!src.OffCut)
-				stat("Offense","[src.BaseOff()]")
+				stat("Offense","[round(src.BaseOff() + src.GetEquippedWeaponOffAdd(), 0.01)]")
 			else
-				stat("Offense","[src.BaseOff()] (Tax: [round((src.OffTax+src.OffCut)*100)]%)")
+				stat("Offense","[round(src.BaseOff() + src.GetEquippedWeaponOffAdd(), 0.01)] (Tax: [round((src.OffTax+src.OffCut)*100)]%)")
 			if(!src.DefTax&&!src.DefCut)
-				stat("Defense","[src.BaseDef()]")
+				stat("Defense","[round(src.BaseDef() + src.GetEquippedWeaponDefAdd(), 0.01)]")
 			else
-				stat("Defense","[src.BaseDef()]) (Tax: [round((src.DefTax+src.DefCut)*100)]%)")
+				stat("Defense","[round(src.BaseDef() + src.GetEquippedWeaponDefAdd(), 0.01)] (Tax: [round((src.DefTax+src.DefCut)*100)]%)")
 			if(!src.RecovTax&&!src.RecovCut)
 				stat("Recovery","[round(src.BaseRecov(), 0.05)]")
 			else
@@ -247,8 +248,8 @@ mob/Players/Stat()
 				stat("Donate RPP:", "[round(usr.RPPDonate)]")
 			if(usr.PotentialRate>0)
 				switch(usr.PotentialStatus)
-					if("Distracted")
-						stat("Focus Status: ", "<font color='red'>[usr.PotentialStatus]</font color>")
+					if("Caught Up")
+						stat("Focus Status: ", "<font color='blue'>[usr.PotentialStatus]</font color>")
 					if("Average")
 						stat("Focus Status: ", "<font color='yellow'>[usr.PotentialStatus]</font color>")
 					if("Focused")
@@ -278,6 +279,9 @@ mob/Players/Stat()
 					stat("Special Buff: ","[usr.SpecialBuff.name]")
 				if(src.SlotlessBuffs.len > 0)
 					stat("Augments: ", "[textBuffs]")
+
+		if(src.BioAndroid)
+			BioAndroidStatPanel()
 
 		if(Admin&&usr.Overview==1 && usr.AFKTimer)
 			statpanel("Overview")
@@ -313,7 +317,7 @@ mob/Players/Stat()
 				stat("Projectile Effectiveness", "[glob.PROJECTILE_EFFECTIVNESS]x")
 				stat("Grapple Effectiveness", "[glob.GRAPPLE_EFFECTIVNESS]x")
 				stat("AutoHit Effectiveness", "[glob.AUTOHIT_EFFECTIVNESS]x")
-				stat("Damage Rolls", "[glob.min_damage_roll],[glob.upper_damage_roll]")
+				stat("Damage Rolls", "[glob.min_damage_roll],[glob.max_damage_roll]")
 				stat("Intim Ratio", "[glob.INTIMRATIO]x")
 				stat("RPP Routine", "[Commas(glob.progress.RPPDaily)]")
 				stat("RPP Starting / RPP Starting Days", "[Commas(glob.progress.RPPStarting)] / [Commas(glob.progress.RPPStartingDays)]")
@@ -326,6 +330,9 @@ mob/Players/Stat()
 			for(var/obj/Money/M in usr)
 				M.name="[Commas(round(M.Level))] [glob.progress.MoneyName]"
 				stat(M)
+			for(var/obj/Stars/S in usr)
+				S.name="[Commas(round(S.Level))] Stars"
+				stat(S)
 			for(var/obj/Items/A in usr)
 				if(!(A.PermEquip&&A.suffix&&!A.Stealable))
 					if(istype(A, /obj/Items/Armor) || istype(A, /obj/Items/Sword))
@@ -362,6 +369,8 @@ mob/Players/Stat()
 					else
 						usr.Target.setUpScent()
 						stat("Scent: ", Scent)
+					if(usr.Target.CheckSlotless("Disguise"))
+						stat("Instinct: ", "Something about them feels off...")
 
 				Restricted
 
@@ -436,10 +445,14 @@ mob/Players/Stat()
 	if(Target.BioArmor > 10 && Target.BioArmor < 99) return "??"
 	if(Target.BioArmor < 10) return "?"
 
+/mob/var/SpawnDisplay;
+
 /mob/proc/outputVitals()
 	var/vaiHealth = hasClearSight()&&Target.VaizardHealth ? " ([Target.VaizardHealth])" : ""
 	var/healthDisplay = "[Target.Health][vaiHealth]%"
-
+	SpawnDisplay="[Target.SpawnArea]"
+	if(src.Target.passive_handler.Get("Obfuscated Origin"))
+		SpawnDisplay = "<font color='red'><b>Unknowable</b></font color>"
 	if(Target.BioArmor) healthDisplay = getBioArmorDisplay()
 	var/powReplace=Get_Sense_Reading(Target)
 	if(TrgIsBatshitCrazy() && !hasClearSight())
@@ -463,6 +476,7 @@ mob/Players/Stat()
 		stat("Energy: ","<font color=#FF0000>Because I do not believe you <i>do.</i></font color>")
 	else
 		stat("Energy: ","[(Target.Energy/Target.EnergyMax)*100]%")
+	stat("Origin:","[SpawnDisplay]");
 
 
 
@@ -493,14 +507,13 @@ globalTracker/var/MOVEMENT_MASTERY_DIVISOR = 10
 mob/proc/GetPowerUpRatio()
 	var/Ratio=1
 	var/PowerUp=max(((PowerControl-100)/100),-0.5)
-	if(passive_handler.Get("PUSpike"))
-		PowerUp+=passive_handler.Get("PUSpike")/100
+	PowerUp += GetPUSpike()
 	if(passive_handler.Get("RedPUSpike"))
 		PowerUp+=passive_handler.Get("RedPUSpike")/100
 	if(Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Power Control"))
 		PowerUp += secretDatum?:getBoon(src, "Power Control")/12
 	if(src.CheckSpecial("Overdrive"))
-		PowerUp+=1
+		PowerUp+=2
 /*	if(src.CyberCancel)
 		if(!isRace(ANDROID))
 			PowerUp-=PowerUp*src.CyberCancel*/
@@ -532,8 +545,7 @@ mob/proc/GetPowerUpRatio()
 mob/proc/GetPowerUpRatioVisble()
 	var/Ratio=1
 	var/PowerUp=(PowerControl-100)/100
-	if(passive_handler.Get("PUSpike"))
-		PowerUp+=(passive_handler.Get("PUSpike")/100)
+	PowerUp += GetPUSpike()
 	if(src.CheckSpecial("Overdrive"))
 		PowerUp+=1
 	/*if(src.CyberCancel)
@@ -714,6 +726,7 @@ mob/proc/Recover(var/blah,Amount=1)
 			// if(src.SummonReturnTimer)
 			// 	return
 			if(passive_handler.Get("LunarWrath"))
+				src.ManaAmount=0
 				return
 			if(UsingAnsatsuken())
 				return
@@ -915,6 +928,8 @@ mob/proc/
 						a=src.AngerMax
 						if((src.AnsatsukenAscension=="Chikara"&&src.StyleActive=="Ansatsuken"))
 							a=max(src.AngerMax,2)
+						if(Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Anger"))
+							a *= 1+(secretDatum?:getBoon(src, "Anger")/10)
 						if(src.HasAngerThreshold())
 							if(a<src.GetAngerThreshold())
 								a=src.GetAngerThreshold()
@@ -933,6 +948,15 @@ mob/proc/
 								a=src.GetAngerThreshold()
 						if(src.DefianceCounter)
 							a+=src.DefianceCounter*0.05
+						// WrathFactor
+						if(src.passive_handler.Get("WrathFactor") && src.demonDevilTriggerSinMastery())
+							var/missing = max(0, 100 - Health)
+							var/steps = round(missing / 10)
+							if(steps > 0)
+								var/wrathAnger = 0.2 * steps * src.passive_handler.Get("WrathFactor")
+								if(src.passive_handler.Get("Limited Rank-Up"))
+									wrathAnger *= 2
+								a += wrathAnger
 					if(src.CyberCancel>0 && !isRace(ANDROID))
 						var/ang=a-1//Usable anger.
 						var/cancel=ang*src.CyberCancel//1 Cyber Cancel = all of usable anger.
@@ -952,28 +976,34 @@ mob/proc/
 				Ratio*=src.PowerInvisible
 			if(src.PowerBoost)
 				Ratio*=src.PowerBoost
-			var/SSJBoost=1
-			if(isRace(SAIYAN)&&transActive&&ActiveBuff&&!passive_handler.Get("SSJRose"))
-				if(!passive_handler.Get("GodlyCalm")&&!passive_handler.Get("InBlue")&&!passive_handler.Get("SSJ4"))
-					if(race.transformations[1].mastery==100)
-						SSJBoost= 1.15
-					if(race.transformations[2].mastery==100)
-						SSJBoost= 1.30
-					if(race.transformations[3].mastery==100)
-						SSJBoost= 1.45
-				if(passive_handler.Get("GodlyCalm")||passive_handler.Get("InBlue")||passive_handler.Get("SSJ4"))
-					if(passive_handler.Get("SSJ4LimitBreaker")||passive_handler.Get("InBlueEvolved"))
-						SSJBoost = 1.85
-					else
-						SSJBoost = 1.60
-				Ratio*=SSJBoost
+		//	var/SSJBoost=1//i see you, unused-as-of-yet variable. don't think i don't
+			if(isRace(SAIYAN)&&transActive&&ActiveBuff)
+				if(passive_handler.Get("SaiyanPower"))
+					Ratio*=src.GetSaiyanPower()
+			if(isRace(SAIYAN)&&passive_handler.Get("SpiralPowerUnlocked")||isRace(HALFSAIYAN)&&passive_handler.Get("SpiralPowerUnlocked"))
+				switch(transUnlocked)
+					if(0)
+						Ratio*=1.4
+					if(1)
+						Ratio*=1.2
+					if(2)
+						Ratio*=1.5
+					if(3)
+						Ratio*=2
+					if(4)
+						Ratio*=1.5
+					if(5)
+						if(HasGodKi())
+							Ratio*=1.15
+						else
+							Ratio*=1.25
+			if(passive_handler.Get("Undeterred"))
+				Ratio*=1+((StrTax+ForTax)/2)
 			if(passive_handler.Get("SSJRose"))
-				Ratio*=1.60
+				Ratio*=1.60 //this will be Different but i'm leaving it like this now
 
-			/*if(src.Target)
-				if(ismob(src.Target))
-					if(src.HasMirrorStats()&&!src.Target.HasMirrorStats()&&!src.Target.CheckSlotless("Saiyan Soul"))
-						Ratio=src.Target.Power/src.Target.GetPowerUpRatio()*/
+			if(src.Target && ismob(src.Target) && passive_handler.Get("Limited Rank-Up") && passive_handler.Get("EnvyFactor") && src.demonDevilTriggerSinMastery() && src.HasMirrorStats() && src.Target != src && !src.Target.HasMirrorStats() && istype(src.Target, /mob/Players) && !src.Target.passive_handler.Get("To Govern Strength"))
+				Ratio = src.Target.Power / src.Target.GetPowerUpRatio()
 
 		if(passive_handler["Rebel Heart"])
 			var/h = ((missingHealth()/glob.REBELHEARTMOD) * passive_handler["Rebel Heart"])/5
@@ -991,17 +1021,31 @@ mob/proc/
 			if(Tension>=getMaxTensionValue())
 				if(transActive==transUnlocked||passive_handler["MovementMastery"]||passive_handler["GodKi"]||passive_handler["MaouKi"])
 					Ratio*=1.5
+		if(passive_handler.Get("Ashen One"))
+			Ratio*=1+(Burn/glob.ASHEN_BURN_POWER_DIVISOR)
+		Ratio += (scalingEldritchPower() * 2 / 10);
 		Power=Ratio*GetPowerUpRatio()
 
 		if(Power < 1)
 			Power = 1
 		if(passive_handler["Hidden Potential"] && Target)
-			if(!Target.passive_handler.Get("Hidden Potential")&&!Target.passive_handler.Get("To Govern Strength"))
+			if(!Target.passive_handler.Get("Hidden Potential")&&!Target.passive_handler.Get("To Govern Strength")&&!Target.passive_handler.Get("AbsoluteDespair"))
 				if(Target.Power > Power)
 					Power = Target.Power
 					Power*=GetPowerUpRatio()
+		if(passive_handler.Get("AbsoluteDespair"))
+			Power=(Target.Power*1.1)
 		var/nerf = GetPowerUpRatio()+EPM > 2.3 ? 1 : 0
 		power_display=get_power_tier(0, Power, nerf)
+
+		// Track the highest sustained Power this mob has ever reached.
+		if(Power > PeakPowerObserved)
+			PeakPowerObserved = Power
+
+		if(majinAbsorb)
+			if(majinAbsorb.absorbed && majinAbsorb.absorbed.len)
+				Power += majinAbsorb.SumAbsorbedPeakPower(src)
+			Power += majinAbsorb.permanentAbsorbPower
 
 		if(src.Dead&&!src.KeepBody)
 			Ratio*=0.5
@@ -1058,8 +1102,8 @@ mob/proc/
 			Recover("Fatigue",0.5)
 			if(src.ManaDeath)
 				ManaAmount-=5*GetManaCapMult()
-			else if(src.is_arcane_beast || (isRace(YOKAI) && src.AscensionsAcquired>0 && !src.Mechanized && !src.ActiveBuff))
-				if(isRace(YOKAI))
+			else if(src.is_arcane_beast || (isRace(BEASTKIN) && Class=="Trickster" && AscensionsAcquired>0 && !src.Mechanized && !src.ActiveBuff))
+				if(Class == "Trickster")
 					Recover("Mana", 1*GetManaCapMult())
 				else
 					Recover("Mana",1)
@@ -1077,7 +1121,7 @@ mob/proc/
 
 			var/PUGain=src.PUSpeedModifier
 
-			if(src.HasPULock()||src.HasGatesPULock())
+			if(src.HasPULock())
 				PUGain=0
 
 			if(!src.HasHealthPU())
@@ -1134,7 +1178,7 @@ mob/proc/
 				src.Auraz("Remove")
 				src<<"You are too tired to power up."
 				src.PoweringUp=0
-				if(isRace(HUMAN)||isRace(CELESTIAL))
+				if((isRace(HUMAN)||isRace(CELESTIAL)) && !isMazokuPathHuman())
 					if(Health<=30&&src.transActive==4&&src.transUnlocked>=5)
 						src.race.transformations[5].transform(src, TRUE)
 				if(isRace(SAIYAN)||isRace(HALFSAIYAN))
@@ -1196,10 +1240,11 @@ mob/proc/Update_Stat_Labels()
 			src<<output("Energy: [round((Energy/EnergyMax)*100)]%","BarEnergy")
 		if(round(TotalCapacity))
 			ManaMessage=" (Capacity:[100-round(TotalCapacity)]%)"
-
-		if(Saga && Saga=="Ansatsuken"&&src.UsingAnsatsuken())
+		if(src.CheckSlotless("Mang Resonance") || src.CheckSlotless("Shin Radiance"))
+			src<<output("Shin: [round(ManaAmount/ManaMax*100)][ManaMessage]","BarMana")
+		else if(Saga && Saga=="Ansatsuken"&&src.UsingAnsatsuken())
 			src<<output("SUPER: [round(ManaAmount/ManaMax*100)]","BarMana")
-		if(SagaLevel>1&&Saga=="Path of a Hero: Rebirth")
+		else if(SagaLevel>1&&Saga=="Path of a Hero: Rebirth")
 			src<<output("ACT: [round(ManaAmount/ManaMax*100)]","BarMana")
 		else if(src.HasMechanized())
 			src<<output("Battery: [round(ManaAmount/ManaMax*100)]","BarMana")
@@ -1256,7 +1301,12 @@ mob/proc/Update_Stat_Labels()
 			src<<output("CHL: [round(Slow, 1)]","BarSlow")
 		else
 			winshow(src, "BarSlow",0)
-		if(src.Sheared>0)
+		if(src.Frenzy>0)
+			winshow(src, "BarFrenzy",1)
+			src<<output("FRENZY: [round(Frenzy, 1)]","BarFrenzy")
+		else
+			winshow(src, "BarFrenzy",0)
+		if(src.Sheared>0 && !(src.Frenzy>0 && !src.IsDarkDragonPlayer()))
 			winshow(src, "BarPotion",1)
 			src<<output("SHR: [round(Sheared, 1)]","BarPotion")
 		else
@@ -1333,7 +1383,7 @@ mob/proc/Update_Stat_Labels()
 		switch(Secret)
 			if("Werewolf")
 				if(CheckSlotless("New Moon Form"))
-					var/SecretInfomation/Werewolf/s = secretDatum
+					var/SecretInformation/Werewolf/s = secretDatum
 					var/maxHunger = s:getHungerLimit()
 					var/currentHunger = secretDatum.secretVariable["Hunger Satiation"]
 					if(currentHunger > 0)
@@ -1342,7 +1392,7 @@ mob/proc/Update_Stat_Labels()
 					else
 						winshow(src, "Hunger", 0)
 			if("Eldritch")
-				var/SecretInfomation/Eldritch/s = secretDatum
+				var/SecretInformation/Eldritch/s = secretDatum
 				var/maxMadness = s:getMadnessLimit(src)
 				var/currentMadness = secretDatum.secretVariable["Madness"]
 				if(currentMadness > 0)
@@ -1351,6 +1401,14 @@ mob/proc/Update_Stat_Labels()
 					src<<output("Madness:[round(currentMadness/maxMadness*100)]", "Hunger")
 				else
 					winshow(src,"Hunger", 0)
+	else//using hunger bar for dainsleif
+		if(cursedSheathValue)
+			var/max = SagaLevel*50;
+			winshow(src, "Hunger", 1)
+			winset(src, "Hunger", "value=[round(cursedSheathValue/max*100)]")
+			src << output("Bloodlust:[round(cursedSheathValue/max*100)]", "Hunger");
+		else
+			winshow(src,"Hunger", 0);
 	if(isRace(DEMON))
 		if(Corruption > 0)
 			winshow(src, "Hunger", 1)
@@ -1407,6 +1465,11 @@ mob/proc/Get_Sense_Reading(mob/A)
 		. +=" (Fading)"
 
 mob/proc/Get_Scouter_Reading(mob/B)
+	if(B.Imitating)
+		for(var/obj/Skills/Utility/Imitate/i in B.Skills)
+			if(i.imitating_info)
+				return i.imitating_info.powerToCopy
+
 	var/Ratio=B.EnergyUniqueness
 
 	var/EPM=B.Power_Multiplier//effective power multiplier
@@ -1414,9 +1477,9 @@ mob/proc/Get_Scouter_Reading(mob/B)
 		EPM-=B.PowerEroded
 	if(B.NanoBoost&&B.Health<25)
 		EPM+=0.25
-	if(B.isRace(MAKYO))
+/*	if(B.isRace(MAKYO))
 		if(B.ActiveBuff&&!B.HasMechanized())
-			EPM*=1+(0.5*B.AscensionsAcquired) * 7
+			EPM*=1+(0.5*B.AscensionsAcquired) * 7 */
 	if(EPM<=0)
 		EPM=0.1
 	if(src.DemonicPower())
@@ -1461,7 +1524,7 @@ mob/proc/Get_Scouter_Reading(mob/B)
 				else
 					AgeRate=1
 
-				if(B.isRace(YOKAI))
+				if(B.isRace(BEASTKIN) && B.Class == "Trickster")
 					if(B.EraBody=="Elder"||(B.EraBody=="Adult"&&B.Aged))
 						AgeRate=1.25
 				if(B.isRace(HALFSAIYAN)&&B.Anger)

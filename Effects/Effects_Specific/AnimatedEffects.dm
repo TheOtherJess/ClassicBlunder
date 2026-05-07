@@ -302,11 +302,11 @@ proc
 		animate(p,pixel_z=4*TimeMod*20,time=5)
 		sleep(5)
 		var/fallTime = TimeMod*3
-		KenShockwave(p,icon='KenShockwaveGold.dmi',Size=5, Blend=2,  Time=fallTime*3)
-		KenShockwave(p,icon='KenShockwaveGold.dmi',Size=3, Blend=2,  Time=fallTime*2)
-		KenShockwave(p,icon='KenShockwaveGold.dmi',Size=2, Blend=2,  Time=fallTime*1.5)
-		KenShockwave(p,icon='KenShockwaveGold.dmi',Size=1, Blend=2,  Time=fallTime)
-		KenShockwave(p,icon='KenShockwaveGold.dmi',Size=0.5, Blend=2, Time=fallTime*0.5)
+		KenShockwave(p,icon='Icons/Effects/KenShockwaveGold.dmi',Size=5, Blend=2,  Time=fallTime*3)
+		KenShockwave(p,icon='Icons/Effects/KenShockwaveGold.dmi',Size=3, Blend=2,  Time=fallTime*2)
+		KenShockwave(p,icon='Icons/Effects/KenShockwaveGold.dmi',Size=2, Blend=2,  Time=fallTime*1.5)
+		KenShockwave(p,icon='Icons/Effects/KenShockwaveGold.dmi',Size=1, Blend=2,  Time=fallTime)
+		KenShockwave(p,icon='Icons/Effects/KenShockwaveGold.dmi',Size=0.5, Blend=2, Time=fallTime*0.5)
 		sleep(3)
 		animate(t, pixel_z=8, time = fallTime,flags=ANIMATION_END_NOW)
 		animate(p, pixel_z=0, time = fallTime,flags=ANIMATION_END_NOW)
@@ -362,7 +362,7 @@ proc
 		d.dir = SOUTH
 		a.Frozen=2
 		d.Frozen=2
-		var/image/im = image('TornadoDirected.dmi', a, "", FLY_LAYER, NORTH, -8,-8)
+		var/image/im = image('Icons/Effects/TornadoDirected.dmi', a, "", FLY_LAYER, NORTH, -8,-8)
 		a.overlays += im
 		for(var/i in 1 to time)
 			d.SpinAnimation2(speed = 8 - i/2, a = a)
@@ -391,7 +391,7 @@ proc
 			KenShockwave(def,Size=1)
 			Dust(def.loc,_time)
 			for(var/turf/t in Turf_Circle(def, 2))
-				TurfShift('Dirt1.dmi', t, 1, atk)
+				TurfShift('Icons/Turfs/Dirt1.dmi', t, 1, atk)
 			sleep(_time*2)
 		def.icon_state = ""
 		flick("Attack", atk)
@@ -498,7 +498,7 @@ proc
 		sleep(1)
 		spawn(10)
 			PowerGathering(m)
-			KKTShockwave(m, icon='fevKiai.dmi', Size=0.5)
+			KKTShockwave(m, icon='Icons/Effects/fevKiai.dmi', Size=0.5)
 
 	TurfShift(var/Shift, var/turf/t, var/Time=30, var/mob/m, var/layer=MOB_LAYER-0.5, var/Spawn=10, var/Despawn=10,var/state, _piX, piY)
 		if(!m) return
@@ -530,6 +530,37 @@ proc
 			sleep(10)
 			del i
 
+	InstantTurfShift(var/Shift, var/turf/t, var/Time=30, var/mob/m, var/layer=MOB_LAYER-0.5, var/Spawn=10, var/Despawn=10,var/state, _piX, piY)
+		if(!m) return
+		var/image/i=image(icon=Shift, layer=layer, loc=t, dir = m.dir, pixel_x = _piX, pixel_y = piY)
+		i.dir = m.dir
+		i.mouse_opacity = 0
+		i.alpha = 160
+		world << i
+		if(Shift=='Icons/Turfs/GalSpace.dmi')
+			i.icon_state = "[rand(1,25)]"
+		if(Shift=='StarPixel.dmi')
+			i.icon_state="[rand(1,2500)]"
+		else if(state)
+			i.icon_state=state
+		else if(Shift=='Mandala.dmi')
+			if(i.loc==m.loc||(get_dist(m.loc,i.loc)==1&&(i.x==m.x||i.y==m.y)))
+				i.icon_state="2"
+			else if(get_dist(m.loc,i.loc)==1)
+				i.icon_state="3"
+			else
+				i.icon_state="[pick(4,1)]"
+		else if(Shift=='amaterasu.dmi')
+			i.layer=MOB_LAYER
+			i.icon_state="[rand(1,13)]"
+		flick(i.icon_state, i)
+		animate(i, alpha=160, time=0)
+		spawn(10)
+			animate(i, alpha=0, time=Despawn)
+			sleep(10)
+			del i
+
+
 	Crater(atom/A, Size=1)
 		set waitfor=0
 		if(!locate(/obj/Effects/Crater) in A.loc)
@@ -560,11 +591,13 @@ proc
 		spawn(2)
 			animate(D, alpha = 0, transform=D.transform*2, time = rand(15, 25), pixel_x = rand(-16*Size, 16*Size), pixel_y = rand(-16*Size, 16*Size))
 
-	Bang(turf/A, var/Size=1, var/Layer=EFFECTS_LAYER, var/Offset=1, var/Vanish=4, var/PX=0, var/PY=0, var/icon_override)
+	Bang(turf/A, var/Size=1, var/Layer=EFFECTS_LAYER, var/Offset=1, var/Vanish=4, var/PX=0, var/PY=0, var/icon_override, var/color_override, var/alpha_override=255)
 		set waitfor=0
 		var/obj/Effects/Explosion/E=new
 		E.loc=A
 		if(icon_override) E.icon = icon_override
+		if(color_override) E.color = color_override
+		if(alpha_override != 255) E.alpha = alpha_override
 		E.layer=Layer
 		E.pixel_x+=PX
 		E.pixel_y+=PY

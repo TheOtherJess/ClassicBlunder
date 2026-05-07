@@ -38,7 +38,7 @@ obj
 			   p.StyleBuff.StyleActive == "Cold Style")
 						hotColdStorage = p.StyleBuff?:hotCold
 					last_storage = world.time
-					Trigger(usr, 1)
+					Trigger(p, 1)
 					cooldown_remaining = 0
 				proc/giveBackTension(mob/p)
 					if(last_storage + 1200 > world.time) // this should never happen ?
@@ -180,7 +180,7 @@ obj
 						StyleActive="Strong Fist"
 						passives = list("Pursuer" = 1, "TechniqueMastery" = 1, "Flicker"=1)
 						AllOutAttack=1
-						verb/Ansatsuken_Style()
+						verb/Strong_Fist_Style()
 							set hidden=1
 							src.Trigger(usr)
 					Stronger_Fist //t3?
@@ -342,26 +342,6 @@ obj
 							src.Trigger(usr)
 //Saga Sword Styles
 
-	//Hiten Mitsurugi
-					Hiten_Mitsurugi_Ryuu
-						Copyable=0
-						SagaSignature=1
-						StyleStr=1 // ???
-						StyleSpd=1
-						StyleActive="Hiten Mitsurugi"
-						passives = list("Godspeed" = 1, "BlurringStrikes" = 3, "Flicker" = 1)
-						Flicker=1
-						Mastery=4
-						ClassNeeded = list("Light", "Wooden")
-						Finisher="/obj/Skills/Queue/Finisher/Flash_Strike"
-						adjust(mob/p)
-							StyleStr = 1.1 + (p.SagaLevel * 0.05)
-							StyleSpd = 1.1 + (p.SagaLevel * 0.1)
-							StyleOff = 1.1 + (p.SagaLevel * 0.05)
-						verb/Hiten_Mitsurugi_Ryuu()
-							set hidden=1
-							src.Trigger(usr)
-
 	//Keyblade
 					Command
 						Copyable=0
@@ -374,7 +354,7 @@ obj
 							StyleOff = 1.1
 							StyleDef = 1.1
 							StyleActive="Speed Rave"
-							passives = list("BlurringStrikes" = 1, "AfterImages" = 1, "Steady" = 1)
+							passives = list("AttackSpeed" = 1, "BlurringStrikes" = 1, "AfterImages" = 1, "Steady" = 1)
 							Finisher="/obj/Skills/Queue/Finisher/Fever_Pitch"
 							adjust(mob/p)
 								StyleStr = 1.2 + (0.05 * p.SagaLevel)
@@ -389,7 +369,7 @@ obj
 							StyleEnd = 1
 							StyleOff = 1
 							StyleActive="Critical Impact"
-							passives = list("CriticalChance" = 15, "CriticalDamage" = 0.1, "HeavyHitter" = 1, "CallousedHands" = 0.15)
+							passives = list("AttackSpeed" = -2, "CriticalChance" = 15, "CriticalDamage" = 0.1, "HeavyHitter" = 1, "CallousedHands" = 0.15)
 							Finisher="/obj/Skills/Queue/Finisher/Fatal_Mode"
 							adjust(mob/p)
 								StyleStr = 1.2 + (0.1 * p.SagaLevel)
@@ -476,7 +456,7 @@ obj
 							IconApart=1
 							Finisher="/obj/Skills/Queue/Finisher/Wing_Blade"
 							adjust(mob/p)
-								StyleSpd = 1 + (0.05 * p.SagaLevel)
+								StyleStr = 1 + (0.05 * p.SagaLevel)
 								StyleEnd = 1 + (0.05 * p.SagaLevel)
 								StyleSpd = 1 + (0.1 * p.SagaLevel)
 							verb/Wing_Blade_Style()
@@ -509,7 +489,7 @@ obj
 							StyleActive="Rock Breaker"
 							ElementalOffense="Earth"
 							ElementalDefense="Earth"
-							passives = list("Hardening" = 1, "Crushing" = 1, "ArmorPeeling" = 1, "CallousedHands" = 0.15)
+							passives = list("Harden" = 1, "Crushing" = 1, "ArmorPeeling" = 1, "CallousedHands" = 0.15)
 							Crushing=1
 							Finisher="/obj/Skills/Queue/Finisher/Rock_Breaker"
 							adjust(mob/p)
@@ -524,7 +504,7 @@ obj
 							StyleEnd=1.5
 							IconLock='DarknessGlow.dmi'
 							IconUnder=1
-							passives = list("Momentum" = 1, "CallousedHands " = 0.3)
+							passives = list("Momentum" = 1, "CallousedHands" = 0.3)
 							LockX=-32
 							LockY=-32
 							StyleActive="Dark Impulse"
@@ -591,7 +571,7 @@ obj
 							StyleEnd=1.5
 							IconLock='DarknessGlow.dmi'
 							IconUnder=1
-							passives = list("Momentum" = 1, "CallousedHands " = 0.5, "Tossing" = 3, "Secret Knives" = "FTG","HellPower"=0.5,"AbyssMod"=3)
+							passives = list("Momentum" = 1, "CallousedHands" = 0.5, "Tossing" = 3, "Secret Knives" = "FTG","HellPower"=0.5,"AbyssMod"=3)
 							LockX=-32
 							LockY=-32
 							StyleActive="Forces of Darkness"
@@ -628,7 +608,7 @@ obj
 							StyleFor=1.25
 							StyleSpd=1.5
 							StyleActive="Nachtflugel"
-							passives = list("GodSpeed" = 4, "Warping" = 2,"Skimming" = 2, "Tossing" = 3, "Secret Knives" = "GodSlayer")
+							passives = list("Godspeed" = 4, "Warping" = 2,"Skimming" = 2, "Tossing" = 3, "Secret Knives" = "GodSlayer")
 							SweepingStrike=1
 							ElementalOffense = "Truth"
 							ElementalDefense = "Mirror"
@@ -637,7 +617,7 @@ obj
 								StyleSpd = 1 + (0.1 * p.SagaLevel)
 								StyleEnd = 1 + (0.1 * p.SagaLevel)
 								StyleStr = 1 + (0.1 * p.SagaLevel)
-							verb/Vector_to_the_Heavense_Style()
+							verb/Nachtflugel_Style()
 								set hidden=1
 								adjust(usr)
 								src.Trigger(usr)

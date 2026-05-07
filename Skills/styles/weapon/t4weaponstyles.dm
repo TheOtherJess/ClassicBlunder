@@ -7,8 +7,8 @@
 		StyleSpd=1.5
 		StyleDef=1.5
 		Finisher="/obj/Skills/Queue/Finisher/Jinzen_Senkei"
-		passives = list("Kensei" = 1, "The Way" = 1, "Sword Master" = 1, "LikeWater" = 6, "SweepingStrike" = 1, "DoubleStrike" = 3, "BlurringStrikes" = 1.5, \
-			"Zornhau" = 3, "Half-Sword" = 2, "Rage" = 1, "TripleStrike" = 1, "Iaijutsu" = 5, "Musoken" = 1, "Fury" = 3, "Momentum" = 3, "Hardening" = 3, \
+		passives = list("Iaido" = 8, "Kensei" = 1, "The Way" = 1, "Sword Master" = 1, "LikeWater" = 6, "SweepingStrike" = 1, "DoubleStrike" = 3, "BlurringStrikes" = 1.5, \
+			"Zornhau" = 3, "Half-Sword" = 2, "Rage" = 1, "TripleStrike" = 1, "Iaijutsu" = 5, "Musoken" = 1, "Fury" = 3, "Momentum" = 3, "Harden" = 3, \
 			"Parry" = 3, "Disarm" = 2, "Deflection" = 2, "Pressure" = 4)
 		StyleActive="Way of the Kensei"
 		verb/Way_of_the_Kensei()
@@ -20,8 +20,8 @@
 		StyleSpd=2.25
 		StyleStr=1.75
 		Finisher="/obj/Skills/Queue/Finisher/Demonic_Nine_Flashes"
-		passives = list("AsuraStrike" = 1, "TripleStrike" = 2, "DoubleStrike" = 3, "Iaijutsu" = 3, \
-			"Fury" = 5, "NeedsSecondSword" = 1, "NeedsThirdSword" = 1, "BlurringStrikes" = 2, "SweepingStrikes" = 1, \
+		passives = list("Iaido" = 8, "AsuraStrike" = 1, "TripleStrike" = 2, "DoubleStrike" = 3, "Iaijutsu" = 3, \
+			"Fury" = 5, "NeedsSecondSword" = 1, "NeedsThirdSword" = 1, "BlurringStrikes" = 2, "SweepingStrike" = 1, \
 			"Iaijutsu" = 3, "Disarm" = 3, "Parry" = 3, "Fury" = 5, "Unnerve" = 2, "Pressure" = 2 )
 		verb/Kyutoryu()
 			set hidden=1
@@ -56,21 +56,21 @@
 		StyleStr=2
 		StyleEnd=1.5
 		Finisher="/obj/Skills/Queue/Finisher/The_Blade_of_Chaos"
-		passives = list("DisableGodKi" = 1, "EndlessNine" = 0.25, "Deicide" = 10, "Rage" = 5, "Half-Sword" = 5, "Zornhau" = 5, "FavoredPrey" = "Everything", \
+		passives = list("DisableGodKi" = 1, "EndlessNine" = 0.25, "Deicide" = 10, "Rage" = 5, "Half-Sword" = 5, "Zornhau" = 5, "FavoredPrey" = "All", \
 			"Shearing" = 10, "Deflection" = 5, "Disarm" = 3,"Parry" = 5, "Momentum" = 5, \
 			"Secret Knives" = "GodSlayer", "Tossing" = 5, "Pressure" = 5, "Unnerve" = 5, "BladeFisting" = 1, "SlayerMod" = 3, "Extend" = 2)
 		// either throw swords at them, or runes, depending on icon_state do a different effect
 		adjust(mob/p)
-		passives = list("DisableGodKi" = 1, "EndlessNine" = 0.25, "Deicide" = 10, "Rage" = 5, "Half-Sword" = 5, "Zornhau" = 5, "FavoredPrey" = "Everything", \
-			"Shearing" = 10, "Deflection" = 5, "Disarm" = 3,"Parry" = 5, "Momentum" = 5, \
-			"Secret Knives" = "GodSlayer", "Tossing" = 5, "Pressure" = 5, "Unnerve" = 5, "BladeFisting" = 1, "SlayerMod" = 3, "Extend" = 2)
+			passives = list("DisableGodKi" = 1, "EndlessNine" = 0.25, "Deicide" = 10, "Rage" = 5, "Half-Sword" = 5, "Zornhau" = 5, "FavoredPrey" = "All", \
+				"Shearing" = 10, "Deflection" = 5, "Disarm" = 3,"Parry" = 5, "Momentum" = 5, \
+				"Secret Knives" = "GodSlayer", "Tossing" = 5, "Pressure" = 5, "Unnerve" = 5, "BladeFisting" = 1, "SlayerMod" = 3, "Extend" = 2)
 		verb/War_God()
 			set hidden=1
 			adjust(usr)
 			src.Trigger(usr)
 	Nebula_Blade
 		SignatureTechnique=4
-		passives = list("HybridStyle" = "MysticStyle", "Wuju" = 1, "CriticalChance" = 40, "CriticalDamage"= 0.05, "Shocking" = 4, "ThunderHerald" = 1, \
+		passives = list("Iaido" = 8, "HybridStyle" = "MysticStyle", "Wuju" = 1, "CriticalChance" = 40, "CriticalDamage"= 0.05, "Shocking" = 4, "ThunderHerald" = 1, \
 			"Instinct" = 1, "Flicker" = 1, "Fury" = 2.5, "Iaijutsu" = 2, "BlurringStrikes" = 1.5, "Rain" = 3, "Combustion" = 40, "Scorching" = 5,\
 			"SpiritSword" = 1.25, "SpiritFlow"=3)
 		StyleSpd = 1.5

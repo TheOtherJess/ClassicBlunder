@@ -18,6 +18,10 @@ obj/Arcane/ArcaneFocal //These are used for Arcane Traverse. I will eventually a
 	invisibility=1
 	var/list/signature_restricted = list()
 	var/identifier
+	// ckey of the player who created this focal via Mark Depths Focal. Empty
+	// for the world-generated/admin-placed focals that have no owner. Used by
+	// Remove Depths Focal to gate teardown to your own focals.
+	var/creator_ckey = ""
 	New()
 		..()
 		name = pick("Arcane Focal","Arcane Anomaly","Magic Anomaly","Strange Anomaly","Sparkly Spot")
@@ -260,10 +264,9 @@ obj/Skills/Buffs/SlotlessBuffs/Arcane_Surge
 
 	Arcane_Empowerment
 		name = "Arcane Empowerment"
-		passives = list("PureReduction" = 1, "Juggernaut" = 1, "Hardening" = 2, "ManaStats" = 0.5, "SpiritHand" = 2)
+		passives = list("PureReduction" = 1, "Juggernaut" = 1, "Harden" = 2, "ManaStats" = 0.5, "SpiritHand" = 2)
 		PureReduction=1
 		Juggernaut=1
-		Hardening=2
 
 		StrMult=1.2
 		ForMult=1.2
@@ -485,7 +488,7 @@ obj/Skills/AutoHit/Lesser_Division
 	Instinct=2
 	TurfErupt=1
 	TurfEruptOffset=6
-	HitSparkIcon='Icons/Effects/Arcane Division.dmi'
+	//HitSparkIcon='Icons/Effects/Arcane Division.dmi' I have to come back to fix this//
 	HitSparkX=-16
 	HitSparkY=-16
 	HitSparkSize=1
@@ -779,6 +782,7 @@ obj/Skills/Arcane_Regrowth
 		if(!usr.is_arcane_beast)
 			usr << "Due to a lack of a bond, you no longer have access to Regrowth."
 			del(src)
+			return
 
 		if(world.realtime > last_click + 20)
 			last_click = world.realtime
@@ -944,6 +948,7 @@ obj/Skills/Companion/arcane_follower
 			for(var/mob/Player/AI/Nympharum/aa in usr.ai_followers)
 				aa.EndLife(1)
 			del src
+			return
 
 
 
@@ -1236,6 +1241,7 @@ mob/Player/AI/Nympharum
 		if(ai_stall)
 			ai_stall--
 			return
+		CCRecovery()
 		var/ai_state_switch
 
 		if(ai_owner.is_arcane_beast.enable_walk_effect && src.loc != src.prev_location)
@@ -1332,7 +1338,7 @@ mob/Player/AI/Nympharum
 
 			if("combat")
 				if(world.time < ai_delayed) return
-				if(Launched || Stunned || icon_state=="KB")
+				if(isCrowdControlled())
 					return
 				if(icon_state == "Meditate")
 					icon_state = ""

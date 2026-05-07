@@ -31,6 +31,9 @@ obj
 			Instinct=1
 			WindupMessage="focuses their chi..."
 			ActiveMessage="sends a wave of force with a single palm thrust!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			verb/Force_Palm()
 				set category="Skills"
 				usr.Activate(src)
@@ -57,7 +60,36 @@ obj
 			BuffAffected=/obj/Skills/Buffs/SlotlessBuffs/Autonomous/AchillesHeel/Disgruntled
 			Earthshaking=15
 			ActiveMessage="lifts their leg before performing a tremor-inducing stomp!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			verb/Force_Stomp()
+				set category="Skills"
+				usr.Activate(src)
+		Slashing_Hand_Chop
+			SkillCost=TIER_2_COST
+			Copyable=3
+			UnarmedOnly=1
+			Distance=15
+			WindUp=1
+			ComboMaster=1
+			WindupMessage="relaxes their fist into a straight palm..."
+			DamageMult=5
+			StrOffense=1
+			ActiveMessage="uses their hand as a blade, trying to cut down their opponent!"
+			Area="Target"
+			GuardBreak=1
+			PassThrough=1
+			MortalBlow=1
+			HitSparkIcon='Slash - Zan.dmi'
+			HitSparkX=-16
+			HitSparkY=-16
+			HitSparkTurns=1
+			HitSparkSize=3
+			Cooldown=45
+			EnergyCost=15
+			Instinct=1
+			verb/Slashing_Hand_Chop()
 				set category="Skills"
 				usr.Activate(src)
 		Phantom_Strike
@@ -77,6 +109,9 @@ obj
 			Knockback=2
 			Distance=4
 			ActiveMessage="vanishes with a burst of speed to strike at their foe!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			Cooldown=45
 			EnergyCost=6
 			Instinct=1
@@ -115,6 +150,9 @@ obj
 			Cooldown=45
 			EnergyCost=5
 			ActiveMessage="rushes forward to deliver a flurry of strikes!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			verb/Dragon_Rush()
 				set category="Skills"
 				usr.Activate(src)
@@ -158,6 +196,9 @@ obj
 			EnergyCost=3
 			CanBeDodged=1
 			ActiveMessage="sweeps the legs from under their opponent!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			verb/Leg_Sweep()
 				set category="Skills"
 				usr.Activate(src)
@@ -179,6 +220,9 @@ obj
 			FlickSpin=1
 			EnergyCost=2
 			ActiveMessage="throws their body into a handstand while delivering numerous spin kick!"
+			TurfStrike=1
+			TurfShift='Dirt1.dmi'
+			TurfShiftDuration=3
 			verb/Helicopter_Kick()
 				set category="Skills"
 				usr.Activate(src)
@@ -186,6 +230,7 @@ obj
 		Three_Thousand_Worlds
 			SkillCost= TIER_2_COST
 			Copyable=3
+			AlwaysAnnounceCooldown = 1
 			NeedsSword=1
 			Area="Circle"
 			DamageMult=2.5
@@ -223,15 +268,34 @@ obj
 					Rounds = 2 + round(p.Potential/25)
 					HealthCost=2
 					WoundCost=2
+					ManaCost=0
+					TurfShift=0
+					TurfShiftDuration=0
+				else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/DarkMagic))
+					GrabTrigger="/obj/Skills/Grapple/Sword/Dark_Binding"
+					Rounds = 2 + round(p.Potential/25)
+					HealthCost=0
+					WoundCost=0
+					ManaCost=3
+					TurfShift='blackflameaura.dmi'
+					TurfShiftDuration=2
 				else
 					GrabTrigger="/obj/Skills/AutoHit/Oni_Giri"
 					HealthCost=0
 					WoundCost=0
+					ManaCost=0
 					Rounds = 2
+					TurfShift=0
+					TurfShiftDuration=0
+				if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/Corruption))
+					CorruptionDebuff = 1
+				else
+					CorruptionDebuff = 0
 			verb/Three_Thousand_Worlds()
 				set category="Skills"
-				adjust(usr)
+				var/can_fire = !(Using || cooldown_remaining)
 				usr.Activate(src)
+				applyDemonInnovationEffect(usr, can_fire)
 		Oni_Giri
 			Copyable=0
 			Area="Circle"
@@ -269,6 +333,7 @@ obj
 		Drill_Spin
 			SkillCost= TIER_2_COST
 			Copyable=3
+			AlwaysAnnounceCooldown = 1
 			NeedsSword=1
 			Area="Circle"
 			Shearing=1
@@ -312,7 +377,30 @@ obj
 					Knockback = 0.001
 					PullIn = Size + 4
 					Shearing = 5 + (pot/5)
-
+					TurfErupt=0
+					TurfShift=0
+					TurfShiftDuration=0
+					HitSparkIcon='Slash.dmi'
+					HitSparkX=-32
+					HitSparkY=-32
+				else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/DarkMagic))
+					var/pot = p.Potential
+					ControlledRush=0
+					Rush=0
+					ChargeTech=0
+					ChargeTime=0
+					Size = 2 + (round(pot/25))
+					WindUp=0.75
+					Knockback = 0.001
+					PullIn = Size + 4
+					Shearing = 5 + (pot/5)
+					TurfErupt=1
+					TurfEruptOffset=4
+					TurfShift='blackflameaura.dmi'
+					TurfShiftDuration=2
+					HitSparkIcon='Hit Effect Dark.dmi'
+					HitSparkX=-32
+					HitSparkY=-32
 				else
 					ControlledRush=1
 					Rush=3
@@ -325,10 +413,21 @@ obj
 					Knockback = 1
 					PullIn = 0
 					Shearing = 1
+					TurfErupt=0
+					TurfShift='Dirt1.dmi'
+					TurfShiftDuration=1
+					HitSparkIcon='Slash.dmi'
+					HitSparkX=-32
+					HitSparkY=-32
+				if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/Corruption))
+					CorruptionDebuff = 1
+				else
+					CorruptionDebuff = 0
 			verb/Drill_Spin()
 				set category="Skills"
-				adjust(usr)
+				var/can_fire = !(Using || cooldown_remaining)
 				usr.Activate(src)
+				applyDemonInnovationEffect(usr, can_fire)
 		Rising_Spire
 			SkillCost=TIER_2_COST
 			Copyable=3

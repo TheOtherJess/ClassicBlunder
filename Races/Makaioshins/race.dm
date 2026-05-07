@@ -13,17 +13,17 @@ race
 		force = 1.75
 		regeneration = 3
 		imagination = 3
-		skills = list(/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2, /obj/Skills/Buffs/SlotlessBuffs/Regeneration, /obj/Skills/Buffs/SlotlessBuffs/Falldown_Mode/Makaioshin)
-		passives = list("HolyMod" = 0.5, "AbyssMod" = 0.5, "HellPower" = 1, "FakePeace"=1, "StaticWalk" = 1, "SpaceWalk" = 1, "SpiritPower" = 1, "MartialMagic" = 1, "BladeFisting" = 1, "Incomplete" = 1)
+		skills = list(/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2, /obj/Skills/Buffs/SlotlessBuffs/Regeneration, /obj/Skills/Buffs/SlotlessBuffs/DemonMagic/DarkMagic, /obj/Skills/Buffs/SlotlessBuffs/DemonMagic/HellFire, /obj/Skills/Buffs/SlotlessBuffs/DemonMagic/Corruption)
+		passives = list("HolyMod" = 0.5, "AbyssMod" = 0.5, "HellPower" = 1, "FakePeace"=1, "StaticWalk" = 1, "SpaceWalk" = 1, "SpiritPower" = 1, "MartialMagic" = 1, "BladeFisting" = 1, "Incomplete" = 1, "Corruption" = 1)
 		var/devil_arm_upgrades = 1
 		var/sub_devil_arm_upgrades = 0
-		proc/findFalldown(mob/p)
+		/*proc/findFalldown(mob/p)
 			var/obj/Skills/Buffs/SlotlessBuffs/Falldown_Mode/Makaioshin/d = new()
 			d = locate() in p
 			if(!d)
 				world.log << "There was an error finding [p]'s ture form, please fix as their ascension is likely bugged"
 				p << "Please report to the admin or discord that your true form is bugged on asc"
-			return d
+			return d*/
 		proc/checkReward(mob/p)
 			p.checkDevilArmUpgrades();
 		onFinalization(mob/user)
@@ -31,10 +31,14 @@ race
 			user << "The name your demonic half goes by is <b>[user.TrueName]</b>."
 			user.EnhancedSmell = 1
 			user.EnhancedHearing = 1
-			if(!locate(/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Selfless_State, user))
-				var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Selfless_State
-				user.AddSkill(s)
-				user << "You have embarked upon the path of true martial arts mastery: Ultra Instinct."
+			user.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/Light)
+			user.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/Divinity)
+			user.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/Order)
+			user << "Please set macros for (Light), (Divinity), and (Order), your 3 angel magics."
+			user << "Please set macros for (Dark Magic), (Hell Fire) and (Corruption), your 3 demon magics."
+			user.client.updateCorruption()
+			user.demon.selectPassive(user, "CORRUPTION_PASSIVES", "Buff", TRUE)
+			user.demon.selectPassive(user, "CORRUPTION_DEBUFFS", "Debuff")
 			user.passive_handler.increaseList(passives)
 			for(var/s in skills)
 				user.AddSkill(new s)

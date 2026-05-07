@@ -46,15 +46,18 @@
 /mob/proc/getVampireIntim()
 	if(Secret != "Vampire")
 		return 0
+	var/SecretInformation/Vampire/vd = secretDatum
+	if(!vd)
+		return 0
 	var/obj/Skills/Buffs/SlotlessBuffs/v = GetSlotless("Vampire")
 	var/obj/Skills/Buffs/SlotlessBuffs/w = GetSlotless("Wassil")
 	var/obj/Skills/Buffs/SlotlessBuffs/r = GetSlotless("Rotshreck")
 	if(r)
-		return round((1 + (getSecretLevel() * 0.5)) * (1 + secretDatum:getBloodPowerRatio()), 0.05)
+		return round((1 + (getSecretLevel() * 0.5)) * (1 + vd.getBloodPowerRatio()), 0.05)
 	else if(w)
-		return round((1 + (getSecretLevel()  * 0.25)) * (1 + secretDatum:getHungerRatio()), 0.05)
+		return round((1 + (getSecretLevel() * 0.25)) * (1 + vd.getHungerRatio()), 0.05)
 	else if(v)
-		return 1.25 + round((getSecretLevel() * 0.125) * (1 + secretDatum:getBloodPowerRatio()), 0.05)
+		return 1.25 + round((getSecretLevel() * 0.125) * (1 + vd.getBloodPowerRatio()), 0.05)
 
 
 
@@ -83,9 +86,6 @@
 			if(5)
 				Effective*= 8 + unhingedBoon
 
-	if(src.isRace(MAKYO)&&src.ActiveBuff&&src.AscensionsAcquired&&!src.CyberCancel)
-		Effective *= 1.25 + (AscensionsAcquired*0.25)
-
 	if(src.CheckActive("Mobile Suit")||src.CheckSlotless("Battosai")||src.CheckSlotless("Susanoo"))
 		Effective+=5
 		if(Effective<15)
@@ -113,4 +113,4 @@
 		Effective*=src.IntimidationMult
 	if(Effective<0)
 		Effective=1
-	return 1//Effective
+	return Effective

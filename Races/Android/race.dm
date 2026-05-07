@@ -4,7 +4,7 @@ race
 		desc = "They are programmed with the directive to protect human-kind. \nMost of them look like toasters, and most of them are mere service models that act like a certain golden android from a popular franchise. While there are rumors of more humanoid Androids, they are typically spread by nutjobs who fear being replaced."
 		visual = 'Android.png'
 
-		locked = TRUE
+		locked = FALSE
 		strength = 1
 		endurance = 1
 		speed = 1
@@ -14,6 +14,7 @@ race
 		economy = 3
 		regeneration = 1.5
 		statPoints = 20
+		learning = 1.25
 		anger = 1
 		imagination = 0.05
 		anger_message = "calculates the ideal path to victory."

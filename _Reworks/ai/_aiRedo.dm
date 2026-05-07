@@ -9,14 +9,41 @@ mob/Player/AI/var/tmp/obj/Skills/zanzo = null
 mob/Player/AI/var/tmp/obj/Skills/dd = null
 mob/Player/AI/var/tmp/mob/targetted = null
 mob/Player/AI/var/tmp/inloop = FALSE
+mob/Player/AI/var/tmp/companion_def_mode = 0 // Defense: positions between owner and threat when idle.
+mob/Player/AI/var/tmp/prev_owner_health = 100 // Tracks owner HP to detect when they are hit.
+mob/Player/AI/var/tmp/cc_frozen_at = 0 // Tracks when the NPC first became frozen for safety-net recovery.
 mob/Player/AI/proc/findZanzo()
 	for(var/obj/Skills/Zanzoken/z in src)
 		return z
 	AddSkill(new/obj/Skills/Zanzoken)
 	zanzo = locate(/obj/Skills/Zanzoken) in src
+mob/Player/AI/proc/CCRecovery()
+	// Stun recovery — same checks players get in GainLoop
+	StunCheck(src)
+	StunImmuneCheck(src)
+	// Frozen recovery safety net — if stuck frozen for over 20 seconds, force clear
+	if(Frozen)
+		if(!cc_frozen_at)
+			cc_frozen_at = world.time
+		else if(world.time >= cc_frozen_at + 200)
+			Frozen = 0
+			TimeFrozen = 0
+			cc_frozen_at = 0
+	else
+		cc_frozen_at = 0
+	// TimeFrozen without Frozen (shouldn't happen, but clean it up)
+	if(TimeFrozen && !Frozen)
+		TimeFrozen = 0
+	// ReflectedFrozen recovery
+	if(ReflectedFrozen)
+		if(ReflectedFrozenTimer <= world.time)
+			ReflectedFrozen = 0
+
 mob/Player/AI/proc/AiBehavior()
 	var/ignoreActivity = FALSE
 	if(ai_hostility>=2)
+		ignoreActivity = TRUE
+	if(ai_owner)
 		ignoreActivity = TRUE
 	if(last_activity+300 < world.time && !ignoreActivity) //if last activity was over 10 seconds ago. 30 sec now.
 		ai_state = "Idle"
@@ -24,6 +51,10 @@ mob/Player/AI/proc/AiBehavior()
 		inloop = FALSE
 		return
 	inloop = TRUE
+	// CC check — don't act while crowd controlled, but stay in the loop
+	if(isCrowdControlled())
+		last_activity = world.time
+		return
 	if(!zanzo)
 		zanzo = findZanzo()
 	if(!dd)
@@ -53,6 +84,45 @@ mob/Player/AI/proc/Idle()
 	ai_state = "Idle"
 	icon_state = ""
 	fleeing = FALSE
+
+	// Auto mode: mirror owner's target immediately.
+	if(ai_focus_owner_target && ai_owner && ai_owner.Target && !Target)
+		if(!AllianceCheck(ai_owner.Target))
+			SetTarget(ai_owner.Target)
+			last_activity = world.time
+			Chase()
+			return
+
+	// Auto mode: react when owner takes damage within protection range.
+	if(ai_protection > 0 && ai_owner && !Target)
+		var/mob/Player/check_owner = ai_owner
+		if(check_owner.Health < prev_owner_health && get_dist(src, check_owner) <= ai_protection)
+			FindTarget1()
+			if(Target)
+				last_activity = world.time
+				Chase()
+				prev_owner_health = check_owner.Health
+				return
+		prev_owner_health = check_owner.Health
+
+	// Manual defense mode: stand between owner and threat, face the threat direction.
+	if(companion_def_mode && ai_owner && world.time >= next_move)
+		var/mob/Player/def_owner = ai_owner
+		var/def_dir = def_owner.dir
+		if(def_owner.Target && !AllianceCheck(def_owner.Target))
+			def_dir = get_dir(def_owner, def_owner.Target)
+			if(!Target)
+				SetTarget(def_owner.Target)
+		var/turf/def_spot = get_step(def_owner, def_dir)
+		if(def_spot && get_dist(src, def_spot) > 0)
+			step_to(src, def_spot, 0)
+		dir = def_dir
+		next_move = world.time + 3
+		if(Target)
+			last_activity = world.time
+			Chase()
+		return
+
 	if(ai_follow && ai_owner && ai_owner.icon_state != "Meditate")
 		if(icon_state == "Meditate")
 			icon_state = ""
@@ -116,7 +186,7 @@ mob/Player/AI/proc/Chase()
 	if(isCrowdControlled())
 		return
 	ai_state = "Chase"
-	if(isai(Target))
+	if(isAI(Target))
 		RemoveTarget()
 		Idle()
 		return
@@ -346,7 +416,7 @@ mob/Player/AI/proc/Flee()
 		Chase()
 
 mob/Player/proc/isCrowdControlled()
-	if(Launched || Stunned || icon_state == "KB")
+	if(Launched || Stunned || Frozen || icon_state == "KB")
 		return TRUE
 	return FALSE
 

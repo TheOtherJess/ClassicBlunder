@@ -90,6 +90,8 @@ var/knowledgePaths/tech/list/TechnologyTree = list()
 	if(passive_handler["Spiritual Tactician"])
 		if(Imagination > Intelligence)
 			int = Imagination
+	if(int < 0.5)
+		int = 0.5
 	var/theCost = glob.TECH_BASE_COST / int
 	var/list/thingCanBuy = list()
 	if(length(TechnologyTree) < 1)
@@ -131,7 +133,7 @@ var/knowledgePaths/tech/list/TechnologyTree = list()
 	// AddUnlockedTechnology(t.name)
 	switch(t.name)
 		// ALCHEMY //
-		if("Alchemy")
+		if("Basic Alchemy")
 			AlchemyUnlocked=1
 			PotionTypes.Add("Wild Herb")
 		if("Healing Herbs")
@@ -196,6 +198,8 @@ var/knowledgePaths/tech/list/TechnologyTree = list()
 		if("Soul Infusion")
 			ArmamentEnchantmentUnlocked=5
 			src << "You learn how to enchant weapons with the forces of chaos and make them rival arms of legend!"
+			if(!locate(/obj/Skills/Utility/Enchant_Equipment, src))
+				src.AddSkill(new/obj/Skills/Utility/Enchant_Equipment)
 		// END ENHANCEMENT SHIT //
 		// TOME START //
 		if("TomeCreation")
@@ -317,6 +321,7 @@ var/knowledgePaths/tech/list/TechnologyTree = list()
 		if("MilitaryEngineering")
 			MilitaryEngineeringUnlocked=1
 			ForgingUnlocked++
+
 		if("Forge")
 			ForgingUnlocked++
 		if("Enhancement")
@@ -522,7 +527,7 @@ var/knowledgePaths/tech/list/TechnologyTree = list()
 					del h
 
 		if("Temporal Rewinding")
-			TimeMagicUnlocked++
+			TimeMagicUnlocked--
 			if(locate(/obj/Skills/Buffs/SlotlessBuffs/Magic/Reverse_Wounds, src))
 				for(var/obj/Skills/Buffs/SlotlessBuffs/Magic/Reverse_Wounds/rw in src)
 					del rw

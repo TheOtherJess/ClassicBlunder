@@ -46,12 +46,19 @@ mob/proc/Revert(type)
 transformation
 	var
 		list/passives
+		list/class_passives
 		strength = 1
+		strengthadd = 0
 		endurance = 1
+		enduranceadd = 0
 		force = 1
+		forceadd = 0
 		offense = 1
+		offenseadd = 0
 		defense = 1
+		defenseadd = 0
 		speed = 1
+		speedadd=0
 		regeneration
 		anger
 		unlock_potential = -1
@@ -98,11 +105,23 @@ transformation
 		form_icon_1_y
 		form_icon_1_layer = 3
 
+		image/form_underlay_1
+		form_underlay_1_icon
+		form_underlay_1_icon_state
+		form_underlay_1_x
+		form_underlay_1_y
+
 		image/form_icon_2
 		form_icon_2_icon
 		form_icon_2_icon_state
 		form_icon_2_x
 		form_icon_2_y
+
+		image/form_underlay_2
+		form_underlay_2_icon
+		form_underlay_2_icon_state
+		form_underlay_2_x
+		form_underlay_2_y
 
 		image/form_glow
 		form_glow_icon
@@ -133,21 +152,33 @@ transformation
 			form_aura_underlay = image(icon = form_aura_underlay_icon, icon_state = form_aura_underlay_icon_state, pixel_x = form_aura_underlay_x, pixel_y = form_aura_underlay_y)
 			form_hair = image(icon = form_hair_icon, pixel_x = form_hair_x, pixel_y = form_hair_y, layer = FLOAT_LAYER-2)
 			form_icon_1 = image(icon = form_icon_1_icon, icon_state = form_icon_1_icon_state, pixel_x = form_icon_1_x, pixel_y = form_icon_1_y, layer = form_icon_1_layer)
+			form_underlay_1 = image(icon = form_underlay_1_icon, icon_state = form_underlay_1_icon_state, pixel_x = form_underlay_1_x, pixel_y = form_underlay_1_y)
 			form_icon_2 = image(icon = form_icon_2_icon, icon_state = form_icon_2_icon_state,pixel_x = form_icon_2_x, pixel_y = form_icon_2_y)
+			form_underlay_2 = image(icon = form_underlay_2_icon, icon_state = form_underlay_2_icon_state, pixel_x = form_underlay_2_x, pixel_y = form_underlay_2_y)
 
 		transform_animation(mob/user)
 
 		revert_animation(mob/user)
 
 		mastery_boons(mob/user)
+		class_boons(mob/user)
 
 		apply_visuals(mob/user, aura = 1, hair = 1, extra = 1)
 			adjust_transformation_visuals(user)
 			if(extra)
+				user.overlays -= form_icon_1
+				user.overlays -= form_icon_2
+				user.overlays -= form_glow
+				user.underlays -= form_underlay_1
+				user.underlays -= form_underlay_2
 				user.overlays += form_icon_1
 				user.overlays += form_icon_2
 				user.overlays += form_glow
+				user.underlays += form_underlay_1;
+				user.underlays += form_underlay_2;
 			if(aura)
+				user.overlays -= form_aura
+				user.underlays -= form_aura_underlay
 				user.overlays += form_aura
 				user.underlays += form_aura_underlay
 			if(hair)
@@ -160,6 +191,8 @@ transformation
 				user.overlays -= form_icon_1
 				user.overlays -= form_icon_2
 				user.overlays -= form_glow
+				user.underlays -= form_underlay_1;
+				user.underlays -= form_underlay_2;
 			if(aura)
 				user.overlays -= form_aura
 				user.underlays -= form_aura_underlay
@@ -170,20 +203,22 @@ transformation
 				return;
 			if(user.passive_handler.Get("SSJRose") >= 1) return;
 			if(is_active) return
-			if(user.passive_handler.Get("SSJRose")) return
 			if(!forceTrans)
 				if(!user.CanTransform()) return
 
 				if(user.transUnlocked < user.transActive+1)
 					if(!(user.bypassTransAutomation >= user.transActive+1) && glob.lockTransAutomation && (type in glob.transLocked)) return
 					if(unlock_potential >= user.Potential) return
-
+			if(glob.racials.AUTO_SSJ_MASTERY)
+				gainMastery()
 			mastery_boons(user)
+			class_boons(user)
 
 			adjust_transformation_visuals(user)
 
 			user.transActive++
 			user.passive_handler.increaseList(passives)
+			user.passive_handler.increaseList(class_passives)
 
 			user.StrMultTotal *= strength
 			user.EndMultTotal *= endurance
@@ -191,6 +226,12 @@ transformation
 			user.SpdMultTotal *= speed
 			user.OffMultTotal *= offense
 			user.DefMultTotal *= defense
+			user.StrTransMult += strengthadd
+			user.EndTransMult += enduranceadd
+			user.ForTransMult += forceadd
+			user.SpdTransMult += speedadd
+			user.OffTransMult += offenseadd
+			user.DefTransMult += defenseadd
 
 			user.BioArmorMax += BioArmorMax
 			if(user.BioArmor > user.BioArmorMax)
@@ -239,6 +280,7 @@ transformation
 
 			user.Hairz("Add")
 			user.Auraz("Add")
+			user.AppearanceOn();
 
 			if(transformation_message)
 				var/text=replacetext(transformation_message, "usrName", "[user]")
@@ -259,6 +301,7 @@ transformation
 			if(!isnull(revertToTrans))
 				user.transActive = revertToTrans
 			user.passive_handler.decreaseList(passives)
+			user.passive_handler.decreaseList(class_passives)
 
 			user.StrMultTotal /= strength
 			user.EndMultTotal /= endurance
@@ -266,6 +309,12 @@ transformation
 			user.SpdMultTotal /= speed
 			user.OffMultTotal /= offense
 			user.DefMultTotal /= defense
+			user.StrTransMult -= strengthadd
+			user.EndTransMult -= enduranceadd
+			user.ForTransMult -= forceadd
+			user.SpdTransMult -= speedadd
+			user.OffTransMult -= offenseadd
+			user.DefTransMult -= defenseadd
 
 			user.BioArmorMax -= BioArmorMax
 			if(user.BioArmor > user.BioArmorMax)
@@ -329,8 +378,7 @@ transformation
 
 			if(drain>0)
 				user.LoseEnergy(drain)
-				if(glob.racials.AUTO_SSJ_MASTERY)
-					gainMastery()
+
 				if(user.Energy < cut_off &&!user.HasNoRevert()&&!user.Dead&&!user.HasMystic())
 					user.Revert()
 					user.LoseEnergy(30)
@@ -338,6 +386,24 @@ transformation
 
 		gainMastery(mob/user)
 			if(mastery >= 100) return
-			mastery += randValue(glob.racials.SSJ_MIN_MASTERY_GAIN,glob.racials.SSJ_MAX_MASTERY_GAIN)
+			if(user.isRace(SAIYAN)||user.isRace(HALFSAIYAN))
+				if(user.transActive==1&&user.oozaru_type!="Demonic")
+					if(user.Potential>=22&&mastery<25)
+						mastery=25
+					if(user.Potential>=27&&mastery<50)
+						mastery=50
+					if(user.Potential>=30&&mastery<75)
+						mastery=75
+					if(user.Potential>=35&&mastery<75)
+						mastery=100
+				if(user.transActive==2||user.transActive==1&&user.oozaru_type=="Demonic")
+					if(user.Potential>=37&&mastery<25)
+						mastery=25
+					if(user.Potential>=39&&mastery<50)
+						mastery=50
+					if(user.Potential>=41&&mastery<75)
+						mastery=75
+					if(user.Potential>=43&&mastery<100)
+						mastery=100
 			if(mastery > 100)
 				mastery=100

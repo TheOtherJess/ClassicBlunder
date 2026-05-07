@@ -17,10 +17,10 @@
 		for(var/x in scalingValues)
 			vars[x] = scalingValues[x][asc]
 	Trigger(mob/p)
-		adjust(usr)
-		ManaCost = usr.ManaAmount
+		adjust(p)
+		ManaCost = p.ManaAmount
 		DamageMult = 1 + (ManaCost * DamageMult)
-		if(Using || cooldown_remaining || !(p.Target.Health <= 50))
+		if(Using || cooldown_remaining || !p.Target || !(p.Target.Health <= 50))
 			p << "On cd, being used, or target is above 50."
 			return FALSE
 		var/aaa = p.Activate(src)
@@ -137,13 +137,13 @@
 		EndMult = 1
 		passives = list()
 		scalingValues = /obj/Skills/Buffs/SlotlessBuffs/Magic/Corruption/Corrupt_Self::scalingValues
-		var/obj/Skills/Buffs/SlotlessBuffs/True_Form/Demon/d = p.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/True_Form/Demon/)
+		//var/obj/Skills/Buffs/SlotlessBuffs/True_Form/Demon/d = p.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/True_Form/Demon/)
 		var/asc = p.AscensionsAcquired ? p.AscensionsAcquired + 1 : 1
 		var/pacts = p.demon.PactsTaken
 		var/boon = (pacts * 0.05) + (0.05 * (asc - 1))
-		if(!d)
-			p << "Error in setting up Corrupt Self pls gmhelp"
-		passives = d.passives.Copy()
+		/*if(!d)
+			p << "Error in setting up Corrupt Self pls gmhelp"*/
+		//passives = d.passives.Copy()
 		for(var/x in scalingValues)
 			passives[x] = scalingValues[x][asc]
 		if(p.GetSpd() > p.GetEnd())
@@ -175,3 +175,29 @@
 				d.Trigger(User, 1)
 				// jump out of true form
 			d.Cooldown()
+
+/obj/Skills/Buffs/SlotlessBuffs/Ruin
+	name = "Ruin"
+	BuffName = "Ruin"
+	Slotless = 1
+	TimerLimit = 30
+	TopOverlayLock = 'DoomAura1.dmi'
+	StrMult = 0.95
+	ForMult = 0.95
+	var/stacks = 1
+
+	proc/applyStack(mob/target)
+		if(SlotlessOn)
+			target.StrMultTotal -= (StrMult - 1)
+			target.ForMultTotal -= (ForMult - 1)
+			stacks = min(6, stacks + 1)
+			StrMult = 1 - (0.05 * stacks)
+			ForMult = 1 - (0.05 * stacks)
+			target.StrMultTotal += (StrMult - 1)
+			target.ForMultTotal += (ForMult - 1)
+			Timer = 0
+		else
+			stacks = 1
+			StrMult = 0.95
+			ForMult = 0.95
+			target.AddSlotlessBuff(src)

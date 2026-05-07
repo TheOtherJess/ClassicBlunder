@@ -1,6 +1,8 @@
-var/list/PermaKeys=list("Marlin1", "Dadafas1", "Miscreated", "Toefiejin", "StrangeBanana", "Cool pro", "Ss4toby", "Uwuesketit", "Sarutabaruta", "Pigepic", "WarHorse76", "George Bush Did 911", "Xaithyl", "Yoshima Monomyth", "Naviel", "Greg76", "Sekots", "TienShenhan", "WhatIsOriginality", "Solobb-", "Xerif", "MikaNX", "Tusk Act 4", "Vaina", "ProtoZSX", "Revelution", "Higashikata Josuke", "BDSMLover92", "Justbroli",)
+var/list/PermaKeys=list("Marlin1", "TiltHour", "RalseiIsBest", "Dadafas1", "Miscreated", "Toefiejin", "StrangeBanana", "Cool pro", "Ss4toby", "Uwuesketit", "Sarutabaruta", "Pigepic", "WarHorse76", "George Bush Did 911", "Xaithyl", "Yoshima Monomyth", "Naviel", "Greg76", "Sekots", "TienShenhan", "WhatIsOriginality", "Solobb-", "Xerif", "MikaNX", "Tusk Act 4", "Vaina", "ProtoZSX", "Revelution", "Higashikata Josuke", "BDSMLover92", "Justbroli",)
 var/list/PermaIPs=list("143.244.44.185", "73.132.147.113", "77.175.168.164", "74.105.35.124", "81.132.77.65", "64.130.69.214", "65.185.161.235", "108.61.39.115", "75.65.2.4", "24.50.233.176", "50.39.120.226", "135.180.40.74", "86.181.159.231", "45.36.32.84", "198.85.212.230", "74.88.65.98", "76.23.208.95", "66.172.248.64", "185.156.175.35", "136.62.42.182", "68.8.92.94", "109.246.123.195", "24.36.113.151", "67.198.127.237", "82.34.152.124", "121.223.199.102", "174.108.20.140", "179.43.133.139", "174.108.20.140", "73.47.207.244", "71.64.147.189", "70.35.179.6", "69.10.118.103", "86.19.157.156")
-var/list/PermaComps=list("1280524509 ", "3488379531", "1990235738", "1662279420", "835666311", "3995897142", "3272450259", "1395820860", "1629772640", "3856341027", "938246607", "975079193", "1526134833", "4102036161", "3446557113", "3878049361", "2311757843", "3649180149", "991955925", "2016627605", "3836126501", "4003197390", "4145629418", "1476716854", "4229503323", "1353023831", "348890025", "308161406", "729772691", "1049091416", "2196626777", "2781360184", "3770567560", "961693842")
+var/list/PermaComps=list("1280524509 ", "566412451", "3122841358", "3488379531", "1990235738", "1662279420", "835666311", "3995897142", "3272450259", "1395820860", "1629772640", "3856341027", "938246607", "975079193", "1526134833", "4102036161", "3446557113", "3878049361", "2311757843", "3649180149", "991955925", "2016627605", "3836126501", "4003197390", "4145629418", "1476716854", "4229503323", "1353023831", "348890025", "308161406", "729772691", "1049091416", "2196626777", "2781360184", "3770567560", "961693842")
+// Runtime CID bans (auto-captured from PermaKeys login), now with persistent Saves/PermaCompsExtra
+var/list/PermaCompsExtra=list()
 var/tmp/list/players = list()
 var/tmp/list/admins = list()
 
@@ -9,8 +11,8 @@ world
 	status="The Fourth Fate"
 	turf=/turf/Special/Blank
 	mob= /mob/Creation
-	hub="AmatsuDarkfyre.RoleplayRebirth"
-	hub_password="silverion"
+	hub="SunshineJesse.TheFourthFate"
+	hub_password="Bernkastel"
 	fps=20
 	cache_lifespan=2
 	view=12
@@ -19,6 +21,7 @@ world
 		world<<"World Link: byond://[address]:[port]."
 	New()
 		..()
+		LoadPermaCompsExtra()
 
 		world.log = file("debug_log.txt")
 		world.log << ""
@@ -34,18 +37,46 @@ world
 		spawn(100)GlobalSave()
 
 		spawn(10)
-
 			BootWorld("Load")
-		BuildGeneralMagicDatabase()
-		BuildGeneralWeaponryDatabase()
-		GeneratePlayActionDatabase()
-		//initRitualDatabase()
 
-		generateSwapMaps()
+		// The database-build and passive-info procs used to run inline here in world/New(),
+		// but they depend on SkillTree / typesof lookups that are only safely available after
+		// BootWorld("Load") has finished populating the global lists. Run them deferred so
+		// they fire AFTER BootWorld (spawn(10)) and AFTER the nested spawn()MakeSkillTreeList()
+		// inside BootWorld. generateSwapMaps() is also deferred because it does savefile I/O
+		// and can race with other world init writes on BYOND 516.
+		spawn(30)
+			BuildGeneralMagicDatabase()
+			BuildGeneralWeaponryDatabase()
+			GeneratePlayActionDatabase()
+			updatePassiveInfo()
+			generateSwapMaps()
 	Del()
 		..()
 
 proc
+	ComputerID_IsPermablocked(var/cid)
+		if(!cid)
+			return 0
+		for(var/x in global.PermaComps)
+			if(text2num(x) == cid)
+				return 1
+		for(var/x in global.PermaCompsExtra)
+			if(text2num(x) == cid)
+				return 1
+		return 0
+
+	LoadPermaCompsExtra()
+		if(fexists("Saves/PermaCompsExtra"))
+			var/savefile/E=new("Saves/PermaCompsExtra")
+			E["PermaCompsExtra"]>>global.PermaCompsExtra
+			if(!global.PermaCompsExtra)
+				global.PermaCompsExtra = list()
+
+	SavePermaCompsExtra()
+		var/savefile/S=new("Saves/PermaCompsExtra")
+		S["PermaCompsExtra"]<<global.PermaCompsExtra
+
 	generateSwapMaps()
 		if(!fexists("Maps/UBW.sav"))
 			SwapMaps_SaveChunk("UBW", locate(1,71,1), locate(61, 121,1))
@@ -56,9 +87,12 @@ proc/GlobalSave()
 	set background=1
 	sleep(216000)
 	world<< "<b><HTML><FONT COLOR=#FF0000>T</FONT><FONT COLOR=#FF2900>h</FONT><FONT COLOR=#FF5200>e</FONT><FONT COLOR=#FF7B00> </FONT><FONT COLOR=#FFA400>w</FONT><FONT COLOR=#FFCD00>o</FONT><FONT COLOR=#FFF600>r</FONT><FONT COLOR=#FFff00>l</FONT><FONT COLOR=#D6ff00>d</FONT><FONT COLOR=#ADff00> </FONT><FONT COLOR=#84ff00>i</FONT><FONT COLOR=#5Bff00>s</FONT><FONT COLOR=#32ff00> </FONT><FONT COLOR=#09ff00>s</FONT><FONT COLOR=#00ff00>a</FONT><FONT COLOR=#00ff29>v</FONT><FONT COLOR=#00ff52>i</FONT><FONT COLOR=#00ff7B>n</FONT><FONT COLOR=#00ffA4>g</FONT><FONT COLOR=#00ffCD>.</FONT><FONT COLOR=#00ffF6> </FONT><FONT COLOR=#00ffff>P</FONT><FONT COLOR=#00F6ff>r</FONT><FONT COLOR=#00CDff>e</FONT><FONT COLOR=#00A4ff>p</FONT><FONT COLOR=#007Bff>a</FONT><FONT COLOR=#0052ff>r</FONT><FONT COLOR=#0029ff>e</FONT><FONT COLOR=#0000ff> </FONT><FONT COLOR=#0900ff>y</FONT><FONT COLOR=#3200ff>o</FONT><FONT COLOR=#5B00ff>u</FONT><FONT COLOR=#8400ff>r</FONT><FONT COLOR=#AD00ff>s</FONT><FONT COLOR=#D600ff>e</FONT><FONT COLOR=#FF00ff>l</FONT><FONT COLOR=#FF00F6>f</FONT><FONT COLOR=#FF00CD>!</FONT></HTML></b>"
+	world<< "... in 30 seconds.";
+	sleep(300);
 	for(var/mob/Players/Q in players)
 		if(Q.Savable&&Q.client!=null)
 			Q.client.SaveChar()
+	updatePassiveInfo();
 	BootWorld("Save")
 	.()
 
@@ -81,6 +115,8 @@ proc/BootWorld(var/blah)
 	switch(blah)
 		if("Load")
 			BootFile("All","Load")
+			BuildAIDatabase()
+			BuildSquadDatabase()
 			Load_Turfs()
 			Load_Custom_Turfs()
 			Load_Objects()
@@ -96,6 +132,7 @@ proc/BootWorld(var/blah)
 			spawn()Add_Technology()
 			spawn()Add_Enchantment()
 			spawn()InitializeSigCombos()
+			spawn()initMagicNodes()
 			globalStorage = new()
 			generateVersionDatum()
 			spawn()
@@ -116,8 +153,8 @@ proc/BootWorld(var/blah)
 			Save_Custom_Turfs()
 			Save_Bodies()
 			SaveIRLNPCs()
-		//	resourceManager.SaveToSavefile()
-			spawn() Save_Objects()
+	//	resourceManager.SaveToSavefile()
+			Save_Objects()
 
 
 proc/BootFile(var/file,var/op)
@@ -189,10 +226,12 @@ proc/BootFile(var/file,var/op)
 					if(Punishments)
 						var/savefile/S=new("Saves/Punishment")
 						S["Punishments"]<<Punishments
+					SavePermaCompsExtra()
 				if("Load")
 					if(fexists("Saves/Punishment"))
 						var/savefile/S=new("Saves/Punishment")
 						S["Punishments"]>>Punishments
+					LoadPermaCompsExtra()
 		if("All")
 			if(op=="Save")
 				BootFile("Admins","Save")
@@ -241,6 +280,9 @@ client
 			del(mob)
 	New()
 		if(src.key in global.PermaKeys)
+			if(src.computer_id && !ComputerID_IsPermablocked(src.computer_id))
+				global.PermaCompsExtra += "[src.computer_id]"
+				SavePermaCompsExtra()
 			del(src)
 			return
 		for(var/x in global.PermaIPs)
@@ -251,9 +293,13 @@ client
 			if(text2num(x)==src.computer_id)
 				del(src)
 				return
+		for(var/x in global.PermaCompsExtra)
+			if(text2num(x)==src.computer_id)
+				del(src)
+				return
 		prefs.loadPrefs(ckey)
 		..()
-		src << browse(glob.getMOTD(), "size=600x1000,window=motd" )
+		//src << browse(glob.getMOTD(), "size=600x1000,window=motd" )
 		src.LoginLog("<font color=blue>logged in.</font color>")
 
 
@@ -267,6 +313,8 @@ mob/proc/Allow_Move(D)
 			src.dir=D
 			return
 	if(src.Beaming==2)
+		if(src.HasTurningCharge())
+			src.dir=D
 		return
 	if(src.PoweringUp)
 		return

@@ -1,4 +1,4 @@
-z/mob/proc/checkHealthAlert()
+/mob/proc/checkHealthAlert()
 	//50% injury check
 	var/exhaustedMessage = SpecialBuff ? SpecialBuff.ExhaustedMessage : ExhaustedMessage
 	var/desperateMessage = SpecialBuff ? SpecialBuff.DesperateMessage : BarelyStandingMessage
@@ -16,7 +16,7 @@ z/mob/proc/checkHealthAlert()
 			if(!ExhaustedColor)
 				OMessage(10, "<font color=#F07E1F>[src] [exhaustedMessage]!", "[src]([src.key]) has 25% health left.</font>")
 			else
-				OMessage(10,"font color='[ExhaustedColor]'> [src] [exhaustedMessage]!", "[src]([src.key]) has 25% health left.</font>")
+				OMessage(10,"<font color='[ExhaustedColor]'> [src] [exhaustedMessage]!", "[src]([src.key]) has 25% health left.</font>")
 			HealthAnnounce25 = 1
 		var/shonenMoment = ShonenPowerCheck(src)
 		if(shonenMoment)
@@ -29,7 +29,7 @@ z/mob/proc/checkHealthAlert()
 			if(!BarelyStandingColor)
 				OMessage(10, "<font color=#F07E1F>[src] [desperateMessage]!", "[src]([src.key]) has 10% health left.</font>")
 			else
-				OMessage(10,"font color='[BarelyStandingColor]'>[src] [desperateMessage]!", "[src]([src.key]) has 10% health left.</font>")
+				OMessage(10,"<font color='[BarelyStandingColor]'>[src] [desperateMessage]!", "[src]([src.key]) has 10% health left.</font>")
 			HealthAnnounce10 = 1
 //**TESTED AND WORKS */
 /mob/proc/reduceErodeStolen()
@@ -52,7 +52,7 @@ z/mob/proc/checkHealthAlert()
 			Corruption -= (5 * tick_second) - (AscensionsAcquired/2)
 			Corruption = max(MinCorruption, Corruption)
 		if(Secret == "Eldritch")
-			var/SecretInfomation/Eldritch/s = secretDatum
+			var/SecretInformation/Eldritch/s = secretDatum
 			s.releaseMadness(src)
 
 		if(Health>=75*(1-HealthCut) && Anger!=0)

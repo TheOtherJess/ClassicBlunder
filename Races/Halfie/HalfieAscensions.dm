@@ -8,8 +8,3 @@
 		if("Saiyan")
 			Class = "Brutal"
 
-/mob/proc/GetBrutalize()
-	if(passive_handler.Get("Brutalize"))
-		. = passive_handler.Get("Brutalize") / 10
-	else
-		return 0

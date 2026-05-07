@@ -103,6 +103,7 @@ obj
 			Kinshasa
 				SkillCost=TIER_1_COST
 				Copyable=2
+				AlwaysAnnounceCooldown = 1
 				name="Kinshasa"//Skill name displayed in message.
 				HitMessage="builds up speed and knees their target in the face!!"
 				DamageMult=2.5
@@ -119,13 +120,19 @@ obj
 				adjust(mob/p)
 					if(p.isInnovative(HUMAN, "Unarmed") && !isInnovationDisable(p))
 						Projectile="/obj/Skills/Projectile/KinshasaProjectile"
+					else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/DarkMagic))
+						Projectile="/obj/Skills/Projectile/DarkKinshasaProjectile"
+					else if(p.isInnovative(CELESTIAL, "Any") && !isInnovationDisable(p) && p.isDemonMagicCasting(/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/Corruption))
+						Projectile="/obj/Skills/Projectile/CorruptKinshasaProjectile"
 					else
 						Projectile=null
 				verb/Kinshasa()
 					set category="Skills"
 					set name="Kinshasa"//Verb name.
 					adjust(usr)
+					var/can_fire = !(Using || cooldown_remaining)
 					usr.SetQueue(src)
+					applyDemonInnovationEffect(usr, can_fire)
 			Piston_Kick
 				SkillCost=TIER_1_COST
 				Copyable=2

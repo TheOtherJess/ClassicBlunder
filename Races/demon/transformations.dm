@@ -19,6 +19,24 @@ transformation
 					form_hair_icon = x
 					form_icon_2_icon = x
 				..()
+			transform(mob/user, forceTrans)
+				var/was_active = is_active
+				..()
+				if(!was_active && is_active)
+					var/obj/Skills/Buffs/SlotlessBuffs/Racial/Demon/Disguise/D = locate() in user
+					if(D && user.BuffOn(D))
+						D.Trigger(user, TRUE)
+						user << "<i>Your Devil Trigger shatters your disguise.</i>"
+					var/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2/da
+					for(var/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2/candidate in user)
+						if(user.BuffOn(candidate))
+							da = candidate
+							break
+					if(!da)
+						da = user.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2)
+					if(da)
+						da.applyDTIcons(user)
+
 			mastery_boons(mob/user)
 				if(mastery >= 25)
 					passives = list("GodKi" = 0.25, "HellRisen" = 0.5, "DemonicDurability" = 4, "Brutalize" = 4, "PureDamage" = 3, "PureReduction" = 3)
@@ -57,4 +75,18 @@ transformation
 				for(var/wav=5, wav>0, wav--)
 					KenShockwave(user, icon='KenShockwaveBloodlust.dmi', Size=ShockSize, Blend=2, Time=8)
 					ShockSize/=2
+
+			revert(mob/user)
+				var/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2/da
+				for(var/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2/candidate in user)
+					if(user.BuffOn(candidate))
+						da = candidate
+						break
+				if(!da)
+					da = user.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2)
+				if(da)
+					da.revertDTIcons(user)
+				..()
+				if(!user || user.isInDemonDevilTrigger()) return
+				user.resetDevilTriggerSinBonuses()
 

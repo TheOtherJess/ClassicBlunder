@@ -5,11 +5,10 @@
     "Chakardi" = list("Money", "Gold", "Greed"), \
     "ELVES" = list("Society", "Rich", "Noble","Royalty"), \
     "SAIYAN" = list("Musk", "Animalistic", "Sweaty", "Unbathed"), \
-    "MAKYO" = list("Garlic", "Feet", "Alcohol" ), \
+    "MAKYO" = list("Caves", "Mushrooms", "The Woods", "The Sky"), \
     "Alien" = list("Musk", "Incense", "Exotic"), \
-    "YOKAI" = list("Incense", "Alcohol "), \
     "ELDRITCH" = list("Ocean", "Alien", "Exotic", "Overwhelming"), \
-    "BEASTMAN" = list("Musk", "Animalistic", "Sweaty", "Unbathed"), \
+    "BEASTKIN" = list("Musk", "Animalistic", "Sweaty", "Unbathed", "Incense", "Alcohol"), \
     "DEMON" = list("Brimstone", "Nothingness", "Blood", "Death", "Overwhelming"), \
     "MAJIN" = list("Gum", "Sweets"), \
     "DRAGON" = list("Ozone", "Animalistic", "Overwhelming"), \
@@ -31,7 +30,7 @@ mob/proc/setUpScent()
         if(SAIYAN)
             custom_scent=pick("Musk", "Animalistic", "Sweaty", "Unbathed")
         if(MAKYO)
-            custom_scent=pick("Garlic", "Feet", "Alcohol", "The Sky")
+            custom_scent=pick("Caves", "Mushrooms", "The Woods", "The Sky")
         if("Alien")
             if(usr.Target.Class=="Brutality"||usr.Target.Class=="Tenacity")
                 custom_scent="Musk"
@@ -39,12 +38,10 @@ mob/proc/setUpScent()
                 custom_scent="Incense"
             else
                 custom_scent="Exotic"
-        if(YOKAI)
-            custom_scent=pick("Incense", "Alcohol", "Iron", "Thrill")
         if(ELDRITCH)
             custom_scent=pick("Ocean", "Alien", "Exotic", "Nothingness")
-        if(BEASTMAN)
-            custom_scent=pick("Musk", "Animalistic", "Sweaty", "Unbathed")
+        if(BEASTKIN)
+            custom_scent=pick("Musk", "Animalistic", "Sweaty", "Unbathed", "Incense", "Alcohol", "Iron", "Thrill")
         if(DEMON)
             custom_scent=pick("Brimstone", "Nothingness", "Blood", "Death")
         if(MAJIN)

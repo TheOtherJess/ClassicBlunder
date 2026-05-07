@@ -15,9 +15,16 @@ ascension
 				..()
 				owner.Class = "Pale Imitation"
 				if(owner.CelestialAscension=="Angel")
-					passives["TechniqueMastery"]=2
-					passives["StyleMastery"]=2
-					passives["GotUpdate22"]=1
+					owner.passive_handler.Increase("Persistence", 2)
+					owner.passive_handler.Increase("SpiritSword", 0.5)
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()
+				if(owner.CelestialAscension=="Demon")
+					owner.passive_handler.Set("Stylish", 1)
+					if(!applied)
+						owner.demon.selectPassive(owner, "CORRUPTION_PASSIVES", "Buff")
+						owner.demon.selectPassive(owner, "CORRUPTION_DEBUFFS", "Debuff")
 
 		two
 			unlock_potential = ASCENSION_TWO_POTENTIAL
@@ -31,43 +38,19 @@ ascension
 			on_ascension_message = "You start to better understand your purpose."
 			postAscension(mob/owner)
 				..()
-				if(owner.CelestialAscension=="Angel")
-					if(!locate(/obj/Skills/Buffs/NuStyle/MortalUI/Incomplete_Ultra_Instinct_Style, owner))
-						var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/MortalUI/Incomplete_Ultra_Instinct_Style
-						owner.AddSkill(s)
-						owner.passive_handler.Increase("StyleMastery",1)
-						owner.passive_handler.Increase("TechniqueMastery",0.5)
-						spawn(5)
-							if(!owner || !owner.client)
-								return
-							var/list/HybridStyleChoices = list(
-								"Mortal Instinct Sword" = /obj/Skills/Buffs/NuStyle/MortalUIStyles/Mortal_Instinct_Sword,
-								"Mortal Instinct Grappling" = /obj/Skills/Buffs/NuStyle/MortalUIStyles/Mortal_Instinct_Grappling,
-								"Mortal Instinct Mystic" = /obj/Skills/Buffs/NuStyle/MortalUIStyles/Mortal_Instinct_Mystic,
-								"Mortal Instinct Martial" = /obj/Skills/Buffs/NuStyle/MortalUIStyles/Mortal_Instinct_Martial)
-							var/choice = input(owner,"Your angelic awareness manifests as divine instinct, which discipline will guide it?","Choose Your Instinct Style") as null|anything in HybridStyleChoices
-							if(!choice)
-								return
-							var/path = HybridStyleChoices[choice]
-							if(!path)
-								return
-							if(locate(path) in owner.contents)
-								return
-							var/obj/Skills/Buffs/NuStyle/MortalUIStyles/newStyle = new path(owner)
-							owner.contents += newStyle
-							switch(choice)
-								if("Mortal Instinct Sword")
-									owner.HybridChoice = "Sword"
-								if("Mortal Instinct Grappling")
-									owner.HybridChoice = "Grappling"
-								if("Mortal Instinct Mystic")
-									owner.HybridChoice = "Mystic"
-								if("Mortal Instinct Martial")
-									owner.HybridChoice = "Martial"
-								else
-									owner.HybridChoice = ""
-							owner << "<font color='#b4f0ff'><b>You awaken the <u>[choice]</u> within your divine instinct!</b></font>"
 				owner.Class = "Lightbringer"
+				if(owner.CelestialAscension=="Angel")
+					owner.passive_handler.Increase("DivineArmory", 1)
+					owner.passive_handler.Increase("Juggernaut", 1)
+					owner.passive_handler.Increase("Steady", 2.5)
+					owner.passive_handler.Increase("MovementMastery", 5)
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()
+				if(owner.CelestialAscension=="Demon")
+					if(!applied)
+						owner.demon.selectPassive(owner, "CORRUPTION_PASSIVES", "Buff")
+						owner.demon.selectPassive(owner, "CORRUPTION_DEBUFFS", "Debuff")
 		three
 			unlock_potential = ASCENSION_THREE_POTENTIAL
 			passives = list("SpiritPower" = 0.5, "TechniqueMastery" = 2)
@@ -79,10 +62,13 @@ ascension
 			postAscension(mob/owner)
 				..()
 				if(owner.CelestialAscension=="Angel")
-					passives["StyleMastery"]=1
-					if(!locate(/obj/Skills/Buffs/NuStyle/MortalUI/Ultra_Instinct_Style, owner))
-						var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/MortalUI/Ultra_Instinct_Style
-						owner.AddSkill(s)
+					owner.passive_handler.Increase("DebuffResistance", 1)
+					owner.passive_handler.Increase("LifeGeneration", 1)
+					owner.passive_handler.Increase("Pressure", 3)
+					owner.passive_handler.Increase("Anaerobic", 1)
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()
 		four
 			unlock_potential = ASCENSION_FOUR_POTENTIAL
 			passives = list("KiControlMastery"=2)
@@ -97,9 +83,14 @@ ascension
 			postAscension(mob/owner)
 				..()
 				if(owner.CelestialAscension=="Angel")
-					if(!locate(/obj/Skills/Buffs/NuStyle/MortalUI/Perfected_Ultra_Instinct_Style, owner))
-						var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/MortalUI/Perfected_Ultra_Instinct_Style
-						owner.AddSkill(s)
+					owner.passive_handler.Increase("SpiritSword", 0.5)
+					owner.passive_handler.Increase("BlurringStrikes", 1.5)
+					owner.passive_handler.Increase("DoubleStrike", 0.5)
+					owner.passive_handler.Increase("TripleStrike", 0.5)
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()
+
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
 			passives = list("SpiritPower" = 1)
@@ -107,6 +98,12 @@ ascension
 			postAscension(mob/owner)
 				..()
 				owner.Class = "Transcendent"
+				if(owner.CelestialAscension=="Angel")
+					owner.passive_handler.Increase("Purity", 1)
+					owner.passive_handler.Increase("BeyondPurity", 1)
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()
 		six
 			unlock_potential = ASCENSION_SIX_POTENTIAL
 			passives = list("SpiritPower" = 1)
@@ -114,3 +111,7 @@ ascension
 			postAscension(mob/owner)
 				..()
 				owner.Class = "Transcendent"
+				if(owner.CelestialAscension=="Angel")
+					spawn(5)
+						if(owner && owner.client)
+							owner.ChooseCelestialWeapon()

@@ -1,7 +1,3 @@
-// proc/isAChild(typePath, parentPath)
-//     if(typePath in typesof(parentPath))
-//         return TRUE
-//     return FALSE
 /mob/proc/throwSkill(obj/Skills/s)
     if(istype(s, /obj/Skills/AutoHit))
         Activate(s, TRUE)
@@ -20,7 +16,7 @@
             path = text2path(path)
         if(!s)
             s = new path
-    else
+    else//unsure if this will ever fire, and if it does, it might not be a good thing...? but whatever
         s = path
     AddSkill(s)
     return s
@@ -33,10 +29,13 @@
         path = text2path(path)
     var/obj/Skills/s = findOrAddSkill(path)
     s.adjust(src)
-    throwSkill(s)
+    if(istype(s, /obj/Skills/AutoHit))
+        Activate(s, TRUE, TRUE)
+    else
+        throwSkill(s)
 
 /mob/proc/cycleStackingBuffs(var/obj/Skills/S)
-    if(istype(AttackQueue, /obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Samsara) || istype(AttackQueue?:type, /obj/Skills/Queue/Finisher/Cycle_of_Samsara))
+    if(istype(AttackQueue, /obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Samsara) || istype(AttackQueue, /obj/Skills/Queue/Finisher/Cycle_of_Samsara))
         AttackQueue.Mastery++
         for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Samsara/s in SlotlessBuffs)
             s.Timer = 0
@@ -68,7 +67,18 @@ mob/proc/UsingHotnCold()
         return TRUE
     return FALSE
 
+/mob/proc/applyCharmed(mob/charmer, limit = 10)
+	var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Charmed/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Charmed)
+	if(!BuffOn(s))
+		s.charmer = charmer
+		s.TimerLimit = limit
+		s.Trigger(src, TRUE)
+		return TRUE
+	return FALSE
+
 /mob/proc/applySnare(limit, _icon, force = FALSE)
+	if(passive_handler.Get("Trample") && is_dashing)
+		return
 	var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Snare/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Snare) // try to find it
 	if(force)
 		if(BuffOn(s))
@@ -78,6 +88,25 @@ mob/proc/UsingHotnCold()
 		s.Trigger(src, TRUE)
 
 	// this could be better i think?
+
+/mob/proc/applyJudged(limit = 120)
+	var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Judged/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Judged)
+	if(!BuffOn(s))
+		s.adjust(src, limit)
+		s.Trigger(src, TRUE)
+	else
+		s.adjust(src, limit)
+		s.TimerLimit = limit
+
+/mob/proc/applySentenced(limit = 60)
+	var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Sentenced/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Sentenced)
+	if(!BuffOn(s))
+		s.adjust(src)
+		s.TimerLimit = limit
+		s.Trigger(src, TRUE)
+	else
+		s.TimerLimit = limit
+		s.adjust(src)
 
 
 /mob/proc/TriggerPerfectCounter(mob/attacker)

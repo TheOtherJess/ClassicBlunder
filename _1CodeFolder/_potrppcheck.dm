@@ -18,6 +18,8 @@ mob
 			
 			if(potential)
 				user.Potential += potential
+				if(user.isRace(/race/demi_fiend))
+					user.refreshMagatama()
 				usr << "You have been awarded [potential] potential, your new total is [user.Potential]"
 
 			if(roleplaypoint)

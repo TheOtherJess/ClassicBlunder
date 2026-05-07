@@ -29,7 +29,7 @@ tiers:
 
 // use secrets framework since it is tiered
 
-SecretInfomation/Spirits_Of_The_World // when given make them make a choice, this choice will then pick these ones below
+SecretInformation/Spirits_Of_The_World // when given make them make a choice, this choice will then pick these ones below
 // place parent functions here
 	givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/Spirits/Base_Hat_Buff") // TODO: change this typing if wanted
 	proc/applyPassives(mob/p)

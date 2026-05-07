@@ -14,7 +14,7 @@
 	New(client/_client, o, _x, _y)
 		screen_loc = "1:[_x],1:[_y]"
 		client = _client
-	beastman
+	beastkin
 		icon = 'BLANK.dmi'
 		icon_state = "dot"
 		var/tmp/obj/Skills/obj_to_ref
@@ -63,16 +63,16 @@
 			mysticTicker()
 
 
-	ftg
+	iaido
 		icon = 'kunai.dmi'
 		dir = EAST
 		layer = FLY_LAYER
 		alpha = 0
 		Update()
-			var/ftg = client.mob.passive_handler["Flying Thunder God"]
+			var/iaido = client.mob.passive_handler["Iaido"];
 			var/counter = client.mob.IaidoCounter
-			if(ftg)
-				if(counter >= (15 - ftg))
+			if(iaido)
+				if(counter >= 100)
 					if(alpha != 255)
 						animate(src, alpha = 255, time = 5, easing = SINE_EASING)
 						filters = filter(type="outline", size=1, color=rgb(255, 255, 255))
@@ -147,6 +147,10 @@ client/proc/remove_hud(id)
 		barbg.screen_loc = "1:[_x],1:[_y-7]"
 		if(linked_var == "Grit")
 			barbg.maptext = "[CHAT_STYLE][client.mob.passive_handler["[linked_var]"]]"
+		else if(linked_var == "Fury")
+			barbg.maptext = "[CHAT_STYLE][client.mob.FuryAccumulated]"
+		else if(linked_var == "Harden")
+			barbg.maptext = "[CHAT_STYLE][client.mob.HardenAccumulated]"
 		else
 			barbg.maptext = "[CHAT_STYLE][client.mob.vars["[linked_var]"]]"
 		barbg.maptext_y = 16
@@ -174,6 +178,10 @@ client/proc/remove_hud(id)
 
 		if(linked_var == "Grit")
 			val = client.mob.passive_handler.Get("Grit")
+		else if(linked_var == "Fury")
+			val = client.mob.FuryAccumulated
+		else if(linked_var == "Harden")
+			val = client.mob.HardenAccumulated
 		else
 			val = client.mob.vars["[linked_var]"]
 		if(val > 0)
@@ -194,8 +202,8 @@ client/proc/remove_hud(id)
 			animate(barbg, alpha = 0, time = 2)
 
 
-#define BAR_X_LOCS list("Fury" = 1, "Momentum" = 1, "Harden" = 1, "FTG" = 1, "MysticT0" = 1, "MysticT1" = 32, "SuperCharge" = 32, "HotnCold" = 128, "Grit" = 192)
-#define BAR_Y_LOCS list("Fury" = 86, "Momentum" = 118, "Harden" = 150, "FTG" = 32, "MysticT0" = 64, "MysticT1" = 64, "SuperCharge" = 32, "HotnCold" = 1, "Grit" = 1)
+#define BAR_X_LOCS list("Fury" = 1, "Momentum" = 1, "Harden" = 1, "Iaido" = 1, "MysticT0" = 1, "MysticT1" = 32, "SuperCharge" = 32, "HotnCold" = 128, "Grit" = 192)
+#define BAR_Y_LOCS list("Fury" = 86, "Momentum" = 118, "Harden" = 150, "Iaido" = 32, "MysticT0" = 64, "MysticT1" = 64, "SuperCharge" = 32, "HotnCold" = 1, "Grit" = 1)
 
 /mob/proc/hudIsLive(option, path, toss_obj,var_callback)
 	if(client.hud_ids[option])

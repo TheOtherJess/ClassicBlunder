@@ -1,12 +1,12 @@
 
 /*
-/datum/SecretInfomation
+/datum/SecretInformation
 	HeavenlyRestriction
 		name = "Heavenly Restriction"
 		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/HeavenlyRestriction/HeavenlyRestriction")
 		secretVariable = list("Restrictions" = list(), "Improvements" = list())
 
-/mob/var/datum/SecretInfomation/secretDatum = new()
+/mob/var/datum/SecretInformation/secretDatum = new()
 
 pick something to restrict
 pick something to improve
@@ -28,13 +28,13 @@ throw in stat mults at 2,4,5, depending on the path of restricting
 	ActiveMessage = ""
 	OffMessage = ""
 
-var/list/heavenly_restrictions = list("Staff" = 1, "Armor" = 2, "Sword" = 1, "Heavy Strike" = 2, "Armed Skills" = 2.5, "Unarmed Skills" = 2.5, "Magic" = 4, \
-"Science" = 4, "Queues" = 3, "Autohits" = 3, "Projectiles" = 3, "Grapples" = 2, "All Skills" = 10, "Force" = 3, "Defense" = 3, "Endurance" = 3, \
-"Cybernetics" = 2, "Strength" = 3, "Speed" = 3, "Offense" = 3, "Normal Attack" = 6, "Grab" = 2, "Zanzoken" = 3, "Senses" = 4, "Anger" = 4, "Power Control" = 3, "Special Slotter" = 4)
+var/list/heavenly_restrictions = list("Staff" = 2, "Armor" = 3, "Sword" = 2, "Heavy Strike" = 2, "Armed Skills" = 2.5, "Unarmed Skills" = 2.5, "Magic" = 5, \
+"Science" = 5, "Queues" = 3, "Autohits" = 3, "Projectiles" = 3, "Grapples" = 2, "All Skills" = 10, "Force" = 3, "Defense" = 3, "Endurance" = 3, \
+"Cybernetics" = 3, "Strength" = 3, "Speed" = 3, "Offense" = 3, "Normal Attack" = 6, "Grab" = 2, "Zanzoken" = 3, "Senses" = 4, "Anger" = 4, "Power Control" = 3, "Special Slotter" = 4)
 
 var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "Launchers", "Stunners", "Heavy Strike", "Dragon Dash", "Senses", "Throw", "Strength", "Force", "Endurance", "Offense", "Defense", "Speed", "Anger", "Power Control", "Power")
 
-/SecretInfomation/HeavenlyRestriction/proc/modifyRestrictionValues(mob/p, restriction)
+/SecretInformation/HeavenlyRestriction/proc/modifyRestrictionValues(mob/p, restriction)
 	switch(restriction)
 		if("Force")
 			if(p.BaseFor()>p.BaseStr())
@@ -65,7 +65,7 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
 			return boon
 	return 1
 
-/SecretInfomation/HeavenlyRestriction/proc/pickRestriction(mob/p)
+/SecretInformation/HeavenlyRestriction/proc/pickRestriction(mob/p)
 	var/list/modifiedRestrictions = heavenly_restrictions.Copy() - getRestrictions()
 	var/list/shownRestrictions = list()
 	for(var/i in modifiedRestrictions)
@@ -78,7 +78,7 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
 	var/list/restrictionValue = list(splitter[1], modifiedRestrictions[splitter[1]])
 	return restrictionValue
 
-/SecretInfomation/HeavenlyRestriction/proc/pickImprove(mob/p, currentRestricitonChoice)
+/SecretInformation/HeavenlyRestriction/proc/pickImprove(mob/p, currentRestricitonChoice)
 	var/atLimit = 1
 	var/selection
 	var/list/restrictions = getRestrictions() + currentRestricitonChoice + getBoons()
@@ -92,19 +92,60 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
 			atLimit = 1
 	return selection
 
-/SecretInfomation/HeavenlyRestriction/proc/applySecretVariable(mob/p, list/restr, improv)
+/SecretInformation/HeavenlyRestriction/proc/applySecretVariable(mob/p, list/restr, improv)
 	secretVariable["Restrictions"][restr[1]] = list(improv, restr[2])
 	updateImprove(improv, restr[2])
-	// secretVariable = list("Resitrictions" = list(1 = list(restr, improv), )
 
-/SecretInfomation/HeavenlyRestriction/proc/updateImprove(improv, value)
+	// Grant passives based on improvement
+	var/boon_value = restr[2]
+	switch(improv)
+		if("Dragon Clash")
+			p.passive_handler.Increase("TechniqueMastery", min(boon_value, 4))
+			p.passive_handler.Increase("AttackSpeed", min(boon_value, 4))
+		if("Grab")
+			p.passive_handler.Increase("Grippy", min(boon_value, 4))
+			p.passive_handler.Increase("Muscle Power", min(boon_value, 4))
+		if("Reverse Dash")
+			// Already has passives associated with the buff it gives after use, included in case needed later
+		if("Dragon Dash")
+			p.passive_handler.Increase("SuperDash", 1)
+			p.passive_handler.Increase("Skimming", min(boon_value, 4))
+		if("Strength")
+			p.passive_handler.Increase("Momentum", min(boon_value, 4))
+			p.passive_handler.Increase("PhysPleroma", min(boon_value * 0.5, 2))
+		if("Force")
+			p.passive_handler.Increase("SpiritHand", min(boon_value, 4))
+			p.passive_handler.Increase("SpiritSword", min(boon_value, 4))
+			p.passive_handler.Increase("SpiritFlow", min(boon_value, 4))
+		if("Endurance")
+			p.passive_handler.Increase("Juggernaut", min(boon_value, 4))
+			p.passive_handler.Increase("GiantForm", 1)
+		if("Offense")
+			p.passive_handler.Increase("Pressure", min(boon_value, 4))
+			p.passive_handler.Increase("ComboMaster", 1)
+		if("Defense")
+			p.passive_handler.Increase("FluidForm", min(boon_value, 4))
+			p.passive_handler.Increase("LikeWater", min(boon_value, 4))
+		if("Speed")
+			p.passive_handler.Increase("Speed Force", 2)
+			p.passive_handler.Increase("Pursuer", min(boon_value, 4))
+		if("Anger")
+			p.passive_handler.Increase("CalmAnger", 1)
+			p.passive_handler.Increase("Wrathful Tenacity", 0.2)
+		if("Power Control")
+			p.passive_handler.Increase("EnergyGeneration", min(boon_value * 1.5, 10))
+			p.passive_handler.Increase("SoftStyle", min(boon_value * 0.5, 2))
+		if("Power")
+			p.passive_handler.Increase("BuffMastery", min(boon_value, 4))
+
+/SecretInformation/HeavenlyRestriction/proc/updateImprove(improv, value)
 	if(secretVariable["Improvements"][improv])
 		secretVariable["Improvements"][improv] += value
 	else
 		secretVariable["Improvements"][improv] = value
 
 /*
-/SecretInfomation/HeavenlyRestriction/proc/resetImproves(mob/p)
+/SecretInformation/HeavenlyRestriction/proc/resetImproves(mob/p)
     for(var/r in secretVariable["Restrictions"])
         r = secretVariable["Restrictions"][r]
         if(secretVariable["Improvements"][r[2]])
@@ -120,7 +161,7 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
                 secretVariable["Improvements"][r[2]] = list("narrow" = 0, "wide" = 1)*/
 
 
-/SecretInfomation/HeavenlyRestriction/proc/getBoon(mob/p, improvement)
+/SecretInformation/HeavenlyRestriction/proc/getBoon(mob/p, improvement)
 	var/totalBoon = 0
 	for(var/index in secretVariable["Improvements"])
 		if(index == improvement)
@@ -129,29 +170,29 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
 	return totalBoon
 
 
-/SecretInfomation/HeavenlyRestriction/proc/countImprovements(mob/p, improv)
+/SecretInformation/HeavenlyRestriction/proc/countImprovements(mob/p, improv)
 	var/total = 0
 	for(var/index in secretVariable["Restrictions"])
 		if(index == improv)
 			total += 1
 	return total
 
-/SecretInfomation/HeavenlyRestriction/proc/getRestrictions()
+/SecretInformation/HeavenlyRestriction/proc/getRestrictions()
 	. = list()
 	for(var/index in secretVariable["Restrictions"])
 		. += index
 
-/SecretInfomation/HeavenlyRestriction/proc/getBoons()
+/SecretInformation/HeavenlyRestriction/proc/getBoons()
 	. = list()
 	for(var/index in secretVariable["Improvements"])
 		. += index
 
-/SecretInfomation/HeavenlyRestriction/proc/hasImprovement(improvement)
+/SecretInformation/HeavenlyRestriction/proc/hasImprovement(improvement)
 	if(secretVariable["Improvements"][improvement])
 		return secretVariable["Improvements"][improvement]
 	return FALSE
 
-/SecretInfomation/HeavenlyRestriction/proc/hasRestriction(restriction)
+/SecretInformation/HeavenlyRestriction/proc/hasRestriction(restriction)
 	var/list/restricts = getRestrictions()
 	for(var/x in restricts)
 		if(restriction == x)
@@ -161,7 +202,7 @@ var/list/heavenly_improvements = list("Dragon Clash", "Grab", "Reverse Dash", "L
 
 /*
 /mob/verb/testRestriction()
-	usr.secretDatum = new/SecretInfomation/HeavenlyRestriction()
+	usr.secretDatum = new/SecretInformation/HeavenlyRestriction()
 	usr.Secret = "Heavenly Restriction"
 	while(usr.secretDatum.currentTier < 2)
 		var/list/restriction = usr.secretDatum?:pickRestriction(src)

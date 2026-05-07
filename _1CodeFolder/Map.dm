@@ -1,5 +1,5 @@
-var/list/Turfs=new
-var/list/CustomTurfs=new
+var/list/Turfs=list()
+var/list/CustomTurfs=list()
 obj/var/
 	LogPEndurance=5000000000
 turf/var/
@@ -257,6 +257,7 @@ mob/var/tmp/UpgradeTime=0
 turf
 	Health=9000000000000000
 	IconsX
+		Savable=0
 		icon='NewTurfs.dmi'
 		Icon1
 			icon_state="1"
@@ -710,6 +711,11 @@ turf
 	Grass24
 		icon='Grass.dmi'
 		icon_state="Grass24"
+		PrimaryTurfType="Floor"
+		SecondaryTurfType="Grass"
+	Grass25
+		icon='Grass.dmi'
+		icon_state="Grass25"
 		PrimaryTurfType="Floor"
 		SecondaryTurfType="Grass"
 	GrassA1
@@ -3613,6 +3619,66 @@ obj/Turfs
 		pixel_y=-4
 		layer=4
 		density=1
+	Monochrome_Tree_One
+		icon='one.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Two
+		icon='two.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Three
+		icon='three.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Four
+		icon='four.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Five
+		icon='five.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Six
+		icon='six.png'
+		pixel_x=-36
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Seven
+		icon='seven.png'
+		pixel_x=-12
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Eight
+		icon='eight.png'
+		pixel_x=-12
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Nine
+		icon='nine.png'
+		pixel_x=-12
+		pixel_y=-4
+		layer=4
+		density=1
+	Monochrome_Tree_Ten
+		icon='ten.png'
+		pixel_x=-66
+		pixel_y=-4
+		layer=4
+		density=1
 
 obj/Turfs/Trees
 	SmallPine
@@ -3795,6 +3861,7 @@ turf/Special
 		icon = 'StarPixel.dmi'
 		icon_state="2"
 		Health=1345345400000000000000000
+		Buildable = 1
 		GainLoop(mob/source)
 			..()
 			source.loseOxygen(1)
@@ -3802,6 +3869,7 @@ turf/Special
 		icon='StarPixel.dmi'
 		icon_state="3"
 		Health=100000000000
+		Buildable = 1
 		GainLoop(mob/source)
 			..()
 			source.loseOxygen(1)
@@ -4216,6 +4284,18 @@ obj/Turfs/Edges
 	RockEdge2E
 		icon='Edges.dmi'
 		icon_state="2"
+		dir=EAST
+	RockGray2N
+		icon='grayrockedges.dmi'
+		dir=NORTH
+	RockGray2S
+		icon='grayrockedges.dmi'
+		dir=SOUTH
+	RockGray2W
+		icon='grayrockedges.dmi'
+		dir=WEST
+	RockGray2E
+		icon='grayrockedges.dmi'
 		dir=EAST
 	Edge3N
 		icon='Edges.dmi'

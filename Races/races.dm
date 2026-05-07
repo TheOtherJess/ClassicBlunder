@@ -4,29 +4,39 @@ races are stored as text macros; this serves two purposes.
 If a typo occurs, BYOND will throw errors.
 This is also done so we can easily check types.
 */
+//when you feel like inflicting pain on yourself:
+//normalize the order of stats being Strength, Force, Endurance, Speed, Offense, Defense
+//... everywhere
 #define STAT2INDEX list("strength" = 1, "endurance" = 2, "force" = 3, "offense" = 4, "defense" = 5, "speed" = 6)
+#define STAT3INDEX list("anger" = 1, "learning" = 2, "intellect" = 3, "imagination" = 4, "economy" = 5) //here for posterity, not sure if I'm gonna do it this way yet
 var/list/races = list()
 
 proc
 	//this adds a copy of all races to a global list called races.
 	BuildRaceList()
-		for(var/a in subtypesof(/race/))
-			races += new a
+		for(var/a in subtypesof(/race))
+			if(!ispath(a)) continue
+			var/race/r = new a
+			if(!r) continue
+			races += r
 			var/list/male_icons = list()
 			var/list/female_icons = list()
 			var/list/neuter_icons = list()
-			for(var/male_icon in races[races.len]:icon_male)
-				var/obj/race_grid_visual/visual = new(male_icon)
-				male_icons += visual
-			for(var/female_icon in races[races.len]:icon_female)
-				var/obj/race_grid_visual/visual = new(female_icon)
-				female_icons += visual
-			for(var/neuter_icon in races[races.len]:icon_neuter)
-				var/obj/race_grid_visual/visual = new(neuter_icon)
-				neuter_icons += visual
-			races[races.len]:icon_male = male_icons.Copy()
-			races[races.len]:icon_female = female_icons.Copy()
-			races[races.len]:icon_neuter = neuter_icons.Copy()
+			if(r.icon_male)
+				for(var/male_icon in r.icon_male)
+					var/obj/race_grid_visual/visual = new(male_icon)
+					male_icons += visual
+			if(r.icon_female)
+				for(var/female_icon in r.icon_female)
+					var/obj/race_grid_visual/visual = new(female_icon)
+					female_icons += visual
+			if(r.icon_neuter)
+				for(var/neuter_icon in r.icon_neuter)
+					var/obj/race_grid_visual/visual = new(neuter_icon)
+					neuter_icons += visual
+			r.icon_male = male_icons.Copy()
+			r.icon_female = female_icons.Copy()
+			r.icon_neuter = neuter_icons.Copy()
 	//this will return a list of all race types.
 	GetRaceTypes()
 		for(var/race/race in races)
@@ -90,6 +100,79 @@ mob
 			race = new new_race.type
 			race.onSelection(src)
 
+		// Race CHANGE for already-finalized players. Unlike setRace (which is geared
+		// for character creation), this strips the old race's contributions before
+		// installing the new one, so passives/skills/ascensions/transformations don't
+		// stack across the transition.
+		//
+		//   new_race_or_path : either a /race type path or a race instance.
+		//   redo_stats       : if TRUE, base stats are reset to the new race's values.
+		//                      If FALSE (default) the player's earned stats are kept.
+		//   keep_ascensions  : if TRUE, AscensionsAcquired/Unlocked are preserved
+		//                      (the old race's ascensions are NOT reverted). Use this
+		//                      only when the caller has already accounted for ascension
+		//                      stat contributions.
+		//
+		// Returns 1 on success, 0 if no change happened (already that race / bad arg).
+		ChangeRace(new_race_or_path, redo_stats = FALSE, keep_ascensions = FALSE)
+			if(!new_race_or_path) return 0
+			if(!passive_handler) passive_handler = new
+
+			var/race/new_race
+			if(ispath(new_race_or_path))
+				new_race = new new_race_or_path
+			else if(istype(new_race_or_path, /race))
+				var/race/incoming = new_race_or_path
+				new_race = new incoming.type
+			else
+				return 0
+
+			if(race && race.type == new_race.type)
+				del(new_race)
+				return 0
+
+			if(race)
+				// Roll back every active transformation tier so trans-stat boosts
+				// don't linger after the race swap.
+				var/safety = 10
+				while(transActive > 0 && safety > 0)
+					var/prev = transActive
+					Revert()
+					if(transActive >= prev) break
+					safety--
+
+				// Unwind ascensions in reverse order so each layer's revertAscension
+				// sees the same state it was applied on top of.
+				if(!keep_ascensions && islist(race.ascensions))
+					for(var/i = race.ascensions.len, i >= 1, i--)
+						var/ascension/a = race.ascensions[i]
+						if(a && a.applied)
+							a.revertAscension(src)
+					AscensionsAcquired = 0
+					AscensionsUnlocked = 0
+
+				if(islist(race.passives) && race.passives.len)
+					passive_handler.decreaseList(race.passives)
+
+				// Only racial skills granted via race.skills are stripped. Skills the
+				// player learned through tomes / other sources are left alone.
+				if(islist(race.skills))
+					for(var/skill_path in race.skills)
+						if(!ispath(skill_path)) continue
+						var/obj/Skills/found = locate(skill_path) in src.contents
+						if(found)
+							DeleteSkill(found)
+
+				race.onChangeOut(src)
+				race.onDeselection(src)
+
+			race = new_race
+			new_race.onSelection(src, secondtime = !redo_stats, force_icon = TRUE)
+			new_race.onFinalization(src)
+			new_race.onChangeIn(src)
+
+			return 1
+
 		// isRace will accept either a type or a name.
 		isRace(raceCheck)
 			if(!race)
@@ -150,6 +233,7 @@ race
 		defense = 1
 		speed = 1
 		stats_per_class = list() //NIEZAAAAANNNNN
+		secondary_stats_per_class = list()
 		anger_message = "becomes angry!"
 		anger_point = 50
 
@@ -199,7 +283,7 @@ race
 		fixAscensions()
 			var/name_typed = replacetext(type, "/race/", "")
 			var/list/ascpaths = subtypesof(text2path(replacetext("/ascension/[name_typed]"," ", "_")))
-			
+
 			for(var/i in ascpaths)
 				ascensions += new i
 		fixTransformations()
@@ -218,8 +302,23 @@ race
 				return stats_per_class[getClass()][STAT2INDEX[stat]]
 			else
 				return vars[stat]
+		getSecondStat(stat)
+			if(length(secondary_stats_per_class))
+				return secondary_stats_per_class[getClass()][STAT3INDEX[stat]]
+			else
+				return vars[stat]
 		onDeselection(mob/user)
 			user.overlays -= overlays
+
+		// Hooks for ChangeRace. Default impls are no-ops; races override these
+		// to clean up race-specific mob state (e.g. Majin absorb rooms / blob
+		// passive datums) on the way out, or to set up race-specific state
+		// beyond what onFinalization covers on the way in.
+		onChangeOut(mob/user)
+			return
+
+		onChangeIn(mob/user)
+			return
 
 		onSelection(mob/user, secondtime = FALSE, force_icon = FALSE)
 			if(!user.passive_handler) user.passive_handler = new

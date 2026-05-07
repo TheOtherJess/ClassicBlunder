@@ -27,7 +27,7 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
 #define MAX_MAGIC_LEVEL 20
 #define MAX_ELDRITCH_MAGIC 10
 /mob/proc/getTotalMagicLevel()
-    var/actualMax = MAX_MAGIC_LEVEL + (src.Secret=="Eldritch" ? MAX_ELDRITCH_MAGIC : 0);
+    var/actualMax = MAX_MAGIC_LEVEL + (hasEldritchPower() ? MAX_ELDRITCH_MAGIC : 0);
     var/total = 0.1
     total += SpaceMagicUnlocked
     total += TimeMagicUnlocked
@@ -42,13 +42,15 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
         if(!src.isRace(ELDRITCH)) lunaTome /= 2;
         total = max(total, lunaTome);
     if(src.Secret == "Eldritch")
-        var/SecretInfomation/Eldritch/s = src.secretDatum
+        var/SecretInformation/Eldritch/s = src.secretDatum
         total += s.secretVariable["Power From Blood"];
-    TotalMagicLevel = total
+    TotalMagicLevel = 20
     return total
 
 
 /knowledgePaths/magic
+    var/SubType
+/* /knowledgePaths/magic
 
 /knowledgePaths/magic/Alchemy
     name = "Alchemy"
@@ -144,7 +146,7 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
     name = "TomeCreation"
     breakthrough = TRUE
     requires = list("ArmamentEnchantment","Magical Communication")
-
+/*
 /knowledgePaths/magic/Tome_Cleansing
     name = "Tome Cleansing"
     requires = list("Tome Expansion")
@@ -183,8 +185,9 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
     requires = list("Crest Grandmaster")
     description = "Buying this will allow you to put another spell into a crest. It can be purchased an infinite number of times."
     // make this go up to 10 or something
-
+*/
 //TODO: Rename GMK between wipes
+/*
 /knowledgePaths/magic/SummonMagic
     name = "General Magic Knowledge"
     requires = list()
@@ -194,7 +197,7 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
     name = "SealingMagic"
     breakthrough = TRUE
     requires = list()
-
+*/
 /knowledgePaths/magic/Spell_Sealing // this has been removed
     // allow this to seal a spell in a tome, making it unable to cast it
     name = "Spell Sealing"
@@ -250,3 +253,4 @@ ArmamentEnchantment -> tome creation (articact manufactioning + ArmamentEnchantm
 /knowledgePaths/magic/Temporal_Rewinding // A HEAL
     name = "Temporal Rewinding"
     requires = list("Temporal Acceleration")
+*/

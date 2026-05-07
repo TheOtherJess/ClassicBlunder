@@ -84,17 +84,3 @@ obj
 				verb/Gravity_Blade()
 					set category="Skills"
 					usr.SetQueue(src)
-			Larch_Dance // REMOVED
-				ActiveMessage="prepares a murderous chain of counterattacks!"
-				DamageMult=1.1
-				AccuracyMult = 1.1
-				Duration=5
-				Cooldown=60
-				NeedsSword=1
-				InstantStrikes=5
-				InstantStrikesDelay=1
-				Counter=1
-				EnergyCost=5
-				verb/Larch_Dance()
-					set category="Skills"
-					usr.SetQueue(src)

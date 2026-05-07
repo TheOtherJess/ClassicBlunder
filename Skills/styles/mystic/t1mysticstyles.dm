@@ -3,7 +3,7 @@
 	Magma_Walker
 		SignatureTechnique = 1
 		passives = list("SpiritFlow" = 2, "Familiar" = 1, "Burning" = 2.5, "Shattering" = 2.5, \
-						"Combustion" = 30, "Hardening" = 1)
+						"Combustion" = 30, "Harden" = 1)
 		StyleActive = "Magma"
 		StyleFor = 1.2
 		StyleEnd = 1.2
@@ -15,7 +15,6 @@
 		LockY=16
 		AuraX=-8
 		AuraY=-10
-		BuffTechniques = list("/obj/Skills/Buffs/SlotlessBuffs/Magmic_Shield")
 		StyleComboUnlock = list("/obj/Skills/Buffs/NuStyle/MysticStyle/Stormbringer"= "/obj/Skills/Buffs/NuStyle/MysticStyle/Plasma_Style",\
 								"/obj/Skills/Buffs/NuStyle/MysticStyle/Inferno"= "/obj/Skills/Buffs/NuStyle/MysticStyle/Hellfire", \
 								"/obj/Skills/Buffs/NutStyle/UnarmedStyle/_Any" = "/obj/Skills/Buffs/NuStyle/UnarmedStyle/Ifrit_Jambe")

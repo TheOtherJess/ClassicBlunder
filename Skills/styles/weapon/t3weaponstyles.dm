@@ -6,7 +6,7 @@
         StyleStr=1.25
         StyleEnd=1.25
         StyleDef=1.25
-        passives = list("The Way" = 1, "Sword Master" = 1, "LikeWater" = 4, "SweepingStrike" = 1, "DoubleStrike" = 2, "BlurringStrikes" = 1, \
+        passives = list("Iaido" = 4, "The Way" = 1, "Sword Master" = 1, "LikeWater" = 4, "SweepingStrike" = 1, "DoubleStrike" = 2, "BlurringStrikes" = 1, \
                         "Zornhau" = 2, "Half-Sword" = 2, "Rage" = 1, "TripleStrike" = 0.5, "Iaijutsu" = 2, "Musoken" = 1, "Fury" = 2.5, \
                         "Parry" = 2.5, "Disarm" = 2, "Deflection" = 1)
         Finisher="/obj/Skills/Queue/Finisher/Clear_Water"
@@ -15,7 +15,7 @@
             src.Trigger(usr)
     Acrobat
         SignatureTechnique = 3
-        passives = list("DoubleStrike" = 2.5, "TripleStrike" = 1, "BlurringStrikes" = 1.5, "SweepingStrike" = 1,\
+        passives = list("Iaido" = 4, "DoubleStrike" = 2.5, "TripleStrike" = 1, "BlurringStrikes" = 1.5, "SweepingStrike" = 1,\
                         "Deflection" = 1, "NeedsSecondSword" = 1, "NeedsThirdSword" = 1,  "Parry" = 2.5, "Iaijutsu" = 2.5, "Disarm" = 3,\
                         "Unnerve" = 2, "Fury" = 4)
         NeedsSecondSword = 1
@@ -34,9 +34,9 @@
         StyleStr=1.5
         StyleEnd=1.25
         StyleActive="Fierce Diety"
-        passives = list("DisableGodKi" = 1, "Deicide" = 4, "Rage" = 2, "Half-Sword" = 2.5, "Zornhau" = 2.5, "FavoredPrey" = "Secrets", "SlayerMod" = 4 , "Shearing" = 8, \
+        passives = list("DisableGodKi" = 1, "Deicide" = 4, "Rage" = 2, "Half-Sword" = 2.5, "Zornhau" = 2.5, "FavoredPrey" = "Secret", "SlayerMod" = 4 , "Shearing" = 8, \
                         "BladeFisting" = 1, "Secret Knives" = "Stake", "Tossing" = 3, "Half-Sword" = 3, "Zornhau" = 2.5, "Parry" = 3,"Disarm" = 3,\
-                        "Hardening" = 2, "Deflection" = 1, "EndlessNine" = 0.1, "Extend" = 2)
+                        "Harden" = 2, "Deflection" = 1, "EndlessNine" = 0.1, "Extend" = 2)
         Finisher="/obj/Skills/Queue/Finisher/Divine_Wrath"
         verb/Fierce_Deity()
             set hidden=1

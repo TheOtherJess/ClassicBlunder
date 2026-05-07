@@ -1,73 +1,67 @@
 transformation
 	namekian
+		Potential_Unleashed
+			form_aura_icon = 'AurasBig.dmi'
+			form_aura_icon_state = "Heran"
+			form_aura_x = -32
+			form_glow_icon = 'Ripple Radiance.dmi'
+			form_glow_x = -32
+			form_glow_y = -32
+			passives = list("Instinct" = 2, "Flow" = 2, "Flicker" = 2, "Pursuer" = 3,  "PureDamage" = 2, "PureReduction" = 2)
+			speedadd = 0.25
+			enduranceadd = 0.25
+			offenseadd = 0.25
+			defenseadd = 0.25
+			strengthadd = 0.25
+			forceadd = 0.25
+			mastery_boons(mob/user)
+				user.transUnlocked=2
+				if(user.Potential>=20)
+					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperNamekian, user))
+						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperNamekian)
+						user << "You have ascended past the limits of a normal Namekian, unlocking Super Namekian!"
 		Orange_Namekian//you can thank piccolo for this one, I'm very sorry. LMFAO.
 			transform(mob/user, forceTrans)
 				if(is_active) return
 				if(!user) return
+				if(user.Potential<45)
+					if(user.Health>=(20+user.Potential/4)) return
+				if(user.Class=="Demon") return
 				passives = list("Instinct" = round(max(user.AscensionsAcquired/3, 1)), "Flow" = round(max(user.AscensionsAcquired/3, 1)), "Flicker" = round(max(user.AscensionsAcquired, 2)), "Pursuer" = round(max(user.AscensionsAcquired/3, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)), "PureDamage" = round(max(user.AscensionsAcquired/2, 1)), "PureReduction" = round(max(user.AscensionsAcquired/2, 1)))
-				speed = 1.2
-				offense = 1.15
-				defense = 1.15
 				..()
 			mastery_boons(mob/user)
-				switch(mastery)
-					if(0 to 24)
+				switch(user.Potential)
+					if(0 to 30)
 						passives = list("Instinct" = round(max(user.AscensionsAcquired/3, 1)), "Flow" = round(max(user.AscensionsAcquired/3, 1)), "Flicker" = round(max(user.AscensionsAcquired, 2)), \
 						"Pursuer" = round(max(user.AscensionsAcquired/3, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
 						"PureDamage" = round(max(user.AscensionsAcquired/2, 1)), "PureReduction" = round(max(user.AscensionsAcquired/2, 1)))
-						speed = 1.3
-						offense = 1.2
-						defense = 1.2
-						strength = 1.2
-						force = 1.2
-						endurance = 1.2
-					if(25 to 49)
+						speedadd = 0.3
+						offenseadd = 0.2
+						defenseadd = 0.2
+						strengthadd = 0.2
+						forceadd = 0.2
+						enduranceadd = 0.2
+					if(31 to 60)
 						passives = list("Instinct" = round(max(user.AscensionsAcquired/2, 1)), "Flow" = round(max(user.AscensionsAcquired/2, 1)), "Flicker" = round(max(user.AscensionsAcquired, 2)), \
 						"Pursuer" = round(max(user.AscensionsAcquired/2, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
 						"PureDamage" = round(max(user.AscensionsAcquired/1.5, 1)), "PureReduction" = round(max(user.AscensionsAcquired/1.5, 1)))
-						speed = 1.4
-						offense = 1.3
-						defense = 1.3
-						strength = 1.25
-						force = 1.25
-						endurance = 1.25
-					if(50 to 74)
-						passives = list("Instinct" = round(max(user.AscensionsAcquired/1.5, 1)), "Flow" = round(max(user.AscensionsAcquired/1.5, 1)), "Flicker" = round(max(user.AscensionsAcquired*1.1, 2)), \
-						"Pursuer" = round(max(user.AscensionsAcquired/1.5, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
-						"PureDamage" = round(max(user.AscensionsAcquired/1.5, 1)), "PureReduction" = round(max(user.AscensionsAcquired/1.5, 1)),  "MovementMastery" = round(max(user.AscensionsAcquired, 1)))
+						speedadd = 0.5
+						offenseadd = 0.4
+						defenseadd = 0.4
+						strengthadd = 0.4
+						forceadd = 0.4
+						enduranceadd = 0.4
 
-						speed = 1.5
-						offense = 1.3
-						defense = 1.3
-						strength = 1.3
-						force = 1.3
-						endurance = 1.3
-					if(75 to 99)
-						passives = list("Instinct" = round(max(user.AscensionsAcquired, 1)), "Flow" = round(max(user.AscensionsAcquired, 1)), "Flicker" = round(max(user.AscensionsAcquired*1.1, 2)), \
-						"Pursuer" = round(max(user.AscensionsAcquired, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
-						"PureDamage" = round(max(user.AscensionsAcquired, 1)), "PureReduction" = round(max(user.AscensionsAcquired, 1)),  "MovementMastery" = round(max(user.AscensionsAcquired*1.25, 1)))
-						speed = 1.5
-						offense = 1.4
-						defense = 1.4
-						strength = 1.4
-						force = 1.4
-						endurance = 1.4
-
-					if(100)
-						if(user.Potential<60)
-							passives = list("Instinct" = round(max(user.AscensionsAcquired, 1)), "Flow" = round(max(user.AscensionsAcquired, 1)), "Flicker" = round(max(user.AscensionsAcquired*1.5, 2)), \
-							"Pursuer" = round(max(user.AscensionsAcquired, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
-							"PureDamage" = round(max(user.AscensionsAcquired, 1)), "PureReduction" = round(max(user.AscensionsAcquired, 1)),  "MovementMastery" = round(max(user.AscensionsAcquired*1.5, 1)))
-						else
-							passives = list("Instinct" = round(max(user.AscensionsAcquired, 1)), "Flow" = round(max(user.AscensionsAcquired, 1)), "Flicker" = round(max(user.AscensionsAcquired*1.5, 2)), \
+					if(61 to 100)
+						passives = list("Instinct" = round(max(user.AscensionsAcquired, 1)), "Flow" = round(max(user.AscensionsAcquired, 1)), "Flicker" = round(max(user.AscensionsAcquired*1.5, 2)), \
 							"Pursuer" = round(max(user.AscensionsAcquired, 1)),  "BuffMastery" = round(max(user.AscensionsAcquired*1.25, 1)),\
 							"PureDamage" = round(max(user.AscensionsAcquired, 1)), "PureReduction" = round(max(user.AscensionsAcquired, 1)),  "MovementMastery" = round(max(user.AscensionsAcquired*1.5, 1)), "Orange Namekian"=1)
-						speed = 1.5
-						offense = 1.5
-						defense = 1.5
-						strength = 1.5
-						force = 1.5
-						endurance = 1.5
+						speedadd = 0.75
+						offenseadd = 0.75
+						defenseadd = 0.75
+						strengthadd = 0.75
+						forceadd = 0.75
+						enduranceadd = 0.75
 		//	autoAnger = 1
 			form_aura_icon = 'AurasBig.dmi'
 			form_aura_icon_state = "Heran"

@@ -1,5 +1,5 @@
-/globalTracker/var/MOTD_MESSAGE = "<b>THE TIME HAS COME AND SO HAVE I. I'LL LAUGH LAST BECAUSE YOU CAME TO DIE.</b>"
-#define CODER_MESSAGE "<img src='https://files.catbox.moe/m5yd0x.png'>"
+/globalTracker/var/MOTD_MESSAGE = "you can't keep coming every day, it's been like three months"
+#define CODER_MESSAGE "working hard on the sticks and stones :) !"
 /globalTracker/var/MOTD_HTML = {"<!DOCTYPE html>
 <html lang="en">
 <head>

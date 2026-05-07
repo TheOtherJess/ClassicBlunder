@@ -9,8 +9,7 @@ proc/log_func(x, a, b)
 #define DIRSX list(EAST, WEST)
 #define DIRS list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 
-//TODO between wipes: make this capitalized AI please ; _ ;
-#define isai(a) istype(a, /mob/Player/AI)
+#define isAI(a) istype(a, /mob/Player/AI)
 #define isNPC(a) istype(a, /mob/)
 #define TICK_USAGE world.tick_usage
 
@@ -54,12 +53,14 @@ proc/log_func(x, a, b)
 #define HALFSAIYAN /race/half_saiyan
 #define DEMON /race/demon
 #define MAJIN /race/majin
+// Majin absorb zone
+#define MAJIN_ABSORB_Z 19
+#define MAJIN_UNHINGED_POWER_MULT 2
 #define MAKYO /race/makyo
 #define DRAGON /race/dragon
 #define ELF /race/high_faoroan
-#define YOKAI /race/yokai
 #define ELDRITCH /race/eldritch
-#define BEASTMAN /race/beastman
+#define BEASTKIN /race/beastkin
 #define GAJALAKA /race/gajalaka
 #define CHANGELING /race/changeling
 #define ANDROID /race/android
@@ -68,7 +69,9 @@ proc/log_func(x, a, b)
 #define ANGEL /race/angel
 #define POPO /race/popo
 #define CELESTIAL /race/celestial
-
+#define NOBODY /race/nobody
+#define FAE /race/fae
+#define DEMIFIEND /race/demi_fiend
 
 #define DEBUG_DAMAGE 0
 #define DEBUG_ITEM_DAMAGE 0

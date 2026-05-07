@@ -1,3 +1,7 @@
+#define INORGANIC_RACES list(ANDROID)
+#define CURSED_RACES list(CELESTIAL, ELF, MAJIN, POPO)
+#define STAGNANT_RACES list(ANGEL, DEMON, ELDRITCH, MAKAIOSHIN, SHINJIN)
+
 mob/proc
 	UpdateTechnologyWindow()
 		for(var/obj/Money/M in usr)
@@ -6,19 +10,19 @@ mob/proc
 
 
 
-var/list/Technology_List=new
-var/list/BasicTechnology_List=new
-var/list/Forging_List=new
-var/list/RepairAndConversion_List=new
-var/list/Medicine_List=new
-var/list/ImprovedMedicalTechnology_List=new
-var/list/Telecommunications_List=new
-var/list/AdvancedTransmissionTechnology_List=new
-var/list/Engineering_List=new
-var/list/CyberEngineering_List=new
-var/list/MilitaryTechnology_List=new
-var/list/MilitaryEngineering_List=new
-var/list/PowerPack_List=new
+var/list/Technology_List=list()
+var/list/BasicTechnology_List=list()
+var/list/Forging_List=list()
+var/list/RepairAndConversion_List=list()
+var/list/Medicine_List=list()
+var/list/ImprovedMedicalTechnology_List=list()
+var/list/Telecommunications_List=list()
+var/list/AdvancedTransmissionTechnology_List=list()
+var/list/Engineering_List=list()
+var/list/CyberEngineering_List=list()
+var/list/MilitaryTechnology_List=list()
+var/list/MilitaryEngineering_List=list()
+var/list/PowerPack_List=list()
 
 proc/Add_Technology()
 	for(var/A in typesof(/obj/Items/Tech))
@@ -417,6 +421,10 @@ obj/Items/Tech
 					usr << "You need to get [Choice] reforged.  It is already broken."
 					src.Using=0
 					return
+				if(istype(Choice, /obj/Items/Sword)&&Choice.Glass&&Choice.HighFrequency)
+					usr << "[Choice] has to be repaired by hand."
+					src.Using=0
+					return
 				usr.Frozen=2
 				usr << "Repairing [Choice]... (This will take 15 seconds)"
 				sleep(150)
@@ -431,7 +439,7 @@ obj/Items/Tech
 
 	Fiber_Bonding_Agent
 		TechType="RepairAndConversion"
-		SubType="Molecular Technology"
+		SubType="Modular Weaponry"
 		icon='Tech.dmi'
 		icon_state="Fiber Bond"
 		Cost=5
@@ -473,7 +481,11 @@ obj/Items/Tech
 				sleep(150)
 				usr.Frozen=0
 				usr << "Finished bonding [Choice]."
-				Choice.ShatterTier+=1
+				Choice.ShatterTier+=5
+				if(istype(Choice, /obj/Items/Sword)&& Choice.HighFrequency)
+					Choice.ShatterTier+=5
+					Choice.ShatterMax*=2
+					Choice.ShatterMax=round(Choice.ShatterMax)
 				Choice.Conversions="Sharp"//This will flag another shatter tier which won't be repaired by reforging
 				src.TotalStack--
 				if(src.TotalStack<=0)
@@ -483,7 +495,7 @@ obj/Items/Tech
 
 	Quicksilver_Alloy
 		TechType="RepairAndConversion"
-		SubType="Light Alloys"
+		SubType="Modular Weaponry"
 		icon='Tech.dmi'
 		icon_state="Quicksilver"
 		Cost=5
@@ -542,6 +554,8 @@ obj/Items/Tech
 				usr.Frozen=0
 				usr << "Finished quicksilver bonding [Choice]."
 				Choice.ShatterMax/=2
+				if(istype(Choice, /obj/Items/Sword)&&Choice.HighFrequency)
+					Choice.ShatterMax*=2
 				Choice.ShatterMax=round(Choice.ShatterMax)
 				if(Choice.ShatterCounter>Choice.ShatterMax)
 					Choice.ShatterCounter=Choice.ShatterMax
@@ -613,7 +627,7 @@ obj/Items/Tech
 
 	Resistant_Coating
 		TechType="RepairAndConversion"
-		SubType="Shock Absorbers"
+		SubType="Advanced Plating"
 		icon='Tech.dmi'
 		icon_state="Resin"
 		Cost=5
@@ -1437,7 +1451,7 @@ obj/Items/Tech
 					usr.SenseRobbed=0
 				if(usr.MortallyWounded)
 					usr.MortallyWounded=0
-				usr.Maimed--
+				usr.Maimed = max(0, usr.Maimed - 3)
 				usr.TotalInjury=0
 				usr.NextSerum=world.realtime+Day(0.5)
 				usr << "You're fully revitalized!"
@@ -1480,8 +1494,8 @@ obj/Items/Tech
 				usr.OffTax=0
 				usr.DefTax=0
 				usr.RecovTax=0
-				usr.HealthCut=max(usr.HealthCut-0.1,0)
-				usr.EnergyCut=max(usr.EnergyCut-0.1,0)
+				usr.HealthCut=max(usr.HealthCut-0.35,0)
+				usr.EnergyCut=max(usr.EnergyCut-0.35,0)
 				usr.ManaCut=max(usr.ManaCut-0.1,0)
 				usr.StrCut=max(usr.StrCut-0.1,0)
 				usr.ForCut=max(usr.ForCut-0.1,0)
@@ -2281,7 +2295,7 @@ obj/Items/Tech
 			if(src.WaveType)
 				usr << "[src] was already configured!"
 				return
-			src.WaveType=alert(usr, "What wave frequency should the projector be configured for?", "EM Wave Type", "Blutz Rays", "Redlight", "Ultraviolet")
+			src.WaveType=alert(usr, "What wave frequency should the projector be configured for?", "EM Wave Type", "Blutz Rays", "Ultraviolet")
 		verb/Activate()
 			set category=null
 			set src in range(1, usr)
@@ -2317,20 +2331,6 @@ obj/Items/Tech
 												b.Trigger(m)
 									for(var/obj/Skills/Buffs/SlotlessBuffs/Werewolf/Full_Moon_Form/F)
 										F.Trigger(m)
-				if("Redlight")
-					view(10,src)<<"<font color=red><small>The projector emits a burst of an eerie light!"
-					for(var/turf/t in Turf_Circle(src, 10))
-						sleep(-1)
-						TurfShift('Flamestorm.dmi', t, 10, src, EFFECTS_LAYER)
-						for(var/mob/m in t)
-							if(m.isRace(MAKYO))
-								m.StarPowered=1
-								for(var/obj/Skills/Buffs/ActiveBuffs/Ki_Control/KC in m)
-									if(!m.BuffOn(KC))
-										m.PowerControl=150
-										m.PoweringUp=0
-										m.Auraz("Remove")
-										m.UseBuff(KC)
 				if("Ultraviolet")
 					view(10,src)<<"<font color=red><small>The projector emits a powerful burst of UV light!"
 					for(var/turf/t in Turf_Circle(src, 10))
@@ -2346,7 +2346,7 @@ obj/Items/Tech
 									m.BPPoison=min(0.2*bloodPower,0.9)
 									m.BPPoisonTimer=RawHours(6)/bloodPower
 								if("Ripple")
-									if(m.HasRipple()&&!m.PoseEnhancement)
+									if(m.RippleActive()&&!m.PoseEnhancement)
 										m.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Ripple_Enhancement)
 	Portable_Projector
 		Health=5
@@ -2367,7 +2367,7 @@ obj/Items/Tech
 			if(src.WaveType)
 				usr << "[src] was already configured!"
 				return
-			src.WaveType=alert(usr, "What wave frequency should the projector be configured for?", "EM Wave Type", "Blutz Rays", "Redlight", "Ultraviolet")
+			src.WaveType=alert(usr, "What wave frequency should the projector be configured for?", "EM Wave Type", "Blutz Rays", "Ultraviolet")
 		verb/Activate()
 			set category=null
 			set src in range(1, usr)
@@ -2399,7 +2399,8 @@ obj/Items/Tech
 								if(!m.CheckSlotless("FullMoonForm"))
 									if(m.ActiveBuff)
 										if(m.CheckActive("Eight Gates"))
-											m.ActiveBuff:Stop_Cultivation()
+											var/obj/Skills/Buffs/ActiveBuffs/Eight_Gates/eg = m.ActiveBuff
+											eg.Stop_Cultivation()
 											m.GatesActive=0
 										else
 											m.ActiveBuff.Trigger(m)
@@ -2412,20 +2413,6 @@ obj/Items/Tech
 												b.Trigger(m)
 									for(var/obj/Skills/Buffs/SlotlessBuffs/Werewolf/Full_Moon_Form/F)
 										F.Trigger(m)
-				if("Redlight")
-					view(10,src)<<"<font color=red><small>The projector emits a burst of an eerie light!"
-					for(var/turf/t in Turf_Circle(src, 10))
-						sleep(-1)
-						TurfShift('Flamestorm.dmi', t, 10, src, EFFECTS_LAYER)
-						for(var/mob/m in t)
-							if(m.isRace(MAKYO))
-								m.StarPowered=1
-								for(var/obj/Skills/Buffs/ActiveBuffs/Ki_Control/KC in m)
-									if(!m.BuffOn(KC))
-										m.PowerControl=150
-										m.PoweringUp=0
-										m.Auraz("Remove")
-										m.UseBuff(KC)
 				if("Ultraviolet")
 					view(10,src)<<"<font color=red><small>The projector emits a powerful burst of UV light!"
 					for(var/turf/t in Turf_Circle(src, 10))
@@ -2441,7 +2428,7 @@ obj/Items/Tech
 									m.BPPoison=min(0.2*bloodPower,0.9)
 									m.BPPoisonTimer=RawHours(6)/bloodPower
 								if("Ripple")
-									if(m.HasRipple()&&!m.PoseEnhancement)
+									if(m.RippleActive()&&!m.PoseEnhancement)
 										m.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Ripple_Enhancement)
 
 
@@ -2926,6 +2913,8 @@ obj/Items/Tech
 
 obj/Items/Gear
 	Unwieldy=1
+	var/SentaiSuitIcon
+	var/SentaiHelmetIcon
 	var
 		Integrateable=0//If this is flagged it can be jammed in a prosthetic
 		Uses=0
@@ -3076,6 +3065,24 @@ obj/Items/Gear
 		desc="A gatling gun capable of unleashing an onslaught of plasma!"
 		Uses=90
 		Integrateable=1
+	Ultra_Laser
+		icon='Minigun.dmi'
+		TechType="MilitaryEngineering"
+		SubType="Any"
+		Techniques=list("/obj/Skills/Projectile/Gear/Ultra_Laser")
+		desc="Handheld mobile armor technology! Fire an explosive laser!"
+		Cost=200
+		Uses=3
+		Integrateable=1
+	Missile_Massacre
+		TechType="MilitaryEngineering"
+		SubType="Any"
+		icon='HomingMissile.dmi'
+		Techniques=list("/obj/Skills/Projectile/Gear/Missile_Massacre")
+		desc="Handheld mobile armor technology! An auto-aiming apparatus that spews a cluster of laser beams!"
+		Cost=200
+		Uses=10
+		Integrateable=1
 
 	Missile_Launcher
 		TechType="MilitaryTechnology"
@@ -3148,7 +3155,153 @@ obj/Items/Gear
 		Cost=2
 		Uses=3
 		Integrateable=1
-
+/*
+	Sentai_Watch
+		name="Powered Exoskeleton"
+		TechType="MilitaryEngineering"
+		SubType="Any"
+		icon='Ironman.dmi'
+		UniformType = "None"
+		Techniques=list()
+		desc="A prototype powered exo-suit that enables your body to transcend its limits!"
+		Cost=100
+		IntegratedUses=100
+		IntegratedMaxUses=100
+		Uses=1
+		verb/Enhance_Sentai_Uniform()
+			set category=null
+			set src in usr
+			if(src.suffix=="*Equipped*")
+				usr << "Take off your uniform before you try to upgrade it!"
+				return
+			if(src.Techniques.len<=1)
+				usr << "This armor doesn't have any gear integrated!"
+				return
+			if(src.Using)
+				usr << "You cannot unintegrate and integrate gear at the same time!"
+				return
+			src.Using=1
+			switch(input("Are you sure you wish to unintegrate? This will destroy any integration this armor currently has!") in list("Yes","No"))
+				if("Yes")
+					Techniques=list("/obj/Skills/Buffs/ActiveBuffs/Gear/Sentai_Uniform_Engage")
+					desc="A prototype powered exo-suit that enables your body to transcend its limits."
+					usr << "You've successfully removed all integrations from this gear."
+			src.Using=0
+		verb/Engage_Sentai_Uniform()
+			set category=null
+			set src in usr
+			if(src.suffix=="*Equipped*")
+				usr << "Take off your uniform before you try to upgrade it!"
+				return
+			if(src.Techniques.len<=1)
+				usr << "This armor doesn't have any gear integrated!"
+				return
+			if(src.Using)
+				usr << "You cannot unintegrate and integrate gear at the same time!"
+				return
+			setup(usr)
+			Techniques = list()
+			if(UniformType == "None")
+				var/result = input(usr, "What type?") in list("Power","Force","Tank","Speed")
+				UniformType = result
+				Techniques = list("/obj/Skills/Buffs/ActiveBuffs/Gear/Sentai_Uniform_Engage/[UniformType]")
+				Techniques += "/obj/Skills/Buffs/ActiveBuffs/Gear/Sentai_Helmet_Engage"
+		verb/Unintegrate()
+			set category=null
+			set src in usr
+			if(src.suffix=="*Equipped*")
+				usr << "Take off your armor before you try to jam a gear in it!"
+				return
+			if(src.Techniques.len<=1)
+				usr << "This armor doesn't have any gear integrated!"
+				return
+			if(src.Using)
+				usr << "You cannot unintegrate and integrate gear at the same time!"
+				return
+			src.Using=1
+			switch(input("Are you sure you wish to unintegrate? This will destroy any integration this armor currently has!") in list("Yes","No"))
+				if("Yes")
+					Techniques=list("/obj/Skills/Buffs/ActiveBuffs/Gear/Sentai_Uniform_Engage")
+					desc="A prototype powered exo-suit that enables your body to transcend its limits."
+					usr << "You've successfully removed all integrations from this gear."
+			src.Using=0
+		verb/Integrate()
+			set category=null
+			set src in usr
+			if(src.suffix=="*Equipped*")
+				usr << "Take off your armor before you try to jam a gear in it!"
+				return
+			if(src.Techniques.len>1)
+				usr << "This armor already has a gear integrated!"
+				return
+			if(src.Using)
+				usr << "You're already putting something in this armor!"
+				return
+			src.Using=1
+			var/obj/Items/Gear/Choice
+			var/list/obj/Items/Gear/IG=list("Cancel")
+			for(var/obj/Items/Gear/g in usr)
+				if(istype(g, /obj/Items/Gear/Prosthetic_Limb))
+					continue
+				if(!g.Integrateable)
+					continue
+				IG.Add(g)
+			if(IG.len<2)
+				usr << "You don't have any gear capable of being integrated into your suit."
+				src.Using=0
+				return
+			Choice=input(usr, "What gear do you want to integrate into your suit?", "Integrate") in IG
+			if(Choice=="Cancel")
+				src.Using=0
+				return
+			switch(Choice.type)
+				if(/obj/Items/Gear/Deflector_Shield)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Deflector_Shield")
+				if(/obj/Items/Gear/Bubble_Shield)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Bubble_Shield")
+				if(/obj/Items/Gear/Jet_Boots)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Jet_Boots")
+				if(/obj/Items/Gear/Jet_Pack)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Jet_Pack")
+				if(/obj/Items/Gear/Plasma_Blaster)
+					src.Techniques.Add("/obj/Skills/Projectile/Gear/Integrated/Integrated_Plasma_Blaster")
+				if(/obj/Items/Gear/Plasma_Rifle)
+					src.Techniques.Add("/obj/Skills/Projectile/Gear/Integrated/Integrated_Plasma_Rifle")
+				if(/obj/Items/Gear/Plasma_Gatling)
+					src.Techniques.Add("/obj/Skills/Projectile/Gear/Integrated/Integrated_Plasma_Gatling")
+				if(/obj/Items/Gear/Missile_Launcher)
+					src.Techniques.Add("/obj/Skills/Projectile/Gear/Integrated/Integrated_Missile_Launcher")
+				if(/obj/Items/Gear/Chemical_Mortar)
+					src.Techniques.Add("/obj/Skills/Projectile/Gear/Integrated/Integrated_Chemical_Mortar")
+				if(/obj/Items/Gear/Progressive_Blade)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Progressive_Blade")
+				if(/obj/Items/Gear/Lightsaber)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Lightsaber")
+				if(/obj/Items/Gear/Incinerator)
+					src.Techniques.Add("/obj/Skills/AutoHit/Gear/Integrated/Integrated_Incinerator")
+				if(/obj/Items/Gear/Freeze_Ray)
+					src.Techniques.Add("/obj/Skills/AutoHit/Gear/Integrated/Integrated_Freeze_Ray")
+				if(/obj/Items/Gear/Pile_Bunker)
+					src.Techniques.Add("/obj/Skills/Queue/Gear/Integrated/Integrated_Pile_Bunker")
+				if(/obj/Items/Gear/Power_Fist)
+					src.Techniques.Add("/obj/Skills/Queue/Gear/Integrated/Integrated_Power_Fist")
+				if(/obj/Items/Gear/Blast_Fist)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Blast_Fist")
+				if(/obj/Items/Gear/Chainsaw)
+					src.Techniques.Add("/obj/Skills/Buffs/SlotlessBuffs/Gear/Integrated/Integrated_Chainsaw")
+				if(/obj/Items/Gear/Power_Claw)
+					src.Techniques.Add("/obj/Skills/Queue/Gear/Integrated/Integrated_Power_Claw")
+				if(/obj/Items/Gear/Hook_Grip_Claw)
+					src.Techniques.Add("/obj/Skills/Queue/Gear/Integrated/Integrated_Hook_Grip_Claw")
+				else
+					usr << "Ruh roh.  Something went wrong.  Yell at Yan."
+					src.Using=0
+					return
+			usr << "You've integrated [Choice] into your armor!"
+			src.desc="A prototype powered exo-suit that enables your body to transcend its limits! A [Choice] gear has been integrated with it."
+			del Choice
+			src.Using=0
+*/
 	Power_Armor
 		name="Powered Exoskeleton"
 		TechType="MilitaryEngineering"
@@ -3710,6 +3863,91 @@ obj/Items/Gear
 			src.desc="A replacement limb.  A [Choice] gear has been integrated within it."
 			del Choice
 			src.Using=0
+	Dark_Factor_Fragment
+		TechType="CyberEngineering"
+		SubType="Blasphemy"
+		desc="A fragment of darkness that allows someone to assume demonic powers... or become one themselves."
+		Cost=500000
+		Health=1000000000000
+		InfiniteUses=1
+		//Techniques=list("/obj/Skills/Buffs/ActiveBuffs/Gear/False_Devil_Trigger")
+		verb/Imbue_Fragment()
+			set category = "Demonic"
+			if(usr.isRace(DEMON))
+				usr<<"You are already a Demon!"
+				return
+			usr<<"to be completed"
+
+		verb/Become_Demon()
+			set category = "Demonic"
+			if(usr.isRace(DEMON))
+				usr<<"You are already a Demon!"
+				return
+
+			var/isSaiyan = usr.isRace(SAIYAN)
+			if(isSaiyan)
+				usr.AddSkill(new /obj/Skills/Buffs/SlotlessBuffs/Autonomous/HellbornFury/Stage_One)
+				usr.AddSkill(new /obj/Skills/Buffs/SlotlessBuffs/Autonomous/HellbornFury/Stage_Two)
+				usr.AddSkill(new /obj/Skills/Buffs/SlotlessBuffs/Autonomous/HellbornFury/Stage_Three)
+				usr.AddSkill(new /obj/Skills/Buffs/SlotlessBuffs/Autonomous/HellbornFury/Stage_Four)
+				usr.AddSkill(new /obj/Skills/False_Moon)
+				usr.passive_handler.Increase("HellPower", 0.1)
+				usr.passive_handler.Increase("Persistence", 2)
+				usr.passive_handler.Increase("MaimMastery", 1)
+				usr.oozaru_type = "Demonic"
+				for(var/transformation/saiyan/ssj in usr.race.transformations)
+					usr.race.transformations -=ssj
+					del ssj
+				usr.race.transformations += new /transformation/saiyan/hellspawn_super_saiyan()
+				usr.race.transformations += new /transformation/saiyan/hellspawn_super_saiyan_2()
+				usr.race.transformations += new /transformation/saiyan/hellspawn_super_full_power_saiyan_2_limit_breaker()
+				del src
+			if(!usr.ChangeRace(DEMON))
+				usr<<"Something went wrong; you remain unchanged."
+				return
+
+			usr.stat_redo()
+
+	Spiral_Engine
+		TechType="MilitaryEngineering"
+		SubType="Rebellion"
+		desc="Ancient Fourth Fate technology created by Araki Ishikawa. It can awaken Spiral Energy within members of the Spiral Races... or allow a Synthetic Lifeform to generate their own."
+		Cost=900000
+		Health=1000000000000
+		InfiniteUses=0
+		verb/Awaken_Spiral()
+			set category = "Spiral"
+			if(usr.race.type in STAGNANT_RACES)
+				usr<<"You are a supernatural creature. You cannot harness Spiral Power. You will stay the same forever."
+				return
+			if(usr.race.type in CURSED_RACES)
+				usr<<"Your biology is warped by supernatural powers. You cannot harness Spiral Power."
+				return
+			if(usr.Secret)
+				usr<<"You already have a Secret!"
+				return
+			if(usr.race.type in INORGANIC_RACES)
+				usr.passive_handler.Increase("SpiralEngine", 1)
+				usr.Secret="Spiral"
+				usr.giveSecret("Spiral")
+				usr.StrAscension+= 0.1
+				usr.EndAscension+= 0.1
+				usr.ForAscension+= 0.1
+				usr.SpdAscension+= 0.1
+				usr.OffAscension+= 0.1
+				usr.DefAscension+= 0.1
+				usr<<"You have installed a Spiral Engine into yourself!"
+				usr<<"You begin to generate your own Spiral Energy. This is... the power to evolve."
+				del src
+				return
+			else
+				usr.Secret="Spiral"
+				usr.giveSecret("Spiral")
+				usr<<"You feel your fighting spirit rise out of you. This is... the power to evolve."
+				usr<<"The Spiral Engine crumbles before your eyes, leaving a core drill in your hand."
+				del src
+				return
+
 	Mobile_Suit
 		var/Drive = "None"
 		var/Augment = "None"
@@ -3734,9 +3972,9 @@ obj/Items/Gear
 		Health=1000000000000
 		proc/changeType(mob/player)
 			if(MechType)
-				switch(input(player, "Do you want to change your mech's type? Each type has a different boon") in list("Yes","No")=="No")
-					if("Yes")
-						MechType = input(player, "What type?") in list("Speed","Tank","Assault")
+				var/answer = input(player, "Do you want to change your mech's type? Each type has a different boon") in list("Yes","No")
+				if(answer == "Yes")
+					MechType = input(player, "What type?") in list("Speed","Tank","Assault")
 			else
 				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault")
 		proc/setup(mob/player)

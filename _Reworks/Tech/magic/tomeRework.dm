@@ -28,19 +28,6 @@ Tomes:
 #define UPGRADE_BASE_COST 1.5
 
 
-/mob/Admin3/verb/Give_Fragments(mob/p in players)
-    if(!p.client) return
-    var/obj/Items/mineral/m = new()
-    m = locate() in p
-    if(!m)
-        m = new()
-        m.Move(p)
-    m.checkDuplicate(p)
-    var/num = input(src, "How many fragments?") as num
-    m.value += num
-    m.assignState(num)
-
-
 /mob/Admin3/verb/tierUpTome(obj/Items/Enchantment/Tome/t in world)
     set name = "Tier Up Tome"
     src << "later..."
@@ -99,7 +86,7 @@ Tomes:
             return
         src.Using=1
         var/options = list("Cancel")
-        if("Spell Sealing")
+        if("Spell Sealing" in usr.knowledgeTracker.learnedMagic)
             options += list("Seal")
         if("TomeCreation" in usr.knowledgeTracker.learnedMagic)
             options += list("Scribe")
@@ -138,7 +125,7 @@ Tomes:
                             src.Using=0
                             return
                         usr.TakeFragments(cost)
-                        spell.Sealed=0
+                        spell.Sealed=1
                         usr << "You have sealed this tome."
                     else
                         usr << "You decide against sealing the tome."

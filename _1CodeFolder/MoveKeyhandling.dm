@@ -18,7 +18,10 @@ client
 		//	setMacros() injects movement commands into all macro lists.
 		setMacros()
 
-			var/macros=params2list(winget(src,null,"macro"))
+			var/raw=winget(src,null,"macro")
+			if(!raw) return
+			var/list/macros=params2list(raw)
+			if(!macros || !macros.len) return
 			for(var/m in macros)
 
 
@@ -47,6 +50,19 @@ mob/Players
 	//	This will initiate movement whenever a client logs into a /mob/player.
 	Login()
 		..()
+		if(!ChrysalisActive)
+			Frozen = 0
+		// Re-apply chrysalis state on reconnect (timer loop and shell obj are lost on restart)
+		if(ChrysalisActive)
+			if(world.realtime >= ChrysalisExpiry)
+				exitChrysalis()
+			else
+				Frozen = 2
+				move_disabled = 1
+				var/obj/ChrysalisShell/shell = new(src.loc)
+				shell.occupant = src
+				spawn()
+					chrysalisTimerCheck()
 		spawn()
 			MovementLoop()
 
@@ -161,8 +177,6 @@ mob/Players
 			key4=0
 
 globalTracker/var/BASE_LOOP_DELAY = 1.25
-globalTracker/var/GODSPEED_NEEDED = 999
-globalTracker/var/SPEED_NEEDED = 999
 globalTracker/var/DIAG_LOOP_DELAY = 1.15
 globalTracker/var/GODSPEED_LOOP_DELAY = 0.8
 
@@ -216,12 +230,6 @@ mob
 									if(afterimages)
 										coolerFlashImage(src, afterimages)
 								loop_delay = glob.BASE_LOOP_DELAY
-								//TODO between wipes
-								//These effectively will never trigger, so I'm commenting it out for now
-								//Honestly it can probably be removed
-								//But I wouldn't remove variables from the globalTracker mid wipe.
-								//if(HasGodspeed()>=glob.GODSPEED_NEEDED || GetSpd(1)>=glob.SPEED_NEEDED)
-								//	loop_delay = glob.GODSPEED_LOOP_DELAY
 								if(dir==NORTHEAST||dir==NORTHWEST||dir==SOUTHEAST||dir==SOUTHWEST)
 									loop_delay *= glob.DIAG_LOOP_DELAY
 								move_speed = MovementSpeed()
@@ -311,7 +319,7 @@ mob
 							dir_y = pick(DIRSY)
 
 						//	If you don't want diagonal steps broken in two use this line.
-						if(src.Beaming!=2&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
+						if((src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
 							src.dir=dir_x+dir_y
 						if(src.Attracted&&get_dist(src, src.AttractedTo)>=3)
 							src.dir=get_dir(src, src.AttractedTo)
@@ -337,7 +345,7 @@ mob
 					if(dir_y)
 						if(prob(src.Confused) || passive_handler.Get("Manic") ? prob(passive_handler.Get("Manic") * 5) : 0)
 							dir_y = pick(DIRSY)
-						if(src.Beaming!=2&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
+						if((src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
 							src.dir=dir_y
 						if(src.Attracted&&get_dist(src, src.AttractedTo)>=3)
 							src.dir=get_dir(src, src.AttractedTo)
@@ -375,3 +383,18 @@ mob
 							key3=key4
 							key4=0
 						else key4=0
+
+mob/Players/BeamTurnDir()
+	if(!HasTurningCharge()) return
+	var/dir_x = 0
+	var/dir_y = 0
+	var/north_held = (key1==NORTH||key2==NORTH||key3==NORTH||key4==NORTH)
+	var/south_held = (key1==SOUTH||key2==SOUTH||key3==SOUTH||key4==SOUTH)
+	var/east_held  = (key1==EAST ||key2==EAST ||key3==EAST ||key4==EAST )
+	var/west_held  = (key1==WEST ||key2==WEST ||key3==WEST ||key4==WEST )
+	if(north_held && !south_held) dir_y = NORTH
+	else if(south_held && !north_held) dir_y = SOUTH
+	if(east_held && !west_held) dir_x = EAST
+	else if(west_held && !east_held) dir_x = WEST
+	if(dir_x || dir_y)
+		src.dir = dir_x + dir_y

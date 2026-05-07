@@ -53,7 +53,7 @@
 					return
 
 			adjust(usr)
-			src.Trigger(M)
+			src.Trigger(usr)
 			src.ActiveState = !src.ActiveState
 			if(src.animating) return
 			src.animating = TRUE

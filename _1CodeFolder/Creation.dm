@@ -1,6 +1,6 @@
 #define WIPE_TOPIC "https://docs.google.com/document/d/1WXcBFGjQXbeWakbepjPoo12XJvI97kd5qHWjiOvbqf0/edit?tab=t.0"
 #define DISCORD_INVITE "https://discord.gg/DXtR4dGzM3"
-#define PATREON_LINK "https://patreon.com/jordanzoSupport"
+#define PATREON_LINK "https://patreon.com/sunshinejesse"
 #define KO_FI_LINK "https://ko-fi.com/boberjones"
 #define DONATION_MESSAGE "<a href='[PATREON_LINK]'>Patreon (Monthly)</a> <a href='[KO_FI_LINK]'>Ko-Fi (One Time)</a>"
 #define THANKS_MESSAGE_DONATOR(tier) "Thank you for supporting! You have Tier [tier] donator benefits!"
@@ -57,7 +57,16 @@ mob/Players
 	Login()
 		winset(usr, null, "browser-options=find")
 		client.perspective=MOB_PERSPECTIVE
+		ForceClearHeldChargeState()
 		players += usr
+		OverwatchNotifyLogin(usr, "logged in")
+		// StyleRating decay runs in spawn(); the loop dies on disconnect and
+		// leaves the persistent StyleRating var stuck above zero on the next
+		// login, with Stylish multipliers locked in and no decay timer to
+		// retire them. Wipe any leftover rating now so reconnects start clean.
+		if(StyleRating > 0)
+			resetStyleRating()
+		StyleRatingDecaying = FALSE
 		usr.density=1
 		usr.client.view=8
 		if(in_tmp_map)
@@ -72,6 +81,9 @@ mob/Players
 			usr.Finalize()
 		if(!locate(/obj/Money) in src)
 			src.contents += new/obj/Money
+
+		spawn() initPersonalMagicTrees();
+
 		winshow(usr,"StatsWindow",0)
 		winshow(usr,"StatsWindow2",0)
 		for(var/e in list("Health","Energy","Power","Mana"))
@@ -94,10 +106,15 @@ mob/Players
 		for(var/obj/Skills/Buffs/SlotlessBuffs/Devil_Arm2/da in src)
 			if(src.isRace(DEMON))
 				da.name="Devil Arm ([src.TrueName])"
-			if(src.isRace(MAKAIOSHIN)||src.isRace(CELESTIAL))
+			if(src.isRace(MAKAIOSHIN))
 				da.name="Devil Arm ([src.TrueName])"
 
 		checkVerbs()
+		if(src.isRace(/race/demi_fiend))
+			if(!(/mob/proc/CraftMagatama in src.verbs))
+				src.verbs += /mob/proc/CraftMagatama
+
+		EvictFiendsIfUnauthorized()
 
 		addMissingSkills()
 		if(glob.TESTER_MODE)
@@ -121,6 +138,13 @@ mob/Players
 			src.WindingUp = 0
 		if(src.KO && !(src.icon_state == "KO"))
 			src.KO = 0
+
+		// Chrono Devolution safeguards
+		for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Chrono_Devolution/cd in src)
+			if(src.BuffOn(cd))
+				cd.Trigger(src, Override=1)
+			src.SlotlessBuffs.Remove("[cd.BuffName]")
+			src.DeleteSkill(cd)
 
 		src.RecovMod=2
 
@@ -178,16 +202,19 @@ mob/Players
 			var/updateversion = "/update/version[glob.UPDATE_VERSION]"
 			if(ispath(updateversion))
 				updateVersion = new updateversion
-				if(isRace(ANDROID) && updateVersion.version == 2)
-					updateVersion.updateMob(src)
 		if(RPPSpendable + RPPSpent > RPPCurrent)
-			AdminMessage("[src] has more rpp than they should.")
+			if(!src.PotentialHeadStart)
+				AdminMessage("[src] has more rpp than they should.")
 
-		if(isRace(DEMON))
+		if(isRace(DEMON) || (isRace(CELESTIAL) && CelestialAscension == "Demon") || isRace(MAKAIOSHIN))
 			for(var/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/s in src)
 				for(var/ss in s.possible_skills)
 					for(var/obj/Skills/sss in s.possible_skills[ss])
 						sss:returnToInit()
+
+		if(isRace(ANGEL) || isRace(MAKAIOSHIN))
+			for(var/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/s in src)
+				s.resetToInital()
 
 		if(isplayer(src))
 			move_speed = MovementSpeed()
@@ -294,8 +321,6 @@ mob/Players
 			src.ModifyPrime=0
 		if(src.ModifyLate)
 			src.ModifyLate=0
-		if(src.ModifyPrime)
-			src.ModifyPrime=0
 
 		// var/Dif=glob.progress.Era-src.EraAge
 
@@ -341,7 +366,7 @@ mob/Players
 		// mainLoop += src
 	//	ticking_generic.Add(src)
 		gain_loop.Add(src)
-		if(isRace(DEMON))
+		if(isRace(DEMON) || isRace(MAKAIOSHIN) || (isRace(CELESTIAL) && CelestialAscension == "Demon"))
 			client.updateCorruption()
 		var/list/lol=list("butt3","butt4")
 		for(var/x in lol)
@@ -350,6 +375,7 @@ mob/Players
 			src.client.view=ScreenSize
 
 		client.fps=src.ChosenFPS
+		client.updateRGMeter()
 		if(usr.SenseRobbed>=5)
 			animate(usr.client, color = list(-1,0,0, 0,-1,0, 0,0,-1, 1,1,1))
 
@@ -403,12 +429,21 @@ mob/Players
 			for(var/obj/Skills/s in src)
 				s.cooldown_remaining=0
 				s.cooldown_start=0
+				s.Using=0
+				if(s.MaxCharges > 0)
+					s.Charges = s.MaxCharges
 			for(var/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/dm in src)
 				if(dm.possible_skills)
 					for(var/path in dm.possible_skills)
 						dm.possible_skills[path].cooldown_remaining=0
 						dm.possible_skills[path].cooldown_start=0
 						dm.possible_skills[path].Using = 0
+			for(var/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/am in src)
+				if(am.possible_skills)
+					for(var/path in am.possible_skills)
+						am.possible_skills[path].cooldown_remaining=0
+						am.possible_skills[path].cooldown_start=0
+						am.possible_skills[path].Using = 0
 		for(var/obj/Redo_Stats/r in src)
 			if(r.LoginUse) r.RedoStats(src)
 		if(locate(/obj/Skills/Companion/arcane_follower) in src) is_arcane_beast = locate(/obj/Skills/Companion/arcane_follower) in src
@@ -442,15 +477,20 @@ mob/Players
 					if(PACT_BROKEN_SUBJECT_PENALTY)
 						whoToInflict = PACT_SUBJECT
 				p.breakPact(TRUE, whoToInflict)
-		if(isRace(MAKYO)&&StarPowered&&!starActive)
-			MakyoFade()
-		if(isRace(MAKYO)&&!StarPowered&&starActive)
-			MakyoTrigger()
+		DevilSummonerRestoreVerbs()
+		initShortcuts();
+		MajinAbsorbOnLogin()
 		return
 	Logout()
+		ForceClearHeldChargeState()
+		MajinAbsorbOnLogout()
+		DevilSummonerLogout()
+		OverwatchNotifyLogin(src, "logged out")
 		players -= src
 		if(dancing) transform=dancing
 		last_online = world.realtime
+		resetStyleRating()
+		StyleRatingDecaying = FALSE
 		gain_loop.Remove(src)
 		//ticking_generic.Remove(src)
 
@@ -512,7 +552,7 @@ mob/Players
 		del(usr)
 
 client/Del()
-	if(highlightedAtoms.len > 0)
+	if(src.highlightedAtoms && src.highlightedAtoms.len > 0)
 		ClearHighlights()
 	..()
 
@@ -520,7 +560,7 @@ mob/Creation
 	Login()
 		winset(usr, null, "browser-options=find")
 		client.perspective=MOB_PERSPECTIVE | EDGE_PERSPECTIVE
-		usr.client.view=8
+		usr.client.view=18
 		usr<<browse("[basehtml][Notes]")
 		winshow(usr, "HungerLabel", 0)
 		winshow(usr, "Hunger", 0)
@@ -880,13 +920,13 @@ obj/Login
 	Grabbable=0
 	Screenz
 		layer=555
-		icon='OldLogin.png'
+		icon='FourthFateTitleScreen.png'
 		density=1
 	Newz
 		icon='ArtificalObj.dmi'
 		icon_state="Misc"
 		layer=999
-		alpha=0
+	//	alpha=0
 		Click()
 			if(WorldLoading)
 				usr<<"Please wait until the world is done loading..."
@@ -912,7 +952,7 @@ obj/Login
 		icon='ArtificalObj.dmi'
 		icon_state="Misc"
 		layer=999
-		alpha=0
+	//	alpha=0
 		Click()
 			if(WorldLoading)
 				usr<<"Please wait until the world is done loading..."
@@ -941,9 +981,7 @@ client
 						if(!mob.majinPassive)
 							mob.majinPassive = new(mob)
 						if(!mob.majinAbsorb)
-							mob<<"lacking majin absorb"
-							mob.majinAbsorb = new()
-							mob.findAlteredVariables()
+							mob.majinAbsorb = new(mob)
 
 				var/donator/d_info = donationInformation.getDonator(key = src.key)
 				var/supporter/s_info = donationInformation.getSupporter(key = src.key)
@@ -966,7 +1004,7 @@ client
 				mob.gajaConversionCheck()
 				switch(mob.Secret)
 					if("Vampire")
-						mob.vampireBlood = new(mob, 6,70)
+						mob.vampireBlood = new(mob, 6, 184)
 				if(mob:assigningStats)
 					mob.Redo_Stats()
 				if(mob.updateVersion && mob.updateVersion.version != glob.UPDATE_VERSION)
@@ -1062,7 +1100,7 @@ mob/proc
 		setStartingRPP()
 		DEBUGMSG("or setting starting rpp. did that kill us?")
 		if(!Warped)
-			if(isRace(BEASTMAN)||isRace(YOKAI))
+			if(isRace(BEASTKIN))
 				var/Choice=input(src, "Do you want to possess animal characteristics?  These options will give you tails and ears.", "Choose your animal traits.") in list("None", "Cat", "Fox", "Racoon", "Wolf", "Lizard", "Crow", "Bull")
 				switch(Choice)
 					if("Cat")
@@ -1087,8 +1125,7 @@ mob/proc
 					src.Hairz("Add")
 
 			if(!src.Timeless)
-				if(!(src.race in list(YOKAI,BEASTMAN,ELDRITCH,SAIYAN)))//these bois spawn in with deathtimers if theyre elder...
-					//beastman monsters as elders would spawn in with death timers; yokai would be more powerful; eldritch dont even get this choice
+				if(!(src.race in list(BEASTKIN,ELDRITCH,SAIYAN)))//these bois spawn in with deathtimers if theyre elder...
 					var/Age = "Youth"
 					//=alert(src, "Do you want to start as a youth or an elder?  Youths have not yet reached their full potential as fighters. Elders have already passed it, and may teach younger folks.", "Age", "Youth", "Elder")
 					src.EraBody=Age
@@ -1115,7 +1152,6 @@ mob/proc
 			DEBUGMSG("ok we're going to try to set to spawn");
 			src.ChooseSpawn()
 
-			//spawns can kill beastmens ability to learn anything so this is here now.
 			if(src.Intelligence<=0.25)
 				src.Intelligence=0.25
 			if(src.Imagination<=0.25)
@@ -1125,12 +1161,13 @@ mob/proc
 				src.EraAge=0
 				src.EraBody="Adult"
 
+			// Always set RewardsLastGained for new characters so they don't get catch-up rewards for days before they existed
+			src.RewardsLastGained = glob.progress.DaysOfWipe
 			if(glob.progress.WipeStart)
-				src.RewardsLastGained=glob.progress.DaysOfWipe-1
 				src.PotentialLastDailyGain=glob.progress.WipeStart
 				if(src.Potential==DaysOfWipe())//if its a bad boi who gets free potential
 					src.PotentialLastDailyGain=glob.progress.DaysOfWipe-1
-				
+
 				//set these to wipe start so that the login code will give them their rewards and allow them to grind potentialz
 			information.setPronouns(TRUE)
 			killed_AI = list()

@@ -28,6 +28,8 @@
 
 /mob/proc/setMaxRPP()
     var/max = getMaxPlayerRPP()
+    if(RPPHeadStart>max)
+        max=RPPHeadStart
     RPPCurrent = max
 
 
@@ -50,6 +52,8 @@
 
 /mob/proc/GiveRPP(amount)
     var/maxRPP = getMaxPlayerRPP()
+    if(RPPHeadStart>getMaxPlayerRPP())
+        maxRPP=RPPHeadStart
     RPPCurrent = maxRPP
     if(amount+RPPSpendable+RPPSpent > maxRPP)
         RPPSpendable += maxRPP - (RPPSpendable+RPPSpent)

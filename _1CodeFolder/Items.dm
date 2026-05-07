@@ -46,13 +46,38 @@ obj/Money
 obj/Items
 	Pickable=1
 	Stealable=1
-	// wow stat adds or something
+	// Flat additive stats while this item is equipped as a weapon
 	var/strAdd = 0
 	var/endAdd = 0
 	var/forAdd = 0
 	var/spdAdd = 0
 	var/offAdd = 0
 	var/defAdd = 0
+
+	proc/getItemStatAdd(stat as text)
+		if(Broken)
+			return 0
+		switch(stat)
+			if("Str")
+				return strAdd
+			if("End")
+				return endAdd
+			if("For")
+				return forAdd
+			if("Spd")
+				return spdAdd
+			if("Off")
+				return offAdd
+			if("Def")
+				return defAdd
+		return 0
+
+	Del()
+		if(ismob(loc))
+			var/mob/M = loc
+			if(M.equippedSword == src)
+				M.equippedSword = null
+		..()
 
 
 
@@ -71,6 +96,7 @@ obj/Items
 	var/UnderlayIcon
 	var/UnderlayX
 	var/UnderlayY
+	var/UnderlayStack=0
 
 	var/InternalTimer
 
@@ -117,6 +143,7 @@ obj/Items
 	var/Ascended=0
 	var/InnatelyAscended=0//for conjured items
 	var/Glass=0//+1 stat levels, but breaky
+	var/HighFrequency = 0
 	var/Enchanted=0
 	var/EnchantType
 
@@ -163,6 +190,9 @@ obj/Items
 		decreaseShatterCounter(breakVal, owner, attacker, type)
 
 	proc/decreaseShatterCounter(val, mob/owner, mob/attacker, type)
+		// Entropic: equipment interacting against the Entropic player breaks faster
+		if(type && owner && owner.passive_handler.Get("Entropic"))
+			val *= (1 + owner.passive_handler.Get("Entropic"))
 		if(ShatterCounter > 0)
 			ShatterCounter -= val
 			if(ShatterCounter == 100 || ShatterCounter == 25)
@@ -212,6 +242,16 @@ obj/Items
 				src.LayerPriority=0
 		if(Equipped)
 			src.ObjectUse(usr)
+
+	proc/ItemUnderlayMobImage()
+		if(!UnderlayIcon) return null
+		var/ul = UnderlayStack
+		if(ul < 0) ul = 0
+		if(ul > 1000) ul = 1000
+		var/ly = 0.99 - 0.98 * (ul / 1000)
+		if(ly < 0.01) ly = 0.01
+		. = image(icon=UnderlayIcon, pixel_x=UnderlayX, pixel_y=UnderlayY, layer=ly)
+		return
 
 	proc/Drop()
 		if(src.PermEquip)
@@ -308,6 +348,9 @@ obj/Items
 								del ItemMade
 					if(ItemMade)
 						if(ItemMade.Grabbable)
+							if(!usr.CanPickupItem(ItemMade))
+								del ItemMade
+								return
 							ItemMade.loc=usr
 						else
 							ItemMade.loc=usr.loc
@@ -344,18 +387,27 @@ obj/Items
 				return
 
 
+			var/manaCost = src.Cost * (glob.progress.EconomyMana / 100)
+			if(istype(src, /obj/Items/Enchantment/Limited_Rank_Up_Magic))
+				if(usr.getTotalMagicLevel() < 20)
+					usr << "Your total magic level is not high enough to craft Limited Rank-Up Magic. (Requires 20 or higher.)"
+					return
+				manaCost = src.Cost * glob.progress.EconomyCost
 			if(istype(src, /obj/Items/Enchantment/PocketDimensionGenerator))
 				if(!usr.HasFragments(src.Cost*glob.progress.EconomyCost))
 					usr << "You don't have enough fragments to buy [src]."
 					return
 				else
 					usr.TakeFragments(src.Cost*glob.progress.EconomyCost)
-			if(usr.HasManaCapacity(src.Cost*(glob.progress.EconomyMana/100)))
-				usr.TakeManaCapacity(src.Cost*(glob.progress.EconomyMana/100))
+			if(usr.HasManaCapacity(manaCost))
+				usr.TakeManaCapacity(manaCost)
 				ItemMade=new src.type
 				if(istype(src, /obj/Items/Enchantment/Tome))
 					ItemMade:init(1, usr)
 				if(ItemMade.Grabbable)
+					if(!usr.CanPickupItem(ItemMade))
+						del ItemMade
+						return
 					ItemMade.loc=usr
 				else
 					ItemMade.loc=usr.loc
@@ -398,7 +450,10 @@ obj/Items
 				var/icon/newIcon = new(icon)
 				newIcon+=Color
 				usr.IconClicked=0
-				var/obj/A=new type
+				var/obj/Items/A=new type
+				if(!usr.CanPickupItem(A))
+					del A
+					return
 				A.blend_mode = BLEND_OVERLAY
 				A.icon=newIcon
 				usr.contents+=A
@@ -433,7 +488,7 @@ obj/Items
 			if(!(usr in oview(1,src))&&!(src in usr))
 				return
 			var/RacialHunger=1
-			if(usr.race in list(SAIYAN,BEASTMAN))
+			if(usr.race in list(SAIYAN,BEASTKIN))
 				RacialHunger=5
 			if(usr.race in list(MAJIN,DRAGON,DEMON))
 				RacialHunger=20
@@ -629,6 +684,8 @@ obj
 
 		Click()
 			..()
+			if(usr.CheckInventoryFull())
+				return
 			var/obj/Items/Wearables/w = new wearable_path
 			var/Color=input(usr,"Choose color") as color|null
 			if(Color && Color != "#000000")
@@ -879,7 +936,26 @@ obj/Items/Sword
 			HitSparkSize=1
 
 
-
+	HighFrequency
+		name="High Frequency Blade"
+		Unobtainable=0
+		icon='LightSword.dmi'
+		DamageEffectiveness=1.025
+		AccuracyEffectiveness=0.9
+		SpeedEffectiveness=1.25
+		HitSparkSize=0.8
+		ShatterCounter=800
+		ShatterMax=800
+		Cost=40
+		Class="Light"
+		Ascended=4
+		ExtraClass=1
+		HighFrequency=1
+		TechType="MilitaryTechnology"
+		SubType="Melee Weaponry"
+		unsheatheIcon = 'KATANA SILVER.dmi'
+		unsheatheOffsetX = -16
+		unsheatheOffsetY = -16
 	Light
 		name="Bastard Sword"
 		Unobtainable=0
@@ -987,6 +1063,38 @@ obj/Items/Sword
 							DamageEffectiveness=1.05
 							AccuracyEffectiveness=0.875
 							SpeedEffectiveness=1
+
+			Ea
+				name = "Ea"
+				icon='Better_Ea.dmi'
+				pixel_x = -16
+				pixel_y = -16
+				Ascended = 6
+				Destructable = 0
+				ShatterTier = 0
+				NoSaga = 1
+				Unobtainable = 1
+				Element = "Ultima"
+				passives = list("PureDamage"=5, "PridefulRage"=1, "SpiritSword"=2, "SweepingStrike"=1, "Extend"=2)
+
+				// Ea can only be dismissed via the Summon Ea skill
+				AlignEquip(mob/A, dontUnEquip = FALSE)
+					if(suffix && A == src.loc)
+						A << "<font color='red'>Ea can only be dismissed using the Summon Ea skill.</font>"
+					else
+						Equip(A)
+
+				Equip(mob/A)
+					..()
+					if(A)
+						A.ElementalOffense = "Ultima"
+						A.ElementalDefense = "Ultima"
+
+				UnEquip(mob/A)
+					..()
+					if(A)
+						if(A.ElementalOffense == "Ultima") A.ElementalOffense = null
+						if(A.ElementalDefense == "Ultima") A.ElementalDefense = null
 
 			WeaponSoul
 				Destructable = 0
@@ -1219,154 +1327,176 @@ obj/Items/Symbiotic
 
 
 obj/Items/proc/AlignEquip(mob/A, dontUnEquip = FALSE)
+	if(suffix && A == src.loc)
+		if(!dontUnEquip)
+			UnEquip(A)
+	else
+		Equip(A)
+
+
+obj/Items/proc/UnEquip(mob/A)
+	if(!suffix || A != src.loc) return
 	var/placement=FLOAT_LAYER-3
 	if(src.LayerPriority)
 		placement-=src.LayerPriority
 	if(istype(src,/obj/Items/Wearables))
 		if(src.IsHat)
 			placement=FLOAT_LAYER-1
-	if(suffix&&(A==src.loc))
-		if(istype(src, /obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin))
-			var/obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin/s = src
-			if(!s.putAway(A))
-				return
-		if(!dontUnEquip)
-			if(istype(src, /obj/Items/Sword))
-				var/obj/Items/Sword/sord = src
-				if(Augmented)
-					for(var/obj/Skills/Buffs/x in Techniques)
-						if(x.Using || A.CheckSlotless(x.BuffName))
-							A << "You can't remove [src] while you have [x.BuffName] active!"
-							return
-				for(var/obj/Skills/s in A)
-					for(var/obj/Skills/x in Techniques)
-						if(x == s)
-							A.DeleteSkill(x, FALSE)
-				if(!A.UsingLightSaber() && (suffix == "*Equipped*" || "*Equipped (Second)*" || "*Equipped (Third)*"))
-					if(A.equippedSword == src)
-						A.equippedSword = null
-					suffix = null
-				else if(!sord.Conjured && name != "Keyblade")
-					if(A.equippedSword == src)
-						A.equippedSword = null
-					suffix = null
-				else if(sord.Conjured)
-					if(A.equippedSword == src)
-						A.equippedSword = null
-					suffix = null
-					del sord
-
-
-			else
-				if(istype(src, /obj/Items/Armor))
-					A.equippedArmor = null
-				suffix=null
-		if(src.EquipIcon)
-			var/image/im=image(icon=src.EquipIcon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-			A.overlays-=im
-		else
-			var/image/im=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-			if(istype(src, /obj/Items/Sword)||istype(src, /obj/Items/Armor)||istype(src, /obj/Items/Enchantment/Staff))
-				var/image/im2=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-				im2.transform*=3
-				im2.appearance_flags+=512
-				if(A.ArmamentGlow && !istype(src, /obj/Items/Armor))
-					im.filters += A.ArmamentGlow
-					im2.filters += A.ArmamentGlow
-				A.overlays-=im2
-			A.overlays-=im
-
+	if(istype(src, /obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin))
+		var/obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin/s = src
+		if(!s.putAway(A))
+			return
+	if(istype(src, /obj/Items/Sword))
+		var/obj/Items/Sword/sord = src
+		if(Augmented)
+			for(var/obj/Skills/Buffs/x in Techniques)
+				if(x.Using || A.CheckSlotless(x.BuffName))
+					A << "You can't remove [src] while you have [x.BuffName] active!"
+					return
+		for(var/obj/Skills/s in A)
+			for(var/obj/Skills/x in Techniques)
+				if(x == s)
+					A.DeleteSkill(x, FALSE)
+		if(!A.UsingLightSaber() && findtext(suffix, "*Equipped"))
+			if(A.equippedSword == src)
+				A.equippedSword = null
+			suffix = null
+		else if(!sord.Conjured && name != "Keyblade")
+			if(A.equippedSword == src)
+				A.equippedSword = null
+			suffix = null
+		else if(sord.Conjured)
+			if(A.equippedSword == src)
+				A.equippedSword = null
+			suffix = null
+			del sord
 	else
-		if(A==src.loc)
-			if(istype(src, /obj/Items/Sword))
-				if(istype(src, /obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin))
-					var/obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin/s = src
-					if(!A.dainsleifDrawn)
-						var/confirm = input(A, "Are you sure you want to draw Dainsleif?") in list("Yes", "No")
-						if(confirm == "No") return
-						s.drawDainsleif(A)
-					spawn(-1) s.dainsleifDrain(A)
-				if(A.NeedsSecondSword() && A.EquippedSword() && !A.EquippedSecondSword())
-					var/found = 0
-					for(var/obj/Items/Sword/s in A)
-						if(s.suffix == "*Equipped (Second)*")
-							found = 1
-							break
-					if(!found)
-						if(Techniques.len>0)
-							for(var/obj/Skills/x in Techniques) // they should be skill objects
-								A.AddSkill(x)
-								if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear))
-									x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear)
-									x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear(x, x?:BuffName)
-								if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Posture))
-									x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture)
-									x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture(x, x?:BuffName)
-						suffix = "*Equipped (Second)*"
-				else if(A.NeedsThirdSword() && A.EquippedSword() && !A.EquippedThirdSword())
-					var/found = 0
-					for(var/obj/Items/Sword/s in A)
-						if(s.suffix == "*Equipped (Third)*")
-							found = 1
-							break
-					if(!found)
-						if(Techniques.len>0)
-							for(var/obj/Skills/x in Techniques) // they should be skill objects
-								A.AddSkill(x)
-								if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear))
-									x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear)
-									x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear(x, x?:BuffName)
-								if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Posture))
-									x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture)
-									x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture(x, x?:BuffName)
-						suffix = "*Equipped (Third)*"
-				else if(!A.equippedSword)
-					A.equippedSword = src
-					suffix = "*Equipped*"
-				else
-					return 1
-			else
-				if(istype(src, /obj/Items/Armor))
-					A.equippedArmor = src
-
-				// TODO: replace this whole damn proc with 'onEquip()' calls for items. holy shit just clean up the whole equip code
-				if(istype(src, /obj/Items/Symbiotic/Kamui/KamuiSenketsu))
-					var/obj/Items/Symbiotic/Kamui/KamuiSenketsu/KS = src
-					if(A.Saga=="Kamui" && A.KamuiType == "Junketsu")
-						KS.wornByJunketsu = TRUE
-				if(istype(src, /obj/Items/Symbiotic/Kamui/KamuiJunketsu))
-					var/obj/Items/Symbiotic/Kamui/KamuiJunketsu/KJ = src
-					if(A.Saga=="Kamui" && A.KamuiType == "Senketsu" && A.SagaLevel >= 4 && !KJ.wornBySenketsu)
-						KJ.wornBySenketsu = TRUE
-						A << "A bit of your blood seems to infuse into Junketsu..."
-						src.Techniques += list("/obj/Skills/Buffs/SpecialBuffs/Kamui_Senpu", "/obj/Skills/Buffs/SpecialBuffs/Kamui_Senpu_Zanken")
-					if(A.Saga == "Kamui" && A.KamuiType == "Junketsu" && KJ.wornBySenketsu && !KJ.wornInform)
-						A << "The remanents of the Senketsu wearer's blood have awoken something new in your Kamui!"
-						A << "Kamui Senpu & Kamui Senpu Zanken beckon to your imperial will!"
-						KJ.wornInform = TRUE
-
-				suffix="*Equipped*"
-		else if(istype(src,/obj/Items/Gear/Mobile_Suit))
-			src.suffix="*Equipped*"
-		if(src.EquipIcon)
-			var/image/im=image(icon=src.EquipIcon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-			A.overlays+=im
-		else
-			var/image/im=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-			if(istype(src, /obj/Items/Sword) || istype(src, /obj/Items/Enchantment/Staff))
-				if(A.ArmamentGlow)
-					im.filters += A.ArmamentGlow
-			if(A.CheckActive("Mobile Suit")&&(istype(src, /obj/Items/Sword)||istype(src, /obj/Items/Armor)||istype(src, /obj/Items/Enchantment/Staff)))
-				if(src:Conjured)
-					im.transform*=3
-					im.appearance_flags+=512
-			A.overlays+=im
+		suffix=null
+		if(istype(src, /obj/Items/Armor))
+			A.equippedArmor = null
+	for(var/b in A.SlotlessBuffs)
+		var/obj/Skills/Buffs/SlotlessBuffs/sb = A.SlotlessBuffs[b]
+		if(sb && sb.KillSword)
+			sb.Trigger(A)
+	if(src.EquipIcon)
+		var/image/im=image(icon=src.EquipIcon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
+		A.overlays-=im
+	else
+		var/image/im=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
+		if(istype(src, /obj/Items/Sword)||istype(src, /obj/Items/Armor)||istype(src, /obj/Items/Enchantment/Staff))
+			var/image/im2=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
+			im2.transform*=3
+			im2.appearance_flags+=512
+			if(A.ArmamentGlow && !istype(src, /obj/Items/Armor))
+				im.filters += A.ArmamentGlow
+				im2.filters += A.ArmamentGlow
+			A.overlays-=im2
+		A.overlays-=im
 	if(src.UnderlayIcon)
-		var/image/im=image(icon=src.UnderlayIcon, pixel_x=src.UnderlayX, pixel_y=src.UnderlayY)
-		if(src.suffix=="*Equipped*")
-			A.underlays+=im
+		var/image/im = src.ItemUnderlayMobImage()
+		if(im) A.underlays -= im
+
+
+obj/Items/proc/Equip(mob/A)
+	if(suffix) return
+	var/placement=FLOAT_LAYER-3
+	if(src.LayerPriority)
+		placement-=src.LayerPriority
+	if(istype(src,/obj/Items/Wearables))
+		if(src.IsHat)
+			placement=FLOAT_LAYER-1
+	if(A==src.loc)
+		if(istype(src, /obj/Items/Sword))
+			if(istype(src, /obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin))
+				var/obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin/s = src
+				if(!A.dainsleifDrawn)
+					var/confirm = input(A, "Are you sure you want to draw Dainsleif?") in list("Yes", "No")
+					if(confirm == "No") return
+					s.drawDainsleif(A)
+				spawn(-1) s.dainsleifDrain(A)
+			if(A.NeedsSecondSword() && A.EquippedSword() && !A.EquippedSecondSword())
+				var/found = 0
+				for(var/obj/Items/Sword/s in A)
+					if(s.suffix == "*Equipped (Second)*")
+						found = 1
+						break
+				if(!found)
+					if(Techniques.len>0)
+						for(var/obj/Skills/x in Techniques) // they should be skill objects
+							A.AddSkill(x)
+							if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear))
+								x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear)
+								x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear(x, x?:BuffName)
+							if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Posture))
+								x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture)
+								x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture(x, x?:BuffName)
+					suffix = "*Equipped (Second)*"
+			else if(A.NeedsThirdSword() && A.EquippedSword() && !A.EquippedThirdSword())
+				var/found = 0
+				for(var/obj/Items/Sword/s in A)
+					if(s.suffix == "*Equipped (Third)*")
+						found = 1
+						break
+				if(!found)
+					if(Techniques.len>0)
+						for(var/obj/Skills/x in Techniques) // they should be skill objects
+							A.AddSkill(x)
+							if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear))
+								x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear)
+								x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Augmented_Gear/verb/Augmented_Gear(x, x?:BuffName)
+							if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Posture))
+								x.verbs -= list(/obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture)
+								x.verbs += new /obj/Skills/Buffs/SlotlessBuffs/Posture/verb/Posture(x, x?:BuffName)
+					suffix = "*Equipped (Third)*"
+			else if(!A.equippedSword)
+				A.equippedSword = src
+				suffix = "*Equipped*"
+			else
+				return 1
 		else
-			A.underlays-=im
+			if(istype(src, /obj/Items/Armor))
+				A.equippedArmor = src
+			// TODO: replace this whole damn proc with 'onEquip()' calls for items. holy shit just clean up the whole equip code
+			if(istype(src, /obj/Items/Symbiotic/Kamui/KamuiSenketsu))
+				var/obj/Items/Symbiotic/Kamui/KamuiSenketsu/KS = src
+				if(A.Saga=="Kamui" && A.KamuiType == "Junketsu")
+					KS.wornByJunketsu = TRUE
+			if(istype(src, /obj/Items/Symbiotic/Kamui/KamuiJunketsu))
+				var/obj/Items/Symbiotic/Kamui/KamuiJunketsu/KJ = src
+				if(A.Saga=="Kamui" && A.KamuiType == "Senketsu" && A.SagaLevel >= 4 && !KJ.wornBySenketsu)
+					KJ.wornBySenketsu = TRUE
+					A << "A bit of your blood seems to infuse into Junketsu..."
+					src.Techniques += list("/obj/Skills/Buffs/SpecialBuffs/Kamui_Senpu", "/obj/Skills/Buffs/SpecialBuffs/Kamui_Senpu_Zanken")
+				if(A.Saga == "Kamui" && A.KamuiType == "Junketsu" && KJ.wornBySenketsu && !KJ.wornInform)
+					A << "The remanents of the Senketsu wearer's blood have awoken something new in your Kamui!"
+					A << "Kamui Senpu & Kamui Senpu Zanken beckon to your imperial will!"
+					KJ.wornInform = TRUE
+			suffix="*Equipped*"
+	else if(istype(src,/obj/Items/Gear/Mobile_Suit))
+		src.suffix="*Equipped*"
+	if(src.EquipIcon)
+		var/image/im=image(icon=src.EquipIcon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
+		A.overlays+=im
+	else
+		var/image/im=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
+		if(istype(src, /obj/Items/Sword) || istype(src, /obj/Items/Enchantment/Staff))
+			if(A.ArmamentGlow)
+				im.filters += A.ArmamentGlow
+		if(A.CheckActive("Mobile Suit") && (istype(src, /obj/Items/Sword) || istype(src, /obj/Items/Armor) || istype(src, /obj/Items/Enchantment/Staff)))
+			var/is_conjured = FALSE
+			if(istype(src, /obj/Items/Sword))
+				var/obj/Items/Sword/sw = src
+				is_conjured = sw.Conjured
+			else if(istype(src, /obj/Items/Armor))
+				var/obj/Items/Armor/ar = src
+				is_conjured = ar.Conjured
+			if(is_conjured)
+				im.transform *= 3
+				im.appearance_flags += 512
+		A.overlays+=im
+	if(src.UnderlayIcon)
+		var/image/im = src.ItemUnderlayMobImage()
+		if(im) A.underlays += im
 	return 1
 
 
@@ -1966,9 +2096,6 @@ obj/Items/proc/ObjectUse(var/mob/Players/User=usr)
 					if(GearCount>=1)
 						User << "You can't have any weapons equipped while inside a Mobile Suit!"
 						return
-					if(User.InfinityModule)
-						User << "The radiation of your core unit disrupts the electronics of the Suit!"
-						return
 				if(src.Password)
 					var/Unlocked=0
 					for(var/obj/Items/Tech/Door_Pass/L in User)
@@ -2169,6 +2296,8 @@ obj/Items/proc/ObjectUse(var/mob/Players/User=usr)
 
 		Steal
 		if(Looted)
+			if(!usr.CanPickupItem(src))
+				return
 			var/mob/Players/OldLoc=src.loc
 			OMsg(usr, "[usr] steals [src] from [OldLoc]!")
 			usr.contents+=src

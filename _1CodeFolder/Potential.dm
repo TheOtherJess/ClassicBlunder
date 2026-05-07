@@ -16,7 +16,7 @@ mob
 
 			src.potential_max()
 
-			if(src.Potential<src.PotentialCap && src.PotentialStatus!="Distracted")
+			if(src.Potential<src.PotentialCap && src.PotentialStatus!="Caught Up")
 
 				if(npc)
 					switch(src.PotentialStatus)
@@ -58,6 +58,14 @@ mob
 				if(val>0)
 					if(isRace(ANDROID))
 						src.HealthCut+=(val/100)
+					if(isRace(/race/demi_fiend))
+						src.refreshMagatama()
+						if(src.SagaLevel < 3 && src.Potential >= 20)  // ASCENSION_ONE_POTENTIAL + 10
+							src.SagaLevel = 3
+						if(src.SagaLevel < 5 && src.Potential >= 35)  // ASCENSION_TWO_POTENTIAL + 5
+							src.SagaLevel = 5
+						if(src.SagaLevel < 7 && src.Potential >= 50)  // ASCENSION_THREE_POTENTIAL + 10
+							src.SagaLevel = 7
 
 				if(src.Potential>src.PotentialCap && src.PotentialRate>0)
 					src.Potential=src.PotentialCap
@@ -74,12 +82,14 @@ mob
 		potential_max()
 			if(ECCHARACTER) return
 			var/Max=glob.progress.totalPotentialToDate
+			if(Max<PotentialHeadStart)
+				Max=PotentialHeadStart
 			PotentialCap = Max
 			// Max+=src.PotentialRate
 			Max=round(Max)
 			if(src.Potential>=Max && src.PotentialRate>0)//ecs will have potentialrate 0 and so they can be any level
 				src.Potential=Max
-				src.PotentialStatus="Distracted"
+				src.PotentialStatus="Caught Up"
 			else if(src.Potential>Max*0.8 && src.Potential<Max)
 				src.PotentialStatus="Average"
 			else
@@ -127,20 +137,20 @@ mob
 		potential_ascend(var/Silent=0)
 		//	if(secretDatum.nextTierUp != 999 && Secret)
 		//		secretDatum.checkTierUp(src)
-			if(isRace(DEMON))
+			/*if(isRace(DEMON))
 				var/obj/Skills/Buffs/SlotlessBuffs/True_Form/Demon/d = race:findTrueForm(src)
 				if(d.last_charge_gain == 0) d.last_charge_gain = world.realtime
 				if(d.last_charge_gain + 24 HOURS < world.realtime)
 					if(d.current_charges < AscensionsAcquired)
 						d.last_charge_gain = world.realtime
-						d.current_charges++
-			if(isRace(MAKAIOSHIN))
+						d.current_charges++*/
+			/*if(isRace(MAKAIOSHIN))
 				var/obj/Skills/Buffs/SlotlessBuffs/Falldown_Mode/Makaioshin/d = race:findFalldown(src)
 				if(d.last_charge_gain == 0) d.last_charge_gain = world.realtime
 				if(d.last_charge_gain + 24 HOURS < world.realtime)
 					if(d.current_charges < AscensionsAcquired)
 						d.last_charge_gain = world.realtime
-						d.current_charges++
+						d.current_charges++*/
 			if(locate(/obj/Skills/Buffs/SlotlessBuffs/Death_Evolution, src))
 				var/obj/Skills/Buffs/SlotlessBuffs/d = src.findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Death_Evolution)
 				if(d.last_evo_gain == 0) d.last_evo_gain = world.realtime
@@ -148,7 +158,7 @@ mob
 					if(d.evolution_charges < 1)
 						d.last_evo_gain = world.realtime
 						d.evolution_charges++
-
+			//todo: actually unlock transformation if above potential
 			if(Potential>=15)
 				if(SagaLevel < 2 && Saga)
 					saga_up_self()

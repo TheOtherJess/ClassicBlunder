@@ -9,7 +9,7 @@ obj/Skills/Buffs/SlotlessBuffs/Autonomous/Hero_Heart
 	Cooldown = 1
 	adjust(mob/p)
 		if(altered) return
-		passives = list("Tenacity" = round(p.Potential/5,1), "Hardening" = round(p.Potential/20,1))
+		passives = list("Tenacity" = round(p.Potential/5,1), "Harden" = round(p.Potential/20,1))
 		PowerMult=1.15
 		StrMult=1.15
 		ForMult = 1.15
@@ -89,7 +89,7 @@ obj/Skills/Buffs/SlotlessBuffs/Autonomous/Temporary_Hero_Heart
 	EndMult = 1.5
 	Cooldown = 1
 	TimerLimit = 30
-	passives = list("Tenacity" = 1, "Hardening" = 1)
+	passives = list("Tenacity" = 1, "Harden" = 1)
 obj/Skills/Buffs/SlotlessBuffs/Autonomous/Temporary_Hero_Soul
 	ActiveMessage="awakens a heroic soul!"
 	PowerMult=1.15
@@ -108,7 +108,7 @@ obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Temporary_Hero_Hear
 	EndMult = 1.5
 	AlwaysOn = 1
 	TimerLimit = 30
-	passives = list("Tenacity" = 1, "Hardening" = 1)
+	passives = list("Tenacity" = 1, "Harden" = 1)
 obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Temporary_Hero_Soul
 	ActiveMessage="awakens a heroic soul!"
 	PowerMult=1.15
@@ -1294,7 +1294,7 @@ obj/Skills/Grapple
 	Hope_Crossed_On_Your_Heart
 		StrMult=1.3
 		EndMult=1.3
-		passives = list("CallousedHands"=0.5, "Hardening"=3, "TensionLock" = 1, "Brutalize" = 1.5)
+		passives = list("CallousedHands"=0.5, "Harden"=3, "TensionLock" = 1, "Brutalize" = 1.5)
 	The_Cage_With_Human_Soul_And_Parts
 		StrMult=1.3
 		ForMult=1.3

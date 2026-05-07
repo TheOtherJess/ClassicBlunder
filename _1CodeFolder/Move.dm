@@ -101,7 +101,7 @@ proc
 			else
 				B.Open()
 globalTracker/var/SPEED_DELAY = 3
-globalTracker/var/GOD_SPEED_MULT = 0.2
+globalTracker/var/GOD_SPEED_MULT = 0.4
 globalTracker/var/TOTAL_SPEED_BONUS = 0.4
 globalTracker/var/SPEED_DELAY_LOWEST = 1.75
 mob/proc/MovementSpeed()
@@ -111,11 +111,11 @@ mob/proc/MovementSpeed()
 		if(Spd<SpdMin)
 			Spd=SpdMin
 	var/SpdMult = 0;
-	var/GodSpeed = src.HasGodspeed();
+	var/Godspeed = src.HasGodspeed();
 	if(src.Crippled > 10)
 		var/CrippledGod=round(src.Crippled/10);
-		GodSpeed = min(0, GodSpeed-CrippledGod);
-	SpdMult = max(0.1,glob.GOD_SPEED_MULT*sqrt(max(1,GodSpeed)))
+		Godspeed = min(0, Godspeed-CrippledGod);
+	SpdMult = max(0.1,glob.GOD_SPEED_MULT*sqrt(max(1,Godspeed)))
 	var/Delay=glob.SPEED_DELAY/(Spd*(1+SpdMult))
 	if(src.Flying)
 		Delay=0.25
@@ -160,7 +160,7 @@ mob/Move()
 	var/turf/Former_Location = loc
 	if(src.Incorporeal)
 		src.density=0
-	if(!src.Incorporeal&&!src.passive_handler.Get("Skimming")&&!src.is_dashing&&!isai(src)&&!Knockback)
+	if(!src.Incorporeal&&!src.passive_handler.Get("Skimming")&&!src.is_dashing&&!isAI(src)&&!Knockback)
 		for(var/obj/Turfs/Edges/A in loc)
 			if((A.dir in list(dir,turn(dir,45),turn(dir,-45))))
 				return
@@ -169,7 +169,7 @@ mob/Move()
 				return
 	..()
 
-	if(!src.Incorporeal&&!src.passive_handler.Get("Skimming")&&!src.is_dashing&&!isai(src)&&!Knockback)
+	if(!src.Incorporeal&&!src.passive_handler.Get("Skimming")&&!src.is_dashing&&!isAI(src)&&!Knockback)
 		for(var/obj/Turfs/Edges/A in loc)
 			if(!(A.dir in list(dir,turn(dir,90),turn(dir,-90),turn(dir,45),turn(dir,-45))))
 				loc=Former_Location
@@ -192,3 +192,8 @@ mob/Move()
 	if(AFKTimer==0)
 		overlays-=AFKIcon
 	AFKTimer=AFKTimeLimit
+
+	// SlothFactor tracking: reset stationary bonus on any movement
+	if(istype(src, /mob/Players))
+		var/mob/Players/P = src
+		P.resetSlothTracking()

@@ -1,7 +1,7 @@
 #define Swordsmanship list("Hiten Mitsurugi-Ryuu","Unlimited Blade Works", "Weapon Soul")
 #define SECRETS list("Spirits of The World","Jagan", "Hamon of the Sun", "Werewolf", "Vampire", "Sage Arts", "Haki", "Eldritch", "Heavenly Restriction")
 #define SAGAS list("Ansatsuken","Eight Gates","Cosmo","Spiral","Hero","Hiten Mitsurugi-Ryuu","Kamui","Keyblade","King of Braves","Sharingan","Weapon Soul", "Unlimited Blade Works")
-#define RACES list("Android", "Human", "Beastman", "Changeling", "Demon", "Dragon", "Eldritch","Chakardi","Half_Saiyan", "High_Faoroan","Majin","Makyo","Namekian","Saiyan","Shinjin","Yokai","Celestial","Makaioshin")
+#define RACES list("Android", "Human", "Beastkin", "Changeling", "Demon", "Dragon", "Eldritch","Chakardi","Half_Saiyan", "High_Faoroan","Majin","Makyo","Namekian","Saiyan","Shinjin","Celestial","Makaioshin")
 
 mob
 	proc
@@ -170,21 +170,23 @@ mob
 				if(src.HasSwordAscension())
 					Ascensions+=src.GetSwordAscension()
 					// change it to heavy sword damage, fuck it
+				if(s.HighFrequency&&src.CyberCancel)
+					Ascensions+=1
+					if(src.CyberneticMainframe)
+						Ascensions+=1
 				if(Ascensions>6)
 					Ascensions=6
 				if(src.Saga)
 					if(src.Saga in Swordsmanship)
-						switch(Saga)
-							if("Weapon Soul")
-								if(src.SagaLevel)
-									Ascensions += SagaLevel
-							if("Hiten Mitsurugi-Ryuu")
-								if(src.SagaLevel)
-									Ascensions += SagaLevel
+						Ascensions += SagaLevel;
 					if(Ascensions>6)
 						Ascensions=6
 				if(s.Glass)
 					Ascensions+=1
+					if(s.HighFrequency&&src.CyberCancel)
+						Ascensions+=1
+						if(src.CyberneticMainframe)
+							Ascensions+=1
 				if(s.Conversions=="Sharp")
 					Ascensions += (0.1) * s.ShatterTier
 			else if(src.CheckSlotless("Excalibur"))
@@ -203,6 +205,12 @@ mob
 			if(s)
 				Total=s.SpeedEffectiveness
 				Ascensions=s.Ascended
+				if(s.HighFrequency&&src.CyberCancel)
+					Ascensions+=1
+					if(src.CyberneticMainframe)
+						Ascensions+=1
+					if(Ascensions>6)
+						Ascensions=6
 				if(src.HasSwordAscension())
 					Ascensions+=src.GetSwordAscension()
 					if(Ascensions>6)
@@ -220,6 +228,10 @@ mob
 						Ascensions=6
 				if(s.Glass)
 					Ascensions+=1
+					if(s.HighFrequency&&src.CyberCancel)
+						Ascensions+=1
+						if(src.CyberneticMainframe)
+							Ascensions+=1
 				if(s.Conversions=="Light")
 					Ascensions+=1
 			else if(src.CheckSlotless("Excalibur"))
@@ -238,6 +250,12 @@ mob
 			if(s)
 				Total=s.AccuracyEffectiveness
 				Ascensions=s.Ascended
+				if(s.HighFrequency&&src.CyberCancel)
+					Ascensions+=1
+					if(src.CyberneticMainframe)
+						Ascensions+=1
+					if(Ascensions>6)
+						Ascensions=6
 				if(src.HasSwordAscension())
 					Ascensions+=src.GetSwordAscension()
 					if(Ascensions>6)
@@ -255,8 +273,14 @@ mob
 						Ascensions=6
 				if(s.Glass)
 					Ascensions+=1
+					if(s.HighFrequency&&src.CyberCancel)
+						Ascensions+=1
+						if(src.CyberneticMainframe)
+							Ascensions+=1
 				if(s.Conversions=="Hardened")
 					Ascensions-=1
+					if(s.HighFrequency&&src.CyberCancel)
+						Ascensions+=1
 			else if(src.CheckSlotless("Excalibur"))
 				Total=0.9
 				if(src.HasSwordAscension())
@@ -285,9 +309,14 @@ mob
 				return 1
 			return 0
 		GetSwordAscension()
+			var/SwordAsc=passive_handler.Get("SwordAscension")
 			if(passive_handler.Get("The Way"))
 				return glob.MAX_SWORD_ASCENSION
-			return passive_handler.Get("SwordAscension")
+			if(passive_handler.Get("VoidBlade"))
+				SwordAsc+=round((100-src.Health)/25,1)
+			if(SwordAsc>glob.MAX_SWORD_ASCENSION)
+				SwordAsc=glob.MAX_SWORD_ASCENSION
+			return SwordAsc
 		HasSwordDamageBuff()
 			if(passive_handler.Get("SwordDamage"))
 				return 1
@@ -667,6 +696,7 @@ mob
 				return 1
 			if(src.HasMaouKi())
 				return 1
+			if(scalingEldritchPower()) return 1
 		HasClarity()
 			if(passive_handler.Get("Omnipotent")) // so admins can fucking see
 				return 1
@@ -692,6 +722,7 @@ mob
 					return 1
 				if(src.HasSpiritPower()>=1)
 					return 1
+				if(scalingEldritchPower()) return 1
 			return 0
 		HasTransMimic()
 			return passive_handler.Get("TransMimic")
@@ -704,7 +735,7 @@ mob
 			if(stp)
 				Return+=stp
 			if(src.isLunaticMode())
-				Return += (10 / 100 * src.get_potential())
+				Return += (10 / 100 * get_potential())
 			return Return
 		HasPursuer()
 			var/Return=0
@@ -716,6 +747,7 @@ mob
 				Return+=2
 			if(src.KamuiBuffLock)
 				Return+=3
+			Return += scalingEldritchPower();
 			var/stp=src.SaiyanTransPower()
 			if(stp)
 				Return+=stp
@@ -724,6 +756,8 @@ mob
 			var/Return=0
 			var/gk= !src.HasNullTarget() ? src.GetGodKi() : 0
 			var/mk= src.GetMaouKi()
+			if(passive_handler.Get("GodspeedDisabled"))
+				return 0
 			if(mk>=0.25)
 				Return+=round(mk/0.25)
 			if(gk>=0.25)
@@ -742,10 +776,12 @@ mob
 			if(Secret == "Vampire")
 				var/secretLevel = getSecretLevel()
 				Return += 1 + (secretLevel / 4) * (1 + (secretDatum.secretVariable["BloodPower"] * 0.25))
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin" && src.VaizardHealth>0)
 				Return += 2
 			if(src.passive_handler.Get("Determination(Yellow)")||src.passive_handler.Get("Determination(White)"))
 				Return += round(ManaAmount/25, 1)
+			Return += scalingEldritchPower();
+			Return += GetMangLevel()*1.5
 			Return=round(Return)
 			Return=min(8,Return)
 			return Return
@@ -768,15 +804,16 @@ mob
 			if(Target)
 				if(passive_handler.Get("HellRisen")  && isDominating(Target))
 					Return += clamp((passive_handler.Get("HellRisen")*2), 1, 2)
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin" && src.VaizardHealth>0)
 				Return += 5
+			Return += scalingEldritchPower();
 			return Return
 		HasDeathField()
 			if(passive_handler.Get("DeathField"))
 				return 1
 			if(src.KamuiBuffLock)
 				return 1
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin" && src.VaizardHealth>0)
 				return 1
 			if(passive_handler.Get("Determination(Green)")||passive_handler.Get("Determination(White)"))
 				return 1
@@ -786,7 +823,7 @@ mob
 			var/GreenVal=0
 			if(passive_handler.Get("Determination(Green)")||passive_handler.Get("Determination(White)"))
 				GreenVal=round(ManaAmount/20,1)
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beast" && src.VaizardHealth>0)
 				HeartVal += 5
 			. = passive_handler.Get("DeathField")+(src.KamuiBuffLock*5)+HeartVal + GreenVal
 			if(src.isLunaticMode())
@@ -796,12 +833,12 @@ mob
 				return 1
 			if(src.CheckSlotless("Drunken Mastery") && src.Drunk)
 				return 1
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin" && src.VaizardHealth>0)
 				return 1
 			return 0
 		GetVoidField()
 			var/Extra=0
-			if(src.isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman" && src.VaizardHealth>0)
+			if(src.isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin" && src.VaizardHealth>0)
 				Extra += 5
 
 			if(src.CheckSlotless("Drunken Mastery") && src.Drunk)
@@ -844,14 +881,16 @@ mob
 				return 1
 			return
 		HasNull()
-			if(passive_handler.Get("Null"))
-				if(src.isRace(ELDRITCH) && src.AscensionsAcquired==6 && src.Secret=="Eldritch")
-					return 1;
+			if(passive_handler.Get("Null")) return 1;
 			return 0;
 		HasNullTarget()
-			if(Target) if(Target.HasNull() &&!src.HasMaouKi()) return 1;
+			if(Target) if(Target.HasNull() && !HasMaouKi()) return 1;
 			return 0;
 		HasBleedHit()
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				return 1
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
+				return 1
 			if(passive_handler.Get("BleedHit"))
 				return 1
 			if(passive_handler.Get("Shameful Display"))
@@ -870,6 +909,10 @@ mob
 			var/Return=0
 			var/kkmast=0
 			Return+=passive_handler.Get("BleedHit")
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				Return += (4-AscensionsAcquired)*0.1
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
+				Return += (6-AscensionsAcquired)*0.3
 			if(src.Kaioken)
 				for(var/obj/Skills/Buffs/SpecialBuffs/Kaioken/kk in src.Buffs)
 					kkmast=kk.Mastery
@@ -905,6 +948,8 @@ mob
 				for(var/obj/Skills/Buffs/SpecialBuffs/Rekkaken/rk in src.Buffs)
 					rkmast=rk.Mastery
 				Return+=(1+passive_handler.Get("BurningShot"))-rkmast
+			if(passive_handler.Get("Ashen One"))
+				Return *= 1+(src.Tension/100)
 			return Return
 		HasEnergyLeak()
 			if(passive_handler.Get("Pride")&&Health>=90)
@@ -915,6 +960,10 @@ mob
 				if(race.transformations[transActive].mastery>10&&race.transformations[transActive].mastery<75)
 					return 1
 			if(src.DoubleHelix>=1)
+				return 1
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				return 1
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
 				return 1
 			return 0
 		GetEnergyLeak()
@@ -942,6 +991,10 @@ mob
 				Total = 0
 			if(src.DoubleHelix<1&&passive_handler.Get("DoubleHelix"))
 				Total = 0
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				Total += (3-AscensionsAcquired)*0.15
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
+				Total += (5-AscensionsAcquired)*0.5
 			return Total
 		HasFatigueLeak()
 			if(passive_handler.Get("Pride")&&Health>=90)
@@ -952,13 +1005,15 @@ mob
 				return 1
 			if(src.DoubleHelix>=1)
 				return 1
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				return 1
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
+				return 1
 			return 0
 		GetFatigueLeak()
 			var/Total=0
 			var/PrideDrain=0
 			Total+=passive_handler.Get("FatigueLeak")
-			if(Total >= 3 && isRace(YOKAI))
-				Total -= 0.5 * AscensionsAcquired
 			if(src.GatesActive && src.GatesActive < 8)
 				return Total +(4/src.SagaLevel)
 			if(src.DoubleHelix)
@@ -975,6 +1030,10 @@ mob
 				Total*=PrideDrain
 			if(src.DoubleHelix<1&&passive_handler.Get("DoubleHelix"))
 				Total = 0
+			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
+				Total += (3-AscensionsAcquired)*0.1
+			if(passive_handler.Get("Full Manifestation")&&AscensionsAcquired<5)
+				Total += (5-AscensionsAcquired)*0.3
 			return Total
 		HasSoftStyle()
 			if(passive_handler.Get("SoftStyle"))
@@ -1067,22 +1126,31 @@ mob
 			if(passive_handler.Get("PULock"))
 				return passive_handler.Get("PULock")
 			return 0
-		HasGatesPULock()
-			if(passive_handler.Get("Gates PULock"))
-				return passive_handler.Get("Gates PULock")
-			return 0
 		HasPUSpike()
 			if(passive_handler.Get("PUSpike"))
 				return 1
 			return 0
-		GetPUSpike()
-			return passive_handler.Get("PUSpike")
 		HasUnstoppable()
 			if(Secret == "Zombie")
 				return 1
 			if(passive_handler.Get("Unstoppable")>=1||passive_handler.Get("The Immovable Object"))
 				return 1
+			if(passive_handler.Get("You Thought"))
+				return 1
 			return 0
+		HasUnbreakable()
+			if(passive_handler.Get("Unbreakable")>=1||passive_handler.Get("The Immovable Object"))
+				return 1
+			if(Saga == "Eight Gates")
+				return 1
+			return 0
+		GetUnbreakable() //0.1=ignore 10% of stat taxes
+			var/Return=0
+			if(passive_handler.Get("Unbreakable"))
+				Return +=passive_handler.Get("Unbreakable")
+			if(Saga == "Eight Gates"&&GatesActive>SagaLevel)
+				Return = 0.375*(GatesActive-SagaLevel)
+			return Return
 		SaiyanTransPower()/*
 			if(isRace(SAIYAN) || isRace(HALFSAIYAN))
 				var/t = transActive
@@ -1097,6 +1165,14 @@ mob
 			return FALSE
 		missingHealth()
 			return 100-Health
+		proportionalHealth(var/Type)
+			var/Amount
+			switch(Type)
+				if("Higher")
+					Amount=src.Health-src.Target.Health
+				if("Lower")
+					Amount=src.Target.Health-src.Health
+			return Amount
 		HasPureDamage(changelingIgnore = 0)
 			var/Return=0
 			if(!changelingIgnore&&isRace(CHANGELING)&&Anger)
@@ -1128,6 +1204,10 @@ mob
 				Return += h
 			if(src.isLunaticMode())
 				Return += (5 / 100 * src.get_potential())
+			Return += GetMangLevel()*1.25
+			if(passive_handler.Get("Compassion")&&Health<=50)
+				if(Target.Health>Health)
+					Return += 5*clamp((proportionalHealth("Lower")/10),1,4)
 			return Return
 		HasPureReduction()
 			var/Return=0
@@ -1155,6 +1235,11 @@ mob
 			if(passive_handler["Rebel Heart"])
 				var/h = (missingHealth()/glob.REBELHEARTMOD) * passive_handler["Rebel Heart"]
 				Return += h
+			if(passive_handler.Get("Compassion")&&Health>51)
+				if(Target.Health>Health)
+					Return += 3*clamp((proportionalHealth("Lower")/10),1,4)
+			if(DownToEarth>0)
+				Return*=1*((100-DownToEarth)/100)
 			return Return
 		Hustling()
 			if(passive_handler.Get("Hustle") || HasMythical() > 0.25 || (passive_handler["Rage"] && Health <= 25))
@@ -1198,6 +1283,10 @@ mob
 			if(Target)
 				if(isDominating(Target) && passive_handler.Get("HellRisen"))
 					return 1
+			return 0
+		HasTestMode()
+			if(passive_handler && passive_handler.Get("TestMode"))
+				return 1
 			return 0
 		GetTechniqueMastery()
 			var/Return=0
@@ -1261,6 +1350,7 @@ mob
 				return 1
 			if(Saga=="Cosmo")
 				return 1
+			if(passive_handler.Get("Hopes and Dreams")) return 1;
 			return 0
 		GetMovementMastery()
 			var/Total=0
@@ -1270,7 +1360,10 @@ mob
 			if(Saga=="Cosmo" && !SpecialBuff)
 				Total += SagaLevel * 2.5
 			if(InfinityModule)
-				Total += round(glob.progress.totalPotentialToDate,5) / 10
+				Total += (2 * AscensionsAcquired)
+			if(Secret=="Shin")
+				Total += secretDatum.currentTier
+			if(passive_handler.Get("Hopes and Dreams")) Total += (5 * AscensionsAcquired)
 			return Total
 		HasPhysicalHitsLimit()
 			if(passive_handler.Get("PhysicalHitsLimit"))
@@ -1291,11 +1384,11 @@ mob
 		HasAutoReversal()
 			if(passive_handler.Get("Reversal"))
 				return 1
-			if(passive_handler["Magmic"] && SlotlessBuffs["Magmic Shield"])
+			if(hasMagmicShield())
 				return 1
 			return 0
 		GetAutoReversal()
-			if(passive_handler["Magmic"] && SlotlessBuffs["Magmic Shield"])
+			if(hasMagmicShield())
 				return 100
 			return passive_handler.Get("Reversal")
 		HasAttracting()
@@ -1347,13 +1440,13 @@ mob
 			return Return
 		HasDebuffResistance()
 			if(src.HasDebuffReversal()) return 0;
-			if(passive_handler.Get("DebuffResistance")||passive_handler.Get("Determination(Green")||passive_handler.Get("Determination(White)"))
+			if(passive_handler.Get("DebuffResistance")||passive_handler.Get("Determination(Green)")||passive_handler.Get("Determination(White)"))
 				return 1
 			return 0
 		GetDebuffResistance()
 			var/GreenVal=0
 			if(src.HasDebuffReversal()) return 0;
-			if(passive_handler.Get("Determination(Green")||passive_handler.Get("Determination(White)"))
+			if(passive_handler.Get("Determination(Green)")||passive_handler.Get("Determination(White)"))
 				GreenVal=round(ManaAmount/20,1)
 			return passive_handler.Get("DebuffResistance") + GreenVal
 		HasVenomImmune()
@@ -1408,12 +1501,21 @@ mob
 			if(src.UBWPath=="Feeble"&&SagaLevel>=4)
 				return 1
 			return 0
+		HasTurningCharge()
+			if(passive_handler.Get("TurningCharge"))
+				return 1
+			return 0
 		HasQuickCast()
 			if(passive_handler.Get("QuickCast"))
 				return 1
 			return 0
 		GetQuickCast()
 			return passive_handler.Get("QuickCast")
+		GetBeamChargeSpeedMult()
+			var/mult = (1+(src.GetKiControlMastery()*0.1))
+			if(src.HasQuickCast())
+				mult *= src.GetQuickCast()
+			return mult
 		HasDualCast()
 			if(passive_handler.Get("DualCast"))
 				return 1
@@ -1460,17 +1562,10 @@ mob
 			if(passive_handler.Get("NeedsSword"))
 				return 1
 			return 0
-		HasRipple()
+		RippleActive()
 			if(passive_handler.Get("Ripple"))
 				return 1
-			if(secretDatum && Secret == "Ripple")
-				return 1
 			return 0
-		HasWitchCraft()
-			if(locate(/obj/Items/WitchCraft/WitchesBook, src.contents))
-				return 1
-			else
-				return 0
 		GetRipple()
 			var/RippleEffectivness=1
 			if(src.Slow)
@@ -1534,6 +1629,7 @@ mob
 			if(passive_handler.Get("LikeWater") || passive_handler.Get("Gravity"))
 				if(Target.HasInstinct() >= GetFlow())
 					return 1
+			if(scalingEldritchPower()) return 1;
 			return 0
 		GetFlow()
 			var/Extra=0
@@ -1554,8 +1650,9 @@ mob
 				Extra++
 			if(src.CombatCPU)
 				Extra+=1
+			Extra += scalingEldritchPower();
 			if(InfinityModule)
-				Extra += round(glob.progress.totalPotentialToDate,5) / 25
+				Extra += AscensionsAcquired
 			if(Target&&Target.passive_handler.Get("Instinct") >= Base+Extra)
 				Extra += (passive_handler.Get("LikeWater")) / 2
 			return (Base+Extra)
@@ -1579,9 +1676,10 @@ mob
 			if(round(t/4))
 				Return+=1
 			if(InfinityModule)
-				Return += round(glob.progress.totalPotentialToDate,5) / 25
+				Return += AscensionsAcquired
 			if(Target&&Target.passive_handler.Get("Flow") >= Return)
 				Return+=passive_handler.Get("LikeWater") / 2
+			Return += scalingEldritchPower();
 			if(Return < 0)
 				Return = 0
 			return Return
@@ -1598,14 +1696,14 @@ mob
 				return 1
 			if(Secret == "Vampire")
 				return 1
-			if(isRace(MAJIN) && race.ascensions[1].choiceSelected == /ascension/sub_ascension/majin/unhinged)
+			if(isRace(MAJIN) && Class == "Unhinged")
 				return 1
 			return 0
 		GetLifeSteal()
 			var/extra = 0
 			if(passive_handler["Rage"] && Health <= 75)
 				extra = 5 * passive_handler["Rage"]
-			if(isRace(MAJIN) && race.ascensions[1].choiceSelected == /ascension/sub_ascension/majin/unhinged)
+			if(isRace(MAJIN) && Class == "Unhinged")
 				extra += 5 * AscensionsAcquired
 			if(Secret=="Vampire")
 				var/secretLevel = getSecretLevel()
@@ -1632,6 +1730,12 @@ mob
 				DetBlack=25
 			return passive_handler.Get("ManaSteal")+DetBlack
 
+
+		GetSoulFire()
+			if(!FightingSeriously(src, 0)) return 0;
+			. = passive_handler.Get("SoulFire");
+			. += scalingEldritchPower();
+
 		HasLifeStealTrue()
 			if(passive_handler.Get("LifeStealTrue"))
 				return 1
@@ -1641,7 +1745,9 @@ mob
 				return 1
 			return 0
 		GetLifeGeneration()
-			return passive_handler.Get("LifeGeneration")
+			var/LifeGen=passive_handler.Get("LifeGeneration")
+			var/LifeGenValue=0.75+(LifeGen-(LifeGen*0.75))
+			return LifeGenValue
 		HasEnergyGeneration()
 			if(passive_handler.Get("EnergyGeneration"))
 				return 1
@@ -1673,6 +1779,10 @@ mob
 			return 0
 		HasShearImmunity()
 			if(passive_handler.Get("ShearImmunity"))
+				return 1
+			return 0
+		HasShockImmunity()
+			if(passive_handler.Get("ShockImmunity"))
 				return 1
 			return 0
 		HasTaxThreshold()
@@ -1711,6 +1821,12 @@ mob
 					if(de.evolution_charges)
 						return 1;
 			return 0;
+		hasMazokuRevival()
+			if(!isRace(HUMAN)) return 0
+			if(AscensionsAcquired < 3) return 0
+			if(!passive_handler.Get("DormantDemon")) return 0
+			if(passive_handler.Get("DeathDefied")) return 0
+			return 1
 		HasHellPower()
 			if(CheckSlotless("Satsui no Hado") && SagaLevel>=6)
 				return 1
@@ -1752,6 +1868,24 @@ mob
 			var/HealthLost = abs(src.Health-100)
 			Return=1+(((glob.BASE_HELL_SCALING_RATIO * HealthLost) * Mult) ** (1/2))
 			return Return
+		GetSaiyanPower()
+			var/MasteryDivisor1=(src.race.transformations[1].mastery/100)
+			var/SaiyanPower1=passive_handler.Get("SaiyanPower1")*MasteryDivisor1
+			if(passive_handler.Get("MagnifiedSSJ1"))
+				SaiyanPower1+=passive_handler.Get("MagnifiedSSJ1")
+			var/SaiyanPower2=passive_handler.Get("SaiyanPower2") //it's always at full power
+			if(passive_handler.Get("MagnifiedSSJ2"))
+				SaiyanPower2+=passive_handler.Get("MagnifiedSSJ2")
+			var/SaiyanPower3= passive_handler.Get("SaiyanPower3")
+			var/SaiyanPower4= passive_handler.Get("SaiyanPower4")
+			var/SaiyanPowerGod= passive_handler.Get("SaiyanPowerGod")
+			var/SaiyanPowerZenkai= passive_handler.Get("TrueZenkaiPower")
+			var/SaiyanPowerVoid= passive_handler.Get("SaiyanPowerVoid")
+			var/SEBoost=1+(passive_handler.Get("SpiralPowerUnlocked")/10)
+			if(passive_handler.Get("SpiralPowerUnlocked")&&NobodyOriginType=="Pride")
+				SaiyanPowerVoid*=SEBoost
+			var/SaiyanPower=1+(SaiyanPower1+SaiyanPower2+SaiyanPower3+SaiyanPower4+SaiyanPowerZenkai+SaiyanPowerGod+SaiyanPowerVoid)//It's like this because I intend on having Saiyan Unique buffs interact with this specifically. you'll see what i mean when i get to the grades
+			return SaiyanPower
 
 		HasPowerReplacement()
 			if(src.passive_handler.Get("PowerReplacement"))
@@ -1841,11 +1975,11 @@ mob
 			return 0
 		GetMaouKi()
 			var/Total=passive_handler.Get("GodKi")
-			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3||secretDatum.secretVariable["EldritchInstinct"]==1&&src.Potential>=55)
-				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct"||secretDatum.secretVariable["EldritchInstinct"]==1)
+			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)
+				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
 					Total+=glob.T3_STYLES_GODKI_VALUE
-			if(glob.T4_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=4&&src.Potential>=70||secretDatum.secretVariable["EldritchInstinct"]==1&&src.Potential>=70)
-				if(src.SagaLevel<1&&!glob.T4_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct"||secretDatum.secretVariable["EldritchInstinct"]==1)
+			if(glob.T4_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=4&&src.Potential>=70)
+				if(src.SagaLevel<1&&!glob.T4_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
 					Total+=glob.T4_STYLES_GODKI_VALUE
 			if(src.HasSpiritPower()>=1 && FightingSeriously(src, 0))
 				if(src.Health<=(30+src.TotalInjury)*src.GetSpiritPower())
@@ -1875,19 +2009,14 @@ mob
 				if(src.Target&&(Health+VaizardHealth)<(Target.Health+Target.VaizardHealth))
 					Total*=clamp((Target.Health+Target.VaizardHealth)/(Health+VaizardHealth),1, 4)
 			if(src.KamuiBuffLock)
-				Total+=0.75
+				Total+=0.25
 			if(src.isRace(DRAGON))
 				if(src.AscensionsAcquired==6 && Total<0.5)
-					Total=0.5//fully ascended dragon
+					Total=0.25//fully ascended dragon
 			if(passive_handler.Get("CreateTheHeavens") && src.DoubleHelix>=5&&isRace(HUMAN))
-				Total += 0.5
-			if(passive_handler.Get("Kaioken Blue"))
-				if(src.Target&&Target!=src)
-					if(src.Target.HasGodKi())
-						if(Target.GetGodKi() >= 1.75)
-							Total+=src.Kaioken/4
-				if(src.Kaioken>=6)
-					Total+=1
+				Total += 0.25
+			if(Total>=glob.GOD_KI_CAP)
+				Total=glob.GOD_KI_CAP
 			if(passive_handler.Get("SSJRose"))
 				if(src.Target&&(Health+VaizardHealth)<(Target.Health+Target.VaizardHealth))
 					Total*=clamp((Target.Health+Target.VaizardHealth)/(Health+VaizardHealth),1, 2)
@@ -1956,32 +2085,32 @@ mob
 						if(Target.GetGodKi() > Total)
 							Total=Target.GetGodKi()*src.GodKiCopyValue()
 						else
-							Total+=(Potential/100)*src.GodKiCopyValue()
+							if(src.passive_handler.Get("AbsoluteDespair"))
+								Total+=0.1
+							else
+								Total+=(Potential/100)*src.GodKiCopyValue()
 					else
 						Total+=(Potential/100)*src.GodKiCopyValue()
 			if(passive_handler.Get("GodCloth"))
 				if(src.Target&&(Health+VaizardHealth)<(Target.Health+Target.VaizardHealth))
 					Total*=clamp((Target.Health+Target.VaizardHealth)/(Health+VaizardHealth),1, 3)
 			if(src.KamuiBuffLock)
-				Total+=0.75
+				Total+=0.25
 			if(src.isRace(DRAGON))
 				if(src.AscensionsAcquired==6 && Total<0.5)
-					Total=0.5//fully ascended dragon
+					Total=0.25//fully ascended dragon
 			if(passive_handler.Get("CreateTheHeavens") && src.DoubleHelix>=5&&isRace(HUMAN))
-				Total += 0.5
-			if(passive_handler.Get("Kaioken Blue"))
-				if(src.Target&&Target!=src)
-					if(src.Target.HasGodKi())
-						if(Target.GetGodKi() >= 1.75)
-							Total+=src.Kaioken/4
-				if(src.Kaioken>=6)
-					Total+=1
+				Total += 0.25
+			if(Total>=glob.GOD_KI_CAP)
+				Total=glob.GOD_KI_CAP
 			if(src.DownToEarth>0)
 				Total*=1*((100-src.DownToEarth)/100)
 			if(src.passive_handler.Get("The Power of Stories"))
 				Total+=3
 			return Total
 		HasGodKiCopy()
+			if(passive_handler.Get("AbsoluteDespair"))
+				return 1
 			if(passive_handler.Get("CreateTheHeavens")&&isRace(HUMAN))
 				return 1
 			if(passive_handler.Get("Hidden Potential")||passive_handler.Get("Orange Namekian"))
@@ -1992,6 +2121,8 @@ mob
 			return 0
 		GodKiCopyValue()//multiplicative
 			var/Total=0
+			if(passive_handler.Get("AbsoluteDespair"))
+				Total=1.1
 			if(passive_handler.Get("CreateTheHeavens")&& !HasGodKiBuff()&&isRace(HUMAN))
 				Total=1
 			if(passive_handler.Get("Hidden Potential"))
@@ -2004,17 +2135,19 @@ mob
 			if(src.CheckSlotless("Saiyan Soul"))
 				Total=0.35
 			return Total
-		HasEndlessNine()
-			if(HasNullTarget()) return 0;
-			if(passive_handler.Get("CreateTheHeavens"))
-				return 0
-			if(passive_handler.Get("EndlessNine"))
-				return 1
-			return 0
-		GetEndlessNine()
-			var/Total=(!HasNullTarget() ? passive_handler.Get("EndlessNine") : 0)
-			Total*=clamp(100/(Health+1), 1, 8)
-			return Total
+
+globalTracker/var
+	ENDLESS_NINE_MIN = 0;
+	ENDLESS_NINE_MAX_MULT = 8;
+
+mob
+	proc
+		GetEndlessNine(mob/atkr)
+			if(!atkr || HasNullTarget() || passive_handler.Get("CreateTheHeavens")) return 0;
+			. = passive_handler.Get("EndlessNine");
+			if(.) . *= clamp(100/(Health+1), 1, glob.ENDLESS_NINE_MAX_MULT);
+			. = min(., atkr.GetGodKi());
+			. = max(glob.ENDLESS_NINE_MIN, .);
 		HasFluidForm()
 			if(passive_handler.Get("FluidForm"))
 				return passive_handler.Get("FluidForm")
@@ -2104,12 +2237,6 @@ mob
 			return 0
 		GetFreezing()
 			return passive_handler.Get("Freezing")
-		HasHardening()
-			if(passive_handler.Get("Hardening"))
-				return 1
-			return 0
-		GetHardening()
-			return min(passive_handler.Get("Hardening"), glob.HARDEN_MAX_BOON);
 		HasCrushing()
 			if(passive_handler.Get("Crushing"))
 				return 1
@@ -2166,26 +2293,27 @@ mob
 			return 0
 		GetEnraging()
 			return passive_handler.Get("Enraging")
-		HasDoubleStrike()
-			if(passive_handler.Get("DoubleStrike"))
-				return 1
-			return 0
+//these could also use their own pages
+globalTracker/var
+	DOUBLE_STRIKE_MAX = 4;//max values are the amt that is needed in order to hit 100% probability
+	TRIPLE_STRIKE_MAX = 3;
+	ASURA_STRIKE_MAX = 2;
+mob
+	proc
 		GetDoubleStrike()
-			return passive_handler.Get("DoubleStrike")
-		HasTripleStrike()
-			if(passive_handler.Get("TripleStrike"))
-				return 1
-			return 0
+			var/anotherOne = passive_handler.Get("DoubleStrike");
+			return anotherOne ? (100 / glob.DOUBLE_STRIKE_MAX * anotherOne) : 0;
 		GetTripleStrike()
-			return passive_handler.Get("TripleStrike")
-		HasAsuraStrike()
-			if(passive_handler.Get("AsuraStrike"))
-				return 1
-			return 0
+			var/anotherOne = passive_handler.Get("TripleStrike");
+			return anotherOne ? (100 / glob.TRIPLE_STRIKE_MAX * anotherOne) : 0;
 		GetAsuraStrike()
-			return passive_handler.Get("AsuraStrike")
+			var/anotherOne = passive_handler.Get("AsuraStrike");
+			return anotherOne ? (100 / glob.ASURA_STRIKE_MAX * anotherOne) : 0;
+
 		HasDebuffReversal()
 			if(passive_handler.Get("DebuffReversal"))
+				return 1
+			if(passive_handler.Get("You Thought"))
 				return 1
 			return 0
 		GetDebuffReversal()
@@ -2234,49 +2362,83 @@ mob
 			if(src.TarotFate=="The Lovers")
 				Extra=2.5
 			return (passive_handler.Get("AbyssMod")+Extra-Reduce)
-		HasSlayerMod(mob/enemy)
-			if(passive_handler.Get("SlayerMod"))
-				if(passive_handler["FavoredPrey"] == "All")
-					return 1
-				if(passive_handler["FavoredPrey"] == "Secrets")
-					if(enemy.secretDatum && enemy.secretDatum.name)
-						return 1
-				else if(passive_handler["FavoredPrey"] == "Sagas")
-					if(enemy.Saga)
-						return 1
-				else if(passive_handler["FavoredPrey"] in SAGAS)
-					if(enemy.Saga == passive_handler["FavoredPrey"])
-						return 1
-				else if(passive_handler["FavoredPrey"] in SECRETS)
-					if(enemy.secretDatum && enemy.secretDatum.name == passive_handler["FavoredPrey"])
-						return 1
-				else if(passive_handler["FavoredPrey"] == "Races")
-					if(enemy)
-						if(!enemy.secretDatum)
-							return 1
-				else if(passive_handler["FavoredPrey"] in RACES)
-					if(enemy.race.name == passive_handler["FavoredPrey"])
-						return 1
-				else if(passive_handler["FavoredPrey"] == "Depths")
-					if(enemy.isRace(DEMON)||enemy.isRace(ELDRITCH))
-						return 1
-				else if(passive_handler["FavoredPrey"] == "Beyond")
-					if(enemy.isRace(DEMON)||enemy.isRace(ELDRITCH)||enemy.isRace(MAKAIOSHIN)||enemy.isRace(ANGEL)||enemy.isRace(POPO))
-						return 1
-				return 0
-			return 0
-		GetSlayerMod()
-			return passive_handler.Get("SlayerMod")
+
+//----------------------------------------------------------------------
+//TODO Between Wipes: Move this to a separate passive page for SlayerMod
+globalTracker/var/
+	SLAYER_DAMAGE_MIN = -10;
+	SLAYER_DAMAGE_MAX = 10;
+	SLAYER_SPEC_MULT = 1.5;
+#define VALID_FAVORED_PREY list("All", "Mortal", "Depths", "Beyond", "Secret", "Saga","Transformations", "ckey","Gender")
+#define DEPTHS_RACES list(ELDRITCH, DEMON)
+#define BEYOND_RACES DEPTHS_RACES+list(MAKAIOSHIN, ANGEL, POPO)
+#define INHERENT_SECRET list(ELDRITCH, ANGEL)
+#define SLAYER_SPEC_SAGAS list("Ansatsuken", "Hiten Mitsurugi-Ryuu")
+mob
+	proc
+		invalidPrey(preyType, mob/enemy)
+			var/invalid=0;
+			if(!(preyType in VALID_FAVORED_PREY))
+				liveDebugMsg("[src]([src.key]) is using [preyType] as a FavoredPrey for their SlayerMod. Make a note of it in Coding Chat and edit it to one of the valid FavoredPrey options:");
+				var/options = "";
+				for(var/x in VALID_FAVORED_PREY)
+					options += "[x] | "
+				options = copytext(options, 1, length(options)-3);//backspace the last bit after the list has been iterated
+				liveDebugMsg(options);
+				invalid++;
+			if(!enemy) invalid++;
+			switch(preyType)//no check for "All" because it will always be valid if there is an enemy
+				if("Secret") if(!enemy.Secret || (enemy.race.type in INHERENT_SECRET)) invalid++;
+				if("Saga") if(!enemy.Saga) invalid++;
+				if("Transformations") if(!enemy.transActive) invalid++
+				if("Gender") if(enemy.Gender=="Male"||enemy.Gender=="Political") invalid++
+				if("Mortal") if((enemy.race.type in DEPTHS_RACES) || (enemy.race.type in BEYOND_RACES)) invalid++;
+				if("Depths") if(!(enemy.race.type in DEPTHS_RACES)) invalid++;
+				if("Beyond") if(!(enemy.race.type in BEYOND_RACES)) invalid++;
+			return invalid;
+		GetSlayerMod(mob/enemy, forced=0)
+			var/slayer = passive_handler.Get("SlayerMod");
+			var/prey = passive_handler.Get("FavoredPrey");
+			if(!enemy) return 0;
+			// value applies even without passive SlayerMod.
+			if(forced && !slayer)
+				return clamp(forced, glob.SLAYER_DAMAGE_MIN, glob.SLAYER_DAMAGE_MAX);
+			if(!slayer) return 0;
+			if(!prey)
+				liveDebugMsg("[src]([src.key]) has SlayerMod marked with no FavoredPrey.");
+				return 0;
+			if(invalidPrey(prey, enemy)) return 0;
+			. = 0;
+			. += passive_handler.Get("SlayerMod");
+			if(prey != "All") . -= (max(0, enemy.passive_handler.Get("Xenobiology")) * .);
+			if(Saga in SLAYER_SPEC_SAGAS) . *= glob.SLAYER_SPEC_MULT;
+			if (. > 0)
+				if(enemy.UsingMuken()) . *= (-1);
+			if(forced) . = forced;
+			if(passive_handler.Get("FavoredPrey") == "Transformations")
+				if(. < 2)
+					. = 2
+			if(passive_handler.Get("FavoredPrey") == "ckey")
+				if(enemy.ckey==passive_handler.Get("That One Grudge From Ten Years Ago You Can't Let Go Like Come On Dude Move On With Your Fucking Life"))
+					if(. < 5000)
+						. = 5000
+			if(passive_handler.Get("FavoredPrey") == "Gender")
+				. = 0 //All of your violence is structural. You have no power outside of the system that gives it to you.
+			if(passive_handler.Get("FavoredPrey") == "Secret" && Secret)
+				. /= 4
+			. = clamp(., glob.SLAYER_DAMAGE_MIN, glob.SLAYER_DAMAGE_MAX);
+//----------------------------------------------------------------------
+
 		HasBeyondPurity()
 			if(passive_handler.Get("BeyondPurity"))
 				return 1
-			if(src.SlotlessBuffs["Sparkling Ripple"]&&src.HasRipple())//Ripple Pure shenanigans
+			if(src.SlotlessBuffs["Sparkling Ripple"]&&RippleActive())//Ripple Pure shenanigans
 				return 1
 			return 0
 		HasPurity()
 			if(passive_handler.Get("Purity"))
 				return 1
-			if(src.SlotlessBuffs["Sparkling Ripple"]&&src.HasRipple())//Ripple Pure shenanigans
+			if(src.SlotlessBuffs["Sparkling Ripple"]&&RippleActive())//Ripple Pure shenanigans
 				return 1
 			return 0
 		HasNoAnger()
@@ -2291,9 +2453,8 @@ mob
 			return 0
 		GetAngerThreshold()
 			var/Extra=0;
-			if(src.Secret=="Eldritch")
-				if(src.isLunaticMode())
-					Extra += (src.LunacyDrank / 100)
+			if(isLunaticMode())
+				Extra += (src.LunacyDrank / 100)
 			return (passive_handler.Get("AngerThreshold") + Extra)
 		HasWeaponBreaker()
 			if(passive_handler.Get("WeaponBreakerQOL"))
@@ -2324,15 +2485,6 @@ mob
 					return ta
 			else
 				return 0
-		HasSteady()
-			if(passive_handler.Get("Steady"))
-				return 1
-			if(passive_handler.Get("Zornhau"))
-				return 1
-			return 0
-		GetSteady()
-			var/total = passive_handler.Get("Steady") * (glob.STEADY_MODIFIER)
-			return total
 		HasErosion()
 			if(passive_handler.Get("Erosion"))
 				return 1
@@ -2340,7 +2492,7 @@ mob
 		GetErosion()
 			return passive_handler.Get("Erosion")
 		HasMirrorStats()
-			if(passive_handler.Get("MirrorStats"))
+			if(passive_handler.Get("MirrorStats")||passive_handler.Get("Absolute Despair"))
 				return 1
 			return 0
 		HasManaPU()
@@ -2372,9 +2524,10 @@ mob
 				return 1
 			return 0
 		HasPridefulRage()
-			if(passive_handler.Get("PridefulRage"))
-				return 1
-			return 0
+			. = 0;
+			. += passive_handler.Get("PridefulRage");
+			if(AttackQueue) . += AttackQueue.PridefulRage
+			. = clamp(., 0, 2);
 		HasSpiritHand()//Str*(For**1/2)
 			if(passive_handler.Get("SpiritHand"))
 				return 1
@@ -2398,7 +2551,7 @@ mob
 			if(src.TarotFate=="The Emperor")
 				Return += 4
 			if(InfinityModule)
-				Return += round(glob.progress.totalPotentialToDate,5) / 50
+				Return += AscensionsAcquired/2
 			return Return
 		HasSpiritSword()//Str(0.75)+For(0.75)
 			if(passive_handler.Get("SpiritSword"))
@@ -2415,8 +2568,14 @@ mob
 		GetHybridStrike()//Str(0.75)+For(0.75)
 			var/Return = passive_handler.Get("HybridStrike")
 			if(InfinityModule)
-				Return += round(glob.progress.totalPotentialToDate,5) / 50
+				Return += AscensionsAcquired/2//round(glob.progress.totalPotentialToDate,5) / 50
 			return Return
+		HasPhysPleroma()
+			if(passive_handler.Get("PhysPleroma"))
+				return 1
+			return 0
+		GetPhysPleroma()
+			return passive_handler.Get("PhysPleroma")
 		HasSpiritStrike()//For v.s. End
 			if(passive_handler.Get("SpiritStrike"))
 				return 1
@@ -2542,10 +2701,6 @@ mob
 			if(src.CheckKeybladeStyle("Blade Charge"))
 				return 1
 			return 0
-		UsingPridefulRage()
-			if(src.HasPridefulRage())
-				return 1
-			return 0
 		UsingSpiritHand()
 			if(src.HasSpiritHand())
 				return 1
@@ -2573,7 +2728,11 @@ mob
 				return 1
 			if(locate(/obj/Skills/Buffs/SpecialBuffs/MilitaryFrames/Overdrive,src.contents))
 				return 1
+			if(locate(/obj/Skills/Buffs/SpecialBuffs/MilitaryFrames/Hilbert_Effect,src.contents))
+				return 1
 			if(src.InfinityModule)
+				return 1
+			if(src.BioAndroid)
 				return 1
 			return 0
 		HasConversionModules()
@@ -2599,21 +2758,6 @@ mob
 			if(src.MeditateModule)
 				Total+=3
 			return Total
-		HasEnhancementChips()
-			var/Total=0
-			if(src.EnhancedStrength)
-				Total+=src.EnhancedStrength
-			if(src.EnhancedForce)
-				Total+=src.EnhancedForce
-			if(src.EnhancedEndurance)
-				Total+=src.EnhancedEndurance
-			if(src.EnhancedAggression)
-				Total+=src.EnhancedAggression
-			if(src.EnhancedReflexes)
-				Total+=src.EnhancedReflexes
-			if(src.EnhancedSpeed)
-				Total+=src.EnhancedSpeed
-			return Total
 
 
 		CursedWounds()
@@ -2625,6 +2769,7 @@ mob
 				return 1
 			if(TheCalamity)
 				return 1
+			if(scalingEldritchPower() >= 0.5) return 1;
 			return 0
 		SwordWounds()
 			for(var/obj/Items/Sword/s in src)
@@ -2719,7 +2864,24 @@ mob
 				return equippedArmor
 			return 0
 
+		SanitizeEquippedWeaponRefs()
+			if(!equippedSword)
+				return
+			var/obj/Items/Sword/S = equippedSword
+			if(!istype(S, /obj/Items/Sword))
+				equippedSword = null
+				return
+			if(S.loc != src)
+				equippedSword = null
+				return
+			if(!S.suffix || !findtext(S.suffix, "Equipped"))
+				equippedSword = null
+				return
+			if(S.Broken)
+				equippedSword = null
+
 		EquippedSword()
+			SanitizeEquippedWeaponRefs()
 			if(equippedSword)
 				return equippedSword
 			return 0
@@ -2728,6 +2890,8 @@ mob
 			var/obj/Items/Sword/sord
 			for(var/obj/Items/Sword/s in src)
 				if(s.suffix=="*Equipped (Second)*")
+					if(s.Broken || s.loc != src)
+						continue
 					sord=s
 					break
 			if(sord)
@@ -2737,6 +2901,8 @@ mob
 			var/obj/Items/Sword/sord
 			for(var/obj/Items/Sword/s in src)
 				if(s.suffix=="*Equipped (Third)*")
+					if(s.Broken || s.loc != src)
+						continue
 					sord=s
 					break
 			if(sord)
@@ -2774,6 +2940,8 @@ mob
 			var/obj/Items/Enchantment/Staff/staf
 			for(var/obj/Items/Enchantment/Staff/s in src)
 				if(s.suffix=="*Equipped*")
+					if(s.Broken || s.loc != src)
+						continue
 					staf=s
 					break
 			if(isRace(ANDROID)||src.HasMechanized())
@@ -2782,6 +2950,42 @@ mob
 				return staf
 			else
 				return null
+
+		GetEquippedWeaponStatAdd(stat as text)
+			var/total = 0
+			var/obj/Items/Sword/sord = EquippedSword()
+			if(sord && sord.loc == src)
+				total += sord.getItemStatAdd(stat)
+			sord = EquippedSecondSword()
+			if(sord && sord.loc == src)
+				total += sord.getItemStatAdd(stat)
+			sord = EquippedThirdSword()
+			if(sord && sord.loc == src)
+				total += sord.getItemStatAdd(stat)
+			var/obj/Items/Enchantment/Staff/staf = EquippedStaff()
+			if(staf && staf.loc == src)
+				total += staf.getItemStatAdd(stat)
+			for(var/obj/Items/Sword/S in src)
+				if(S.suffix == "*Equipped (Armory)*" && !S.Broken && S.loc == src)
+					total += S.getItemStatAdd(stat)
+			for(var/obj/Items/Enchantment/Staff/ST in src)
+				if(ST.suffix == "*Equipped (Armory)*" && !ST.Broken && ST.loc == src)
+					total += ST.getItemStatAdd(stat)
+			return total
+
+		GetEquippedWeaponStrAdd()
+			return GetEquippedWeaponStatAdd("Str")
+		GetEquippedWeaponEndAdd()
+			return GetEquippedWeaponStatAdd("End")
+		GetEquippedWeaponSpdAdd()
+			return GetEquippedWeaponStatAdd("Spd")
+		GetEquippedWeaponForAdd()
+			return GetEquippedWeaponStatAdd("For")
+		GetEquippedWeaponOffAdd()
+			return GetEquippedWeaponStatAdd("Off")
+		GetEquippedWeaponDefAdd()
+			return GetEquippedWeaponStatAdd("Def")
+
 		CanLoseVitalBP()
 			if(isRace(ANDROID))
 				return 0
@@ -2810,11 +3014,11 @@ mob
 				return 0
 			return 1
 		SteadyRace()
-			if(src.race.type in list(HUMAN, MAJIN, MAKYO, NAMEKIAN, BEASTMAN, YOKAI, ELDRITCH, ELF, DEMON, DRAGON, MAKAIOSHIN))
+			if(src.race.type in list(MAJIN, MAKYO, NAMEKIAN, BEASTKIN, ELDRITCH, ELF, DRAGON, MAKAIOSHIN))
 				return 1
 			return 0
 		TransRace()
-			if(isRace(SAIYAN))
+			if(isRace(HUMAN, SAIYAN, DEMON))
 				return 1
 			return 0
 		OtherRace()
@@ -2863,6 +3067,8 @@ mob
 				Pass=1
 			if(src.is_arcane_beast)
 				Pass=1
+			if(hasEldritchRacial()) Pass = 1;
+			if(isRace(POPO)) Pass = 1;
 			if(istype(Z, /obj/Skills/Buffs))
 				if(Z:MagicFocus)
 					Pass=1
@@ -2957,6 +3163,8 @@ mob
 					asc+=src.GetSwordAscension()
 				if(asc>6)
 					asc=6
+				if(S.HighFrequency&&src.CyberneticMainframe)
+					asc=6
 				Found+=clamp(round(0.16 + (0.16 * asc),0.25),0.16,1)
 			if(src.StyleActive=="Hiten Mitsurugi")
 				Found+=1
@@ -2965,6 +3173,10 @@ mob
 			if(S)
 				if(S.ExtraClass&&S.Class=="Light")
 					Found+=1
+				if(S.HighFrequency&&src.CyberCancel)
+					Found+=1
+					if(src.CyberneticMainframe)
+						Found+=2
 			return Found
 		BonusParry()
 			var/Found=0
@@ -2973,6 +3185,10 @@ mob
 			if(S)
 				if(S.ExtraClass&&S.Class=="Medium")
 					Found+=0.5
+				if(S.HighFrequency&&src.CyberCancel)
+					Found+=0.5
+					if(src.CyberneticMainframe)
+						Found+=1
 			return Found
 
 		UsingGladiator()
@@ -2989,7 +3205,7 @@ mob
 			Found += passive_handler.Get("Half-Sword")
 			if(S)
 				if(S.ExtraClass&&S.Class=="Heavy")
-					Found+=0.5
+					Found+=1
 			return Found
 		UsingFTG()
 			return passive_handler["Flying Thunder God"]
@@ -3015,6 +3231,7 @@ mob
 				return 0
 			if(src.CheckSlotless("Libra Armory"))
 				return 0
+			if(hasEldritchRacial()) return 1;
 			return 0
 
 
@@ -3394,7 +3611,7 @@ mob
 							if(usingStyle("MysticStyle")) // this is a mystic style
 								return TRUE
 						if("Any")
-							if(StyleBuff)
+							if(StyleBuff || StanceBuff || ActiveBuff || SpecialBuff || (SlotlessBuffs && SlotlessBuffs.len))
 								return TRUE
 
 atom
@@ -3406,14 +3623,14 @@ atom
 					SP=1
 			if(src.z == glob.DEATH_LOCATION[3] && !dead_use && !SP)
 				return 1
-			else if(src.z == 1)
-				return 1
 			else if(src.z == global.ArcaneRealmZ && !arc_use)
+				return 1
+			else if(src.z == MAJIN_ABSORB_Z)
 				return 1
 			return 0
 
 proc
-	FightingSeriously(var/mob/Offender=0, var/mob/Defender=0)
+	FightingSeriously(mob/Offender=0, mob/Defender=0)
 		if(Offender)
 			if(Offender.Lethal)
 				return 1

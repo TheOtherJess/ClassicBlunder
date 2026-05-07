@@ -1,13 +1,13 @@
 ascension
 	makaioshin
-		passives = list()
+		/*passives = list()
 		proc/findFalldown(mob/p)
 			var/obj/Skills/Buffs/SlotlessBuffs/Falldown_Mode/Makaioshin/d = new()
 			d = locate() in p
 			if(!d)
 				world.log << "There was an error finding [p]'s Falldown Mode, please fix as their ascension is likely bugged"
 				p << "Please report to the admin or discord that your Falldown Mode is bugged on asc"
-			return d
+			return d*/
 		one
 			unlock_potential = ASCENSION_ONE_POTENTIAL
 			passives = list("HellPower" = 0.25, "AbyssMod" = 0.25, "HolyMod" = 0.25, "SpiritPower" = 0.25, "HellRisen" = 0.25, "Incomplete" = -0.25, "BlurringStrikes"=0.5, "HybridStrike"=0.5,"PureDamage"=1, "PureReduction"=1)
@@ -35,9 +35,6 @@ ascension
 			on_ascension_message = "Chaos flows through your every breath."
 			postAscension(mob/owner)
 				..()
-				if(!locate(/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Incomplete_Ultra_Instinct, owner))
-					var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Incomplete_Ultra_Instinct
-					owner.AddSkill(s)
 				owner.Class = "Lightbringer"
 		three
 			unlock_potential = ASCENSION_THREE_POTENTIAL
@@ -51,12 +48,9 @@ ascension
 			postAscension(mob/owner)
 				..()
 				owner.Class = "Shadowlord"
-				if(!locate(/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Ultra_Instinct, owner))
-					var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Ultra_Instinct
-					owner.AddSkill(s)
 		four
 			unlock_potential = ASCENSION_FOUR_POTENTIAL
-			passives = list("HellPower" = 0.25, "HolyMod" = 2, "AbyssMod" = 2, " KiControlMastery"=1, "Incomplete" = -0.25, "BlurringStrikes"=0.5, "HybridStrike"=0.5,"PureDamage"=1, "PureReduction"=1)
+			passives = list("HellPower" = 0.25, "HolyMod" = 2, "AbyssMod" = 2, "KiControlMastery"=1, "Incomplete" = -0.25, "BlurringStrikes"=0.5, "HybridStrike"=0.5,"PureDamage"=1, "PureReduction"=1)
 			anger = 0.15
 			intimidation = 250
 			strength = 0.25
@@ -69,9 +63,13 @@ ascension
 			postAscension(mob/owner)
 				..()
 				owner.Class = "Morningstar"
-				if(!locate(/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Perfected_Ultra_Instinct, owner))
-					var/obj/Skills/Buffs/NuStyle/s=new/obj/Skills/Buffs/NuStyle/UnarmedStyle/AngelStyles/Perfected_Ultra_Instinct
-					owner.AddSkill(s)
+				if(!locate(/obj/Skills/Buffs/SlotlessBuffs/Chaos_Control, owner))
+					owner.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Chaos_Control)
+				if(!locate(/obj/Skills/AutoHit/Chaos_Degrade, owner))
+					owner.AddSkill(new/obj/Skills/AutoHit/Chaos_Degrade)
+				if(!locate(/obj/Skills/Buffs/SlotlessBuffs/Chaos_Soldier, owner))
+					owner.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Chaos_Soldier)
+				owner.passive_handler.Increase("ChaosRuler", 1)
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
 			passives = list("HellPower" = 1, "EndlessAnger" = 1, "SpiritPower" = 0.25, "GodKi"=1, "BlurringStrikes"=1, "HybridStrike"=1,"PureDamage"=1, "PureReduction"=1)

@@ -13,25 +13,19 @@ obj/Special
 		var/list/SpecialPermissions=list()
 
 		//These are all additions; they can be negative to lower the various attributes.
-		var/EconomyChange=0
-		var/LearningChange=0
-		var/IntelligenceChange=0
-		var/ImaginationChange=0
+		var/EconomyChange=1
+		var/LearningChange=1
+		var/IntelligenceChange=1
+		var/ImaginationChange=1
+		var/SpawnLocation="None"
 
 
 mob
 	proc
 		ChooseSpawn()
-			if(glob.progress.SpawnLoc==1)
-				src.loc = locate(430, 310, 12)
-			if(glob.progress.SpawnLoc==2)
-				src.loc = locate(250,238,3)
-
-/*
-
 			var/list/obj/Special/Spawn/Choices=list()
 			var/SpawnFound=0
-for(var/obj/Special/Spawn/S in glob.Spawns)
+			for(var/obj/Special/Spawn/S in glob.Spawns)
 				if(src.race.name in S.DefaultRaces)
 					SpawnFound=1
 					Choices.Add(S)
@@ -52,48 +46,46 @@ for(var/obj/Special/Spawn/S in glob.Spawns)
 				else
 					Confirm=alert(src, "[Choice] [Choice.desc] Is this where you want to hail from?", "Choose Spawn ([Choice])", "Yes", "No")
 
-			if(Choice.EconomyChange!=0)
-				src.EconomyMult+=Choice.EconomyChange
+			if(Choice.EconomyChange!=1)
+				src.EconomyMult*=Choice.EconomyChange
 				src << "Due to growing up in [Choice], you are \..."
-				if(Choice.EconomyChange>0)
+				if(Choice.EconomyChange>1)
 					src << "better at earning money."
 				else
 					src << "worse at earning money."
-			if(Choice.LearningChange!=0)
-				src.RPPMult+=Choice.LearningChange
+			if(Choice.LearningChange!=1)
+				src.RPPMult*=Choice.LearningChange
 				src << "Due to growing up in [Choice], you are \..."
-				if(Choice.LearningChange>0)
+				if(Choice.LearningChange>1)
 					src << "better at learning new skills."
 				else
 					src << "worse at learning new skills."
-			if(Choice.IntelligenceChange!=0)
-				src.Intelligence+=Choice.IntelligenceChange
+			if(Choice.IntelligenceChange!=1)
+				src.Intelligence*=Choice.IntelligenceChange
 				src << "Due to growing up in [Choice], you are \..."
-				if(Choice.IntelligenceChange>0)
+				if(Choice.IntelligenceChange>1)
 					src << "better at thinking logically."
 				else
 					src << "worse at thinking logically."
-			if(Choice.ImaginationChange!=0)
-				src.Imagination+=Choice.ImaginationChange
+			if(Choice.ImaginationChange!=1)
+				src.Imagination*=Choice.ImaginationChange
 				src << "Due to growing up in [Choice], you are \..."
-				if(Choice.ImaginationChange>0)
+				if(Choice.ImaginationChange>1)
 					src << "better at understanding belief."
 				else
 					src << "worse at understanding belief."
 
 			src.Spawn=Choice.name
 			src << "Your native location is [src.Spawn]."
+			src.SpawnArea = Choice.SpawnLocation
+			src << "Your native location displays as [src.SpawnArea]."
 			MoveToSpawn(src)
-			src.loc = locate(Choice.gotoX, Choice.gotoY, Choice.gotoZ)*/
+			src.loc = locate(Choice.gotoX, Choice.gotoY, Choice.gotoZ)
 
 
 proc
 	MoveToSpawn(mob/m)
-		if(glob.progress.SpawnLoc==1)
-			m.loc = locate(430, 310, 12)
-		if(glob.progress.SpawnLoc==2)
-			m.loc = locate(250,250,3)
-	/*	var/obj/Special/Spawn/Found
+		var/obj/Special/Spawn/Found
 		for(var/obj/Special/Spawn/S in glob.Spawns)
 			if(S.name==m.Spawn)
 				Found=S
@@ -102,7 +94,7 @@ proc
 			m << "You do not have a spawn that exists in the world. The admins have been notified."
 			Log("Admin", "[ExtractInfo(m)]'s currently listed spawn ([m.Spawn]) does not exist in the world! Assign a new spawn name to them.")
 		else
-			m.loc = locate(Found.gotoX, Found.gotoY, Found.gotoZ)*/
+			m.loc = locate(Found.gotoX, Found.gotoY, Found.gotoZ)
 
 	AddRace(var/Race, var/obj/Special/Spawn/S)
 		if(!(Race in S.DefaultRaces))
@@ -217,10 +209,10 @@ mob
 				NewS.gotoY=lY
 				NewS.gotoZ=lZ
 
-				var/eC=input(src, "What is the economy change of the new spawn? This can be negative.", "New Spawn") as num
-				var/lC=input(src, "What is the learning change of the new spawn? This can be negative.", "New Spawn") as num
-				var/tC=input(src, "What is the intelligence change of the new spawn? This can be negative.", "New Spawn") as num
-				var/gC=input(src, "What is the imagination change of the new spawn? This can be negative.", "New Spawn") as num
+				var/eC=input(src, "What is the economy change of the new spawn?", "New Spawn") as num
+				var/lC=input(src, "What is the learning change of the new spawn?", "New Spawn") as num
+				var/tC=input(src, "What is the intelligence change of the new spawn?", "New Spawn") as num
+				var/gC=input(src, "What is the imagination change of the new spawn?", "New Spawn") as num
 				NewS.EconomyChange=eC
 				NewS.LearningChange=lC
 				NewS.IntelligenceChange=tC
@@ -239,40 +231,6 @@ mob
 
 				glob.Spawns.Add(NewS)
 				src << "Added [NewS] successfully to global list!"
-			Set_Midgar_Spawn()
-				set category="Admin"
-				var/obj/Special/Spawn/NewS=new()
-				NewS.name="The World"
-				NewS.desc="Our miraculous homeland. A small, livable pocket in an otherwise vast  universe, and the only piece of the Old World that remains."
-
-
-				NewS.gotoX=307
-				NewS.gotoY=139
-				NewS.gotoZ=1
-
-				var/eC=input(src, "What is the economy change of the new spawn? This can be negative.", "New Spawn") as num
-				var/lC=input(src, "What is the learning change of the new spawn? This can be negative.", "New Spawn") as num
-				var/tC=input(src, "What is the intelligence change of the new spawn? This can be negative.", "New Spawn") as num
-				var/gC=input(src, "What is the imagination change of the new spawn? This can be negative.", "New Spawn") as num
-				NewS.EconomyChange=eC
-				NewS.LearningChange=lC
-				NewS.IntelligenceChange=tC
-				NewS.ImaginationChange=gC
-
-				var/Enter
-				var/list/raceList = races.Copy()
-				raceList += "Cancel"
-				while(Enter!="Cancel")
-					Enter=input(src, "Enter the race that will be able to select this spawn. You may add additional races after entering. Enter Cancel to stop entering races.", "New Spawn") in raceList
-					if(Enter!="Cancel")
-						var/racename = splittext("[Enter]", "/race/")
-						NewS.DefaultRaces.Add(racename[1])
-						raceList -= Enter
-						src << "Added [racename[1]] to default races for [NewS]."
-
-				glob.Spawns.Add(NewS)
-				src << "Added [NewS] successfully to global list!"
-
 			Spawn_Delete()
 				set category="Admin"
 				var/obj/Special/Spawn/Chois=input(src, "What spawn do you want to delete?", "Delete Spawn") in glob.Spawns

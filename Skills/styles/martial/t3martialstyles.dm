@@ -26,7 +26,7 @@
         StyleStr = 1.25
         StyleActive="Jeet Kune Do"
         passives = list("LikeWater" = 4, "Fa Jin" = 3, "Interception" = 3, "Sunyata" = 3 , "Gum Gum" = 1, "Acupuncture" = 2, \
-                        "Flow" = 2, "Instinct" = 2, "Momentum" = 1.5, "Hardening" = 1.5, "Pressure" = 2, "SoftStyle" = 1, \
+                        "Flow" = 2, "Instinct" = 2, "Momentum" = 1.5, "Harden" = 1.5, "Pressure" = 2, "SoftStyle" = 1, \
                         "FluidForm" = 1)
         Finisher="/obj/Skills/Queue/Finisher/Be_Water"
         verb/Jeet_Kune_Do()
@@ -37,7 +37,7 @@
         StyleEnd=1.5
         StyleStr=1.5
         passives = list("Heavy Strike" = "Wrestling", "Muscle Power" = 6, "Grippy" = 5, \
-                        "Scoop" = 3, "Iron Grip" = 1, "DeathField" = 5, "Gum Gum" = 2, "Hardening" = 2, \
+                        "Scoop" = 3, "DeathField" = 5, "Gum Gum" = 2, "Harden" = 2, \
                         "Momentum" = 2)
         StyleActive="All Star Wrestling"
         Finisher="/obj/Skills/Queue/Finisher/Big_Boot"
@@ -47,7 +47,7 @@
 
     Flying_Thunder_God
         SignatureTechnique=3
-        passives = list("Flying Thunder God" = 1, "BlurringStrikes" = 2, "Fury" = 2.5, "Fa Jin" = 2, "Instinct" = 2, "Secret Knives" = "FTG", "Tossing" = 2, \
+        passives = list("Iaido" = 8, "Flying Thunder God" = 1, "BlurringStrikes" = 2, "Fury" = 2.5, "Fa Jin" = 2, "Instinct" = 2, "Secret Knives" = "FTG", "Tossing" = 2, \
         "BladeFisting" = 1, "NeedsSword" = 0, "NoSword" = 1,"Flow" = 3, "LikeWater"=3, "Godspeed" = 2, "Skimming" = 2)
         // make it so every cooldown like iaido, also make the tracker appear on hud
         // make an animation for the tp
@@ -56,7 +56,7 @@
         StyleActive="Flying Thunder God"
         Finisher="/obj/Skills/Queue/Finisher/Be_Water" //TODO: make a finisher here
         adjust(mob/p)
-            passives = list("Flying Thunder God" = 1, "BlurringStrikes" = 2, "Fury" = 2.5, "Fa Jin" = 2, "Instinct" = 2, "Secret Knives" = "FTG", "Tossing" = 2, \
+            passives = list("Iaido" = 8, "Flying Thunder God" = 1, "BlurringStrikes" = 2, "Fury" = 2.5, "Fa Jin" = 2, "Instinct" = 2, "Secret Knives" = "FTG", "Tossing" = 2, \
             "BladeFisting" = 1, "NeedsSword" = 0, "NoSword" = 1,"Flow" = 3, "LikeWater"=3, "Godspeed" = 2, "Skimming" = 2)
         verb/Flying_Thunder_God()
             set hidden=1

@@ -1,3 +1,6 @@
+// Multiplier on each beam skill's ChargeRate for max charge level
+#define BEAM_CHARGE_CAP_MULT 10
+
 /mob/var/Power = 1
 
 atom/var
@@ -46,6 +49,7 @@ mob/var
 	tmp/mob/Target
 	tmp/PoseEnhancement//Pose for 3 seconds to get a bonus to rippling.
 	tmp/PoseTime//timer
+	tmp/LastPose
 	tmp/BuffingUp=0//to stop people from pushing through weird buff behaviour
 	tmp/WindingUp//new var for autohitsu
 	tmp/PoweringUp=0
@@ -55,6 +59,8 @@ mob/var
 	tmp/Knockbacked//The direction of knockback.
 	tmp/Shielding//used for fanciness
 	tmp/Beaming=0//If true when a direction is pressed, do not move, but change directions.
+	tmp/BeamVolleyHitPlayer=0//Set during Area=="Beam" volley if any other player took beam damage (for miss cooldown refund)
+	tmp/BeamFiringVolley=0//True while a beam has reached active fire (Beaming==2) this charge, used to skip refund on charge-only cancel
 	tmp/BeamCharging=0.5//Holds the length of time that a beam has been charging for
 	tmp/BusterCharging=0//holds the length of time uve been trying to be megaman
 	tmp/obj/Skills/Projectile/BusterTech//holds a buster technique, holy fuqq
@@ -63,12 +69,14 @@ mob/var
 	tmp/is_dashing = 0
 	tmp/verb_delay = 0
 	tmp/last_autohit
+	tmp/last_autohit_used // type path of the last AutoHit skill used (for Envy copy)
 	tmp/GlowFilter
 	tmp/ArmamentGlow
 	tmp/FlickeringGlow
 	tmp/MeditateTime
 	tmp/Party/party//party party party
 	tmp/StunImmune
+	tmp/BlindImmune=0
 	tmp/GrabTime
 	tmp/CloudedHeartActive = FALSE
 	custom_scent
@@ -108,6 +116,7 @@ mob/var
 	DefAdded=0
 	SpdAdded=0
 	StrMultTotal=1
+	StrTransMult=1
 	StrChaos=1
 	StrAscension=0
 	StrReplace=0
@@ -116,6 +125,7 @@ mob/var
 	StrStolen=0
 	StrEroded=0
 	EndMultTotal=1
+	EndTransMult=1
 	EndChaos=1
 	EndAscension=0
 	EndReplace=0
@@ -124,6 +134,7 @@ mob/var
 	EndStolen=0
 	EndEroded=0
 	SpdMultTotal=1
+	SpdTransMult=1
 	SpdChaos=1
 	SpdAscension=0
 	SpdReplace=0
@@ -132,6 +143,7 @@ mob/var
 	SpdStolen=0
 	SpdEroded=0
 	ForMultTotal=1
+	ForTransMult=1
 	ForChaos=1
 	ForReplace=0
 	ForAscension=0
@@ -140,6 +152,7 @@ mob/var
 	ForStolen=0
 	ForEroded=0
 	OffMultTotal=1
+	OffTransMult=1
 	OffChaos=1
 	OffAscension=0
 	OffTax=0
@@ -147,6 +160,7 @@ mob/var
 	OffStolen=0
 	OffEroded=0
 	DefMultTotal=1
+	DefTransMult=1
 	DefChaos=1
 	DefAscension=0
 	DefTax=0
@@ -174,9 +188,11 @@ mob/var
 	BarelyStandingColor
 
 	Potential=1
-	PotentialStatus="Distracted"
+	PotentialStatus="Caught Up"
 	PotentialRate=1
 	PotentialCap=1
+	PotentialHeadStart=0
+	RPPHeadStart=0
 	potential_trans=0//entering trans state sets this
 	potential_power_mult=1
 	potential_last_checked=0
@@ -185,6 +201,7 @@ mob/var
 	RewardsLastGained = 0 //when was the last time you were rewarded?
 	PowerBoost=1//Now it ain't borked!?
 	PowerInvisible=1//only used for buffs now
+	Shadowbringer=0
 	PotentialUnlocked//You need a better UP after a previous one.
 	ContractPowered=0//Like UP, but with contracts.
 	SummonContract//just for summoning
@@ -278,6 +295,8 @@ mob/var
 
 	SEAOffense='Soxx-Sacred_Armor_Offense.dmi'
 	SEADefense='Soxx-Sacred_Armor_Defense.dmi'
+
+	EldritchTrail='StarPixel.dmi'
 
 	tmp/MirrorIcon
 
@@ -383,12 +402,16 @@ mob/var
 	Sight_Range=10
 	Spawn="True Spawn"
 	PureRPMode=0
+	CutsceneWatch=0
 	ForceHeavyStrike=0
+	SpawnArea = "None" //different from Spawn for Reasons
 
 	CyberizeMod = 0
 	tmp/IconClicked=0
 	tmp/NextAttack		//As world.time
 	tmp/ContinuousAttacking
+	tmp/WarpStrikeHidingWeapon=0
+	tmp/turf/warp_strike_saved_loc = null
 	tmp/mob/Grab
 	Power_Multiplier=1 //This changes temporarily with the use of power altering abilities.
 	PowerEroded=0
@@ -456,6 +479,12 @@ mob/var
 	CombatCPU=0
 	EnergyAssimilators=0
 	EnhancedSmell=0
+	BioAndroid=0
+	SuperAndroid=0
+	CyberneticMainframe
+	SampleCollected=0
+	list/bio_samples = null      // collected genetic samples, list of "RaceName:Tier" strings
+	bio_donated_t1 = 0           // 1 if this player has already willfully donated their tier-1 sample
 	Profile=null
 	GimmickDesc=""
 	GimmickTimer
@@ -466,7 +495,6 @@ mob/var
 	StanceActive
 	Style
 	StyleActive
-	Hardening=0
 	Confused//The amount of time you have reversed movement for.
 	AngerMult//allows anger multipliers to stack. oh my god
 	AngerThreshold//if you're not angry enough, this will make you angry enough
@@ -484,6 +512,7 @@ mob/var
 	Poison=0
 	BlindingVenom = 0
 	Burn=0
+	Frenzy=0
 	Slow=0
 	Shatter=0
 	Harden=0
@@ -522,6 +551,10 @@ mob/var
 	//JJBA vars
 	TimeStop
 	TimeFrozen
+
+	//Eldritch Reflected state
+	ReflectedFrozen = 0
+	ReflectedFrozenTimer = 0
 	WorldImmune=0
 
 	//gates
@@ -544,6 +577,8 @@ mob/var
 	JaganBase//holds old base mod when using JEM
 	AscensionsUnlocked=0
 	AscensionsAcquired=0
+	unbreakable_tracking=0//Makyo shit
+	unbroken_absorbed=0//Makyo shit
 	BioArmor//How much extra health you have
 	BioArmorMax//The total amount of extra health you can have
 
@@ -658,6 +693,39 @@ mob/var
 	ObliteratedX
 	ObliteratedY
 	ObliteratedZ
+
+	list/demon_party = null
+	demon_party_cap = 0
+	list/demon_compendium = null
+	demon_last_pick_potential = 0
+	demon_pending_picks = 0
+	tmp/demon_soul_dmg_pct = 0
+	tmp/demon_soul_transfer_pct = 0 // Multiplier on redirected damage applied to demon_hp
+	tmp/demon_active = null         // Live mob ref - would corrupt savefile
+	tmp/demon_active_name = ""
+	tmp/list/demon_skill_hud = null
+	tmp/demon_summon_cooldown = 0
+	tmp/demon_call_cooldown = 0
+	tmp/demon_fusion_page = 1
+	tmp/demon_record_page = 1
+	tmp/demon_meditate_start = 0
+	tmp/demon_meditate_healed = FALSE
+	tmp/demon_fusion_open = FALSE
+	tmp/demon_compendium_open = FALSE
+	tmp/demon_record_open = FALSE
+	tmp/demon_withdraw_open = FALSE
+	tmp/demon_inherit_open = FALSE
+	tmp/demon_skilllearn_open = FALSE
+	tmp/demon_skilllearn_target = ""
+	tmp/demon_sensing = FALSE   // TRUE while Sense Demons input dialog is open; prevents re-entry
+	tmp/demon_pending_fuse_a = ""
+	tmp/demon_pending_fuse_b = ""
+	tmp/demon_pending_fuse_result = ""
+	tmp/list/demon_pending_fuse_base_skills = null
+	tmp/list/demon_pending_fuse_pool = null
+	tmp/demon_pending_fuse_open_slots = 0
+	tmp/demon_fusion_animating = FALSE
+	tmp/list/demon_fusion_anim_images = null
 
 /proc/reduceGodKi(mob/player, num)
 	player.GodKi -= num

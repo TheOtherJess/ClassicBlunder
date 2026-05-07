@@ -5,7 +5,7 @@ obj/Items/Sword/Medium/Legendary/WeaponSoul/Sword_of_Glory//Caledfwlch
 	pixel_y=-30
 	var/caledLight = TRUE
 	passives = list("SpiritSword" = 0.25)
-	Ascended = 3
+	Ascended = 6
 	Destructable=0
 	ShatterTier=0
 
@@ -33,7 +33,7 @@ obj/Skills/Queue/Excalibur
 	PushOut=1
 	PushOutWaves=1
 	PushOutIcon='KenShockwaveGold.dmi'
-	DamageMult=1
+	DamageMult=3
 	AccuracyMult=1.5
 	KBMult=1
 	Duration=6
@@ -117,7 +117,7 @@ obj/Skills/Projectile/ExcaliburProjectile
 	Knockback=1
 	Trail='ExcaliTrail.dmi'
 	MultiHit=8
-	DamageMult=0.9
+	DamageMult=2
 	AccMult=1.5
 	Deflectable=0
 	Distance=20
@@ -153,7 +153,7 @@ obj/Skills/Projectile/Weapon_Soul
 		Distance=100
 		Cooldown = 60
 		adjust(mob/p)
-			DamageMult = 1 + (p.SagaLevel / 2)
+			DamageMult = 4 + p.SagaLevel
 			Radius = 3 + p.SagaLevel
 			IconSize = 1 + p.SagaLevel
 			Homing = 1 + p.SagaLevel
@@ -190,7 +190,7 @@ obj/Skills/Projectile/Weapon_Soul
 		Distance=100
 		Cooldown = 90
 		adjust(mob/p)
-			DamageMult = 0.25 + (p.SagaLevel / 4)
+			DamageMult = 6 + p.SagaLevel
 			Radius = 3 + p.SagaLevel
 			IconSize = 1 + p.SagaLevel
 			Homing = 1 + p.SagaLevel
@@ -199,3 +199,33 @@ obj/Skills/Projectile/Weapon_Soul
 			set category = "Skills"
 			adjust(usr)
 			usr.UseProjectile(src)
+/obj/Skills/Buffs/NuStyle/SwordStyle //slightly weaker than t2. maybe make it scaling???
+	Knight_Of_Camelot
+		StyleActive="Knight of Camelot"
+		passives = list("HolyMod" = 0.5, "SpiritSword" = 0.25, "Harden" = 0.5)
+		StyleEnd=1.25
+		StyleStr=1.25
+		Finisher="/obj/Skills/Queue/Finisher/Rook_Splitter"
+		adjust(mob/p)
+			StyleStr = 1.05 + (0.05 * p.SagaLevel)
+			StyleEnd = 1.05 + (0.05 * p.SagaLevel)
+			passives["HolyMod"] = 1 + (0.5* p.SagaLevel)
+			passives["SpiritSword"] = 0.25*p.SagaLevel
+			passives["Harden"] = 0.25*p.SagaLevel
+		verb/Knight_Of_Camelot()
+			set hidden=1
+			adjust(usr)
+			Trigger(usr)
+/obj/Skills/Queue/Finisher
+	Right_To_Rule
+		DamageMult=8
+		HitSparkIcon='Slash - Zan.dmi'
+		HitSparkX=-32
+		HitSparkY=-32
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Kingmaker"
+		HitMessage = "shows their foe why they are King!"
+/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher
+	King_Of_Camelot
+		StrMult=1.3
+		ForMult=1.3
+		passives = list("SpiritFlow" = 1, "Duelist" = 1, "DemonicDurability" = 1)

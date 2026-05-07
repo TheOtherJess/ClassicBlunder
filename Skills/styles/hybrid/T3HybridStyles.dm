@@ -6,11 +6,11 @@
 		StyleFor=1.3
 		StyleSpd=1.25
 		StyleActive="Twin Dragon Fire"
-		passives = list("HybridStyle" = "MysticStyle","Fury" = 2, "Momentum" = 2,  "Hardening" = 2, "SpiritHand" = 2, "Instinct" = 2, \
+		passives = list("HybridStyle" = "MysticStyle","Fury" = 2, "Momentum" = 2,  "Harden" = 2, "SpiritHand" = 2, "Instinct" = 2, \
 							"Flow" = 2, "SpiritFlow" = 2, "Combustion" = 50, "Scorching" = 6, "Shattering" = 5, "Heavy Strike" = "Inferno")
 		Finisher="/obj/Skills/Queue/Finisher/Bauf_Burst"
 		adjust(mob/p)
-			passives = list("HybridStyle" = "MysticStyle","Fury" = 2, "Momentum" = 2,  "Hardening" = 2, "SpiritHand" = 2, "Instinct" = 2, \
+			passives = list("HybridStyle" = "MysticStyle","Fury" = 2, "Momentum" = 2,  "Harden" = 2, "SpiritHand" = 2, "Instinct" = 2, \
 							"Flow" = 2, "SpiritFlow" = 2, "Combustion" = 50, "Scorching" = 6, "Shattering" = 5, "Heavy Strike" = "Inferno")
 		verb/Twin_Dragon_Fire()
 			set hidden=1

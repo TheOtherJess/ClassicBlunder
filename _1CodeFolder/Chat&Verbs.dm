@@ -596,7 +596,7 @@ mob/Players/verb
 					if(istype(t, Choice))
 						transSelected = t
 						break
-				var/list/transVisualOptions = list("Cancel", "Base", "Hair", "Icon 1", "Icon 2", "Aura", "Aura Underlay", "Profile")
+				var/list/transVisualOptions = list("Cancel", "Base", "Hair", "Icon 1", "Underlay 1", "Icon 2", "Underlay 2", "Aura", "Aura Underlay", "Profile")
 				var/aspectPicked=input(usr, "What aspect of your forms do you wish to edit?", "Change Form Icons") in transVisualOptions
 				switch(aspectPicked)
 					if("Base")
@@ -616,12 +616,24 @@ mob/Players/verb
 							transSelected.form_icon_1_x = input(usr, "X offset?", "Aura Underlay X") as num|null
 							transSelected.form_icon_1_y = input(usr, "Y offset?", "Aura Underlay Y") as num|null
 							transSelected.form_icon_1_layer = input(usr, "Layer?", "Layer") as num|null
+					if("Underlay 1")
+						transSelected.form_underlay_1_icon = input(usr, "What extra underlay icon would you like to use in this form?", "Underlay 1") as icon|null
+						if(transSelected.form_underlay_1_icon)
+							transSelected.form_underlay_1_icon_state = input(usr, "State?", "State", transSelected.form_underlay_1_icon_state) as message|null
+							transSelected.form_underlay_1_x = input(usr, "X offset?", "Aura Underlay X") as num|null
+							transSelected.form_underlay_1_y = input(usr, "Y offset?", "Aura Underlay Y") as num|null
 					if("Icon 2")
 						transSelected.form_icon_2_icon = input(usr, "What extra overlay would you like to use in this form?", "Icon 2") as icon|null
 						if(transSelected.form_aura_underlay_icon)
 							transSelected.form_icon_2_icon_state = input(usr, "State?", "State", transSelected.form_icon_2_icon_state) as message|null
 							transSelected.form_icon_2_x = input(usr, "X offset?", "Aura Underlay X") as num|null
 							transSelected.form_icon_2_y = input(usr, "Y offset?", "Aura Underlay Y") as num|null
+					if("Underlay 2")
+						transSelected.form_underlay_2_icon = input(usr, "What extra underlay icon would you like to use in this form?", "Underlay 2") as icon|null
+						if(transSelected.form_underlay_2_icon)
+							transSelected.form_underlay_2_icon_state = input(usr, "State?", "State", transSelected.form_underlay_2_icon_state) as message|null
+							transSelected.form_underlay_2_x = input(usr, "X offset?", "Aura Underlay X") as num|null
+							transSelected.form_underlay_2_y = input(usr, "Y offset?", "Aura Underlay Y") as num|null
 					if("Aura")
 						transSelected.form_aura_icon = input(usr, "What aura would you like to use in this form?", "Aura") as icon|null
 						if(transSelected.form_aura_icon)
@@ -688,15 +700,15 @@ mob/Players/verb
 		set name="Reset Multipliers"
 		if(!(world.time > usr.verb_delay)) return
 		is_dashing = 0
-		if(isRace(BEASTMAN) && race?:Racial == "Feather Knife")
+		if(isRace(BEASTKIN) && race?:Racial == "Feather Knife")
 			passive_handler.passives["Secret Knives"] = "Feathers"
-		if(isRace(BEASTMAN) && race?:Racial == "Fox Fire")
+		if(isRace(BEASTKIN) && race?:Racial == "Fox Fire")
 			passive_handler.passives["Heavy Strike"] = "Fox Fire"
-		if(isRace(BEASTMAN) && race?:Racial == "Monkey King")
-			var/obj/Skills/Buffs/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Racial/Beastman/Never_Fall/)
+		if(isRace(BEASTKIN) && race?:Racial == "Monkey King")
+			var/obj/Skills/Buffs/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Racial/Beastkin/Never_Fall/)
 			if(!s.Using)
 				s.Trigger(src, TRUE)
-		if(isRace(BEASTMAN) && race?:Racial == "Heart of The Beastman")
+		if(isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin")
 			passive_handler.Set("Grit", 1)
 
 		usr.verb_delay=world.time+1
@@ -887,6 +899,28 @@ mob/Players/verb
 			usr<< "You will now use a normal Heavy Strike."
 			return
 
+// Demon (and Angel) combo spells
+/mob/proc/RPMode_AdjustNestedComboSpellCooldowns(pausing = 1)
+	for(var/obj/Skills/Buffs/SlotlessBuffs/DemonMagic/dm in src)
+		if(!dm.possible_skills) continue
+		for(var/x in dm.possible_skills)
+			var/obj/Skills/s = dm.possible_skills[x]
+			if(!s || !s.cooldown_remaining) continue
+			if(pausing)
+				s.cooldown_remaining = s.cooldown_remaining - (world.realtime - s.cooldown_start)
+				s.cooldown_start = 0
+			else
+				s.Cooldown(modify=1,Time=s.cooldown_remaining, p=src)
+	for(var/obj/Skills/Buffs/SlotlessBuffs/AngelMagic/am in src)
+		if(!am.possible_skills) continue
+		for(var/x in am.possible_skills)
+			var/obj/Skills/s = am.possible_skills[x]
+			if(!s || !s.cooldown_remaining) continue
+			if(pausing)
+				s.cooldown_remaining = s.cooldown_remaining - (world.realtime - s.cooldown_start)
+				s.cooldown_start = 0
+			else
+				s.Cooldown(modify=1,Time=s.cooldown_remaining, p=src)
 
 mob/proc/RPModeSwitch()
 	if(src.PureRPMode)
@@ -900,6 +934,8 @@ mob/proc/RPModeSwitch()
 			if(istype(s, /obj/Skills/Grab)) continue
 			if(s.cooldown_remaining)
 				s.Cooldown(modify=1,Time=s.cooldown_remaining)
+		src.RPMode_AdjustNestedComboSpellCooldowns(0)
+		src.resumeStyleRatingExpiryAfterRP()
 		return
 	if(!src.PureRPMode)
 		RPMode(src,"On")
@@ -914,6 +950,37 @@ mob/proc/RPModeSwitch()
 			if(s.cooldown_remaining)
 				s.cooldown_remaining = s.cooldown_remaining - (world.realtime - s.cooldown_start)
 				s.cooldown_start = 0
+		src.RPMode_AdjustNestedComboSpellCooldowns(1)
+		src.pauseStyleRatingExpiryForRP()
+		return
+
+mob/proc/CutsceneMode()
+	if(src.PureRPMode)
+		src.PureRPMode=0
+		src.CutsceneWatch=0
+		for(var/mob/Player/AI/a in ai_followers)
+			spawn(rand(1,6)) RPMode(a, "Off")
+		for(var/obj/Skills/s in src)
+			if(istype(s, /obj/Skills/Grab)) continue
+			if(s.cooldown_remaining)
+				s.Cooldown(modify=1,Time=s.cooldown_remaining)
+		src.RPMode_AdjustNestedComboSpellCooldowns(0)
+		src.resumeStyleRatingExpiryAfterRP()
+		return
+	if(!src.PureRPMode)
+		src.PureRPMode=1
+		src.CutsceneWatch=1
+		src.NextAttack=0
+		src.OMessage(10,"[src] is watching a cutscene, regen/recovery disabled!")
+		for(var/mob/Player/AI/a in ai_followers)
+			spawn(rand(1,6)) RPMode(a, "On")
+		for(var/obj/Skills/s in src)
+			if(istype(s, /obj/Skills/Grab)) continue
+			if(s.cooldown_remaining)
+				s.cooldown_remaining = s.cooldown_remaining - (world.realtime - s.cooldown_start)
+				s.cooldown_start = 0
+		src.RPMode_AdjustNestedComboSpellCooldowns(1)
+		src.pauseStyleRatingExpiryForRP()
 		return
 
 mob/Players/verb
@@ -975,8 +1042,10 @@ mob/Players/verb
 				OMsg(src, "[src] begins posing ominously!")
 			else if(src.Secret=="Senjutsu"&&src.CheckSlotless("Senjutsu Focus")&&!src.CheckSlotless("Sage Mode"))
 				OMsg(src, "[src] grows completely still!")
-			else if(Secret == "Eldritch"&&!CheckSlotless("True Form"))
+			else if(hasSecret("Eldritch")&&!CheckSlotless("True Form"))
 				OMsg(src, "[src]'s body starts unraveling...!")
+			else if(Secret == "Spiral")
+				OMsg(src, "[src] clenches their fists!")
 			else if(src.Secret=="Haki")
 				if(src.CheckSlotless("Haki Armament"))
 					for(var/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament/H in src)
@@ -997,15 +1066,18 @@ mob/Players/verb
 					spawn(Second(30))
 						src.PoseEnhancement=0
 				return
+			if(world.time>usr.LastPose+20)
+				usr.PoseTime+=1
+				usr.LastPose=world.time
 			src.icon_state="Train"
 			return
 		if(src.icon_state=="Train")
 			src.icon_state=""
 			if(!src.PoseEnhancement)
 				if(!src.CheckSlotless("Half Moon Form")&&!src.CheckSlotless("Full Moon Form"))
-					if(src.PoseTime>=5&&(src.HasRipple()||src.Secret=="Vampire"||src.Secret=="Senjutsu"&&src.CheckSlotless("Senjutsu Focus"))||Secret=="Eldritch")
+					if(src.PoseTime>=5&&(src.RippleActive()||src.Secret=="Vampire"||src.Secret=="Senjutsu"&&src.CheckSlotless("Senjutsu Focus"))||Secret=="Eldritch"||Secret=="Spiral")
 						src.PoseTime=0
-						if(src.HasRipple())
+						if(src.RippleActive())
 							for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Ripple_Enhancement/H in src)
 								H.Trigger(src)
 						if(src.Secret=="Vampire")

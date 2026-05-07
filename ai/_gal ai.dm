@@ -228,101 +228,193 @@ var/list/ai_icon_database = list(
 
 
 
-var/list/ai_database = list(
-	"arcane beast" = new/ai_sheet(id="arcane beast",properties=list(hostile_randomize=1),\
-		techniques=-1,\
-		icons=list(
-			'Green Dragon.dmi'=list("name"="Arcane Green Dragon"),\
-			'Blue Dragon.dmi'=list("name"="Arcane Blue Dragon"),\
-			'Crystal1.dmi'=list("name"="Magicite Effigy"),\
-			'Crystal2.dmi'=list("name"="Dark Magicite Effigy"),\
-			'SpriteCrystal.dmi'=list("name"="Magicite Archons"),\
-			'SpriteR.dmi'=list("name"="Arcane Archon"),\
-			'SpriteY.dmi'=list("name"="Arcane Archon"),\
-			'SpriteC.dmi'=list("name"="Arcane Archon"),\
-			'SpriteG.dmi'=list("name"="Arcane Archon"),\
-			'Fairy1.dmi'=list("name"="Arcane Fairy"),\
-			'Fairy2.dmi'=list("name"="Arcane Fairy"),\
-			'Fairy3.dmi'=list("name"="Arcane Fairy"),\
-		)
-	),
-	"hell beast" = new/ai_sheet(id="hell beast",properties=list(hostile_randomize=2),\
-		techniques=-1,\
-		icons=list(
-			'Snake.dmi'=list("name"="Hellspawn Serpent"),\
-			'Red Dragon.dmi'=list("name"="Hellspawn Red Dragon"),\
-			'Black Dragon.dmi'=list("name"="Hellspawn Black Dragon"),\
-			'Demon1.dmi'=list("name"="Red Imp"),\
-			'Demon2.dmi'=list("name"="Blue Imp"),\
-			'Demon3.dmi'=list("name"="Stone Imp"),\
-			'Demon4.dmi'=list("name"="Grand Imp"),\
-			'Demon5.dmi'=list("name"="Hell Crawler"),\
-			'Undead.dmi'=list("name"="Death Soldier"),\
-			'Zombie.dmi'=list("name"="Death Warrior"),\
-			'Chaos_Chosen.dmi'=list("name"="Death Knight"),\
-		)
-	),
-	"wild monster" = new/ai_sheet(id="wild monster",properties=list(hostile_randomize=3),\
-		techniques=-1,\
-		icons=list(
-			'Saibaman.dmi'=list("name"="Saibaman"),\
-			'WildHound.dmi'=list("name"="Fellhound"),\
-			'Phoenix.dmi'=list("name"="Avian"),\
-			'WolfBeast.dmi'=list("name"="Beastman"),\
-			'Red Dragon.dmi'=list("name"="Red Dragon"),\
-			'Black Dragon.dmi'=list("name"="Black Dragon"),\
-			'Green Dragon.dmi'=list("name"="Green Dragon"),\
-			'Blue Dragon.dmi'=list("name"="Blue Dragon"),\
-			'Aquinian.dmi'=list("name"="Squid Monster"),\
-			'Kobold.dmi'=list("name"="Kobold"),\
-			'Komfty Kobold.dmi'=list("name"="Kobold Warrior"),\
-			'Kobold King.dmi'=list("name"="Kobold Hunter"),\
-			'Tricera.dmi'=list("name"="Flying Wyvern"),\
-		)
-	),
+var/list/ai_database
 
+proc/BuildAIDatabase()
+	ai_database = list()
 
-	"wolf" = new/ai_sheet(id="wolf",properties=list(icon='Wolf.dmi',name="Wolf",\
-		BaseMod=1,ai_adapting_power=0,\
-		StrMod=3,EndMod=6,ForMod=0.1,OffMod=6,DefMod=4,SpdMod=3,Potential=-1,\
-		ai_hostility=2,ai_wander=1,ai_spammer=0.5),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike","/obj/Skills/AutoHit/Howl","/obj/Skills/AutoHit/SweepingKick")),
+	// Arcane beast — nested icon list built step by step to avoid BYOND 516 quirks with
+	// complex nested list literals containing file-ref keys at world init time.
+	var/list/arcane_icons = list()
+	arcane_icons['Icons/NPCS/Dragons/Green Dragon.dmi'] = list("name"="Arcane Green Dragon")
+	arcane_icons['Icons/NPCS/Dragons/Blue Dragon.dmi'] = list("name"="Arcane Blue Dragon")
+	arcane_icons['Icons/NPCS/Arcane/Crystal1.dmi'] = list("name"="Magicite Effigy")
+	arcane_icons['Icons/NPCS/Arcane/Crystal2.dmi'] = list("name"="Dark Magicite Effigy")
+	arcane_icons['Icons/NPCS/Arcane/SpriteCrystal.dmi'] = list("name"="Magicite Archons")
+	arcane_icons['Icons/NPCS/Arcane/SpriteR.dmi'] = list("name"="Arcane Archon")
+	arcane_icons['Icons/NPCS/Arcane/SpriteY.dmi'] = list("name"="Arcane Archon")
+	arcane_icons['Icons/NPCS/Arcane/SpriteC.dmi'] = list("name"="Arcane Archon")
+	arcane_icons['Icons/NPCS/Arcane/SpriteG.dmi'] = list("name"="Arcane Archon")
+	arcane_icons['Icons/NPCS/Arcane/Fairy1.dmi'] = list("name"="Arcane Fairy")
+	arcane_icons['Icons/NPCS/Arcane/Fairy2.dmi'] = list("name"="Arcane Fairy")
+	arcane_icons['Icons/NPCS/Arcane/Fairy3.dmi'] = list("name"="Arcane Fairy")
+	ai_database["arcane beast"] = new/ai_sheet("arcane beast", list("hostile_randomize"=1), -1, arcane_icons)
 
-	"frog" = new/ai_sheet(id="frog",properties=list(icon='Frog.dmi',name="Frog",\
-		BaseMod=1.5,ai_adapting_power=0,\
-		StrMod=1.5,EndMod=1.5,ForMod=1.5,OffMod=1.5,DefMod=1.5,SpdMod=1.5,Potential=-1,\
-		ai_hostility=1,ai_wander=1),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike")),
+	var/list/hell_icons = list()
+	hell_icons['Icons/NPCS/Animals/Snake.dmi'] = list("name"="Hellspawn Serpent")
+	hell_icons['Icons/NPCS/Dragons/Red Dragon.dmi'] = list("name"="Hellspawn Red Dragon")
+	hell_icons['Icons/NPCS/Dragons/Black Dragon.dmi'] = list("name"="Hellspawn Black Dragon")
+	hell_icons['Icons/Characters/Demons/Demon1.dmi'] = list("name"="Red Imp")
+	hell_icons['Icons/Characters/Demons/Demon2.dmi'] = list("name"="Blue Imp")
+	hell_icons['Icons/Characters/Demons/Demon3.dmi'] = list("name"="Stone Imp")
+	hell_icons['Icons/Characters/Demons/Demon4.dmi'] = list("name"="Grand Imp")
+	hell_icons['Icons/Characters/Demons/Demon5.dmi'] = list("name"="Hell Crawler")
+	hell_icons['Icons/Characters/Special/Undead.dmi'] = list("name"="Death Soldier")
+	hell_icons['Icons/NPCS/Horrors/Zombie.dmi'] = list("name"="Death Warrior")
+	hell_icons['Icons/NPCS/Horrors/Chaos_Chosen.dmi'] = list("name"="Death Knight")
+	ai_database["hell beast"] = new/ai_sheet("hell beast", list("hostile_randomize"=2), -1, hell_icons)
 
-	"xenomorph" = new/ai_sheet(id="xenomorph",properties=list(icon='xenomorph.dmi',name="Xenomorph",\
-		BaseMod=3,ai_adapting_power=0,\
-		StrMod=4,EndMod=2,ForMod=1.5,OffMod=5,DefMod=3,SpdMod=4,Potential=-1,\
-		ai_hostility=2,ai_wander=0,ai_alliances=list("Xenomorph")),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike")),
+	var/list/wild_icons = list()
+	wild_icons['Icons/NPCS/Monster/Saibaman.dmi'] = list("name"="Saibaman")
+	wild_icons['Icons/NPCS/Monster/WildHound.dmi'] = list("name"="Fellhound")
+	wild_icons['Icons/NPCS/Monster/Phoenix.dmi'] = list("name"="Avian")
+	wild_icons['Icons/NPCS/Monster/WolfBeast.dmi'] = list("name"="Beast")
+	wild_icons['Icons/NPCS/Dragons/Red Dragon.dmi'] = list("name"="Red Dragon")
+	wild_icons['Icons/NPCS/Dragons/Black Dragon.dmi'] = list("name"="Black Dragon")
+	wild_icons['Icons/NPCS/Dragons/Green Dragon.dmi'] = list("name"="Green Dragon")
+	wild_icons['Icons/NPCS/Dragons/Blue Dragon.dmi'] = list("name"="Blue Dragon")
+	wild_icons['Icons/NPCS/Aquatics/Aquinian.dmi'] = list("name"="Squid Monster")
+	wild_icons['Icons/NPCS/Monster/Kobold.dmi'] = list("name"="Kobold")
+	wild_icons['Icons/NPCS/Monster/Komfty Kobold.dmi'] = list("name"="Kobold Warrior")
+	wild_icons['Icons/NPCS/Monster/Kobold King.dmi'] = list("name"="Kobold Hunter")
+	wild_icons['Icons/NPCS/Monster/Tricera.dmi'] = list("name"="Flying Wyvern")
+	ai_database["wild monster"] = new/ai_sheet("wild monster", list("hostile_randomize"=3), -1, wild_icons)
 
-	"xenomorph ravager" = new/ai_sheet(id="xenomorphravager",properties=list(icon='runner.dmi',name="Xenomorph Ravager",\
-		BaseMod=7,ai_adapting_power=0.5,\
-		StrMod=6,EndMod=5,ForMod=1.5,OffMod=5,DefMod=3,SpdMod=3,Potential=-1,\
-		ai_hostility=2,ai_wander=1, ai_alliances=list("Xenomorph")),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike")),
+	// Individual critters — step-by-step property list builds for the same reason.
+	var/list/wolf_props = list()
+	wolf_props["icon"] = 'Icons/NPCS/Animals/Wolf.dmi'
+	wolf_props["name"] = "Wolf"
+	wolf_props["BaseMod"] = 1
+	wolf_props["ai_adapting_power"] = 0
+	wolf_props["StrMod"] = 3
+	wolf_props["EndMod"] = 6
+	wolf_props["ForMod"] = 0.1
+	wolf_props["OffMod"] = 6
+	wolf_props["DefMod"] = 4
+	wolf_props["SpdMod"] = 3
+	wolf_props["Potential"] = -1
+	wolf_props["ai_hostility"] = 2
+	wolf_props["ai_wander"] = 1
+	wolf_props["ai_spammer"] = 0.5
+	var/list/wolf_techs = list()
+	wolf_techs += "/obj/Skills/AutoHit/RushStrike"
+	wolf_techs += "/obj/Skills/AutoHit/Howl"
+	wolf_techs += "/obj/Skills/AutoHit/SweepingKick"
+	ai_database["wolf"] = new/ai_sheet("wolf", wolf_props, wolf_techs)
 
-	"xenomorph runner" = new/ai_sheet(id="xenomorphrunner",properties=list(icon='runner.dmi',name="Xenomorph Runner",\
-		BaseMod=2.5,ai_adapting_power=0.5,\
-		StrMod=3,EndMod=3,ForMod=1.5,OffMod=6,DefMod=3,SpdMod=6,Potential=-1,\
-		ai_hostility=2,ai_wander=1,ai_alliances=list("Xenomorph")),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike")),
-	"xenomorph spitter" = new/ai_sheet(id="xenomorphspitter",properties=list(icon='xenomorph.dmi',name="Xenomorph Spitter",\
-		BaseMod=4,ai_adapting_power=0.5,\
-		StrMod=3,EndMod=3,ForMod=8,OffMod=4,DefMod=3,SpdMod=5,Potential=-1,\
-		ai_hostility=2,ai_wander=1,ai_alliances=list("Xenomorph")),\
-		techniques=list("/obj/Skills/Projectile/Shine_Shot","/obj/Skills/Projectile/Charge","/obj/Skills/Projectile/Blast")),
+	var/list/frog_props = list()
+	frog_props["icon"] = 'Icons/NPCS/Animals/Frog.dmi'
+	frog_props["name"] = "Frog"
+	frog_props["BaseMod"] = 1.5
+	frog_props["ai_adapting_power"] = 0
+	frog_props["StrMod"] = 1.5
+	frog_props["EndMod"] = 1.5
+	frog_props["ForMod"] = 1.5
+	frog_props["OffMod"] = 1.5
+	frog_props["DefMod"] = 1.5
+	frog_props["SpdMod"] = 1.5
+	frog_props["Potential"] = -1
+	frog_props["ai_hostility"] = 1
+	frog_props["ai_wander"] = 1
+	ai_database["frog"] = new/ai_sheet("frog", frog_props, list("/obj/Skills/AutoHit/RushStrike"))
 
-	"xenomorph praetorian" = new/ai_sheet(id="xenomorphpraetorian",properties=list(icon='xenomorph.dmi',name="Xenomorph Praetorian",\
-		BaseMod=10,ai_adapting_power=1,Mythical=1,\
-		StrMod=7,EndMod=5,ForMod=1.5,OffMod=5,DefMod=1.5,SpdMod=4,Potential=100,\
-		ai_hostility=2,ai_wander=1,ai_alliances=list("Xenomorph")),\
-		techniques=list("/obj/Skills/AutoHit/RushStrike","/obj/Skills/AutoHit/PhantomStrike","/obj/Skills/AutoHit/Knockoff_Wave","/obj/Skills/Projectile/Shine_Shot","/obj/Skills/Projectile/Dragon_Buster")),
-)
+	var/list/xeno_alliance = list("Xenomorph")
+
+	var/list/xeno_props = list()
+	xeno_props["icon"] = 'Icons/NPCS/xenomorphs/xenomorph.dmi'
+	xeno_props["name"] = "Xenomorph"
+	xeno_props["BaseMod"] = 3
+	xeno_props["ai_adapting_power"] = 0
+	xeno_props["StrMod"] = 4
+	xeno_props["EndMod"] = 2
+	xeno_props["ForMod"] = 1.5
+	xeno_props["OffMod"] = 5
+	xeno_props["DefMod"] = 3
+	xeno_props["SpdMod"] = 4
+	xeno_props["Potential"] = -1
+	xeno_props["ai_hostility"] = 2
+	xeno_props["ai_wander"] = 0
+	xeno_props["ai_alliances"] = xeno_alliance
+	ai_database["xenomorph"] = new/ai_sheet("xenomorph", xeno_props, list("/obj/Skills/AutoHit/RushStrike"))
+
+	var/list/xeno_rav_props = list()
+	xeno_rav_props["icon"] = 'Icons/NPCS/xenomorphs/runner.dmi'
+	xeno_rav_props["name"] = "Xenomorph Ravager"
+	xeno_rav_props["BaseMod"] = 7
+	xeno_rav_props["ai_adapting_power"] = 0.5
+	xeno_rav_props["StrMod"] = 6
+	xeno_rav_props["EndMod"] = 5
+	xeno_rav_props["ForMod"] = 1.5
+	xeno_rav_props["OffMod"] = 5
+	xeno_rav_props["DefMod"] = 3
+	xeno_rav_props["SpdMod"] = 3
+	xeno_rav_props["Potential"] = -1
+	xeno_rav_props["ai_hostility"] = 2
+	xeno_rav_props["ai_wander"] = 1
+	xeno_rav_props["ai_alliances"] = xeno_alliance
+	ai_database["xenomorph ravager"] = new/ai_sheet("xenomorphravager", xeno_rav_props, list("/obj/Skills/AutoHit/RushStrike"))
+
+	var/list/xeno_run_props = list()
+	xeno_run_props["icon"] = 'Icons/NPCS/xenomorphs/runner.dmi'
+	xeno_run_props["name"] = "Xenomorph Runner"
+	xeno_run_props["BaseMod"] = 2.5
+	xeno_run_props["ai_adapting_power"] = 0.5
+	xeno_run_props["StrMod"] = 3
+	xeno_run_props["EndMod"] = 3
+	xeno_run_props["ForMod"] = 1.5
+	xeno_run_props["OffMod"] = 6
+	xeno_run_props["DefMod"] = 3
+	xeno_run_props["SpdMod"] = 6
+	xeno_run_props["Potential"] = -1
+	xeno_run_props["ai_hostility"] = 2
+	xeno_run_props["ai_wander"] = 1
+	xeno_run_props["ai_alliances"] = xeno_alliance
+	ai_database["xenomorph runner"] = new/ai_sheet("xenomorphrunner", xeno_run_props, list("/obj/Skills/AutoHit/RushStrike"))
+
+	var/list/xeno_spit_props = list()
+	xeno_spit_props["icon"] = 'Icons/NPCS/xenomorphs/xenomorph.dmi'
+	xeno_spit_props["name"] = "Xenomorph Spitter"
+	xeno_spit_props["BaseMod"] = 4
+	xeno_spit_props["ai_adapting_power"] = 0.5
+	xeno_spit_props["StrMod"] = 3
+	xeno_spit_props["EndMod"] = 3
+	xeno_spit_props["ForMod"] = 8
+	xeno_spit_props["OffMod"] = 4
+	xeno_spit_props["DefMod"] = 3
+	xeno_spit_props["SpdMod"] = 5
+	xeno_spit_props["Potential"] = -1
+	xeno_spit_props["ai_hostility"] = 2
+	xeno_spit_props["ai_wander"] = 1
+	xeno_spit_props["ai_alliances"] = xeno_alliance
+	var/list/xeno_spit_techs = list()
+	xeno_spit_techs += "/obj/Skills/Projectile/Shine_Shot"
+	xeno_spit_techs += "/obj/Skills/Projectile/Charge"
+	xeno_spit_techs += "/obj/Skills/Projectile/Blast"
+	ai_database["xenomorph spitter"] = new/ai_sheet("xenomorphspitter", xeno_spit_props, xeno_spit_techs)
+
+	var/list/xeno_prae_props = list()
+	xeno_prae_props["icon"] = 'Icons/NPCS/xenomorphs/xenomorph.dmi'
+	xeno_prae_props["name"] = "Xenomorph Praetorian"
+	xeno_prae_props["BaseMod"] = 10
+	xeno_prae_props["ai_adapting_power"] = 1
+	xeno_prae_props["Mythical"] = 1
+	xeno_prae_props["StrMod"] = 7
+	xeno_prae_props["EndMod"] = 5
+	xeno_prae_props["ForMod"] = 1.5
+	xeno_prae_props["OffMod"] = 5
+	xeno_prae_props["DefMod"] = 1.5
+	xeno_prae_props["SpdMod"] = 4
+	xeno_prae_props["Potential"] = 100
+	xeno_prae_props["ai_hostility"] = 2
+	xeno_prae_props["ai_wander"] = 1
+	xeno_prae_props["ai_alliances"] = xeno_alliance
+	var/list/xeno_prae_techs = list()
+	xeno_prae_techs += "/obj/Skills/AutoHit/RushStrike"
+	xeno_prae_techs += "/obj/Skills/AutoHit/PhantomStrike"
+	xeno_prae_techs += "/obj/Skills/AutoHit/Knockoff_Wave"
+	xeno_prae_techs += "/obj/Skills/Projectile/Shine_Shot"
+	xeno_prae_techs += "/obj/Skills/Projectile/Dragon_Buster"
+	ai_database["xenomorph praetorian"] = new/ai_sheet("xenomorphpraetorian", xeno_prae_props, xeno_prae_techs)
 ai_sheet //need to include icon scale
 	parent_type = /datum
 	var
@@ -759,6 +851,7 @@ mob/Player/AI
 		if(ai_stall)
 			ai_stall--
 			return
+		CCRecovery()
 		if(ai_owner)
 			if(ai_owner.PureRPMode)
 				ai_state = "Idle"
@@ -1276,31 +1369,33 @@ mob/Player/AI
 			animate(src,alpha=0,time=30)
 			sleep(30)
 			del(src)
+			return
 
 		if(src.KOTimer)
 			src.KOTimer--
 			if(src.KOTimer<=0&&!src.MortallyWounded)
 				src.Conscious()
 
-		if(src.Beaming==1)
+		if(src.Beaming==1 || src.HasMovingCharge())
 			for(var/obj/Skills/Projectile/Beams/Z in src)
 				if(Z.Charging&&Z.ChargeRate)
-					if(src.BeamCharging>=0.5&&src.BeamCharging<=Z.ChargeRate)
-						src.BeamCharging+=src.GetRecov(0.2)
-						if(src.BeamCharging>Z.ChargeRate)
-							src.BeamCharging=Z.ChargeRate
+					var/beamChargeCap = Z.ChargeRate * BEAM_CHARGE_CAP_MULT
+					if(src.BeamCharging>=0.5&&src.BeamCharging<=beamChargeCap)
+						src.BeamCharging+=src.GetRecov(0.2)*src.GetBeamChargeSpeedMult()
+						if(src.BeamCharging>beamChargeCap)
+							src.BeamCharging=beamChargeCap
 
 						//aesthetics
-						if(src.BeamCharging>=(0.5*Z.ChargeRate))
+						if(src.BeamCharging>=(0.5*beamChargeCap))
 							if(Z.name=="Aurora Execution")
-								if(src.BeamCharging<Z.ChargeRate)
+								if(src.BeamCharging<beamChargeCap)
 									var/image/i=image('Aurora.dmi',icon_state="[rand(1,3)]", layer=EFFECTS_LAYER, loc=src)
 									i.blend_mode=BLEND_ADD
 									animate(i, alpha=0)
 									world << i
 									i.transform*=30
 									animate(i, alpha=200, time=5)
-									src.BeamCharging=Z.ChargeRate
+									src.BeamCharging=beamChargeCap
 									spawn(150)
 										animate(i, alpha=0, time=5)
 										sleep(5)
@@ -1313,15 +1408,15 @@ mob/Player/AI
 											t.overlays+=i
 											spawn(rand(10, 30))
 												t.overlays-=i
-								if(src.BeamCharging==Z.ChargeRate)
+								if(src.BeamCharging==beamChargeCap)
 									src.Quake((14+2*Z.DamageMult))
 
 		src.Debuffs()
 
-		if(src.Harden)
-			src.Harden--
-			if(src.Harden<=0)
-				src.Harden=0
+		if(src.HardenAccumulated)
+			src.HardenAccumulated--
+			if(src.HardenAccumulated<=0)
+				src.HardenAccumulated=0
 
 		if(src.CounterMasterTimer)
 			src.CounterMasterTimer = max(0, CounterMasterTimer-1) // bruh
@@ -1353,7 +1448,8 @@ mob/Player/AI
 			if(src.ActiveBuff.HealthThreshold&&!src.ActiveBuff.AllOutAttack)
 				if(src.Health<src.ActiveBuff.HealthThreshold*(1-src.HealthCut)||src.KO)
 					if(src.CheckActive("Eight Gates"))
-						src.ActiveBuff:Stop_Cultivation()
+						var/obj/Skills/Buffs/ActiveBuffs/Eight_Gates/eg = src.ActiveBuff
+						eg.Stop_Cultivation()
 					else
 						src.ActiveBuff.Trigger(src)
 					goto DRAINS_ACTIVE
@@ -1381,7 +1477,8 @@ mob/Player/AI
 			if(src.ActiveBuff.FatigueThreshold&&!src.ActiveBuff.AllOutAttack)
 				if(src.TotalFatigue>=src.ActiveBuff.FatigueThreshold)
 					if(src.CheckActive("Eight Gates"))
-						src.ActiveBuff:Stop_Cultivation()
+						var/obj/Skills/Buffs/ActiveBuffs/Eight_Gates/eg = src.ActiveBuff
+						eg.Stop_Cultivation()
 					else
 						src.ActiveBuff.Trigger(src)
 					goto DRAINS_ACTIVE
@@ -1411,7 +1508,8 @@ mob/Player/AI
 				src.ActiveBuff.Timer+=world.tick_lag
 				if(src.ActiveBuff.Timer>=src.ActiveBuff.TimerLimit)//If the timer has filled up entirely...
 					if(src.CheckActive("Eight Gates"))
-						src.ActiveBuff:Stop_Cultivation()
+						var/obj/Skills/Buffs/ActiveBuffs/Eight_Gates/eg = src.ActiveBuff
+						eg.Stop_Cultivation()
 					else
 						src.ActiveBuff.Trigger(src)//toggle it off.
 					goto DRAINS_ACTIVE
@@ -1663,6 +1761,24 @@ mob/Player/AI
 
 
 		for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/A in src)
+			//Drain procs for active Autonomous slotless buffs.
+			//These were previously skipped because the non-Autonomous loop above
+			//does `continue` for Autonomous types, leaving any Autonomous buff
+			//with a drain value silently dead (e.g. Lunar Wrath's ManaDrain=1).
+			if(A.SlotlessOn)
+				if(A.ManaDrain)
+					src.LoseMana(A.ManaDrain)
+				if(A.EnergyDrain)
+					src.LoseEnergy(A.EnergyDrain)
+				if(A.FatigueDrain)
+					src.GainFatigue(A.FatigueDrain)
+				if(A.HealthDrain)
+					if(src.passive_handler.Get("ShiningBrightly")&&src.Health>25||!src.passive_handler.Get("ShiningBrightly"))
+						src.DoDamage(src, TrueDamage(A.HealthDrain))
+				if(A.WoundDrain)
+					src.WoundSelf(A.WoundDrain)
+				if(A.CapacityDrain)
+					src.LoseCapacity(A.CapacityDrain)
 			//Activations
 			if(!A.SlotlessOn)
 				if(A.ABuffNeeded)
@@ -1702,7 +1818,7 @@ mob/Player/AI
 					if(src.SpecialBuff.BuffName!=A.SBuffNeeded)
 						A.Trigger(src,Override=1)
 				if(A.TimerLimit&&A.SlotlessOn)
-					if(A.Timer>=A.TimerLimit)
+					if(!(A.PauseInRP && src.PureRPMode) && A.Timer>=A.TimerLimit)
 						A.Trigger(src,Override=1)
 				if(A.NeedsAnger&&A.SlotlessOn)
 					if(!src.Anger)
@@ -1831,9 +1947,9 @@ mob/Player/AI
 			EPM-=src.PowerEroded
 		if(src.NanoBoost&&src.Health<25)
 			EPM+=0.25
-		if(src.isRace(MAKYO))
+	/*	if(src.isRace(MAKYO))
 			if(src.ActiveBuff&&!src.HasMechanized())
-				EPM*=1+(0.5*src.AscensionsAcquired)
+				EPM*=1+(0.5*src.AscensionsAcquired) */
 		if(EPM<=0)
 			EPM=0.1
 //Ratio

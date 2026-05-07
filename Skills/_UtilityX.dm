@@ -687,6 +687,8 @@ obj/Skills/Utility
 					who.Remove(W)
 				if(W.invisibility)
 					who.Remove(W)
+				if(W.isRace(ELDRITCH)||W.isRace(NOBODY))
+					who.Remove(W)
 				if(usr.Dead&&!usr.HasEnlightenment()&&(W.z!=usr.z))
 					who.Remove(W)
 			var/mob/Players/selector=input("Who do you want to observe?","Observe")in who||null
@@ -734,6 +736,7 @@ obj/Skills/Utility
 				Consent=alert(Choice, "Do you want to accept [usr]'s Jagan Eye?", "Jagan Grant", "No", "Yes")
 				if(Consent=="Yes")
 					usr.Maimed++
+					usr.recordMaim(usr, "Jagan Eye Grant")
 					for(var/obj/Skills/Buffs/SlotlessBuffs/Regeneration/r in usr)
 						if(r.RegenerateLimbs)
 							r.RegenerateLimbs=0
@@ -742,6 +745,7 @@ obj/Skills/Utility
 					Choice.JaganPowerNerf=0.5
 					OMsg(usr, "[usr] bestows [Choice] with a powerful demonic eye, but it will leech [Choice]'s life until they learn to control it properly...")
 					del src
+					return
 				else
 					OMsg(usr, "[Choice] refuses [usr]'s offer of power...")
 					src.Using=0
@@ -901,12 +905,11 @@ obj/Skills/Utility
 				Target.contents+=c
 				c.AlignEquip(Target)
 				OMsg(usr, "[usr] conjures clothing!", "[usr] materialized some clothes.")
-
-	Upgrade_Equipment
+	Enchant_Equipment
 		Level=100
 		Teachable=0
 		desc="A progressive knowledge of fine equipment leads to increasing quality."
-		verb/Upgrade_Equipment()
+		verb/Enchant_Equipment()
 			set category="Utility"
 			var/list/swords=list("Cancel")
 			var/list/staves=list("Cancel")
@@ -953,34 +956,38 @@ obj/Skills/Utility
 			var/Cost=glob.progress.EconomyCost
 
 			var/list/Upgrades=list("Cancel")
-			if(Type=="Sword"||Type=="Staff")//armors don't get reinforced
-				Upgrades.Add("Reinforce")
-			if(usr.ArmamentEnchantmentUnlocked>=4||usr.ForgingUnlocked>=5)
-				if(Type=="Sword"&&Chosen:Class!="Wooden"&&!Chosen:ExtraClass)
-					Upgrades.Add("Refine")
-			if(usr.ArmamentEnchantmentUnlocked>=1||usr.RepairAndConversionUnlocked>=3)
-				Upgrades.Add("Fire")
-				Upgrades.Add("Water")
-				Upgrades.Add("Earth")
-				Upgrades.Add("Wind")
-			if(usr.ArmamentEnchantmentUnlocked>=2||usr.RepairAndConversionUnlocked>=1)
-				if(Type=="Sword"||Type=="Staff")
-					Upgrades.Add("Poison")
-					Upgrades.Add("Silver")
-			if(usr.ArmamentEnchantmentUnlocked>=3)
-				Upgrades.Add("Light")
-				Upgrades.Add("Dark")
-			if(usr.ArmamentEnchantmentUnlocked>=5)
-				if(Type=="Sword"||Type=="Staff")
-					Upgrades.Add("Ultima!?")
-			if(usr.ArmamentEnchantmentUnlocked==5&&usr.ForgingUnlocked==5&&usr.RepairAndConversionUnlocked==5&&usr.AlchemyUnlocked==5&&usr.ImprovedAlchemyUnlocked==5&&usr.ToolEnchantmentUnlocked==5)
-				if(Type=="Sword"||Type=="Staff")
-					Upgrades.Add("Ultima (True)")
+			if(Type=="Sword"||Type=="Staff")
+				Upgrades.Add("Reinforce") // so it's at the top of the list and also not given to armors
+			if(Type=="Sword"&&Chosen:Class!="Wooden"&&!Chosen:ExtraClass)
+				Upgrades.Add("Refine")
+			Upgrades.Add("Fire")
+			Upgrades.Add("Water")
+			Upgrades.Add("Earth")
+			Upgrades.Add("Wind")
+			Upgrades.Add("Light")
+			Upgrades.Add("Dark")
+			if(Type=="Sword"||Type=="Staff")
+				Upgrades.Add("Poison")
+				Upgrades.Add("Silver")
+				Upgrades.Add("Ultima!?")
+				Upgrades.Add("Ultima (True)")
+
+			if(Chosen:HighFrequency>=1)
+				Upgrades.Remove("Fire")
+				Upgrades.Remove("Water")
+				Upgrades.Remove("Earth")
+				Upgrades.Remove("Wind")
+				Upgrades.Remove("Light")
+				Upgrades.Remove("Dark")
+				Upgrades.Remove("Ultima!?")
+				Upgrades.Remove("Ultima (True)")
+				Upgrades.Remove("Poison")
+				Upgrades.Remove("Silver")
 			var/Choice2=input("What type of Enchantment will you apply? Mind, the process is extremely exhausting.") in Upgrades
 			switch(Choice2)
 				//T1
 				if("Reinforce")
-					var/enchantmentType = usr.ArmamentEnchantmentUnlocked > usr.ForgingUnlocked ? usr.ArmamentEnchantmentUnlocked : usr.ForgingUnlocked
+					var/enchantmentType = 5
 					// if they have master crafts left, they can upgrade to 6
 					// if not they can only upgrade to their max enchantment type level
 					// the cost is 5* base and 4 ** ascended
@@ -991,7 +998,7 @@ obj/Skills/Utility
 					if(Chosen:Ascended + 1 > glob.progress.maxAscension && !usr.MasterCrafts)
 						usr<<"Ascending [Chosen] is beyond your abilities."
 						return
-					Cost*=5*(4**Chosen:Ascended)
+					Cost*=5*(2**Chosen:Ascended)
 
 				//T2
 				if("Poison")
@@ -1094,7 +1101,264 @@ obj/Skills/Utility
 									del Chosen
 							//:o
 						usr.TakeMoney(Cost)
-			if(Choice2!="Ultima (True)"||Choice2!="Ultima!?")
+			if(Choice2 != "Ultima (True)" && Choice2 != "Ultima!?")
+				usr << "You feel exhausted."
+				usr.GainFatigue(50/max(1,usr.ArmamentEnchantmentUnlocked))
+			if(Choice2=="Ultima!?")
+				usr << "You feel physically and mentally drained."
+				usr.GainFatigue(200/max(1,usr.ArmamentEnchantmentUnlocked))
+				usr.LoseCapacity(200/max(1,usr.ArmamentEnchantmentUnlocked))
+			if(Choice2=="Ultima (True)")
+				usr << "You sacrificed part of your soul for the sake of this project..."
+				usr.EconomyMult/=2
+				usr.Intelligence/=2
+				usr.Imagination/=2
+				if(prob(50))
+					for(var/obj/Items/i in usr)
+						i.loc=usr.loc
+					var/obj/Money/m=new
+					m.loc=usr.loc
+					m.Level=usr.GetMoney()
+					usr.TakeMoney(m.Level)
+					usr.NoSoul=1
+					usr.DeathKilled=1
+					usr.Death(null, "sacrificing everything for their final project!!", SuperDead=99)
+			if(Type=="Sword"&&Choice2!="Reinforce"&&Choice2!="Refine")
+				if(Chosen:Class=="Light")
+					Chosen:name="[Chosen:Element] Bastard Sword"
+				if(Chosen:Class=="Medium")
+					Chosen:name="[Chosen:Element] Longsword"
+				if(Chosen:Class=="Heavy")
+					Chosen:name="[Chosen:Element] Greatsword"
+			if(Type=="Sword"&&Choice2=="Refine")
+				if(Chosen:Class=="Light")
+					Chosen:name="Extra-Light Bastard Sword"
+				if(Chosen:Class=="Medium")
+					Chosen:name="Perfectly-Balanced Longsword"
+				if(Chosen:Class=="Heavy")
+					Chosen:name="Ultra-Heavy Greatsword"
+			if(Type=="Staff"&&Choice2!="Reinforce")
+				if(Chosen:Class=="Wand")
+					Chosen:name="[Chosen:Element] Wand"
+				if(Chosen:Class=="Rod")
+					Chosen:name="[Chosen:Element] Rod"
+				if(Chosen:Class=="Staff")
+					Chosen:name="[Chosen:Element] Staff"
+			if(Type=="Armor")
+				if(Chosen:Class=="Light")
+					Chosen:name="[Chosen:Element] Armored Vest"
+				if(Chosen:Class=="Medium")
+					Chosen:name="[Chosen:Element] Standard Armor"
+				if(Chosen:Class=="Heavy")
+					Chosen:name="[Chosen:Element] Plated Armor"
+			Chosen:Update_Description()
+	Upgrade_Equipment
+		Level=100
+		Teachable=0
+		desc="A progressive knowledge of fine equipment leads to increasing quality."
+		verb/Upgrade_Equipment()
+			set category="Utility"
+			var/list/swords=list("Cancel")
+			var/list/staves=list("Cancel")
+			var/list/armors=list("Cancel")
+			var/Chosen
+			if(usr.TotalFatigue>50)
+				usr << "You're too tired to upgrade anything."
+				return
+			if(usr.TotalCapacity>90)
+				usr << "You're too drained to upgrade anything."
+				return
+			for(var/obj/Items/Sword/S in usr.contents)
+				if(!S.suffix)
+					if(!S.LegendaryItem)
+						if(!S.Conjured)
+							swords.Add(S)
+			for(var/obj/Items/Enchantment/Staff/S in usr.contents)
+				if(!S.suffix)
+					if(!S.LegendaryItem)
+						if(!S.Conjured)
+							staves.Add(S)
+			for(var/obj/Items/Armor/A in usr.contents)
+				if(!A.suffix)
+					if(!A.LegendaryItem)
+						if(!A.Conjured)
+							armors.Add(A)
+			var/Type=alert(usr, "What type of equipment do you wish to refine?", "Upgrade Equipment", "Sword", "Staff", "Armor")
+			switch(Type)
+				if("Sword")
+					if(swords.len<2)
+						usr << "You don't have any swords to upgrade!"
+						return
+					Chosen=input("What sword do you wish to upgrade?", "Upgrade Equipment")in swords
+				if("Staff")
+					if(staves.len<2)
+						usr << "You don't have any staves to upgrade!"
+						return
+					Chosen=input("What staff do you wish to upgrade?", "Upgrade Equipment")in staves
+				if("Armor")
+					if(armors.len<2)
+						usr << "You don't have any armors to upgrade!"
+						return
+					Chosen=input("What armor do you wish to upgrade?", "Upgrade Equipment")in armors
+			var/Cost=glob.progress.EconomyCost
+
+			var/list/Upgrades=list("Cancel")
+			if(Type=="Sword"||Type=="Staff")//armors don't get reinforced
+				Upgrades.Add("Reinforce")
+			if(usr.ArmamentEnchantmentUnlocked>=4||usr.ForgingUnlocked>=5||"Magical Forging" in usr.knowledgeTracker.learnedMagic||"Modular Weaponry" in usr.knowledgeTracker.learnedKnowledge)
+				if(Type=="Sword"&&Chosen:Class!="Wooden"&&!Chosen:ExtraClass)
+					Upgrades.Add("Refine")
+			if(usr.ArmamentEnchantmentUnlocked>=1||usr.RepairAndConversionUnlocked>=3||"ArmamentEnchantment" in usr.knowledgeTracker.learnedMagic||"Enhancement" in usr.knowledgeTracker.learnedKnowledge)
+				Upgrades.Add("Fire")
+				Upgrades.Add("Water")
+				Upgrades.Add("Earth")
+				Upgrades.Add("Wind")
+			if(usr.ArmamentEnchantmentUnlocked>=2||usr.RepairAndConversionUnlocked>=1||"Door to Darkness" in usr.knowledgeTracker.learnedMagic||"Modular Weaponry" in usr.knowledgeTracker.learnedKnowledge)
+				if(Type=="Sword"||Type=="Staff")
+					Upgrades.Add("Poison")
+					Upgrades.Add("Silver")
+			if(usr.ArmamentEnchantmentUnlocked>=3||"Magical Forging" in usr.knowledgeTracker.learnedMagic)
+				Upgrades.Add("Light")
+				Upgrades.Add("Dark")
+			if(usr.ArmamentEnchantmentUnlocked>=5||"Soul Infusion" in usr.knowledgeTracker.learnedMagic)
+				if(Type=="Sword"||Type=="Staff")
+					Upgrades.Add("Ultima!?")
+			if(usr.ArmamentEnchantmentUnlocked==5&&usr.ForgingUnlocked==5&&usr.RepairAndConversionUnlocked==5&&usr.AlchemyUnlocked==5&&usr.ImprovedAlchemyUnlocked==5&&usr.ToolEnchantmentUnlocked==5)
+				if(Type=="Sword"||Type=="Staff")
+					Upgrades.Add("Ultima (True)")
+			if("Soul Infusion" in usr.knowledgeTracker.learnedMagic)
+				if(Type=="Sword"||Type=="Staff")
+					Upgrades.Add("Ultima (True)")
+			if(Chosen:HighFrequency>=1)
+				Upgrades.Remove("Fire")
+				Upgrades.Remove("Water")
+				Upgrades.Remove("Earth")
+				Upgrades.Remove("Wind")
+				Upgrades.Remove("Light")
+				Upgrades.Remove("Dark")
+				Upgrades.Remove("Ultima!?")
+				Upgrades.Remove("Ultima (True)")
+				Upgrades.Remove("Poison")
+				Upgrades.Remove("Silver")
+			var/Choice2=input("What type of Enchantment will you apply? Mind, the process is extremely exhausting.") in Upgrades
+			switch(Choice2)
+				//T1
+				if("Reinforce")
+					var/enchantmentType = usr.ArmamentEnchantmentUnlocked > usr.ForgingUnlocked ? usr.ArmamentEnchantmentUnlocked : usr.ForgingUnlocked
+					// if they have master crafts left, they can upgrade to 6
+					// if not they can only upgrade to their max enchantment type level
+					// the cost is 5* base and 4 ** ascended
+					if(!usr.MasterCrafts)
+						if(Chosen:Ascended>=5||Chosen:Ascended>round(enchantmentType,1))
+							usr<<"Ascending [Chosen] is beyond your abilities."
+							return
+					if(Chosen:Ascended + 1 > glob.progress.maxAscension && !usr.MasterCrafts)
+						usr<<"Ascending [Chosen] is beyond your abilities."
+						return
+					Cost*=5*(2**Chosen:Ascended)
+
+				//T2
+				if("Poison")
+					Cost*=5
+				if("Silver")
+					Cost*=5
+				//T3
+				if("Dark")
+					Cost*=10
+				if("Light")
+					Cost*=10
+				//T4
+				if("Refine")
+					Cost*=10
+				//T5
+				if("Ultima!?")
+					Cost*=100
+				//T6?!
+				if("Ultima (True)")
+					Cost*=400
+				if("Cancel")
+					return
+			if(!usr.HasMoney(Cost))
+				usr<<"You need at least [Cost] to upgrade equipment!"
+				return
+			if(Choice2!="Cancel")
+				var/Confirm2=alert(usr, "It will cost [Cost] to ascend [Chosen].  Do you wish to ascend the weapon?", "Ascend Weapon", "Yes", "No")
+				switch(Confirm2)
+					if("No")
+						OMsg(usr, "[usr] decided to not ascend [Chosen].")
+						return
+					if("Yes")
+						switch(Choice2)
+							if("Reinforce")
+								usr<<"[Chosen] ascends under your careful effort."
+								Chosen:Ascended++
+								if(usr.MasterCrafts && Chosen:Ascended > 5)
+									usr.MasterCrafts--
+									if(usr.MasterCrafts<0)
+										usr.MasterCrafts=0
+									Chosen:name = "Master Crafted [Chosen:name]"
+									Chosen:name = input(usr, "You have worked tirelessly to create a Mythical grade item, you must name it.") as text
+							if("Fire")
+								usr<<"[Chosen] glows a vibrant red for a few moments, and now feels eternally warm to the touch."
+								Chosen:Element="Fire"
+							if("Wind")
+								usr<<"[Chosen] glows a bright green for a few moments. It feels like wind is slowly swirling around it."
+								Chosen:Element="Wind"
+							if("Earth")
+								usr<<"[Chosen] glows a dull yellow for a few moments. It feels heavier for some reason."
+								Chosen:Element="Earth"
+							if("Water")
+								usr<<"[Chosen] glows a deep blue for a few moments. Moisture seems to gather about [Chosen]."
+								Chosen:Element="Water"
+							if("Poison")
+								usr << "[Chosen] glows with a dark green for a few moments.  It feels nauseating to hold..."
+								Chosen:Element="Poison"
+							if("Silver")
+								usr << "[Chosen] is reforged with a pure silver edge.  It feels heavier and more brittle..."
+								Chosen:Element="Silver"
+								Chosen:ShatterTier+=1
+								if(Chosen:ShatterTier>4)
+									Chosen:ShatterTier=4
+							if("Dark")
+								usr<<"[Chosen] glows a deep purple for a few moments. Grasping [Chosen] seems to fill you with anger..."
+								Chosen:Element="Dark"
+							if("Light")
+								usr<<"[Chosen] glows a bright silver for a few moments. Grasping [Chosen] seems to calm you down..."
+								Chosen:Element="Light"
+							if("Refine")
+								usr<<"[Chosen] has its class traits magnified through steady effort..."
+								Chosen:ExtraClass=1
+							if("Ultima!?")
+								usr << "[Chosen] glows a chaotic rainbow for a few moments.  Grasping [Chosen] makes you feel unstoppable..."
+								Chosen:Element="Chaos"
+								if(Type=="Sword")
+									usr << "...yet the blade itself seems to become painfully brittle under the powerful infusion..."
+									Chosen:ShatterTier+=rand(1,4)
+									if(Chosen:ShatterTier>4)
+										Chosen:ShatterTier=4
+									Chosen:ShatterMax/=2
+									if(Chosen:ShatterCounter>Chosen:ShatterMax)
+										Chosen:ShatterCounter=Chosen:ShatterMax
+								if(Type=="Staff")
+									usr << "...yet it becomes much harder to properly channel power through it..."
+									Chosen:SpeedEffectiveness/=5//Lower drain mult means higher cost
+							if("Ultima (True)")
+								if(Chosen:Ascended>=5&&!Chosen:Glass)
+									if(Chosen:Element=="Chaos")
+										usr << "[Chosen] glows a flourescent rainbow for a few moments.  Grasping [Chosen] makes you feel like a force of nature..."
+										Chosen:Element="Ultima"
+										Chosen:Destructable=0
+										Chosen:ShatterTier=0
+										Chosen:Ascended=6
+									else
+										usr << "[Chosen] glows a diminished rainbow for a few moments.  Grasping [Chosen] makes you feel somewhat restrained..."
+										Chosen:Element="Chaos"
+								else
+									usr << "[Chosen] cannot handle the strain of power being infused into it and explodes into million pieces!"
+									del Chosen
+							//:o
+						usr.TakeMoney(Cost)
+			if(Choice2 != "Ultima (True)" && Choice2 != "Ultima!?")
 				usr << "You feel exhausted."
 				usr.GainFatigue(50/max(1,usr.ArmamentEnchantmentUnlocked))
 			if(Choice2=="Ultima!?")
@@ -1202,6 +1466,7 @@ obj/Skills/Utility
 					OMsg(usr, "[usr] loses control of their forbidden spell and has a core part of their being claimed by the transmutation!")
 					OMsg(usr, "The magic chaotically lashes out and sends [Choice] hurtling into the void!")
 					usr.Maimed++
+					usr.recordMaim(usr, "Philosopher Stone Backfire")
 					var/obj/Items/Enchantment/PhilosopherStone/Fake/f = new
 					f.SoulStrength = round(Choice.Potential/20,1)
 					f.SoulIdentity = Choice?:UniqueID
@@ -1581,6 +1846,7 @@ obj/Skills/Utility
 				usr.contents+=CS
 				usr << "You've successfully crystallized three powerful commands!"
 				del src
+				return
 			src.Using=0
 
 	Seal_Break
@@ -1646,6 +1912,7 @@ obj/Skills/Utility
 				MC.loc=usr.loc
 				usr << "You've successfully drawn your magic circle!"
 				del src
+				return
 			src.Using=0
 
 	Create_Magic_Crest
@@ -1667,6 +1934,7 @@ obj/Skills/Utility
 				MC.ObjectUse(usr)
 				usr << "You've created your own Magic Crest!  After filling it with knowledge of your spells, pass it on to a worthy successor to let them to do the same."
 				del src
+				return
 			src.Using=0
 
 	Pocket_Dimension
@@ -2352,6 +2620,8 @@ obj/Skills/Utility
 
 				if(usr.ArmamentEnchantmentUnlocked)
 					Cost/=max(usr.RepairAndConversionUnlocked+usr.ForgingUnlocked,1)
+				if(Choice:Glass&&Choice:HighFrequency)
+					Cost*=50
 
 				Confirm=alert(usr, "It will cost [Commas(Cost*CostMultiplier)] to repair [Choice].  Do you wish to repair the [Category]?", "Reforge", "No", "Yes")
 
@@ -2381,6 +2651,9 @@ obj/Skills/Utility
 			set category="Utility"
 			if(src.Using)
 				usr << "You're already preparing to perform surgery!"
+				return
+			if(usr.KO)
+				usr << "You can't perform surgery while knocked out!"
 				return
 			if(usr.HasPiloting()||usr.HasPossessive())
 				usr << "You're not capable of necessary precision!"
@@ -2518,6 +2791,43 @@ obj/Skills/Utility
 		var/Detecting=0
 		var/Range=1
 		desc="A internal communicator. Broadcasts on Scouter frequencies. It can also monitor a frequency you are not actively broadcasting on."
+
+		New()
+			..()
+			registerInternalCommunicator()
+
+		Del()
+			unregisterInternalCommunicator()
+			..()
+
+		proc/registerInternalCommunicator()
+			if(ICFrequency)
+				addToGlobalListenerOnFreq(src, ICFrequency)
+			if(MonitoringFrequency && MonitoringFrequency != ICFrequency)
+				addToGlobalListenerOnFreq(src, MonitoringFrequency)
+
+		proc/unregisterInternalCommunicator()
+			if(ICFrequency)
+				removeFromGlobalListenerOnFreq(src, ICFrequency)
+			if(MonitoringFrequency && MonitoringFrequency != ICFrequency)
+				removeFromGlobalListenerOnFreq(src, MonitoringFrequency)
+
+		recieveBroadcast(msg, freq)
+			if(!ismob(loc)) return
+			var/mob/owner = loc
+			if(!owner.client) return
+			var/label
+			if(freq == ICFrequency)
+				label = "Freq: [ICFrequency]"
+			else if(freq == MonitoringFrequency)
+				label = "Monitor Freq: [MonitoringFrequency]"
+			else
+				return
+			var/formatted = "<font color=green><b>(Internal Comms ([label])):</b>[msg]"
+			owner.client.outputToChat(formatted, IC_OUTPUT)
+			Log(owner.ChatLog(), formatted)
+			Log(owner.sanitizedChatLog(), formatted)
+
 		verb/Toggle_Internal_Scouter()
 			set category="Utility"
 			if(usr.InternalScouter)
@@ -2554,7 +2864,7 @@ obj/Skills/Utility
 						M<<"<font color=green><b>(Internal Comms (Freq: [src.ICFrequency])):</b> [usr.name]: [html_encode(A)]"
 						Log(M.ChatLog(),"<font color=green>(Internal Comms (Freq: [src.ICFrequency]))[usr]([usr.key]): [html_encode(A)]")
 					if(B.MonitoringFrequency==src.ICFrequency)
-						M<<"<font color=green><b>(Internal Comms (Monitor Freq: [src.MonitoringFrequency])):</b> [usr.name]: [html_encode(A)]"
+						M<<"<font color=green><b>(Internal Comms (Monitor Freq: [B.MonitoringFrequency])):</b> [usr.name]: [html_encode(A)]"
 			for(var/obj/Items/Tech/Speaker/X in world)
 				if(X.Frequency==src.ICFrequency&&X.Active==1)
 					for(var/mob/Y in hearers(X.AudioRange,X))
@@ -2585,16 +2895,30 @@ obj/Skills/Utility
 			set category="Utility"
 			set name="Communicator Frequency"
 			set src in usr
-			src.ICFrequency=input(usr,"Change your Internal Communicator frequency to what?","Frequency")as num
+			var/previousFreq = src.ICFrequency
+			var/newFreq = input(usr,"Change your Internal Communicator frequency to what?","Frequency",src.ICFrequency) as num
+			if(previousFreq == newFreq) return
+			if(previousFreq && previousFreq != src.MonitoringFrequency)
+				removeFromGlobalListenerOnFreq(src, previousFreq)
+			src.ICFrequency = newFreq
+			if(newFreq && newFreq != src.MonitoringFrequency)
+				addToGlobalListenerOnFreq(src, newFreq)
 		verb/MonitorFrequency()
 			set category="Utility"
 			set name="Monitoring Frequency"
 			set src in usr
-			src.MonitoringFrequency=input(usr,"Change your Internal Communicator Monitoring frequency to what?","Monitoring Frequency")as num
+			var/previousFreq = src.MonitoringFrequency
+			var/newFreq = input(usr,"Change your Internal Communicator Monitoring frequency to what?","Monitoring Frequency",src.MonitoringFrequency) as num
+			if(previousFreq == newFreq) return
+			if(previousFreq && previousFreq != src.ICFrequency)
+				removeFromGlobalListenerOnFreq(src, previousFreq)
+			src.MonitoringFrequency = newFreq
+			if(newFreq && newFreq != src.ICFrequency)
+				addToGlobalListenerOnFreq(src, newFreq)
 
 		verb/Scan()
 			set src in usr
-			if(!src.suffix=="*Equipped*")
+			if(src.suffix != "*Equipped*")
 				usr << "You have to equip the scouter to use it!"
 				return
 			usr << "<b>Current Coordinates: ([usr.x], [usr.y], [usr.z])</b>"
@@ -2692,7 +3016,7 @@ obj/Skills/Utility
 			set category="Utility"
 			if(src.Using)
 				return
-			if(usr.GetAndroidIntegrated()<2+usr.AscensionsAcquired)
+			if(usr.GetAndroidIntegrated()<3+usr.AscensionsAcquired)
 				src.Using=1
 				var/obj/Items/Gear/Choice
 				var/list/obj/Items/Gear/IG=list("Cancel")
@@ -2752,6 +3076,10 @@ obj/Skills/Utility
 						NewS=new/obj/Skills/Queue/Gear/Integrated/Integrated_Power_Claw
 					if(/obj/Items/Gear/Hook_Grip_Claw)
 						NewS=new/obj/Skills/Queue/Gear/Integrated/Integrated_Hook_Grip_Claw
+					if(/obj/Items/Gear/Missile_Massacre)
+						NewS=new/obj/Skills/Projectile/Gear/Integrated/Integrated_Missile_Massacre
+					if(/obj/Items/Gear/Ultra_Laser)
+						NewS=new/obj/Skills/Projectile/Gear/Integrated/Integrated_Ultra_Laser
 					else
 						usr << "Ruh roh.  Something went wrong.  Yell at Yan."
 						src.Using=0
@@ -2791,6 +3119,12 @@ obj/Skills/Utility
 				ModChoices.Add("Enhanced Aggression")
 				ModChoices.Add("Enhanced Reflexes")
 				ModChoices.Add("Enhanced Speed")
+				ModChoices.Add("3x Enhanced Strength")
+				ModChoices.Add("3x Enhanced Force")
+				ModChoices.Add("3x Enhanced Endurance")
+				ModChoices.Add("3x Enhanced Aggression")
+				ModChoices.Add("3x Enhanced Reflexes")
+				ModChoices.Add("3x Enhanced Speed")
 
 			if("Neuron Manipulation" in usr.knowledgeTracker.learnedKnowledge || (usr.isRace(ANDROID)))
 				ModChoices.Add("Internal Comms Suite")//talky in your heady
@@ -2815,8 +3149,11 @@ obj/Skills/Utility
 				ModChoices.Add("Ripper Mode")
 				ModChoices.Add("Armstrong Augmentation")
 				ModChoices.Add("Ray Gear")
+				ModChoices.Add("Hilbert Effect")
 				ModChoices.Add("Overdrive")
 				ModChoices.Add("Infinity Drive")
+				ModChoices.Add("Biological Cybernetics")
+				ModChoices.Add("Cybernetic Mainframe")
 
 			var/list/Who=list("Cancel")
 			if(usr.isRace(ANDROID))
@@ -2843,6 +3180,26 @@ obj/Skills/Utility
 				OMsg(usr, "[usr] decides not to tinker.")
 				src.Using=0
 				return
+			if(M.CyberneticMainframe)
+				switch(M.AscensionsAcquired)
+					if(0 to 1)
+						if(M.EnhanceChipsMax<10)
+							M.EnhanceChipsMax=10
+					if(2)
+						if(M.EnhanceChipsMax<16)
+							M.EnhanceChipsMax=16
+					if(3)
+						if(M.EnhanceChipsMax<22)
+							M.EnhanceChipsMax=22
+					if(4)
+						if(M.EnhanceChipsMax<26)
+							M.EnhanceChipsMax=26
+					if(5)
+						if(M.EnhanceChipsMax<30)
+							M.EnhanceChipsMax=30
+					if(6)
+						if(M.EnhanceChipsMax<34)
+							M.EnhanceChipsMax=34
 
 
 			if(M.EnhanceChips>=M.EnhanceChipsMax)
@@ -2852,7 +3209,13 @@ obj/Skills/Utility
 				ModChoices.Remove("Enhanced Aggression")
 				ModChoices.Remove("Enhanced Reflexes")
 				ModChoices.Remove("Enhanced Speed")
-
+			if(M.EnhanceChips+3>=M.EnhanceChipsMax)
+				ModChoices.Remove("3x Enhanced Strength")
+				ModChoices.Remove("3x Enhanced Force")
+				ModChoices.Remove("3x Enhanced Endurance")
+				ModChoices.Remove("3x Enhanced Aggression")
+				ModChoices.Remove("3x Enhanced Reflexes")
+				ModChoices.Remove("3x Enhanced Speed")
 			if(M.NanoBoost)
 				ModChoices.Remove("Nano Boost")
 			if(M.BladeMode)
@@ -2887,11 +3250,18 @@ obj/Skills/Utility
 				ModChoices.Remove("Ripper Mode")
 				ModChoices.Remove("Armstrong Augmentation")
 				ModChoices.Remove("Ray Gear")
+				ModChoices.Remove("Hilbert Effect")
 				ModChoices.Remove("Overdrive")
 
-			if(M.isRace(ANDROID))
+			if(M.isRace(ANDROID)||M.CyberneticMainframe)
 				if(M.Maimed||M.HealthCut)
 					ModChoices.Add("Repair")
+				if("Singularity" in usr.knowledgeTracker.learnedKnowledge || (usr.isRace(ANDROID)))
+					ModChoices.Add("Biological Cybernetics")
+			if(M.BioAndroid||M.SuperAndroid)
+				ModChoices.Remove("Biological Cybernetics")
+			if(M.CyberneticMainframe||M.isRace(ANDROID)&&M.Potential<25)
+				ModChoices.Remove("Cybernetic Mainframe")
 
 			ModChoice=input(usr, "What modification would you like to install?", "Cybernetic Augmentation") in ModChoices
 			if(ModChoice=="Cancel")
@@ -2918,6 +3288,25 @@ obj/Skills/Utility
 				if("Enhanced Speed")
 					Cost=glob.progress.EconomyCost*2.5
 					ModDesc="Enhanced Speed increases Speed."
+
+				if("3x Enhanced Strength")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Strength increases Strength. Installs three at a time."
+				if("3x Enhanced Force")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Force increases Force. Installs three at a time."
+				if("3x Enhanced Endurance")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Endurance increases Endurance. Installs three at a time."
+				if("3x Enhanced Aggression")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Aggression increases Offense. Installs three at a time."
+				if("3x Enhanced Reflexes")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Reflexes increases Defense. Installs three at a time."
+				if("3x Enhanced Speed")
+					Cost=glob.progress.EconomyCost*7.5
+					ModDesc="Enhanced Speed increases Speed. Installs three at a time."
 
 				if("Internal Comms Suite")
 					Cost=glob.progress.EconomyCost*2
@@ -2973,19 +3362,30 @@ obj/Skills/Utility
 				if("Ray Gear")
 					Cost=glob.progress.EconomyCost*300
 					ModDesc="Ray Gear provides the augmented with unparalleled firepower and integrates ranged capabilities into their basic combat protocols while sapping their battery."
+				if("Hilbert Effect")
+					Cost=glob.progress.EconomyCost*300
+					ModDesc="The Hilbert Effect allows one to breach into a higher domain, increasing all offensive capabilities while sapping their battery."
+
 				if("Infinity Drive")
 					Cost=glob.progress.EconomyCost*300
 					ModDesc="Infinity Drive allows a fusion-powered augmented to constantly support their overall performance with their nigh-infinite energy outpour."
 				if("Overdrive")
 					Cost=glob.progress.EconomyCost*300
 					ModDesc="Overdrive allows the augmented to overclock every cybernetically enhanced aspect in exchange for battery life."
-
+				if("Cybernetic Mainframe")
+					Cost=glob.progress.EconomyCost*300
+					ModDesc="A cybernetic mainframe allows someone to become a complete cyborg, forsaking most of their natural abilities (such as signature skills) in exchange for opening up more avenues of cybernetic customization. For regular Androids, it unlocks a powerful new transformation based on your cybernetic enhancements."
+				if("Biological Cybernetics")
+					Cost=glob.progress.EconomyCost*1000
+					ModDesc="Converts an Android or someone with an enhanced cybernetic mainframe into a Biological Android."
 				if("Repair")
 					Cost=glob.progress.EconomyCost/2*(M.Maimed+(M.HealthCut*5))
 					ModDesc="Attempts to repair a damaged android."
 
 			if(M.isRace(ANDROID))
-				Cost*=2
+				Cost/=2
+			if(M.Class=="Resourceful")
+				Cost/=2
 
 			if(M!=usr)
 				if(("War Crimes" in usr.knowledgeTracker.learnedKnowledge)&&M.KO) Consent="Yes"//i hate this btw
@@ -3043,6 +3443,31 @@ obj/Skills/Utility
 					if(M.EnhanceChips<M.EnhanceChipsMax)
 						M.EnhanceChips++
 						M.EnhancedReflexes++
+
+				if("3x Enhanced Strength")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedStrength+=3
+				if("3x Enhanced Endurance")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedEndurance+=3
+				if("3x Enhanced Force")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedForce+=3
+				if("3x Enhanced Speed")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedSpeed+=3
+				if("3x Enhanced Aggression")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedAggression+=3
+				if("3x Enhanced Reflexes")
+					if(M.EnhanceChips+3<M.EnhanceChipsMax)
+						M.EnhanceChips+=3
+						M.EnhancedReflexes+=3
 
 				if("Nano Boost")
 					if(M.NanoBoost)
@@ -3163,6 +3588,14 @@ obj/Skills/Utility
 					M.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/MilitaryFrames/Ray_Gear)
 					M.FusionPowered=1
 					M.ManaPU=1
+				if("Hilbert Effect")
+					if((M.HasMilitaryFrame()&&!M.isRace(ANDROID))||M.Saga)
+						OMsg(usr, "[usr] tried to install a [ModChoice] into [M]...but their operating memory is already occupied.")
+						src.Using=0
+						return
+					M.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/MilitaryFrames/Hilbert_Effect)
+					M.FusionPowered=1
+					M.ManaPU=1
 				if("Overdrive")
 					if((M.HasMilitaryFrame()&&!M.isRace(ANDROID))||M.Saga)
 						OMsg(usr, "[usr] tried to install a [ModChoice] into [M]...but their operating memory is already occupied.")
@@ -3180,6 +3613,30 @@ obj/Skills/Utility
 					M.FusionPowered=1
 					M.ManaPU=1
 
+				if("Biological Cybernetics")
+					if(M.BioAndroid||M.Saga||M.HasMilitaryFrame())
+						OMsg(usr, "[usr] tried to install a [ModChoice] into [M]...but they already have Biological Cybernetics.")
+						src.Using=0
+						return
+					M.BioAndroid=1
+					M.AddSkill(new/obj/Skills/Utility/Collect_Sample)
+					M.AddSkill(new/obj/Skills/Utility/Force_Extract)
+					M.AddSkill(new/obj/Skills/Utility/Bio_Augmentation)
+				if("Cybernetic Mainframe")
+					if(M.CyberneticMainframe||M.Saga)
+						OMsg(usr, "[usr] tried to install a [ModChoice] into [M]...but they already have a Cybernetic Mainframe.")
+						src.Using=0
+						return
+					if(!M.isRace(ANDROID))
+						M.CyberneticMainframe=1
+					if(M.isRace(ANDROID))
+						M.SuperAndroid=1
+						M.transUnlocked=1
+						if(!M.race.transformations)
+							M.race.transformations = list()
+						if(!(locate(/transformation/android/super_android) in M.race.transformations))
+							M.race.transformations += new /transformation/android/super_android()
+					M.AddSkill(new/obj/Skills/Utility/Cyborg_Integration)
 				if("Repair")
 					M.Maimed=0
 					M.HealthCut=0

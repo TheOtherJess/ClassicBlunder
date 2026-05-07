@@ -5,12 +5,14 @@
     glob.JSON_PASSIVES = jsonData
 
 proc/getJSONInfo(tier, type)
-    if(length(glob.JSON_PASSIVES) >= 0)
+    if(length(glob.JSON_PASSIVES) <= 0)
         collectJSON()
+    . = list()
     for(var/x in tier)
-        . += glob.JSON_PASSIVES["[type]_[x]"]
-        for(var/y in glob.JSON_PASSIVES["[type]_[x]"])
-            .["[y]"] = glob.JSON_PASSIVES["[type]_[x]"][y]
+        var/list/source = glob.JSON_PASSIVES["[type]_[x]"]
+        if(source)
+            for(var/y in source)
+                .[y] = source[y]
 
 proc/getPassiveTier(mob/p, passivesObtained="NotSet", secondary=FALSE)//passivesObtained only checks Mainline DA passives. other sources grab potential
     if(passivesObtained=="NotSet")

@@ -12,7 +12,6 @@ race
 		offense = 1
 		defense = 1
 		speed = 1
-		anger = 1.5
 		regeneration = 1.5
 		imagination = 0.5
 		skills = list(/obj/Skills/Buffs/SlotlessBuffs/Oozaru)

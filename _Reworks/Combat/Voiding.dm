@@ -17,16 +17,78 @@ mob/proc/getVoidRolls(extraRolls = 0)
 			totalExtraVoidRolls--
 	return rolls
 
-/mob/Admin3/verb/AutoVoidKill(mob/A in players)
+mob/proc/RollVoidForAbsorb()
+	if(NoVoid) return FALSE
+	if(!glob.VoidsAllowed) return FALSE
+	var/Chance = getExtraVoidChance()
+	var/rolls = getVoidRolls()
+	while(rolls > 0)
+		var/roll = rand(Chance, 100)
+		if(roll >= 100-glob.VoidChance)
+			return TRUE
+		rolls--
+	return FALSE
+
+/mob/Admin3/verb/AdminVoid()
 	set category = "Admin"
-	set name = "AdminKillFreeVoid"
-	A.Death(null, "ADMIN", 0, 0 , 0, 0, 1 )
-	Log("Admin", "<font color=red>[ExtractInfo(usr)] admin-killed [ExtractInfo(A)] (Free Void)")
-/mob/Admin3/verb/ChangeVoidChance(mob/A in players)
-	set category = "Admin"
-	set name = "AdminVoidChance"
-	A.extraVoidChance = input("How much extra void chance do you want to give [ExtractInfo(A)]? (0-100)", A.extraVoidChance, 0, 100) as num
-	Log("Admin", "<font color=red>[ExtractInfo(usr)] changed [ExtractInfo(A)]'s void chance to [A.extraVoidChance]")
+	set name = "Void"
+	var/list/actions = list(
+		"Admin-kill with free void",
+		"Change target's extra void chance"
+	)
+	if(usr.Admin >= 4)
+		actions += list(
+			"Toggle target's NoVoid flag (Owner)",
+			"Set global void chance (Owner)",
+			"Toggle voids allowed (Owner)",
+			"Change void location (Owner)"
+		)
+	actions += "Cancel"
+	var/choice = input(usr, "Void action:", "Void") as null|anything in actions
+	if(!choice || choice == "Cancel") return
+	switch(choice)
+		if("Admin-kill with free void")
+			var/mob/A = input(usr, "Auto-void-kill whom?", "Void") in players
+			if(!A) return
+			A.Death(null, "ADMIN", 0, 0, 0, 0, 1)
+			Log("Admin", "<font color=red>[ExtractInfo(usr)] admin-killed [ExtractInfo(A)] (Free Void)")
+		if("Change target's extra void chance")
+			var/mob/A = input(usr, "Change whose void chance?", "Void") in players
+			if(!A) return
+			A.extraVoidChance = input("How much extra void chance do you want to give [ExtractInfo(A)]? (0-100)", A.extraVoidChance, 0, 100) as num
+			Log("Admin", "<font color=red>[ExtractInfo(usr)] changed [ExtractInfo(A)]'s void chance to [A.extraVoidChance]")
+		if("Toggle target's NoVoid flag (Owner)")
+			if(usr.Admin < 4) return
+			var/mob/m = input(usr, "Toggle NoVoid on whom?", "Void") in players
+			if(!m) return
+			if(m.NoVoid)
+				m.NoVoid = 0
+				usr << "You let [m] void again..."
+			else
+				m.NoVoid = 1
+				usr << "[m] is not gonna void anymore."
+		if("Set global void chance (Owner)")
+			if(usr.Admin < 4) return
+			var/m = input(src, "What do you want to set Void Chance to? (currently [glob.VoidChance]%)", "Void Chance") as num
+			glob.VoidChance = m
+			world << "<font color='green'>Void Chance set to [m]%!</font color>"
+			Log("Admin", "[ExtractInfo(src)] set Void Chance to [m]%!")
+		if("Toggle voids allowed (Owner)")
+			if(usr.Admin < 4) return
+			if(glob.VoidsAllowed)
+				glob.VoidsAllowed = 0
+				world << "<font color='red'>Voiding from death has been disabled.</font>"
+			else
+				glob.VoidsAllowed = 1
+				world << "<font color='green'>Voiding from death has been enabled.</font>"
+		if("Change void location (Owner)")
+			if(usr.Admin < 4) return
+			var/x = input(usr, "X for void?") as num|null
+			var/y = input(usr, "Y for void?") as num|null
+			var/z = input(usr, "Z for void?") as num|null
+			if(!x || !y || !z) return
+			glob.VOID_LOCATION = list(x, y, z)
+			glob.currentlyVoidingLoc = list(x, y, z)
 /mob/var/extraVoidChance = 0
 
 /mob/proc/applyVoidNerf()
@@ -34,6 +96,7 @@ mob/proc/getVoidRolls(extraRolls = 0)
 		return
 	if(glob.VoidMaim||!src)
 		Maimed++
+		recordMaim(null, "Survived Void")
 		src << "After managing to survive, you're left with a maim."
 	if(glob.VoidCut)
 		var/highestStat = 0
@@ -113,7 +176,7 @@ mob/proc/StartFresh()
 	corpse.transform = matrix(-90, MATRIX_ROTATE)
 	corpse.overlays += icon('Injured Blood.dmi')
 	corpse.overlays += icon('EyesDragon.dmi') // this is to stop blinking and give a more 'dead eye' look.
-	corpse.name = "[src]'s corpse"
+	corpse.name = "Corpse of [src]"
 	corpse.loc = oldLoc
 /*	PinataExplosion(corpse)
 	OMsg(src, "[src]'s body explodes into a shower of confetti and loot!")*/
@@ -180,7 +243,7 @@ mob/proc/Void(override, zombie, forceVoid, extraChance = 0, extraRolls = 0)
 
 	// handle the rolling here maybe
 	var/NotYet=0
-	if(src.passive_handler.Get("Undying"))
+	if(src.passive_handler.Get("Undying")||src.passive_handler.Get("Reflected"))
 		NotYet=1
 	if(override&&!NotYet)
 		if(zombie)
@@ -203,7 +266,7 @@ mob/proc/Void(override, zombie, forceVoid, extraChance = 0, extraRolls = 0)
 			else
 				src<<"You sustain the injuries detailed in your death -- as the pain fades, you awaken in the afterlife. Alone, but not for long."
 				src.loc=locate(glob.DEATH_LOCATION[1], glob.DEATH_LOCATION[2], glob.DEATH_LOCATION[3])
-				if(src.isRace(DEMON)||src.isRace(ELDRITCH)||src.Damned||src.Secret=="Eldritch")
+				if(src.isRace(DEMON)||src.isRace(ELDRITCH)||src.Damned||hasEldritchPower())
 					src.Damned=0
 					src.loc=locate(198, 238, 8)
 				if(istype(src, /mob/Players/))
@@ -252,7 +315,7 @@ mob/proc/Void(override, zombie, forceVoid, extraChance = 0, extraRolls = 0)
 			else
 				src<<"You sustain the injuries detailed in your death -- as the pain fades, you awaken in the afterlife. Alone, but not for long."
 				src.loc=locate(glob.DEATH_LOCATION[1], glob.DEATH_LOCATION[2], glob.DEATH_LOCATION[3])
-				if(src.isRace(DEMON)||src.isRace(ELDRITCH)||src.Damned||src.Secret=="Eldritch")
+				if(src.isRace(DEMON)||src.isRace(ELDRITCH)||src.Damned||hasEldritchPower())
 					src.Damned=0
 					src.loc=locate(198, 238, 8)
 				if(istype(src, /mob/Players/))
@@ -267,12 +330,17 @@ mob/proc/Void(override, zombie, forceVoid, extraChance = 0, extraRolls = 0)
 				void_timer = world.realtime + 50
 			voiding = TRUE
 			Conscious()
-			src.loc = locate(glob.VOID_LOCATION[1], glob.VOID_LOCATION[2], glob.VOID_LOCATION[3])
-			if(NotYet)
-				src<<"Your story has not yet ended. Cast the final die, and awaken anew."
-				src.AddSkill(new/obj/Skills/Utility/TheUndying)
-				src.UndyingLoc=oldLoc
-			applyVoidNerf()
+			if(NotYet&&src.passive_handler.Get("Reflected"))
+				src.ReflectedFrozen=1
+				src.ReflectedFrozenTimer=world.time + 48 HOURS
+				src<<"<b>Your body yet refuses to leave this world. You are frozen in place, while recovering from your injuries.</b>"
+			else
+				src.loc = locate(glob.VOID_LOCATION[1], glob.VOID_LOCATION[2], glob.VOID_LOCATION[3])
+				if(NotYet)
+					src<<"Your story has not yet ended. Cast the final die, and awaken anew."
+					src.AddSkill(new/obj/Skills/Utility/TheUndying)
+					src.UndyingLoc=oldLoc
+				applyVoidNerf()
 	if(src.Grab)
 		src.Grab_Release()
 	var/mob/m=src.IsGrabbed()

@@ -1,4 +1,4 @@
-/globalTracker/var/BASE_HARDENING_CHANCE = 50
+
 /globalTracker/var/BASE_MOMENTUM_CHANCE = 50
 /globalTracker/var/MAX_HARDEN_STACKS = 32
 /globalTracker/var/MAX_GRIT_STACKS = 100
@@ -11,18 +11,12 @@
 /globalTracker/var/MOMENTUM_BASE_BOON = 0.0005
 /globalTracker/var/MOMENTUM_MAX_BOON = 4
 
-/globalTracker/var/BASE_FURY_CHANCE = 50
-/globalTracker/var/MAX_FURY_STACKS = 32
-/globalTracker/var/FURY_DIVISOR = 4
-
-/globalTracker/var/FURY_BASE_BOON = 0.0005
-/globalTracker/var/FURY_MAX_BOON = 4
 /mob/proc/applySoftCC(mob/defender, val)
-    if(defender.HasHardening())
+    if(defender.getHarden())
         var/acu = passive_handler["Acupuncture"]
         defender.HardenAccumulate(acu);
     if(passive_handler["SoulTug"] && (defender.CyberCancel||defender.Mechanized))
-        AddConfusing(passive_handler["SoulTug"]*glob.SOULTUGMULT)
+        defender.AddConfusing(passive_handler["SoulTug"]*glob.SOULTUGMULT)
     if(HasDisorienting())
         if(prob(GetDisorienting()*25))
             defender.AddConfusing(clamp(val, 1,10) * 1.25)
@@ -31,7 +25,7 @@
             if(prob(clamp(GetStunningStrike() * 10, 10, 70)))
                 Stun(defender, 3)
 /mob/proc/applyAdditonalDebuffs(mob/defender, value)
-    var/list/debuffs = list("Shearing", "Confusing","Crippling", "Attracting", "Terrifying", "Pacifying", "Enraging")
+    var/list/debuffs = list("Shearing", "Confusing","Crippling", "Attracting", "Terrifying", "Pacifying", "Enraging","Doom")
     for(var/debuff in debuffs)
         if(passive_handler.Get("[debuff]"))
             call(defender, "Add[debuff]")(passive_handler.Get("[debuff]") * clamp(value, 0.1, 1))

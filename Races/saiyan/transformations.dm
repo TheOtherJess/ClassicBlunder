@@ -9,9 +9,16 @@ transformation
 			form_glow_icon = 'Ripple Radiance.dmi'
 			form_glow_x = -32
 			form_glow_y = -32
-			unlock_potential = 40
-			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2,  "BuffMastery" = 3, "PureDamage" = 1, "PureReduction" = 1)
+			//Automatically unlocked at 25, intended to be unlocked around 20
+			unlock_potential = 25
+			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2,  "PureDamage" = 1, "PureReduction" = 1, "SaiyanPower"=1, "SaiyanPower1"=0.4)
 			angerPoint = 75
+			speedadd = 0.3 //these are additive. base is 1, so 0.3=1.3x
+			enduranceadd = 0.3
+			offenseadd = 0.3
+			defenseadd = 0.3
+			strengthadd = 0.3
+			forceadd = 0.3
 
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
@@ -29,14 +36,76 @@ transformation
 				form_icon_2.color=list(1,0,0, 0,0.82,0, 0,0,0, -0.26,-0.26,-0.26)
 
 			mastery_boons(mob/user)
+				if(user.Potential>=22&&mastery<25)
+					mastery=25
+				if(user.Potential>=27&&mastery<50)
+					mastery=50
+				if(user.Potential>=30&&mastery<75)
+					mastery=75
+				if(user.Potential>=35&&mastery<75)
+					mastery=100
 				if(mastery >= 50)
-					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2, user)&&user.isRace(SAIYAN))
+					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2, user))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2)
 						user << "You can draw out greater power from your mastery over super Saiyan - Grade 2 unlocked!"
 				if(mastery >= 75)
-					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade3, user)&&user.isRace(SAIYAN))
+					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade3, user))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade3)
 						user << "You can strain past the limits of your Super Saiyan form! Grade 3 Unlocked!"
+				if(mastery >= 100)
+					if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
+						if(!locate(/obj/Skills/Buffs/SpecialBuffs/SaiyanFervor, user))
+							user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SaiyanFervor)
+							user << "You have fully mastered Super Saiyan, rendering the Grades obsolete and unlocking a new Signature buff! (Saiyan Fervor)"
+					if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
+						if(!locate(/obj/Skills/Buffs/SpecialBuffs/RoyalLineage, user))
+							user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/RoyalLineage)
+							user << "You have fully mastered Super Saiyan, rendering the Grades obsolete and unlocking a new Signature buff! (Royal Lineage)"
+					if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
+						if(!locate(/obj/Skills/Buffs/SpecialBuffs/SaiyanRoar, user))
+							user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SaiyanRoar)
+							user << "You have fully mastered Super Saiyan, rendering the Grades obsolete and unlocking a new Signature buff! (Saiyan Roar)"
+			class_boons(mob/user)
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
+					class_passives = list("EnergyGeneration" = 3, "Instinct" = 2, "Flow" = 2)
+					speedadd = 0.45
+					enduranceadd = 0.3
+					offenseadd = 0.45
+					defenseadd = 0.45
+					strengthadd = 0.3
+					forceadd = 0.3
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
+					class_passives = list("PureDamage" = 1.5, "Flicker" = 2, "Pursuer" = 1)
+					speedadd = 0.3
+					enduranceadd = 0.3
+					offenseadd = 0.45
+					defenseadd = 0.3
+					strengthadd = 0.4
+					forceadd = 0.4
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
+					class_passives = list("PureReduction" = 1.5, "Flow" = 2, "EnergyGeneration" = 3)
+					speedadd = 0.3
+					enduranceadd = 0.5
+					offenseadd = 0.3
+					defenseadd = 0.5
+					strengthadd = 0.3
+					forceadd = 0.3
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive)
+					class_passives = list("PureReduction" = 1, "KiControlMastery" = 1, "Instinct" = 1, "Flow" = 1)
+					speedadd = 0.4
+					enduranceadd = 0.35
+					offenseadd = 0.4
+					defenseadd = 0.4
+					strengthadd = 0.3
+					forceadd = 0.3
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/dominating)
+					class_passives = list("PureDamage" = 1, "Flicker" = 2, "Pursuer" = 1)
+					speedadd = 0.3
+					enduranceadd = 0.3
+					offenseadd = 0.3
+					defenseadd = 0.3
+					strengthadd = 0.45
+					forceadd = 0.45
 
 			transform_animation(mob/user)
 				if(first_time && mastery<25)
@@ -86,10 +155,31 @@ transformation
 			form_aura_icon_state = "SSJ2"
 			form_aura_x = -32
 			form_icon_2_icon = 'SS2Sparks.dmi'
+			//Autounlocked at 55, intended to be unlocked around 35
 			unlock_potential = 55
 			autoAnger = TRUE
-			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2, "BuffMastery" = 1, "PureDamage" = 1, "PureReduction" = 1)
+			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2, "PureDamage" = 1, "PureReduction" = 1, "SaiyanPower2"=0.4)
 			PUSpeedModifier = 1.5
+			speedadd = 0.2
+			enduranceadd = 0.2
+			offenseadd = 0.2
+			defenseadd = 0.2
+			strengthadd = 0.2
+			forceadd = 0.2
+			mastery_boons(mob/user)
+				if(user.Potential>=37&&mastery<25)
+					mastery=25
+				if(user.Potential>=39&&mastery<50)
+					mastery=50
+				if(user.Potential>=41&&mastery<75)
+					mastery=75
+				if(user.Potential>=43&&mastery<100)
+					mastery=100
+				if(mastery >= 100 && user.Class == "Justice")
+					if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive)
+						if(mastery >= 100)
+							user.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/SuperSaiyan2Enhanced)
+							user << "You have pushed your Super Saiyian Two form to its absolute limits!"
 			adjust_transformation_visuals(mob/user)
 				if(user.Hair_Base && !form_hair_icon)
 					var/icon/x=new(user.Hair_Base)
@@ -140,8 +230,15 @@ transformation
 			form_icon_2_icon = 'SS3Sparks.dmi'
 			form_hair_icon = 'Hair_SSj3.dmi'
 			form_icon_1_icon = 'Hair_SSj3.dmi'
-			passives = list("Flicker" = 1, "Pursuer" = 1, "BuffMastery" = 2, "PureDamage" = 1, "PureReduction" = 1)
+			passives = list("Flicker" = 1, "Pursuer" = 1, "PureDamage" = 1, "PureReduction" = 1, "SaiyanPower3"=0.7)
+			//Autounlocked at 65, intended to be unlocked at 45
 			unlock_potential = 65
+			speedadd = 0.5 //these are additive. base is 1, so 0.3=1.3x
+			enduranceadd = 0.5
+			offenseadd = 0.5
+			defenseadd = 0.5
+			strengthadd = 0.5
+			forceadd = 0.5
 
 			adjust_transformation_visuals(mob/user)
 				..()
@@ -269,16 +366,77 @@ transformation
 						animate(user, color = user.MobColor, time=30)
 					sleep(2)
 
+		super_saiyan_4_daima
+			tier = 4
+			unlock_potential = 70 //intended to be unlocked at around 55 potential
+			autoAnger = 1
+			speedadd = 0.5
+			enduranceadd = 0.5
+			offenseadd = 0.5
+			defenseadd = 0.5
+			strengthadd = 0.5
+			forceadd = 0.5
+			var/previousTailIcon
+			var/previousTailUnderlayIcon
+			var/previousTailWrappedIcon
+			var/tailIcon = 'saiyantail_ssj4.dmi'
+			var/tailUnderlayIcon = 'saiyantail_ssj4_under.dmi'
+			var/tailWrappedIcon = 'saiyantail-wrapped_ssj4.dmi'
+			form_icon_1_icon = 'GokentoMaleBase_SSJ4.dmi'
+			form_icon_1_layer = FLOAT_LAYER-3
+			passives = list("GiantForm" = 1, "SweepingStrike" = 1, "Brutalize" = 3, "Meaty Paws" = 2, "PureDamage" = 5, "EnergyGeneration" = 5, "AllOutAttack" = 1, "SaiyanPower4"=0.5, "TrueZenkai" = 1)
+			adjust_transformation_visuals(mob/user)
+				if(user.Hair_Base && !form_hair_icon)
+					var/icon/x=new(user.Hair_Base)
+					x.Blend(rgb(150,-10,-10),ICON_ADD)
+					form_hair_icon=x
+				..()
+			transform(mob/user)
+				. = ..()
+				previousTailIcon = user.TailIcon
+				previousTailUnderlayIcon = user.TailIconUnderlay
+				previousTailWrappedIcon = user.TailIconWrapped
+				user.TailIcon = tailIcon
+				user.TailIconUnderlay = tailUnderlayIcon
+				user.TailIconWrapped = tailWrappedIcon
+				user.Tail(1)
+
+			revert(mob/user)
+				. = ..()
+				if(!is_active || !user.CanRevert()) return
+				user.TailIcon = previousTailIcon
+				user.TailIconUnderlay = previousTailUnderlayIcon
+				user.TailIconWrapped = previousTailWrappedIcon
+				previousTailIcon = null
+				previousTailUnderlayIcon = null
+				previousTailWrappedIcon = null
+				user.Tail(1)
+
+			transform_animation(mob/user)
+				if(first_time)
+					user.CutsceneMode() // store the pre-form appearance and then the post-form appearance before calling the animation. also remove the hair set on overlay afterwards since it's not supposed to be an overlay
+					var/appearance1 = user.appearance
+					user.overlays += form_icon_1
+					user.overlays += form_icon_2
+					user.overlays += form_glow
+					user.overlays += form_aura
+					user.underlays += form_aura_underlay
+					user.overlays += form_hair
+					var/appearance2 = user.appearance
+					user.HellSSJ4Animation1(appearance1, appearance2, user)
+					user.overlays -= form_hair
+		//Golden Oozaru is intended to be unlocked about 10 potential before SSj4!
 		super_saiyan_4
 			tier = 4
-			unlock_potential = 80
+			//Autounlocked at 90, intended to be unlocked at around 70 potential
+			unlock_potential = 90
 			autoAnger = 1
-			speed = 1.5
-			endurance = 1.5
-			offense = 1.5
-			defense = 1.5
-			strength = 1.3
-			force = 1.3
+			speedadd = 3
+			enduranceadd = 3
+			offenseadd = 3
+			defenseadd = 3
+			strengthadd = 3
+			forceadd = 3
 			revertToTrans = 0
 			var/previousTailIcon
 			var/previousTailUnderlayIcon
@@ -300,13 +458,7 @@ transformation
 				"Meaty Paws" = 2 + (mastery/50), "KiControlMastery" = 3 + (mastery/50), "PureReduction" = 5 + (mastery/10),\
 				"LifeGeneration" = 1 + round(mastery/50,1), "Unstoppable" = 1, "AllOutAttack" = 1, "Reversal" = 0.1 + (mastery/200),\
 				"Flow" = 4, "Instinct" = 4, "Transformation Power" = clamp(user.AscensionsAcquired * 3, 1, 20), "Deicide" = 10,\
-				"Flicker" = 5, "Pursuer" = 5, "PureDamage"= 4 + (mastery/10),"SSJ4" = 1,"EndlessNine"=0.25)
-				speed = 1.5 + (mastery/200)
-				endurance = 1.5 + (mastery/200)
-				offense = 1.5 + (mastery/200)
-				defense = 1.5 + (mastery/200)
-				strength = 1.5 + (mastery/200)
-				force = 1.5 + (mastery/200)
+				"Flicker" = 5, "Pursuer" = 5, "PureDamage"= 4 + (mastery/10),"SSJ4" = 1,"EndlessNine"=0.25, "SaiyanPower"=1, "SaiyanPower4"=2.5)
 				autoAnger = 1
 				angerPoint = 99 // funny fix for golden ooz stopping endless anger
 
@@ -333,6 +485,21 @@ transformation
 				user.Tail(1)
 
 			transform_animation(mob/user)
+				/*if(first_time) // store the pre-form appearance and then the post-form appearance before calling the animation. also remove the hair set on overlay afterwards since it's not supposed to be an overlay
+					var/appearance1 = user.appearance
+					world << "app1 is [appearance1]"
+					user.overlays += form_icon_1
+					user.overlays += form_icon_2
+					user.overlays += form_glow
+					user.overlays += form_aura
+					user.underlays += form_aura_underlay
+					world << "[form_hair_icon]"
+					user.overlays += form_hair
+					world << "[user.Hair]"
+					var/appearance2 = user.appearance
+					world << "app2 is [appearance2]"
+					user.HellSSJ4Animation1(appearance1, appearance2)
+					user.overlays -= form_hair*/
 				user.Quake(40)
 				user.Frozen=1
 				KenShockwave2(user, icon='KenShockwaveGold.dmi', Size=10)
@@ -357,14 +524,16 @@ transformation
 					animate(user, color = user.MobColor, time=20)
 		super_full_power_saiyan_4_limit_breaker
 			tier = 5
-			unlock_potential = 90
+			//Intended to be unlocked at around 80 potential, autounlocked at 100
+			//Probably the in game reason for people going beyond 100 potential. Rolls eyes in seiyn
+			unlock_potential = 100
 			autoAnger = 1
-			speed = 1.5
-			endurance = 1.5
-			offense = 1.5
-			defense = 1.5
-			strength = 1.3
-			force = 1.3
+			speedadd = 0.25
+			enduranceadd = 0.25
+			offenseadd = 0.25
+			defenseadd = 0.25
+			strengthadd = 0.25
+			forceadd = 0.25
 			var/previousTailIcon
 			var/previousTailUnderlayIcon
 			var/previousTailWrappedIcon
@@ -385,13 +554,7 @@ transformation
 				passives = list("BuffMastery" = 2, "SweepingStrike" = 1, "Brutalize" = 3,\
 				"KiControlMastery" = 4, "PureReduction" = 3, "EnergyGeneration" = 5, \
 				"Flow" = 4, "Instinct" = 4, "Deicide" = 10,\
-				"Flicker" = 5, "Pursuer" = 5, "PureDamage"= 3,"EndlessNine"=0.25,"SSJ4LimitBreaker"=1)
-				speed = 1.25 + (mastery/400)
-				endurance = 1.25 + (mastery/400)
-				offense = 1.25 + (mastery/400)
-				defense = 1.25 + (mastery/400)
-				strength = 1.25 + (mastery/400)
-				force = 1.25 + (mastery/400)
+				"Flicker" = 5, "Pursuer" = 5, "PureDamage"= 3,"EndlessNine"=0.25,"SSJ4LimitBreaker"=1, "SaiyanPower4"=0.5)
 
 			transform(mob/user)
 				. = ..()
@@ -437,41 +600,28 @@ transformation
 					ShockSize/=2
 				spawn(10)
 					animate(user, color = user.MobColor, time=20)
-		super_saiyan_5
-			unlock_potential = 150
-			autoAnger = 1
-			form_hair_icon = 'Hair_SSJ5.dmi'
-			form_icon_1_icon = 'Hair_SSJ5.dmi'
-			passives = list("The Unstoppable Force" = 1, "The Immovable Object" = 1, "To Govern Strength" = 1)
-			speed = 4
-			endurance = 4
-			offense = 4
-			defense = 4
-			strength = 4
-			force = 4
-			mastery_boons(mob/user)
-				mastery=100
-			transform_animation(mob/user)
-				user.BeastAnimation()
 		super_saiyan_god
 			tier = 4
 			passives = list("GodKi" = 0.5, "EnergyGeneration" = 1, "Godspeed" = 4, "Flow" = 4, "BackTrack" = 2, "StunningStrike" = 1, "Sunyata" = 1 )
-			unlock_potential = 70
+			//Meant to be unlocked around the same time as Golden Oozaru
+			//Which is to say, intended at 60 potential, but autogranted at 80.
+			unlock_potential = 80
 			form_aura_icon = 'SSBGlow.dmi'
 			form_aura_x = -32
 			form_aura_y = -32
-			strength = 1.3
-			speed = 1.4
-			offense = 1.3
-			defense = 1.3
-			force = 1.3
+			speedadd = 1.25
+			enduranceadd = 1.25
+			offenseadd = 1.25
+			defenseadd = 1.25
+			strengthadd = 1.25
+			forceadd = 1.25
 			// at full mastery, give the saiyan beyond god buff, then remove ssjgod, and replace it with ssjgb
 			mastery_boons(mob/user)
 				autoAnger = TRUE
 				passives = list("GodKi" = 0.5, "EnergyGeneration" = 3 + round(mastery/10, 1), "Godspeed" = 4, "Flow" = 4 + round(mastery/25, 1),"TechniqueMastery" = 3 + round(mastery/15, 1), \
 								"Instinct" = 4,"Pursuer"= 4 , "BackTrack" = 2 + round(mastery/50, 1), \
 								"MovementMastery" = 4+round(mastery/25, 1), "StunningStrike" = 1 + round(mastery/50, 0.1), "Sunyata" = 1 + round(mastery/20 ,1),"GodlyCalm"=1,\
-								"Flicker" = 4, "PureDamage"=2, "BuffMastery" = 1 + (mastery/25))
+								"Flicker" = 4, "PureDamage"=2, "BuffMastery" = 1 + (mastery/25), "SaiyanPower" = 1, "SaiyanPower1"=1)
 			adjust_transformation_visuals(mob/user)
 				if(user.Hair_Base && !form_hair_icon)
 					var/icon/x=new(user.Hair_Base)
@@ -564,31 +714,34 @@ transformation
 
 		super_saiyan_blue
 			passives = list("GodKi" = 1, "Instinct" = 4, "Brutalize" = 1)
-			unlock_potential = 80
+			//Parity with SSj4
+			//Intended for 70 potential, autounlocked at 90.
+			unlock_potential = 90
 			tier = 5
 			autoAnger = 1
 			form_aura_icon = 'SSBGlow.dmi'
 			form_aura_x = -32
 			form_aura_y = -32
-			strength = 1.4
-			speed = 1.5
-			offense = 1.4
-			defense = 1.4
-			force = 1.4
+			speedadd = 1.75
+			enduranceadd = 1.75
+			offenseadd = 1.75
+			defenseadd = 1.75
+			strengthadd = 1.75
+			forceadd = 1.75
 			revertToTrans = 0
 
 			mastery_boons(mob/user)
 				passives = list("GodKi" = 0.75, "Instinct" = 4, "Brutalize" = 3, "Steady" = 5,  "BuffMastery" = 8, "MovementMastery" = 8, \
-								"PureDamage" = 5, "PureReduction" = 4, "InBlue" = 1, "Godspeed" = 4, "Pursuer" = 4, "LikeWater"=6,"Flicker"=4, "Transformation Power" = clamp(user.AscensionsAcquired * 3, 1, 20))
-				strength = 1.4
-				speed = 1.5
-				offense = 1.4
-				defense = 1.4
-				force = 1.4
-				endurance = 1.4
+								"PureDamage" = 5, "PureReduction" = 4, "InBlue" = 1, "Godspeed" = 4, "Pursuer" = 4, "LikeWater"=6,"Flicker"=4, "SaiyanPower" = 1, "SaiyanPower1"=1)
+				speedadd = 1.75
+				enduranceadd = 1.75
+				offenseadd = 1.75
+				defenseadd = 1.75
+				strengthadd = 1.75
+				forceadd = 1.75
 				if(mastery >= 100)
 					passives = list("GodKi" = 1, "Instinct" = 4, "Brutalize" = 3, "Steady" = 5,  "BuffMastery" = 8, "MovementMastery" = 10, \
-									"PureDamage" = 5, "PureReduction" = 4, "InBlue" = 1, "Godspeed" = 4, "Pursuer" = 4, "LikeWater"=6,"Flicker"=4, "Transformation Power" = clamp(user.AscensionsAcquired * 5, 1, 30))
+									"PureDamage" = 5, "PureReduction" = 4, "InBlue" = 1, "Godspeed" = 4, "Pursuer" = 4, "LikeWater"=6,"Flicker"=4, "SaiyanPower" = 1, "SaiyanPower1"=1)
 
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
@@ -666,7 +819,10 @@ transformation
 			//UBuffNeeded
 		super_saiyan_blue_evolved
 			passives = list("GodKi" = 1, "Instinct" = 4, "Brutalize" = 1)
-			unlock_potential = 90
+			//Parity with SSj4 Limit Breaker
+			//Intended to be unlocked around 80
+			//Autounlocks at 100 potential
+			unlock_potential = 100
 			tier = 6
 			autoAnger = 1
 			form_aura_icon = 'SSBGlow.dmi'
@@ -679,31 +835,31 @@ transformation
 					passives = list("GodKi" = 0.25, "Instinct" = 4, "Brutalize" = 3, "Steady" = 1, "MovementMastery" = 2, \
 									"EnergyGeneration" = 3,  "PureDamage" = 3, "PureReduction" = 2, "LikeWater" = 2, \
 									"BackTrack" = 1 , "StunningStrike" = 2, "Sunyata" = 3, "InBlueEvolved" = 1,"Flow"=4)
-					strength = 1.1
-					speed = 1.2
-					offense = 1.2
-					defense = 1.2
-					force = 1.1
-					endurance = 1.2
+					speedadd = 0.35
+					enduranceadd = 0.35
+					offenseadd = 0.35
+					defenseadd = 0.35
+					strengthadd = 0.35
+					forceadd = 0.35
 				//evolved: high risk high reward. glass cannon stage that drains heavily
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
 					passives = list("GodKi" = 0.5, "Brutalize" = 2, "MovementMastery" = 7, "EnergyLeak" = 3, "FatigueLeak"=1,\
 							 	"PureDamage" = 9, "PureReduction" = -2,"LikeWater" = 4, \
 								"Sunyata" = 6, "InBlueEvolved" = 1, "Pursuer" = 2)
-					strength = 1.35
-					speed = 1.25
-					force = 1.35
-					endurance = 0.75
+					speedadd = 0.5
+					offenseadd = 0.25
+					strengthadd = 0.65
+					forceadd = 0.65
 				//enraged: draw out fights, anger makes user stronger but wounds put a limit on it
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
 					passives = list("GodKi" = 0.25, "Brutalize" = 2, "MovementMastery" = 5, \
 							 	"PureDamage" = 2,"PureReduction" = 5, "LikeWater" = 4, "BleedHit"=0.25, \
 								"Persistence" = 3, "InBlueEvolved" = 1, "UnderDog" = 5, "Flicker" = 3)
-					endurance = 1.25
-					strength = 1.1
-					force = 1.1
-					defense = 1.25
-					speed = 1.1
+					speedadd = 0.25
+					enduranceadd = 0.75
+					defenseadd = 0.75
+					strengthadd = 0.15
+					forceadd = 0.15
 
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
@@ -770,3 +926,19 @@ transformation
 			revert(mob/user)
 				..()
 			//UBuffNeeded
+		super_saiyan_5
+			unlock_potential = 150
+			autoAnger = 1
+			form_hair_icon = 'Hair_SSJ5.dmi'
+			form_icon_1_icon = 'Hair_SSJ5.dmi'
+			passives = list("The Unstoppable Force" = 1, "The Immovable Object" = 1, "To Govern Strength" = 1)
+			speed = 4
+			endurance = 4
+			offense = 4
+			defense = 4
+			strength = 4
+			force = 4
+			mastery_boons(mob/user)
+				mastery=100
+			transform_animation(mob/user)
+				user.BeastAnimation()

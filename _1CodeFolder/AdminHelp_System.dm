@@ -24,8 +24,11 @@ mob/verb/SkinPM2()
 			if(Q.Admin)
 				if(Q!=src&&Q!=target)
 					Q<<"<font color=#00FF99><b>(Admin PM)</b></font> <a href=?src=\ref[src];action=MasterControl;do=PM2;>[src.key]</a href> to <a href=?src=\ref[mobIntendedKey];action=MasterControl;do=PM2;>[mobIntendedKey]</a href> :[UserInput]"
-		Log("AdminPM","(Admin PM from [src.key] to [target.key]): [UserInput]")
-		src<<"<font color=#00FF99><b>(Admin PM)</b></font>- To  <a href=?src=\ref[target];action=MasterControl;do=PM2;>[target.key]</a href> :[UserInput]"
+		if(target)
+			Log("AdminPM","(Admin PM from [src.key] to [target.key]): [UserInput]")
+			src<<"<font color=#00FF99><b>(Admin PM)</b></font>- To  <a href=?src=\ref[target];action=MasterControl;do=PM2;>[target.key]</a href> :[UserInput]"
+			// Overwatch Listen Mode — copy Admin PM to admins regardless.
+			AdminListenBroadcast(src, "(Admin PM) [src.key] to [target.key]: [html_encode(UserInput)]")
 
 
 
@@ -76,6 +79,7 @@ mob/verb/AdminHelp(var/txt as message)
 	set category="Other"
 	if(!(world.time > verb_delay)) return
 	verb_delay=world.time+1
+	if(!txt || length(txt) <= 0) return
 	//var/obj/Admin_Help_Object/A_Apply = new()
 	var/obj/Admin_Help_Object/AHelp = new()
 	AHelp.name = "[usr.key]     "
@@ -87,14 +91,6 @@ mob/verb/AdminHelp(var/txt as message)
 	txt=copytext(txt,1,10000)
 	AHelp.AdminHelp_Message = txt
 	AdminHelps.Add(AHelp)
-	if(glob.discordAdminHelpWebhookURL)
-		usr.client.HttpPost(
-			"[glob.discordAdminHelpWebhookURL]",
-			list(
-				content = "	**[usr.key]'s AHelp:** ```"+txt+"```",
-				username = "AdminHelp"
-			)
-		)
 	for(var/mob/Players/M in admins)
 		if(M.Admin)
 			M <<"<font color=red>(PLAYER HELP)</font color> <a href=?src=\ref[usr];action=MasterControl;do=PM;ID=[AHelp.UniqueID]>[usr.key]</a href>[M.Controlz(usr)] : [txt]"
@@ -102,7 +98,11 @@ mob/verb/AdminHelp(var/txt as message)
 			if(M.client.getPref("AdminAlerts"))
 				winset(M, "mainwindow", "flash=-1")
 	Log("AdminPM","(Admin Help from [usr.key]): [txt]")
+	// Overwatch Listen Mode — copy PHELP broadcasts to admins with listen on.
+	AdminListenBroadcast(usr, "(PLAYER HELP) [usr.key]: [txt]")
 	usr<<"Your message:\n\n[txt]\n\nhas been sent to the admin!"
+	if(glob.discordAdminHelpWebhookURL)
+		world.Export("[glob.discordAdminHelpWebhookURL]", list("content" = "**[usr.key]'s AHelp:** ```"+txt+"```"), 0, null, "POST")
 
 
 mob/verb/DeleteAdminHelp()
@@ -173,7 +173,6 @@ mob/verb/RefreshListAhelp()
 	winset(usr,"Help_OutPutMessages","cells=0x0")
 	for(var/obj/Admin_Help_Object/O in AdminHelps)
 		winset(src, "Help_OutPutMessages", "current-cell=[++items]")
-		++items
 		usr << output(O, "Help_OutPutMessages")
 	winset(src, "Help_OutPutMessages", "cells=[items]")
 

@@ -5,8 +5,10 @@
 
 /mob/proc/gainCorruption(n)
     if(!isRace(DEMON))
-        if(!ArsGoetiaOwner)
-            return
+        if(!isRace(MAKAIOSHIN))
+            if(!(isRace(CELESTIAL) && CelestialAscension == "Demon"))
+                if(!ArsGoetiaOwner)
+                    return
     if(Corruption + n < MaxCorruption)
         Corruption+=n
     if(Corruption < MinCorruption)
@@ -14,7 +16,7 @@
     if(Corruption < 0)
         Corruption = 0
     Corruption = Corruption
-    client.updateCorruption()
+    if(client) client.updateCorruption()
 
 
 

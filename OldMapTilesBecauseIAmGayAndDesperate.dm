@@ -1,4 +1,13 @@
 //these are just here so i can easily open old maps.
+obj/BoatConsole
+obj/BoatEntrance
+obj/Items/Tech/PunchingBag
+obj/Items/Tech/Log
+obj/Items/Tech/CameraProbe
+obj/Items/Tech/ConveyorBelt
+	var/Active
+mob/Animals/Peaceful/Fly
+
 area
 	mouse_opacity=0
 	var/WeatherOn=0
@@ -8,43 +17,7 @@ area
 	var/WeatherOdds=0
 //	icon='Weather.dmi'
 	Outside
-		New()
-			layer=5
-			var/list/WeathersDay=new
-			var/list/WeathersNight=new
-			if(istype(src,/area/Outside/Planet/Earth))
-				WeathersDay.Add('Rain.dmi','Fog.dmi','Snow.dmi','BrightDay.dmi')
-				WeathersNight.Add('Storm.dmi','DarkRain.dmi','DarkFog.dmi','Dark.dmi')
-			if(istype(src,/area/Outside/Planet/Namek))
-				WeathersDay.Add('NamekRain.dmi','GreenDay.dmi')
-				WeathersNight.Add('NamekRain.dmi','GreenDay.dmi')
-			if(istype(src,/area/Outside/Planet/Vegeta))
-				WeathersDay.Add('Rain.dmi','Fog.dmi','Storm.dmi','DarkDay.dmi')
-				WeathersNight.Add('Storm.dmi','DarkRain.dmi','DarkFog.dmi','Dark.dmi')
-			if(istype(src,/area/Outside/Planet/Ice))
-				WeathersDay.Add('Snow.dmi','Blizzard.dmi','DarkDay.dmi')
-				WeathersNight.Add('DarkBlizzard.dmi','NightSnow.dmi','Dark.dmi')
-			if(istype(src,/area/Outside/Planet/Arconia))
-				WeathersDay.Add('Rain.dmi','Fog.dmi','Storm.dmi')
-				WeathersNight.Add('Storm.dmi','DarkRain.dmi','DarkFog.dmi','Dark.dmi')
-			if(istype(src,/area/Outside/Planet/Sanctuary))
-				WeathersDay.Add('Rain.dmi','Fog.dmi','Storm.dmi','BrightDay.dmi')
-				WeathersNight.Add('Storm.dmi','DarkRain.dmi','DarkFog.dmi','Dark.dmi')
-			if(istype(src,/area/Outside/Planet/Afterlife))
-				WeathersDay.Add('BrightDay.dmi')
-				WeathersNight.Add('DarkDay.dmi')
-			if(istype(src,/area/Outside/Planet/Heaven))
-				WeathersDay.Add('BrightDay.dmi')
-				WeathersNight.Add('DarkDay.dmi')
-			if(istype(src,/area/Outside/Planet/Hell))
-				WeathersDay.Add('BloodRain.dmi','BloodRain.dmi','BloodRain.dmi','DarkBloodRain.dmi','SuperDarkness.dmi')
-				WeathersNight.Add('BloodRain.dmi','Dark.dmi','DarkBloodRain.dmi','SuperDarkness.dmi')
-			if(istype(src,/area/Outside/Planet/Rave))
-				WeathersDay.Add('Dark.dmi')
-				WeathersNight.Add('Dark.dmi')
-			if(istype(src,/area/Outside/Planet/AlienOcean))
-				WeathersDay.Add('Rain.dmi','BrightDay.dmi')
-				WeathersNight.Add('DarkRain.dmi')
+		layer=5
 		PirateColonyOutside
 			TemperatureType="ThinAtmo"
 		Planet
@@ -515,6 +488,7 @@ turf/Special
 						usr.contents+=new/obj/Skills/Keyblade/BestowKeyblade*/
 obj/Effects
 	FusionCamera
+		Lifetime = -1 // Persistent map prop for fusion dance mechanic — opts out of the Effect fade/finalize chain.
 obj/Spirit
 	icon='NewObjects.dmi'
 	icon_state="35"

@@ -43,9 +43,9 @@
 
 /obj/Skills/Buffs/SlotlessBuffs/Magic/HellFire/Hellstorm
     ElementalClass="Fire"
-    scalingValues = list("Damage" = list(0.55,0.77,0.88,1.21,1.32,1.43), "Distance" = list(4,6,6,6,8,10), \
+    scalingValues = list("Damage" = list(0.2,0.2,0.3,0.3,0.35,0.35), "Distance" = list(4,6,6,6,8,10), \
     "DarknessFlame" = list(6,12,15,20,25,25), "Slow" = list(0,0,0,0,0,0), "Burning" = list(10,15,20,25,25,30), "Duration" = list(100,150,150,175,200,300), \
-    "Adapt" = list(1,1,1,1,1), "CorruptionGain" = list(1,1,1,1,1) )
+    "Adapt" = list(1,1,1,1,1,1), "CorruptionGain" = list(1,1,1,1,1,1) )
     makSpace = new/spaceMaker/HellFire
     var/icon_to_use = 'Flaming Rain.dmi'
     var/states_to_use = list("","1")
@@ -100,12 +100,37 @@
                     target:move_disabled = FALSE
 
 /mob/proc/getHellStormDamage()
-    if(Owner.GetStr(1) > Owner.GetFor(1))
+    if(src.GetStr(1) > src.GetFor(1))
         . = GetStr(1)
     else
         . = GetFor(1)
     var/dmgRoll = GetDamageMod()
     . *= dmgRoll
+
+/obj/Skills/Buffs/SlotlessBuffs/Hellraiser
+    name = "Hellraiser"
+    BuffName = "Hellraiser"
+    Slotless = 1
+    TimerLimit = 30
+    TopOverlayLock = 'Icons/Effects/Evil_Electric_Aura.dmi'
+
+    proc/stackBuff(mob/p)
+        if(SlotlessOn)
+            // Buff already active: stack passives and refresh duration
+            p.passive_handler.decreaseList(current_passives)
+            var/new_flicker = min(6, current_passives["Flicker"] + 0.5)
+            var/new_pursuer = min(6, current_passives["Pursuer"] + 0.5)
+            var/new_mastery = min(6, current_passives["TechniqueMastery"] + 0.25)
+            current_passives = list("Flicker" = new_flicker, "Pursuer" = new_pursuer, "TechniqueMastery" = new_mastery)
+            passives = current_passives
+            p.passive_handler.increaseList(current_passives)
+            Timer = 0
+        else
+            // First application
+            passives = list("Flicker" = 0.5, "Pursuer" = 0.5, "TechniqueMastery" = 0.25)
+            p.AddSlotlessBuff(src)
+            current_passives = passives
+            p.passive_handler.increaseList(passives)
 
 
 

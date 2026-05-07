@@ -1,6 +1,7 @@
 obj
 	Skills
 		Queue//Queued skills like GET DUNKED and Axekick.
+			canBeShortcut=1;
 			var/Duration=5//This is how long the queue remains up for.
 			var/UnarmedOnly=0//Can't use this with a sword.
 			//var/ClassNeeded//Requires a sword class.
@@ -116,6 +117,7 @@ obj
 			var/RipplePower=1//used to make ripple go higher
 			var/DrainBlood=0// This is used for vampire grab + toss, makes them gain bloodpower
 			var/ForceCost = 0
+			var/WaveHit=0//Applies BYOND wave filter briefly on the hit target
 
 			var/Ooze
 
@@ -168,6 +170,7 @@ obj
 
 ////General
 			Finisher
+				canBeShortcut=0;
 				Duration=5
 				Instinct=4
 				DamageMult=1
@@ -701,26 +704,6 @@ obj
 					FollowUp="/obj/Skills/AutoHit/Shun_Goku_Satsu"
 					BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Violent_Personality"
 
-
-				//Hiten Finisher
-				Flash_Strike
-					DamageMult=3
-					Counter=1
-					Warp=10
-					SpeedStrike=2
-					SlayerMod=2
-					FollowUp="/obj/Skills/AutoHit/Shunshin_Massacre"
-					BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Shunshin"
-				True_Flash_Strike
-					DamageMult=2.5
-					Counter=1
-					Warp=10
-					SpeedStrike=2
-					SlayerMod=3
-					FollowUp="/obj/Skills/AutoHit/Shunshin_Massacre"
-					BuffAffected="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Godspeed_Assaulted"
-					BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Shunshin_Shin"
-
 				//Keyblade Finishers
 				Fever_Pitch
 					KBAdd=2
@@ -868,7 +851,7 @@ obj
 				HitSparkY=-32
 				ActiveMessage="smashes their fist into their opponents face!" //WA TA
 ////Keyblade
-
+			//(2026.25.02 I need to refactor or remake all the variants of Heavy Strike code for readability - Hadoje)
 			Heavy_Strike
 				Duration=5
 				DamageMult=2
@@ -927,598 +910,50 @@ obj
 									FollowUp = "/obj/Skills/AutoHit/ChaosBlaster"
 								if("GetsugaClad")
 									FollowUp = "/obj/Skills/AutoHit/Getsuga_Followthrough"
+								if("Warp Strike")
+									var/obj/Skills/Projectile/Warp_Strike_MasterOfArms/P = usr.FindSkill(/obj/Skills/Projectile/Warp_Strike_MasterOfArms)
+									if(!P)
+										usr << "You need to be in Master of Arms to use Warp Strike!"
+										return
+									if(P.Using || P.cooldown_remaining)
+										return
+									if(!usr.Target || usr.Target == usr)
+										usr << "You need a target to use Warp Strike!"
+										return
+									var/obj/Items/Sword/sword = usr.EquippedSword()
+									var/obj/Items/Enchantment/Staff/staff = usr.EquippedStaff()
+									if(!sword && !staff)
+										usr << "You need a weapon equipped to use Warp Strike!"
+										return
+									// FlashChange: weapon "disappears" as it's thrown
+									animate(usr, color=list(1,0,0, 0,1,0, 0,0,1, 1,1,1), time=1)
+									spawn(1)
+										if(usr)
+											animate(usr, color=list(1,0,0, 0,1,0, 0,0,1, 0,0,0), time=1)
+									P.IconLock = sword ? sword.icon : staff.icon
+									P.adjust(usr)
+									usr.WarpStrikeHidingWeapon = 1
+									usr.AppearanceOff()
+									usr.AppearanceOn()
+									usr.warp_strike_saved_loc = get_turf(usr)
+									if(!usr.UseProjectile(P))
+										usr.WarpStrikeHidingWeapon = 0
+										usr.AppearanceOff()
+										usr.AppearanceOn()
+										usr.warp_strike_saved_loc = null
+									return
 
 						else
 							// reset all
 							Grapple = 0
 							FollowUp = null
 
-						if(!usr.Secret && !usr.HasWitchCraft()||usr.isRace(ANGEL) || usr.Secret == "Goetic Virtue"||usr.Secret == "Ultra Instinct" || usr.Secret == "Stellar Constellation" || usr.Secret == "Elven Sanctuary" || usr.Secret == "Eldritch" && !usr.CheckSlotless("True Form") || usr.Secret == "Jagan" ||usr.Secret=="Necromancy"||usr.Secret=="Ripple"&&!usr.HasRipple()||usr.Secret=="Senjutsu"&&!usr.CheckSlotless("Senjutsu Focus") || usr.Secret =="Heavenly Restriction" && !usr.secretDatum?:hasImprovement("Heavy Strike"))//Just default Heavy Strike
-							src.name="Heavy Strike"
-							src.DamageMult=2
-							src.AccuracyMult=1
-							Duration=5
-							src.KBAdd=5
-							src.KBMult=3
-							src.Cooldown=15
-							src.ActiveMessage=0
-							src.HitMessage=0
-							src.Ooze = 0
-							src.CursedWounds=0
-							src.Scorching=0
-							src.Freezing=0
-							src.Paralyzing=0
-							src.Shattering=0
-							src.Toxic=0
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=0
-							src.Grapple=0
-							Dunker = 0
-							Launcher = 0
-							PushOutWaves = 0
-							PushOut = 0
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon=null
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=0
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-							return//and that's the end
-						if(usr.Secret=="Heavenly Restriction" && usr.secretDatum?:hasImprovement("Heavy Strike"))
-							src.name="Heavy Strike"
-							src.DamageMult= 2 + usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							PushOutWaves = usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							PushOut = usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							src.AccuracyMult = 1 + usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							src.KBAdd = 5 + usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							src.KBMult= 1 + usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							src.Cooldown=15
-							src.ActiveMessage=0
-							src.HitMessage=0
-							src.Ooze = 0
-							src.CursedWounds=0
-							src.Scorching=0
-							src.Freezing=0
-							src.Paralyzing=0
-							src.Shattering=0
-							src.Toxic=0
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=0
-							src.Grapple=0
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon=null
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=0
-							src.HitSparkSize=1
-							Dunker = 0
-							Launcher = 0
-							if(usr.Target.Launched)
-								Dunker = usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							else
-								Launcher = usr.secretDatum?:getBoon(usr, "Heavy Strike")
-							usr.SetQueue(src)
-						if(usr.Secret == "Eldritch" && usr.CheckSlotless("True Form"))
-							src.name="Maleific Strike"
-							src.DamageMult=3
-							src.AccuracyMult = 3
-							src.KBAdd=2
-							src.KBMult=1.5
-							src.Ooze = 1
-							src.Cooldown=30
-							src.ActiveMessage="leaks some of their malefic presence onto the world!"
-							src.HitMessage=0
-							src.Scorching=3 + (2*usr.AscensionsAcquired)
-							src.Freezing=3 + (2*usr.AscensionsAcquired)
-							src.Paralyzing=3 + (2*usr.AscensionsAcquired)
-							src.Shattering=3 + (2*usr.AscensionsAcquired)
-							src.CursedWounds=0
-							src.Toxic=3 + (2*usr.AscensionsAcquired)
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=0
-							src.Grapple=0
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon=null
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=0
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-						if(usr.Secret=="Senjutsu"&&usr.CheckSlotless("Senjutsu Focus"))
-							src.name="Sage Energy Strike"
-							src.DamageMult=2
-							src.AccuracyMult = 1.1
-							src.KBAdd=5
-							src.KBMult=3
-							src.Cooldown=30
-							src.ActiveMessage="focuses natural energy in their fist!"
-							src.HitMessage=0
-							src.Scorching=3
-							src.Freezing=3
-							src.Paralyzing=3
-							src.Shattering=3
-							src.CursedWounds=0
-							src.Ooze = 0
-							src.Toxic=0
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=0
-							src.Grapple=0
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon=null
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=0
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-						if(usr.Secret=="Haki")
-							usr.AddHaki("Armament")
-							if(!usr.CheckSlotless("Haki Armament"))
-								for(var/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament/H in usr)
-									H.Trigger(usr)
-							if(usr.CheckSlotless("Haki Observation"))
-								for(var/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation/H in usr)
-									H.Trigger(usr)
-							if(usr.secretDatum.secretVariable["HakiSpecialization"]=="Armament")
-								src.name="Buso: Koka"
-								src.DamageMult = 1 + usr.secretDatum.currentTier
-								src.AccuracyMult = 1.15
-								src.KBAdd=10
-								src.KBMult=3
-								src.Cooldown=20
-								src.ActiveMessage="has their arms darken in preparation for a devastating attack!"
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Scorching=0
-								src.Ooze = 0
-								src.Freezing=0
-								src.Shattering=0
-								src.Combo=0
-								src.CursedWounds=0
-								src.Warp=0
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=1
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=2
-								src.IconLock='BusoKoka.dmi'
-								usr.SetQueue(src)
-								return
-							else
-								src.name="Armament Strike"
-								src.DamageMult=2
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=20
-								src.ActiveMessage="focuses their will into their fist!"
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Scorching=0
-								src.Freezing=0
-								src.Shattering=0
-								src.Ooze = 0
-								src.Combo=0
-								src.CursedWounds=0
-								src.Warp=0
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=1
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								src.IconLock='BLANK.dmi'
-								usr.SetQueue(src)
-								return
-						if(usr.Secret=="Ripple"&&usr.HasRipple())
-							if(usr.SwordWounds()||usr.Harden)//no barrage for swords
-								src.name="Ripple Overdrive"
-								src.DamageMult=2
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=30
-								src.HitMessage="channels the Ripple through metal: <b>Metal Silver Overdrive!!</b>"
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Scorching=0
-								src.Freezing=0
-								src.Shattering=0
-								src.CursedWounds=0
-								src.Ooze = 0
-								src.Combo=0
-								src.Warp=2
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(usr.secretDatum.currentTier == 5)
-								src.name="Scarlet Overdrive"
-								src.DamageMult=4
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=30
-								src.HitMessage="channels the Ripple through flame: <b>Scarlet Overdrive!!</b>"
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Scorching=20
-								src.Freezing=0
-								src.Shattering=20
-								src.CursedWounds=0
-								src.Ooze = 0
-								src.Combo=0
-								src.Warp=2
-								src.BuffAffected = "/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/ScarletOverdriven"
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(prob(20))//always check for the barrage
-								src.name="Ripple Overdrive"
-								src.DamageMult=1
-								src.AccuracyMult = 1.15
-								src.KBAdd=1
-								src.KBMult=1
-								src.Cooldown=30
-								src.HitMessage="channels the Ripple for multiple powerful hits: <b>OVERDRIVE BARRAGE!!</b>"
-								src.Scorching=0
-								src.Freezing=0
-								src.Paralyzing=0
-								src.Ooze = 0
-								src.Toxic=0
-								src.Shattering=0
-								src.CursedWounds=0
-								src.Combo=5
-								src.Warp=5
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ripple Arms.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(usr.ElementalOffense=="Water"||usr.Slow)
-								src.name="Ripple Overdrive"
-								src.DamageMult=2
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=20
-								src.HitMessage="channels the Ripple through water: <b>Turquoise Blue Overdrive!!</b>"
-								src.Scorching=0
-								src.Freezing=10
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Shattering=0
-								src.CursedWounds=0
-								src.Combo=0
-								src.Warp=0
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(usr.ElementalOffense=="Fire"||usr.Burn)
-								src.name="Ripple Overdrive"
-								src.DamageMult=3
-								src.AccuracyMult = 1.1
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=20
-								src.HitMessage="channels the Ripple into fire: <b>Scarlet Overdrive!!</b>"
-								src.Scorching=10
-								src.Freezing=0
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Shattering=0
-								src.CursedWounds=0
-								src.Combo=0
-								src.Ooze = 0
-								src.Warp=0
-								src.Rapid=0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(usr.ElementalOffense=="Wind"||usr.Shock)
-								src.name="Ripple Overdrive"
-								src.DamageMult=2
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=3
-								src.Cooldown=20
-								src.HitMessage="channels the Ripple through a spinning kick: <b>Tornado Overdrive!!</b>"
-								src.Scorching=0
-								src.Freezing=0
-								src.Paralyzing=10
-								src.CursedWounds=0
-								src.Ooze = 0
-								src.Toxic=0
-								src.Combo=0
-								src.Warp=3
-								src.Rapid=1
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							if(usr.ElementalOffense=="Earth"||usr.Shatter)
-								src.name="Ripple Overdrive"
-								src.DamageMult=3
-								src.AccuracyMult = 1.1
-								src.KBAdd=10
-								src.KBMult=5
-								src.Cooldown=20
-								src.HitMessage="channels the Ripple through solid rock: <b>Sendo Ripple Overdrive!!</b>"
-								src.Scorching=0
-								src.Freezing=0
-								src.Paralyzing=0
-								src.Toxic=0
-								src.Shattering=10
-								src.CursedWounds=0
-								src.Combo=0
-								src.Warp=0
-								src.Rapid=0
-								src.Ooze = 0
-								src.LifeSteal=0
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='Ultima Arm.dmi'
-								src.HitSparkIcon=0
-								src.HitSparkX=0
-								src.HitSparkY=0
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							//But if all those fail, use this
-							src.name="Ripple Overdrive"
-							src.DamageMult=1
-							src.AccuracyMult = 1.15
-							src.KBAdd=5
-							src.KBMult=3
-							src.Cooldown=20
-							src.HitMessage="channels the Ripple through their strikes: <b>Ripple Overdrive!!</b>"
-							src.Scorching=0
-							src.Freezing=0
-							src.Paralyzing=0
-							src.Toxic=0
-							src.Ooze = 0
-							src.CursedWounds=0
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=0
-							src.Grapple=0
-							src.NoForcedWhiff=0
-							src.IconLock='Ultima Arm.dmi'
-							src.HitSparkIcon=0
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=0
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-							return
-						if(usr.Secret=="Vampire")
-							if(!usr.PoseEnhancement)
-								src.name="Vampiric Strike"
-								src.DamageMult=2
-								src.AccuracyMult = 1.1
-								src.KBAdd=0
-								src.KBMult=0.0001
-								src.Cooldown=20
-								src.HitMessage="rips out their opponent's life force with a powerful strike!"
-								src.Scorching=0
-								src.Freezing=0
-								src.Paralyzing=0
-								src.Toxic=0
-								src.CursedWounds=0
-								src.Combo=0
-								src.Warp=0
-								src.Ooze = 0
-								src.Rapid=0
-								src.LifeSteal=100
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='BLANK.dmi'
-								src.HitSparkIcon='Hit Effect Vampire.dmi'
-								src.HitSparkX=-32
-								src.HitSparkY=-32
-								src.HitSparkTurns=0
-								src.HitSparkSize=1
-								usr.SetQueue(src)
-								return
-							else
-								src.name="Vampiric Strike"
-								src.DamageMult=3
-								src.AccuracyMult = 1.15
-								src.KBAdd=5
-								src.KBMult=0.0001
-								src.Cooldown=20
-								src.HitMessage="rips their opponent to shreds!"
-								src.Scorching=0
-								src.Freezing=0
-								src.Paralyzing=0
-								src.Ooze = 0
-								src.Toxic=0
-								src.CursedWounds=0
-								src.Combo=0
-								src.Warp=0
-								src.Rapid=0
-								src.LifeSteal=100
-								src.Crippling=0
-								src.Grapple=0
-								src.NoForcedWhiff=0
-								src.IconLock='BLANK.dmi'
-								src.HitSparkIcon='Slash - Vampire.dmi'
-								src.HitSparkX=-32
-								src.HitSparkY=-32
-								src.HitSparkTurns=1
-								src.HitSparkSize=2
-								usr.SetQueue(src)
-						if(usr.Secret=="Werewolf")
-							src.name="Rip and Tear"
-							src.DamageMult=2
-							src.AccuracyMult = 1.1
-							src.KBAdd=0
-							src.KBMult=5
-							src.Cooldown=20
-							src.HitMessage="digs their claws into their opponent, dealing crippling wounds!"
-							src.Scorching=0
-							src.Freezing=0
-							src.Paralyzing=0
-							src.Toxic=0
-							src.CursedWounds=0
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.Ooze = 0
-							src.LifeSteal=0
-							src.Crippling=3
-							src.Grapple=0
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon='WolfFF.dmi'
-							src.HitSparkX=0
-							src.HitSparkY=0
-							src.HitSparkTurns=1
-							src.HitSparkSize=2
-							usr.SetQueue(src)
-							return
-						if(usr.StyleActive == "Witch" && usr.HasWitchCraft())
-							src.ActiveMessage="weaves their hands towards the central mass of their enemies!"
-							src.name = "Soulsap Strike"
-							src.DamageMult=1.5
-							src.AccuracyMult = 1.15
-							src.KBAdd=0
-							src.KBMult=1
-							src.Cooldown=20
-							src.HitMessage= "grasps hold of their opponents soul -- Sapping away it's energy!"
-							src.Scorching=0
-							src.Freezing=1
-							src.Paralyzing=0
-							src.CursedWounds=5
-							src.Decider = 1
-							src.Combo=0
-							src.Warp=2
-							src.Rapid=0
-							src.Crippling=15
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon='Icons/NSE/spells/debuff/holywaterflow.dmi'
-							src.HitSparkX=-32
-							src.HitSparkY=-32
-							src.HitSparkTurns=1
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-							return
-						if(usr.Secret=="Zombie")
-							src.name="Death Grasp"
-							src.DamageMult=2.5
-							src.AccuracyMult = 1.15
-							src.KBAdd=0
-							src.KBMult=1
-							src.Cooldown=20
-							src.HitMessage="grasps hold of their opponent with necrotic energy!"
-							src.Scorching=0
-							src.Freezing=0
-							src.Paralyzing=0
-							src.Toxic= 25
-							src.Shearing = 25
-							src.Ooze = 0
-							src.CursedWounds=1
-							src.Decider = 1
-							src.Combo=0
-							src.Warp=0
-							src.Rapid=0
-							src.LifeSteal=0
-							src.Crippling=15
-							src.Grapple=1
-							src.NoForcedWhiff=0
-							src.IconLock='BLANK.dmi'
-							src.HitSparkIcon='Hit Effect Wind.dmi'
-							src.HitSparkX=-32
-							src.HitSparkY=-32
-							src.HitSparkTurns=1
-							src.HitSparkSize=1
-							usr.SetQueue(src)
-							return
+						var/obj/Skills/Queue/Secret_Heavy_Strike/hs = usr.getSpecialHeavyStrike();
+						if(hs)
+							if(hs.Using || Using) return;//if heavy strike or secret heavy strike is on cooldown, stop
+							hs.adjust(usr);
+							usr.SetQueue(hs);
+						else if(usr.canNormalHeavyStrike()) usr.SetQueue(src);
 
 			Meteor_Mash
 				name="Meteor Mash"
@@ -1823,11 +1258,12 @@ obj
 
 
 			Symbiote_Hammer
-				DamageMult=6
-				AccuracyMult = 1.1
+				DamageMult=7
+				AccuracyMult = 1.2
 				Duration=10
-				Cooldown=120
+				Cooldown=90
 				Instinct=2
+				KBAdd=3
 				Stunner=1
 				Shearing = 5
 				Crippling = 5
@@ -1890,6 +1326,37 @@ mob
 				return 0
 			if(Q.Using)
 				return//Can't use if on cooldown
+			if(istype(Q, /obj/Skills/Queue/Heavy_Strike) && src.passive_handler["Heavy Strike"] == "Warp Strike")
+				var/obj/Skills/Projectile/Warp_Strike_MasterOfArms/P = src.FindSkill(/obj/Skills/Projectile/Warp_Strike_MasterOfArms)
+				if(!P)
+					src << "You need to be in Master of Arms to use Warp Strike!"
+					return
+				if(P.Using || P.cooldown_remaining)
+					return
+				if(!src.Target || src.Target == src)
+					src << "You need a target to use Warp Strike!"
+					return
+				var/obj/Items/Sword/sword = src.EquippedSword()
+				var/obj/Items/Enchantment/Staff/staff = src.EquippedStaff()
+				if(!sword && !staff)
+					src << "You need a weapon equipped to use Warp Strike!"
+					return
+				animate(src, color=list(1,0,0, 0,1,0, 0,0,1, 1,1,1), time=1)
+				spawn(1)
+					if(src)
+						animate(src, color=list(1,0,0, 0,1,0, 0,0,1, 0,0,0), time=1)
+				P.IconLock = sword ? sword.icon : staff.icon
+				P.adjust(src)
+				src.WarpStrikeHidingWeapon = 1
+				src.AppearanceOff()
+				src.AppearanceOn()
+				src.warp_strike_saved_loc = get_turf(src)
+				if(!src.UseProjectile(P))
+					src.WarpStrikeHidingWeapon = 0
+					src.AppearanceOff()
+					src.AppearanceOn()
+					src.warp_strike_saved_loc = null
+				return
 			if(!Q.heavenlyRestrictionIgnore&&Secret=="Heavenly Restriction" && secretDatum?:hasRestriction("Queues"))
 				return
 			if(!Q.heavenlyRestrictionIgnore&&Secret=="Heavenly Restriction" && secretDatum?:hasRestriction("All Skills"))
@@ -1938,7 +1405,7 @@ mob
 						var/obj/Items/Enchantment/Staff/st=src.EquippedStaff()
 						//var/obj/Items/Enchantment/Magic_Crest/mc=src.EquippedCrest()
 						var/obj/Items/Sword/sord=src.EquippedSword()
-						if(passive_handler.Get("Disarmed")&& !src.HasLimitlessMagic() || !src.HasBladeFisting())
+						if(passive_handler.Get("Disarmed") && !src.HasLimitlessMagic() && !src.HasBladeFisting())
 							Q.DamageMult = (Q.DamageMult / 2)
 						if(!st&&!(CrestSpell(Q))&&(!sord||sord&&!sord.MagicSword))
 							src << "You need a spell focus to use [Q]."
@@ -1972,6 +1439,10 @@ mob
 						return
 			if(Q.ManaCost && !src.HasDrainlessMana() && !Q.AllOutAttack)
 				var/drain = src.passive_handler.Get("MasterfulCasting") ? Q.ManaCost - (Q.ManaCost * (passive_handler.Get("MasterfulCasting") * 0.3)) : Q.ManaCost
+				if(Q.SpellElement)
+					var/elem_mana_red = src.getSpellElementManaCostReduction(Q.SpellElement)
+					if(elem_mana_red)
+						drain *= (1 - elem_mana_red)
 				if(drain <= 0)
 					drain = 0.5
 				if(!src.TomeSpell(Q))
@@ -2009,7 +1480,7 @@ mob
 				src << "<b>You drop [src.AttackQueue.name] from your queue.</b>"
 				src.QueueOverlayRemove()
 				src.ClearQueue()
-			if(src.HasRipple())
+			if(src.RippleActive())
 				var/BreathCost=1*Q.DamageMult
 				if(Q.InstantStrikes)
 					BreathCost*=Q.InstantStrikes
@@ -2348,6 +1819,10 @@ mob
 				src.HealMana(AttackQueue.ManaGain)
 			if(src.AttackQueue.ManaCost)
 				var/drain = src.passive_handler.Get("MasterfulCasting") ? AttackQueue.ManaCost - (AttackQueue.ManaCost * (passive_handler.Get("MasterfulCasting") * 0.3)) : AttackQueue.ManaCost
+				if(src.AttackQueue.SpellElement)
+					var/elem_mana_red = src.getSpellElementManaCostReduction(src.AttackQueue.SpellElement)
+					if(elem_mana_red)
+						drain *= (1 - elem_mana_red)
 				if(drain <= 0)
 					drain = 0.5
 				if(src.TomeSpell(src.AttackQueue))

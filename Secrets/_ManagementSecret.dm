@@ -4,12 +4,25 @@
 #define MADNESS_MAX 100
 #define MADNESS_ADD_PER_TIER 25
 
-//todo between wipes: RENAME. THIS. TO. INFORMATION.
-//MOTHER FUCKER...
-/mob/var/SecretInfomation/secretDatum = new()
+#define VALID_SECRET_LIST list("Jagan Eye", "Haki", "Hamon", "Vampire", "Werewolf", "Heavenly Restriction", "Senjutsu", "Shin",\
+"Ultra Instinct", "Zombie", "Necromancy", "Eldritch", "Eldritch (Shrouded)", "Eldritch (Reflected)", "Black Flash", "Spiral")
 
+//thank you hadoje
+/mob/var/SecretInformation/secretDatum = new()
 
-
+/mob/proc/
+	hasSecret(secretName)
+		if(!secretName) return 0;
+		if(!Secret) return 0;
+		if(!(secretName in VALID_SECRET_LIST))
+			liveDebugMsg("[src] called hasSecret proc with the argument [secretName]. That's not a valid secret!");
+			src << "[secretName] is not a valid secret name for the hasSecret proc. Admins have been notified of the error, but you can throw it in the Discord bug channel too.";
+			return 0;
+		if(!(Secret in VALID_SECRET_LIST))
+			admins << "<font size=+1><b>DEBUG:</b></font size> [src] called hasSecret proc when their own Secret variable was marked as [Secret]. That's not a valid secret!";
+			src << "Your current Secret variable, [Secret], is not in the valid secret list. Admins have been notified of the error, but you can admin help over it.";
+		if(secretName != Secret) return 0;//if secretName (argument) does not match Secret (mob variable) then say Nope.
+		return 1;
 
 
 /mob/Admin4/verb/editSecretDatum(mob/p in players)
@@ -40,7 +53,7 @@
 	return 0
 
 
-SecretInfomation
+SecretInformation
 	var
 		name
 		lastCheckedTier = 1
@@ -269,7 +282,7 @@ SecretInfomation
 				secretVariable["BloodPower"] = 0
 		applySecret(mob/p)
 			if(!p.vampireBlood)
-				p.vampireBlood = new(p, 6, 45)
+				p.vampireBlood = new(p, 6, 184)
 			switch(currentTier)
 				if(1)
 					p << "You have willingly consumed blood, forsaking your humanity...You've awakened the power of a Vampire!"
@@ -296,12 +309,59 @@ SecretInfomation
 					p << "You have forgotten what it means to be mortal..."
 					nextTierUp = 999
 
+	EldritchShrouded
+		name = "Eldritch (Shrouded)"
+		var/list/ShroudedPassives=list();
+		var/ShroudedOrigin;
+		var/ShroudedSubtype;
+		applySecret(mob/p)
+			p << "Your Shrouded origin bubbles to the surface; [currentTier] Steps towards the road to Assimilation have been taken..."
+			//1, 2, and 6 upgrade your "Origin" style enhancements
+			//I'm not being lazy, I'm being ~efficient~
+			if(currentTier==3)
+				p.findOrAddSkill(/obj/Skills/Utility/Tether)
+				p << "Your Shroud learns to link itself with another body for ease of existence! (Tether)"
+			if(currentTier==4)
+				p << "When you Fade into Shadow, your existence is further nullified (Upgrades to Fade into Shadow movement)"
+			if(currentTier==5)
+				p << "Your All Seeing Eyes can pierce any veils within this reality! (Restrictions on All Seeing Eyes removed)"
+
+	EldritchReflected
+		name = "Eldritch (Reflected)"
+		givenSkills = list("/obj/Skills/Utility/Offer_Pact", "/obj/Skills/Utility/Revoke_Pact");
+		applySecret(mob/p)
+			p << "You reflect a greater portion of your True Essence! [currentTier] Shards have been collected..."
+			switch(currentTier)
+				if(2)
+					p.findOrAddSkill(/obj/Skills/Utility/Refresh);
+					p << "You remember how to Refresh someone and ignore the time their body is taxed! (Refresh)"
+					p.findOrAddSkill(/obj/Skills/Utility/Eldritch_Domain);
+					p << "You remember how to expand your Eldritch Domain and empower yourself and your Coven! (Eldritch Domain)";
+				if(3)
+					p.findOrAddSkill(/obj/Skills/Utility/Altered_Nature);
+					p << "You remember how to weave the threads of Fate between your Coven! (Altered Nature)"
+					p.findOrAddSkill(/obj/Skills/Utility/Bared_Souls);
+					p << "You remember how to bare your true nature to a Coven member! (Bared Souls)"
+				if(4)
+					p.findOrAddSkill(/obj/Skills/Utility/Glimpse_Inside);
+					p << "You remember how to reach inside a Coven member and bestow Eldritch secrets upon them! (Glimpse Inside)"
+					p.findOrAddSkill(/obj/Skills/Utility/Shared_Dreaming);
+					p << "You remember how to instantly teleport to a member of your Coven! (Shared Dreaming)";
+				if(5)
+					p.findOrAddSkill(/obj/Skills/Utility/With_You_In_Darkness);
+					p << "You remember how to bestow your dark protection upon a Coven member! (With You in Darkness)"
+					p.findOrAddSkill(/obj/Skills/Utility/Observe);
+					p << "...you can observe."
+				if(6)
+					p.findOrAddSkill(/obj/Skills/Utility/Reclamation)
+					p << "You remember how to take it all away, stealing your threads back to yourself for your own gain! (Reclamation)"
 
 	Eldritch
 		name = "Eldritch"
 		secretVariable = list("Madness" = 0, "Madness Active" = 0, "Lunatic Mode" = 0, "Power From Blood" = 0, "Blood Stock" = 0, "Resource Stock" = 0)
 		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/Eldritch/True_Form")
 		applySecret(mob/p)
+			p << "You have awakened the [currentTier]\th tier of Eldritch secrets!";
 			switch(currentTier)
 				if(1)
 					giveSkills(p)
@@ -314,7 +374,7 @@ SecretInfomation
 		//todo this should hopefully be able to be removed between wipes
 		//should only trigger once
 		proc/updateSecretVariables(mob/p)
-			var/SecretInfomation/Eldritch/e = p.secretDatum;
+			var/SecretInformation/Eldritch/e = p.secretDatum;
 			e.secretVariable["Power From Blood"] = 0;
 			e.secretVariable["Lunatic Mode"] = 0;
 			e.secretVariable["Blood Stock"] = 0;
@@ -535,6 +595,142 @@ SecretInfomation
 					nextTierUp=999
 					p << "You have mastered the art of Senjutsu!"
 
+	Spiral
+		name = "Spiral"
+		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/Spiral/Evolution_Power")
+		maxTier = 6
+		applySecret(mob/p)
+			switch(currentTier)
+				if(1) // Unlocks Spiral and get your first buff
+					p << "Your fighting spirit soars throughout you. Unknown to you, this is the beginning of Spiral Energy."
+					giveSkills(p)
+					p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Spiral/Clobber)
+				if(2) // Get your main attack
+					p << "You hone your fighting spirit, fueled by the urge to make your dreams real."
+					p.AddSkill(new/obj/Skills/AutoHit/Giga_Drill_Breaker)
+					nextTierUp = 2
+					if(p.passive_handler.Get("SpiralEngine")) // If you're an Android who has installed a Spiral Engine, you get ascension stats so that Evolution Power can buff you
+						p.StrAscension+= 0.1
+						p.EndAscension+= 0.1
+						p.ForAscension+= 0.1
+						p.SpdAscension+= 0.1
+						p.OffAscension+= 0.1
+						p.DefAscension+= 0.1
+						p << "Your synthetic body evolved!"
+				if(3) // Gives you your second buff
+					p << "Your body surges with Spiral Energy, the power of evolution driving you forward."
+					p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvo)
+					nextTierUp = 2
+					if(p.passive_handler.Get("SpiralEngine"))
+						p.StrAscension+= 0.15
+						p.EndAscension+= 0.15
+						p.ForAscension+= 0.15
+						p.SpdAscension+= 0.15
+						p.OffAscension+= 0.15
+						p.DefAscension+= 0.15
+						p << "Your synthetic body evolved!"
+				if(4)
+					p << "Your soul burns with Spiral Hope. You refuse to be oppressed by the limitations of others."
+					nextTierUp = 4
+					if(p.passive_handler.Get("SpiralEngine"))
+						p.StrAscension+= 0.15
+						p.EndAscension+= 0.15
+						p.ForAscension+= 0.15
+						p.SpdAscension+= 0.15
+						p.OffAscension+= 0.15
+						p.DefAscension+= 0.15
+						p << "Your synthetic body evolved!"
+				if(5)
+					p << "Your very DNA resonates with Spiral Power. You climb upwards toward the ceiling of your cage."
+					nextTierUp = 4
+					if(p.passive_handler.Get("SpiralEngine"))
+						p.StrAscension+= 0.2
+						p.EndAscension+= 0.2
+						p.ForAscension+= 0.2
+						p.SpdAscension+= 0.2
+						p.OffAscension+= 0.2
+						p.DefAscension+= 0.2
+						p << "Your synthetic body evolved!"
+				if(6)
+					p << "You have gone beyond your full potential. You have evolved beyond the person you were before. You are free."
+					if(p.passive_handler.Get("SpiralEngine"))
+						p.StrAscension+= 0.3
+						p.EndAscension+= 0.3
+						p.ForAscension+= 0.3
+						p.SpdAscension+= 0.3
+						p.OffAscension+= 0.3
+						p.DefAscension+= 0.3
+						p << "Your synthetic body evolved!"
+
+	Shin
+		name = "Shin"
+		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/Shin_Radiance")
+		maxTier = 6;
+		var/Mang = 0; // The current amount of mang used
+		var/MangMastery = 0; // The maximum amount of mang you can use
+		applySecret(mob/p)
+		// This code checks for the maximum Mang you can have, wheras var/Mang checks for your current mang :3
+			if(currentTier >= 2)
+				MangMastery = (currentTier-1)
+			else
+				MangMastery = 0
+		// This code switches your Secret Tier
+			switch(currentTier)
+				if(1) //Unlocks Shin
+					p << "You let go of all things... except for your most intense memories. You have awakened the power of Shin."
+					giveSkills(p) // This only adds Shin_Radiance, Mang is on the next tier
+					giveVariables(p)
+				if(2) //Unlocks 1 Mang Ring
+					p << "You fill your empty self with the emotions born from intense of Memories. You have awakened the power of Mang."
+					nextTierUp = 2
+					p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Mang_Resonance)
+				if(3) // 2 Mang Rings
+					p << "Your mastery over Shin and Mang improves."
+					nextTierUp = 2
+				if(4) // 3 Mang Rings
+					p << "You further refine your mastery over Shin and Mang"
+					nextTierUp = 4
+				if(5) // 4 Mang Rings
+					p << "You're at the cusp of perfecting the arts of Shin and Mang, your very presence begins to weigh upon others."
+					nextTierUp = 4
+				if(6) // 5 Mang Rings
+					p << "You have refined both Shin and Mang to perfection, leveraging perfect control over your sense of self to invoke that intense emotion."
+
+
+	BlackFlash
+		name = "Black Flash"
+		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/BlackFlash_Potential")
+		maxTier = 6;
+		var/BlackFlashCount = 0; //Tracks how many were fired off during a fight
+		var/BFlashPotential = 0; // If 120 Potential is up
+		var/BlackFlashChance = 0; // Usually a raising chance to land one per Heavy Strike
+		var/BlackFlashBaseChance = 5; // The chance it goes back to after med or too much time passed
+		var/BlackFlashForcedChance = 0; // If above 0, is used to force a certain chance to BFlash
+		var/BlackFlashFirstTimeUse = 1; // Literally just to do some funny narrative yapping like in the series
+		applySecret(mob/p)
+			p << "You feel a new resonance with your own energy..."
+			switch(currentTier)
+				if(1)
+					giveSkills(p)
+					giveVariables(p)
+					BlackFlashBaseChance = 5;
+				if(2)
+					BlackFlashBaseChance = 15;
+				if(3)
+					BlackFlashBaseChance = 25;
+					p << "You now have a chance to keep your focus when landing a Black Flash! (Your Chance to land a Black Flash has a 50% chance to not reset when landing one.)"
+					p.passive_handler.Set("Sparks of Black",1)
+				if(4)
+					BlackFlashBaseChance = 35;
+				if(5)
+					BlackFlashBaseChance = 50;
+					p << "The Blessing of the Sparks of Black allow you to force a Black Flash out no matter what!"
+					p << "(Black Flash SureStrike: A 5 second Slotless Buff that forces your chance to land a Black Flash to 100%.)"
+					p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/BlackFlash_SureStrike)
+				if(6) // are you out of your motherfucking miiiiiiiiiind
+					BlackFlashBaseChance = 60;
+
+
 mob
 	var
 		//HAKI
@@ -550,8 +746,8 @@ mob
 
 	proc
 		giveSecret(path)
-			path = text2path("/SecretInfomation/[path]")
-			var/SecretInfomation/secret = new path
+			path = text2path("/SecretInformation/[path]")
+			var/SecretInformation/secret = new path
 			secretDatum = secret
 			secret.init(src)
 
@@ -559,7 +755,7 @@ mob/Admin3/verb
 	SecretManagement(var/mob/P in players)
 		set category="Admin"
 		if(!P.client) return
-		var/list/Secrets=list("Spirits of The World","Jagan", "Hamon of the Sun", "Werewolf", "Vampire", "Sage Arts", "Haki", "Eldritch", "Heavenly Restriction")
+		var/list/Secrets=list("Spirits of The World","Jagan Eye", "Hamon of the Sun", "Werewolf", "Vampire", "Sage Arts", "Haki", "Eldritch", "Heavenly Restriction", "Shin", "Black Flash", "Spiral")
 		var/Selection=input(src, "Which aspect of power does [P] awaken to?", "Secret Management") in Secrets
 		if(P.Secret)
 			src << "They already have a secret."
@@ -577,11 +773,11 @@ mob/Admin3/verb
 					P.Secret = "Heavenly Restriction"
 					P.giveSecret("HeavenlyRestriction")
 				if("Jagan")
-					P.Secret = "Jagan"
+					P.Secret = "Jagan Eye"
 					P.giveSecret("Jagan")
 				if("Hamon of the Sun")
 					P.ModifyPrime+=1
-					P.Secret="Ripple"
+					P.Secret="Hamon"
 					P.giveSecret("Hamon")
 				if("Sage Arts")
 					P.ModifyPrime+=1
@@ -611,6 +807,15 @@ mob/Admin3/verb
 				if("Vampire")
 					P.Secret="Vampire"
 					P.giveSecret("Vampire")
+				if("Shin")
+					P.Secret="Shin"
+					P.giveSecret("Shin")
+				if("Black Flash")
+					P.Secret="Black Flash"
+					P.giveSecret("BlackFlash")
+				if("Spiral")
+					P.Secret="Spiral"
+					P.giveSecret("Spiral")
 mob
 	proc
 		AddHaki(var/Type)

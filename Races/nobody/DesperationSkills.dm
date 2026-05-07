@@ -1,43 +1,16 @@
 obj/Skills/AutoHit/Desperation
-	MagicHour
-		DamageMult=1
-		StrOffense=1
-		ForOffense=1
-		NeedsSword=1
-		Distance=10
-		WindupMessage="readies their Desperation Move...!"
-		FollowUp="/obj/Skills/Projectile/Zone_Attacks/MagicHourS" // this doesn't work for some reason. help
-		FollowUpDelay=0.5
-		Area="Target"
-		Icon='SweepingKick.dmi'
-		IconX=-32
-		IconY=-32
-		Cooldown=300
-		EnergyCost=15
-		Instinct=1
-		NeedsHealth=30
-		verb/MagicHour()
-			var/asc = usr.AscensionsAcquired
-			set category="Skills"
-			set name="Magic Hour"
-			if(usr.Health>=30)
-				usr << "You need to be under 30% HP to use your Desperation Move!"
-				return
-			DamageMult=1.25*(1+asc/2)
-			Cooldown=300-(10*(asc))
-			usr.Activate(src)
-
-
 	FatalEnding
 		NeedsSword=1
 		Distance=15
 		Gravity=5
 		WindUp=1
 		WindupMessage="readies their Desperation Move...!"
-		DamageMult=10
-		StrOffense=1
+		DamageMult=15
+		StrOffense=1.5
 		ActiveMessage="slashes through their enemy in the blink of an eye, aiming to mortally wound them!"
 		Area="Target"
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain"
+		BuffSelfDelay=20
 		GuardBreak=1
 		PassThrough=1
 		MortalBlow=1
@@ -53,16 +26,47 @@ obj/Skills/AutoHit/Desperation
 		verb/Fatal_Ending()
 			var/asc = usr.AscensionsAcquired
 			set category="Skills"
-			DamageMult=(10 * (1+asc))
-			StrOffense=(1 * (1+asc))
+			DamageMult=(15 * (1+asc))
+			StrOffense=(1.5 * (1+asc))
 			Cooldown=300-(10*(asc))
+			usr.Activate(src)
+	Deathscythe
+		Area="Target"
+		Distance=60
+		WindUp=3
+		WindupMessage="summons a massive scythe of dripping petals, slowly descending towards their target..."
+		WindupIcon='SparkleRed.dmi'
+		WindupIconY=32
+		WindupColor=rgb(255, 100, 180)
+		DamageMult=1
+		FixedDamage=6.5
+		NeedsHealth=20
+		StrOffense=1
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain"
+		BuffSelfDelay=30
+		Cooldown=300
+		EnergyCost=10
+		Instinct=1
+		MortalBlow=1
+		HitSparkIcon='SparkleRed.dmi'
+		HitSparkX=-16
+		HitSparkY=-16
+		HitSparkSize=2
+		HitSparkTurns=1
+		ActiveMessage="commands the scythe to strike, reaping the life from their target in a flurry of pink petals!"
+		verb/Deathscythe()
+			set category="Skills"
+			var/asc = usr.AscensionsAcquired
+			FixedDamage = 6.5 + (1 * asc)
+			WindUp = max(1, 3 - (0.25 * asc))
+			Cooldown = 300 - (10 * asc)
 			usr.Activate(src)
 /obj/Skills/Projectile/Zone_Attacks/Desperation
 	UltimaLasers
 		EnergyCost=20
-		Speed = 0.25
+		Speed = 0.10
 		Distance=20
-		Blasts=30
+		Blasts=50
 		Charge=1
 		DamageMult=0.8
 		ComboMaster=1
@@ -81,42 +85,58 @@ obj/Skills/AutoHit/Desperation
 		Hover=7
 		Variation=0
 		Cooldown = 300
+		NeedsHealth=30
 		ActiveMessage="fires off an impossible amount of energy bolts!"
 		verb/Ultima_Lasers()
-			var/asc = usr.AscensionsAcquired
 			set category="Skills"
-			if(usr.Health>=30)
-				usr << "You need to be under 30% HP to use your Desperation Move!"
-				return
-			DamageMult=0.8*(1+asc/2)
+			var/asc = usr.AscensionsAcquired
+			DamageMult=0.5*(1+asc/2)
 			Cooldown=300-(10*(asc))
+			if (usr.HasTarget() && src.cooldown_start == 0)
+				spawn(40)
+					usr.buffSelf("/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain")
 			usr.UseProjectile(src)
 
-	MagicHourS
+	MagicHour
 		IconLock='Blast2.dmi'
 		Variation=4
-		Blasts=10
+		Blasts=20
 		Speed = 0.5
 		Distance=20
 		HyperHoming=1
+		Homing=3
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain"
+		BuffSelfDelay=40
 		NeedsSword=1
 		Stunner=1.5
+		ProjAuraOnCast='SweepingKick.dmi'
+		ProjAuraUnder=1
+		ProjAuraSize=1
+		ProjAuraX=-32
+		ProjAuraY=-32
+		ProjAuraTime=10
 		Deflectable = FALSE
 		DamageMult=1.25
 		ZoneAttackX=3
 		ZoneAttackY=3
 		FollowUp="/obj/Skills/Queue/Desperation/MagicFinale"
-		FollowUpDelay=0
+		FollowUpDelay=-1
 		Cooldown=300
 		EnergyCost=5
+		NeedsHealth=30
 		ActiveMessage="activates their Desperation Move, Magic Hour!"
 		adjust(mob/p)
 			if(!altered)
 				var/asc = usr.AscensionsAcquired
 				DamageMult=1.25*(1+asc/2)
 				Cooldown=300-(10*(asc))
-		verb/MagicHourS()
+		verb/MagicHour()
+			set category="Skills"
+			if (usr.HasTarget() && src.cooldown_start == 0 && usr.EquippedSword())
+				spawn()LeaveImage(User=usr, Image='SweepingKick.dmi', PX=usr.pixel_x+ProjAuraX, PY=usr.pixel_y+ProjAuraY, PZ=usr.pixel_z+ProjAuraZ, Size=ProjAuraSize, Under=ProjAuraUnder, Time=(max(1,ProjAuraTime)), AltLoc=0)
 			usr.UseProjectile(src)
+
+
 
 /obj/Skills/Queue/Desperation
 	LunarRave
@@ -126,7 +146,10 @@ obj/Skills/AutoHit/Desperation
 		AccuracyMult = 1.25
 		KBMult=0.00001
 		KBAdd=2
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain"
+		BuffSelfDelay=40
 		Combo=12
+		NeedsHealth=30
 		Warp=3
 		Duration=5
 		Cooldown=380 //once per fight
@@ -192,3 +215,13 @@ obj/Skills/AutoHit/Desperation
 				var/asc = usr.AscensionsAcquired
 				DamageMult=0.5*(1+asc/2)
 				Cooldown=300-(10*(asc))
+
+
+/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher
+	Void_Drain
+		SpdMult=0.75
+		StrMult=0.75
+		EndMult=0.75
+		TimerLimit = 20
+		IconLock='SweatDrop.dmi'
+		ActiveMessage="feels the exhaustion..."

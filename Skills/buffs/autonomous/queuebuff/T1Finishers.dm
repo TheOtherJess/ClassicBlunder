@@ -54,7 +54,7 @@
         StyleNeeded="Black Leg"
         StrMult=1.25
         ForMult=1.25
-        passives = list("TensionLock" = 1, "SpiritHand" = 1, "Pursuer" = 2, "Instinct" = 2, "TensionLock" = 1)
+        passives = list("TensionLock" = 1, "SpiritHand" = 1, "Pursuer" = 2, "Instinct" = 2)
         ActiveMessage="ignites their legs!"
         OffMessage="burns out..."
     Heavenly_Dragons_Transient_Enlightenment
@@ -94,7 +94,7 @@
     Crescent_Blessing
         IconLock='SweatDrop.dmi'
         IconApart=1
-        passives = list("Tossing" = 1.5, "SlayerMod" = 1, "FavoredPrey" = "Races", "Hit Scan" = 2 , "TensionLock" = 1) // not sure
+        passives = list("Tossing" = 1.5, "SlayerMod" = 1, "FavoredPrey" = "Mortal", "Hit Scan" = 2 , "TensionLock" = 1) // not sure
         StyleOff = 1.2
         StyleStr = 1.2
         StyleSpd = 1.1
@@ -128,13 +128,13 @@
     Magma_Fist
         ForMult=1.3
         EndMult=1.2
-        passives = list("Hardening" = 2, "BlockChance" = 25, "CriticalBlock" = 0.15, "Burning" = 3, "Crushing" = 5, "TensionLock" = 1)
+        passives = list("Harden" = 2, "BlockChance" = 25, "CriticalBlock" = 0.15, "Burning" = 3, "Crushing" = 5, "TensionLock" = 1)
 
     Cool_Guy
         OffMult=1.15
         ForMult=1.15
         EndMult=1.2
-        passives = list("Freezing" = 5, "Shattering" = 3, "Hardening" = 2, "Steady" = 2, "TensionLock" = 1)
+        passives = list("Freezing" = 5, "Shattering" = 3, "Harden" = 2, "Steady" = 2, "TensionLock" = 1)
 
     Conduit
         SpdMult=1.2

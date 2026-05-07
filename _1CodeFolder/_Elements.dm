@@ -1,19 +1,51 @@
+/mob/proc
+	getElementalOffense()
+		var/list/l = list();
+		if(ElementalOffense) l |= ElementalOffense;
+		if(Infusion && InfusionElement) l |= InfusionElement;
+		if(StyleBuff && StyleBuff.ElementalOffense) l |= StyleBuff.ElementalOffense;
+		if(Class=="Reaper") l += "Death";
+		return l;
+	getElementalDefense()
+		var/list/l = list();
+		if(ElementalDefense) l |= ElementalDefense;
+		if(Infusion && InfusionElement) l |= InfusionElement;
+		if(StyleBuff && StyleBuff.ElementalDefense) l |= StyleBuff.ElementalDefense;
+		return l;
+
+
+/mob/proc/
+	hasElementalOffense(off)
+		if(off in getElementalOffense()) return 1;
+		return 0;
+	hasElementalDefense(def)
+		if(def in getElementalDefense()) return 1;
+		return 0;
+
 proc
 	ElementalCheck(var/mob/Attacker, var/mob/Defender, var/ForcedDebuff=0, var/DebuffIntensity=glob.DEBUFF_INTENSITY, list/bonusElements,damageOnly = FALSE, list/onlyTheseElements)
 		var/list/attackElements = list()
 		var/list/defenseElements = list()
+		var/list/forcedDebuffs = list("Scorching", "Freezing", "Shattering", "Paralyzing", "Toxic")
+		var/burningBonus = max(0, Attacker.passive_handler.Get("Burning"))
+		var/scorchingBonus = max(0, Attacker.passive_handler.Get("Scorching"))
+		var/chillingBonus = max(0, Attacker.passive_handler.Get("Chilling"))
+		var/freezingBonus = max(0, Attacker.passive_handler.Get("Freezing"))
+		var/crushingBonus = max(0, Attacker.passive_handler.Get("Crushing"))
+		var/shatteringBonus = max(0, Attacker.passive_handler.Get("Shattering"))
+		var/shockingBonus = max(0, Attacker.passive_handler.Get("Shocking"))
+		var/paralyzingBonus = max(0, Attacker.passive_handler.Get("Paralyzing"))
+		var/poisoningBonus = max(0, Attacker.passive_handler.Get("Poisoning"))
+		var/toxicBonus = max(0, Attacker.passive_handler.Get("Toxic"))
+		attackElements = Attacker.getElementalOffense()
+		for(var/debuff in debuffVars)
+			if(Attacker.passive_handler.Get("[debuff]"))
+				attackElements |= debuff2Element[debuff]
+				if(debuff in forcedDebuffs)
+					ForcedDebuff = 1
 		if(bonusElements&&bonusElements.len>0)
 			attackElements |= bonusElements
-
-		for(var/possible_extra_element in debuffVars)
-			if(Attacker.passive_handler.Get(possible_extra_element))
-				attackElements |= debuff2Element[possible_extra_element]
-		if(Attacker.ElementalOffense)
-			attackElements |= Attacker.ElementalOffense
-		if(Attacker.Infusion && Attacker.InfusionElement)
-			attackElements |= Attacker.InfusionElement;
-		if(Attacker.StyleBuff && Attacker.StyleBuff.ElementalOffense)
-			attackElements |= Attacker.StyleBuff.ElementalOffense;
+		defenseElements = Defender.getElementalDefense();
 
 		var/obj/Items/Enchantment/Staff/staf=Attacker.EquippedStaff()
 		var/obj/Items/Sword/sord=Attacker.EquippedSword()
@@ -36,12 +68,7 @@ proc
 
 		if(onlyTheseElements)
 			attackElements = onlyTheseElements
-		if(Defender.StyleBuff && Defender.StyleBuff.ElementalDefense)
-			attackElements |= Defender.StyleBuff.ElementalDefense;
-		if(Defender.ElementalDefense)
-			defenseElements |= Defender.ElementalDefense
-		if(Defender.Infusion && Defender.InfusionElement)
-			defenseElements |= Defender.InfusionElement;
+
 		if(armr && armr.Element)
 			defenseElements |= armr.Element
 
@@ -51,10 +78,6 @@ proc
 		for(var/element in attackElements)
 			var/DebuffRate=GetDebuffRate(element, defenseElements, ForcedDebuff)
 			var/CelestialDebuffRate=1
-			if(Attacker.isRace(CELESTIAL, DEMON, MAKAIOSHIN))
-				CelestialDebuffRate=0.2*(Attacker.AscensionsAcquired+1)
-				if(CelestialDebuffRate>1)
-					CelestialDebuffRate=1
 			if(Attacker.SenseUnlocked>5&&Attacker.SenseUnlocked>Attacker.SenseRobbed)
 				DebuffRate+=10*(Attacker.SenseUnlocked-5)
 			if(Defender.HasDebuffResistance())
@@ -80,12 +103,13 @@ proc
 					DamageMod+=2
 					if("HellFire" in defenseElements)
 						DamageMod-=1
-					if("FelFire" in defenseElements)
+					if("Felfire" in defenseElements)
 						DamageMod-=1
 				if("Ultima")
 					DamageMod+=2
 				if("Death")
-					DamageMod+=3
+					if(Attacker.passive_handler.Get("Aspect of Death"))
+						DamageMod+=3
 				if("Love")
 					DamageMod+=3
 				if("Mirror")
@@ -168,22 +192,25 @@ proc
 						Defender.AddShock(2*DebuffIntensity*glob.SHOCK_INTENSITY, Attacker)
 					if("Death")
 						if(prob(glob.CHAOS_CHANCE))
-							Defender.AddDoom(1, Attacker)
+							if(Attacker.passive_handler.Get("Aspect of Death"))
+								Defender.AddDoom(1, Attacker, 1)
+							else
+								Defender.AddDoom(1, Attacker, 0)
 					if("Rain")
 						Defender.AddSlow(4*DebuffIntensity*glob.SLOW_INTENSITY, Attacker)
 						Defender.AddShock(4*DebuffIntensity*glob.SHOCK_INTENSITY, Attacker)
 					if("Poison")
 						if(!Defender.HasVenomImmune() && !("Poison" in defenseElements))
-							Defender.AddPoison(2*DebuffIntensity*glob.POISON_INTENSITY, Attacker)
+							Defender.AddPoison((2*DebuffIntensity*glob.POISON_INTENSITY) + poisoningBonus + toxicBonus, Attacker)
 					if("Fire")
 						if(!Defender.DemonicPower())
-							Defender.AddBurn(4*DebuffIntensity*glob.BURN_INTENSITY, Attacker)
+							Defender.AddBurn((4*DebuffIntensity*glob.BURN_INTENSITY) + burningBonus + scorchingBonus, Attacker)
 					if("Water")
-						Defender.AddSlow(4*DebuffIntensity*glob.SLOW_INTENSITY, Attacker)
+						Defender.AddSlow((4*DebuffIntensity*glob.SLOW_INTENSITY) + chillingBonus + freezingBonus, Attacker)
 					if("Earth")
-						Defender.AddShatter(4*DebuffIntensity*glob.SHATTER_INTENSITY, Attacker)
+						Defender.AddShatter((4*DebuffIntensity*glob.SHATTER_INTENSITY) + crushingBonus + shatteringBonus, Attacker)
 					if("Wind")
-						Defender.AddShock(4*DebuffIntensity*glob.SHOCK_INTENSITY, Attacker)
+						Defender.AddShock((4*DebuffIntensity*glob.SHOCK_INTENSITY) + shockingBonus + paralyzingBonus, Attacker)
 		for(var/element in defenseElements)
 			switch(element)
 				if("Ultima")
@@ -298,13 +325,18 @@ proc
 mob
 	proc
 		AddBurn(var/Value, var/mob/Attacker=null)
-			if(src.Stasis)
+			if(src.Stasis || src.AdminOverwatchActive)
 				return
+			if(Attacker && Attacker != src && Attacker.hasMagePassive(/mage_passive/fire/BurnMastery))
+				Value *= 2
 			if(Attacker && (Attacker == src ? !src.passive_handler.Get("BurningShot") : 1))
 				if(Attacker.Attunement=="Fire")
 					Value*=1.5
 				else if(Attacker.Attunement=="HellFire")
 					Value*=glob.HELLFIRE_VALUE_MOD
+			// Devil Summoner Vile racial
+			if(Attacker && Attacker.demon_racial_vile_active)
+				Value *= Attacker.GetDemonVileMult()
 			if(src.Attunement=="Wind")
 				Value*=1.5
 			if(Attunement=="Fire" && !src.passive_handler.Get("BurningShot"))
@@ -315,6 +347,7 @@ mob
 				Value/=2
 			if(src.HasDebuffResistance() && !src.passive_handler.Get("BurningShot"))
 				Value/=1+src.GetDebuffResistance()
+			Value *= getBurnResistValue()
 			Value = Value // this makes 100 impossible ?
 			src.Burn+=Value
 			if(Value >=1 && !src.passive_handler.Get("BurningShot"))
@@ -334,6 +367,13 @@ mob
 							implodeDebuff(Attacker.passive_handler["Combustion"], "Burn")
 
 
+			if(Attacker)
+				if(Attacker.passive_handler["FireHerald"] && src.Burn >= 100)
+					implodeDebuff(100, "Burn")
+					for(var/mob/Players/P in range(2, src))
+						if(P != src && P != Attacker)
+							P.AddBurn(25)
+
 			if(src.Burn>100)
 				src.Burn=100
 			if(src.Burn<0)
@@ -347,8 +387,10 @@ mob
 						OMsg(src, "<font color='[rgb(104, 153, 251)]'>[src]'s dispenser deploys a healing mist!!</font color>")
 					src.Cooled+=100
 		AddSlow(var/Value, var/mob/Attacker=null)
-			if(src.Stasis)
+			if(src.Stasis || src.AdminOverwatchActive)
 				return
+			if(Attacker && Attacker != src && Attacker.hasMagePassive(/mage_passive/water/ChillMastery))
+				Value *= 2
 			if(Attacker && Attacker.Attunement == "Water")
 				Value*=1.5
 			if(Attunement=="Fire")
@@ -362,6 +404,7 @@ mob
 			if(src.HasDebuffResistance())
 				Value/=1+src.GetDebuffResistance()
 			Value = Value*(1-(src.Slow/glob.DEBUFF_STACK_RESISTANCE))
+			Value *= getChillResistValue()
 			src.Slow+=Value
 
 			if(Value >=1)
@@ -377,6 +420,8 @@ mob
 			if(Attacker)
 				if(Attacker.passive_handler["IceAge"] && Slow >= Attacker.passive_handler["IceAge"])
 					implodeDebuff(Attacker.passive_handler["IceAge"], "Chill")
+				if(Attacker.passive_handler["IceHerald"] && src.Slow >= 100)
+					implodeDebuff(100, "Chill")
 			if(src.Slow>100)
 				src.Slow=100
 			if(src.Slow<0)
@@ -390,8 +435,10 @@ mob
 						OMsg(src, "<font color='[rgb(104, 153, 251)]'>[src]'s dispenser deploys a healing mist!!</font color>")
 					src.Cooled+=100
 		AddShatter(var/Value, var/mob/Attacker=null)
-			if(src.Stasis)
+			if(src.Stasis || src.AdminOverwatchActive)
 				return
+			if(Attacker && Attacker != src && Attacker.hasMagePassive(/mage_passive/earth/ShatterMastery))
+				Value *= 2
 			if(Attacker && Attacker.Attunement=="Earth")
 				Value*=1.5
 			if(Attunement=="Water")
@@ -404,6 +451,7 @@ mob
 				Value/=2
 			if(src.HasDebuffResistance())
 				Value/=1+src.GetDebuffResistance()
+			Value *= getShatterResistValue()
 			Value = Value*(1-(src.Shatter/glob.DEBUFF_STACK_RESISTANCE))
 			src.Shatter+=Value
 
@@ -411,6 +459,11 @@ mob
 				src.color = "#8f7946"
 				animate(src, color = src.MobColor, time=5)
 
+
+			if(Attacker)
+				var/eh = Attacker.getEarthHerald()
+				if(eh && Shatter >= (100 / eh))
+					implodeDebuff(100, "Shatter")
 
 			if(src.Shatter>100)
 				src.Shatter=100
@@ -425,8 +478,12 @@ mob
 						OMsg(src, "<font color='[rgb(104, 153, 251)]'>[src]'s dispenser deploys a healing mist!!</font color>")
 					src.Sprayed+=100
 		AddShock(var/Value, var/mob/Attacker=null)
-			if(src.Stasis)
+			if(src.HasShockImmunity())
 				return
+			if(src.Stasis || src.AdminOverwatchActive)
+				return
+			if(Attacker && Attacker != src && Attacker.hasMagePassive(/mage_passive/air/ShockMastery))
+				Value *= 2
 			if(Attacker && Attacker.Attunement=="Wind")
 				Value*=1.5
 			if(src.Attunement=="Earth")
@@ -440,6 +497,7 @@ mob
 
 			if(src.HasDebuffResistance())
 				Value/=1+src.GetDebuffResistance()
+			Value *= getShockResistValue()
 			Value = Value*(1-(src.Shock/glob.DEBUFF_STACK_RESISTANCE))
 			src.Shock+=Value
 
@@ -460,8 +518,11 @@ mob
 						OMsg(src, "<font color='[rgb(104, 153, 251)]'>[src]'s dispenser deploys a healing mist!!</font color>")
 					src.Stabilized+=100
 		AddPoison(var/Value, var/mob/Attacker=null)
-			if(src.Stasis)
+			if(src.Stasis || src.AdminOverwatchActive)
 				return
+			// Devil Summoner Vile racial
+			if(Attacker && Attacker.demon_racial_vile_active)
+				Value *= Attacker.GetDemonVileMult()
 
 			if(Attunement=="Poison")
 				Value/=2
@@ -511,7 +572,8 @@ mob
 				return
 			if(src.Stasis)
 				return
-			Value = Value*(1-(src.Sheared/glob.DEBUFF_STACK_RESISTANCE))
+			Value *= getShearResistValue()
+			Value = Value*(1-(src.GetEffectiveShearForStackingEffects()/glob.DEBUFF_STACK_RESISTANCE))
 			src.Sheared+=Value
 			if(src.Sheared>100)
 				src.Sheared=100
@@ -529,6 +591,7 @@ mob
 
 			if(isRace(DRAGON) && Class == "Wind") Value /= 2
 			if(src.HasMythical() > 0.75) Value = Value*(1-(src.Crippled/glob.DEBUFF_STACK_RESISTANCE))
+			Value *= getCrippleResistValue()
 
 			src.Crippled+=Value
 
@@ -564,7 +627,7 @@ mob
 			if(src.Stasis)
 				return
 			src.Anger(Enraged=1)
-		AddDoom(var/Value, var/mob/Attacker=null)
+		AddDoom(var/Value, var/mob/Attacker=null, var/DI)
 			if(src.Stasis)
 				return
 			if(src.DownToEarth)
@@ -582,12 +645,14 @@ mob
 					if(src.BioArmor)
 						src.BioArmor*=0.95
 					return
-				src.Health*=0.75
 				src.VaizardHealth/=2
+				src.ManaAmount/=4
 				src.Doomed=0
 				src<<"<b><font color='red'>Death passes you by, and takes a piece of you along with it.</font color></b>"
 				OMsg(src, "<b><font color='purple'>The bell tolls for [src],</font color></b>")
 				src.DownToEarth=100
+				if(DI)
+					src.Health*=0.60
 				if(src.HasGodKi()||src.HasMaouKi())
 					src<<"<b><font color='red'>Death comes for all, even those with the power of Gods. Your divinity has been temporarily forfeit.</font color></b>"
 
@@ -616,6 +681,9 @@ mob
 				doDebuffDamage("Poison")
 			if(src.Burn)
 				doDebuffDamage("Burn")
+
+			if(src.Frenzy)
+				doDebuffDamage("Frenzy")
 
 			if(src.Shatter)
 				if(src.Shatter > glob.DEBUFF_STACK_MAX)

@@ -297,3 +297,8 @@ mob/Admin3/verb/GiveWitchBook()
 	Cooldown = 4
 	AlwaysOn = 1
 	IconLock = 'SweatDrop.dmi'
+
+//utility
+/mob/proc/hasWitchCraft()
+	if(locate(/obj/Items/WitchCraft/WitchesBook, src.contents)) return 1
+	return 0;

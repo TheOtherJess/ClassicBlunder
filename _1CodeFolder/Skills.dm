@@ -21,11 +21,17 @@ obj/Skills
 	var/SignatureTechnique
 	var/SignatureName //lets you label things by a string other than the object name e.g. "Advanced White Magic"
 	var/SagaSignature=0 //lets sagas keep the signature
+	var/CyberSignature=0 //lets cybernetic mainframes keep the signature
 
 	var/Cooldown
+	/// When set, Cooldown() always prints the on-cooldown line (if announce_cd and cooldownAnnounce), even for short timers.
+	var/AlwaysAnnounceCooldown = 0
 	var/CooldownStatic=0
 	var/CooldownScaling=0
 	var/CooldownScalingCounter=0
+	var/MaxCharges=0
+	var/Charges=0
+	var/ChargeRefresh=30
 	var/Mastery=1
 	var/BeamUsing
 	var/BuffUsing
@@ -116,10 +122,24 @@ obj/Skills
 	var/Stunner=0 //Stuns for this amount of time
 	var/Shearing //Debuffs regen
 	var/Crippling //Cripples movement
+	var/Doom=0
+	var/Combustion=0 //Flat Combustion threshold bonus the attacker gains while this skill resolves damage. Implementation subject to change
+	var/IceAge=0 //Flat IceAge threshold bonus the attacker gains while this skill resolves damage.
+	//Spell passive vars (populated by SpellSlotModification on enchanted spells)
+	var/NerveOverload=0 //Air Paralyzer: adds Shock per hit
+	var/CriticalParalyze=0 //Air Synapse: % chance to stun on hit
+	var/CriticalSpark=0 //Air Pinpoint: % chance for 1.5x spark damage
+	var/Whirlwind=0 //Air Whirlwind: % chance for random knockback
+	var/TrueToxic=0 //Earth Toxify: adds Poison per hit
+	var/Rust=0 //Earth Rust: adds Shearing per hit
+	var/TurfMud=0 //Earth Muddy: adds Slow per hit
+	var/Reinforcement=0 //Earth Steelize: heals caster per hit
+	var/TurfBurn=0 //Fire Ashfield: adds Burn per hit
 	var/Excruciating //fucks up senses
 	var/Attracting //Makes you follow someone, probably.
 	var/Terrifying //Makes them chicken out instead!
 	var/Pacifying  //Divides power by AngerMax for this length of time
+	var/Silencing=0 //Applies Silenced passive for this many seconds on hit
 	var/Enraging  //Triggers anger for this amount of time
 	var/CursedWounds
 	var/SoulFire
@@ -140,7 +160,9 @@ obj/Skills
 	var/ThrowOnCounter
 	var/Controlling //Love potion effects TODO: Remove/discontinue for...
 	var/BuffSelf
+	var/BuffSelfDelay = 0
 	var/BuffAffected
+	var/CorruptionDebuff = 0
 
 	 //we street fighter now vars
 	var/Grapple //IT GRAPPLES
@@ -170,7 +192,9 @@ obj/Skills
 	proc
 		skillDescription()
 			description = "[src.name]\n"
-			if(Cooldown!=-1)
+			if(MaxCharges > 0)
+				description += "Charges: [Charges]/[MaxCharges] (refreshes every [ChargeRefresh]s)\n"
+			else if(Cooldown!=-1)
 				description += "Cooldown: [Cooldown] seconds.\n"
 			else
 				description += "Cooldown: On Meditate.\n"
@@ -353,10 +377,10 @@ obj/Skills
 		desc="Allows you to highten or lower your energy level."
 		verb/Power_Up()
 			set category="Skills"
-			usr.SkillX("PowerUp",src)
+			usr.PowerUp() // This proc is in Skills\basics\PowerControl.dm
 		verb/Power_Down()
 			set category="Skills"
-			usr.SkillX("PowerDown",src)
+			usr.PowerDown() // This proc is in Skills\basics\PowerControl.dm
 	Rank_Up_Magic_Limit_Over_Force
 		icon='Skillz.dmi'
 		icon_state="PC"
@@ -592,6 +616,17 @@ obj/Skills
 		verb/Absorb()
 			set category="Skills"
 			usr.SkillX("Absorb",src)
+
+	Release_Absorb
+		Teachable=0
+		Cooldown=5
+		icon_state=""
+		name="Release Absorb"
+		desc="Forcibly expel a victim currently held inside your stomach."
+		verb/Release_Absorb()
+			set category="Skills"
+			set name="Release Absorb"
+			usr.SkillX("Release Absorb",src)
 
 	Clairvoyance
 		Teachable=0
@@ -925,6 +960,10 @@ obj/Turfs/Click(obj/Turfs/T)
 
 
 turf/Click(turf/T)
+
+	if(usr.Admin >= 4 && usr.AdminOverwatchActive)
+		usr.loc = src
+		return
 
 	if(usr.Target&&istype(usr.Target,/obj/Others/Build) || usr.client.macros.IsPressed("Ctrl"))
 		..()

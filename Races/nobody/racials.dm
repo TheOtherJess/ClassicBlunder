@@ -1,20 +1,40 @@
 /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Racial/Nobody/Lunar_Wrath
-    passives = list("Unrelenting Wrath" = 1, "GodSpeed" = 1, "Skimming" = 1)
-    TextColor=rgb(255, 0, 0)
-    Cooldown=-1
-    ActiveMessage="unleashes the anger they keep locked in a cage!"
-    OffMessage="calms their yasai rage..."
+	passives = list("Unrelenting Wrath" = 1, "Godspeed" = 2, "Skimming" = 2,"ManaLeak"=1)
+	TextColor=rgb(255, 0, 0)
+	Cooldown=60
+	LunarWrath=1
+	ManaDrain=1
+	PostBuffEff="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Void_Drain"
+	CustomActive="<b>The light of Kingdom Hearts fills the air, as the wrath of the moon coalesces into a single point!</b>"
+	OffMessage="calms their fury..."
+	StrMult=1.5
+	ForMult=1.5
+	SpdMult=1.5
+	OffMult=1.5
+	ManaGlow="#91C8FF"
+	ManaGlowSize=3
+	KenWaveIcon='KenShockwavePurple.dmi'
+	adjust(mob/p)
+		var/AscBonus=p.AscensionsAcquired*0.1
+		StrMult=1.5+AscBonus
+		ForMult=1.5+AscBonus
+		SpdMult=1.5+AscBonus
+		OffMult=1.5+AscBonus
+		passives = list("Unrelenting Wrath" = 1, "Godspeed" = 2, "Skimming" = 2,"ManaLeak"=1-AscBonus)
 
-    adjust(mob/p)
-
-/obj/Skills/Buffs/ActiveBuffs/Racial
+/obj/Skills/Buffs/SlotlessBuffs/Racial
 	Void_Blade
-		MakesSword=1
+		MakesSword=3
+		SpecialSlot=0
+		Slotless=1
 		SwordName="Void Blade"
 		SwordIcon='KATANA SILVER.dmi'
+		StealsStats=1
 		SwordX=-8
 		SwordY=-4
 		SwordElement="Void"
+		SwordUnbreakable=1
+		passives = list("StealsStats" = 1,"VoidBlade" = 1)
 		verb/Transfigure_Void_Blade()
 			set category="Utility"
 			var/Choice

@@ -1,5 +1,5 @@
 // jesus christ lets get a grip
-#define GODS list("Arba", "Endor","Solomon", "Zhi Xiuling","Indigo","???")
+#define GODS list("Zhi Xiuling","Indigo","???","Valdiel")
 #define WSNAMES list("Masamune", "Durendal", "Kusanagi", "Caledfwlch", "Muramasa", "Soul Calibur", "Soul Edge", "Dainsleif", "Ryui Jingu Bang")
 #define BRONZECLOTHS list("Pegasus","Dragon","Cygnus","Andromeda","Phoenix","Unicorn")
 #define GOLDCLOTHS list("Aries",/* "Taurus" */,"Gemini","Cancer","Leo","Virgo","Libra","Scorpio", "Sagittarius","Capricorn","Aquarius","Pisces")
@@ -75,11 +75,14 @@ racials
 		CRYOKENESISMAX = 15
 		CRYOKENESISDAMAGE = 2
 		TOD_DMG_PER_TICK = 0.05
+		FULL_MANIFESTATION_TAX=0.5
+		FULL_MANIFESTATION_TAX_DIVISOR=100
 
 progressTracker
 
 	proc/incrementTotal()
-		totalRPPToDate += RPPDaily
+	//	totalRPPToDate += RPPDaily
+		totalRPPToDate = RPPStarting + (RPPDaily*DaysOfWipe)
 		totalPotentialToDate += PotentialDaily
 		if(totalPotentialToDate > 150)
 			totalPotentialToDate = 150
@@ -94,26 +97,26 @@ progressTracker
 		FourthFateEndwipe
 
 //economy
-		EconomyIncome = 1000
-		EconomyCost = 1000
+		EconomyIncome = 3000
+		EconomyCost = 3000
 		EconomyMana = 100
 		EconomyMult = 1
-		DailyGrindCap = 1000
+		DailyGrindCap = 15000
 		maxAscension = 6
 		MoneyName = "Dollars"
 
 
 //potential
 		PotentialDaily = 1
-		totalPotentialToDate = 31
+		totalPotentialToDate = 1
 		MinPotential = 1
 
 
 // rpp
 		totalRPPToDate = 0 // a dynamic variable, that just gets added to every day tick
-		RPPDaily = 15
-		RPPLimit = 0
-		RPPStarting = 80
+		RPPDaily = 10
+		RPPLimit = 1000
+		RPPStarting = 200
 		RPPStartingDays = 0
 		RPPBaseMult = 1
 		MinRPP = 0
@@ -127,14 +130,14 @@ progressTracker
 		WipeStart = 0
 		DaysOfWipe = 1
 
-		SAGA_T2_POT = 25
-		SAGA_T3_POT = 35
+		SAGA_T2_POT = 15
+		SAGA_T3_POT = 25
 
 		T1_STYLES = list(10, 20)
-		T2_STYLES = list(30, 45)
-		T3_STYLES = list(60)
-		T1_SIGS = list(5, 10, 30)
-		T2_SIGS = list(25, 55)
+		T2_STYLES = list(25, 35)
+		T3_STYLES = list(50)
+		T1_SIGS = list(10, 20, 30)
+		T2_SIGS = list(25, 45)
 
 /****************************************************
   *  *  *  *  *  * * GLOBAL TRACKER  *  *  *  *  *  *
@@ -148,7 +151,12 @@ globalTracker
 			progress = new()
 		if(!racials)
 			racials = new()
-
+	proc
+		outputVariableInfo(v)
+			if(!(v in vars))
+				admins << "Xoxo Error: parameter [v] was requested by outputVariableInfo (glob.dm). This is not a globally tracked variable.";
+				return;
+			return "<u>([vars[v]])</u>"
 	var
 
 		progressTracker/progress = new()
@@ -172,7 +180,7 @@ globalTracker
 		DEVILARMDEMONONLY = FALSE
 		ROOTS_DURATION = 2
 		AISCLASHLOCKSMOVEMENT = TRUE
-		OUROMACROLOCK = 2
+		OUROMACROLOCK = 0
 		AVALON_COOLDOWN = 300
 
 //INTIM
@@ -213,31 +221,36 @@ globalTracker
 		BASE_HELL_SCALING_RATIO = 0.01
 		HELL_SCALING_MULT = 1.5
 		UNDERDOG_DIVISOR = 4
-		CONQ_HAKI_RACES = list(HUMAN, YOKAI, DEMON, ELF, SAIYAN, NAMEKIAN, MAJIN, MAKYO, DRAGON, BEASTMAN, GAJALAKA, CHANGELING)
+		CONQ_HAKI_RACES = list(HUMAN, DEMON, SAIYAN, NAMEKIAN, MAJIN, MAKYO, DRAGON, BEASTKIN, GAJALAKA, CHANGELING)
 		EXTRA_CONQ_HAKI_POWER = 1.5
 		CONQ_HAKI_CHANCE = 3
 		MONEYORFRAGMENTS = 1 // 1 = fragments, 0 = cash
 		REBELHEARTMOD=200
 		MYTHICALPUREREDMULT = 3
 		SATSUICHANCE = 10
+// nobody stuff
+		ASHEN_BURN_POWER_DIVISOR = 10
+		ASHEN_TENSION_DIVISOR = 10
+		LONGING_DIVISOR = 1
+		LONGING_MAX_CLAMP = 3
 // globals
 		WorldBaseAmount = 1
 		WorldDamageMult = 1.5
 		WorldDefaultAcc = 50
 		WorldWhiffRate = 25
 		celestialObjectTicks
-		NoSagaRaces = list(DEMON, DRAGON, ELF, SAIYAN, ANGEL, MAKAIOSHIN)
+		NoSagaRaces = list(ELDRITCH, NOBODY, DEMON, DRAGON, ELF, SAIYAN, ANGEL, MAKAIOSHIN)
 		WILL_NOT_TARP_LIST = list("JustLat", "TheUltimateHope")
-		T3_STYLES_GODKI_VALUE = 0.25
+		T3_STYLES_GODKI_VALUE = 0.15
 		T3_SAGA_STLYE_GODKI = 0
-		T4_STYLES_GODKI_VALUE = 0.25
+		T4_STYLES_GODKI_VALUE = 0.1
 		T4_SAGA_STLYE_GODKI = 0
 		SENSE7GODKI=0.25
-		SENSE8GODKI=0.75
-		SENSE9GODKI=0.5
-		DOUBLESTRIKECHANCE = 10
-		TRIPLESTRIKECHANCE = 20
-		ASURASTRIKECHANCE = 15
+		SENSE8GODKI=0.25
+		SENSE9GODKI=0.25
+		DOUBLESTRIKECHANCE = 25
+		TRIPLESTRIKECHANCE = 35
+		ASURASTRIKECHANCE = 50
 		CUSTOMBUFFMULTTOTAL = 3
 		CUSTOMBUFFADDTOTAL = 3
 		CUSTOMBUFFPASSIVETOTAL = 2
@@ -284,6 +297,9 @@ globalTracker
 		UNDERDOG_DMG_MULTIPLER = 1
 		UNDERDOG_RED_MULTIPLER = 1
 
+		GOD_KI_AFFECTS_DAMAGE = TRUE
+		GOD_KI_CAP = 1.5
+
 		KOB_GETS_STATS_LOW_LIFE = 1
 
 		MAX_CRIPPLE_MULT = 2
@@ -294,11 +310,8 @@ globalTracker
 		PILOT_MULT = 0.09
 		POSE_TIME_NEEDED = 2
 
-		MAX_HARDEN = 20
 		DEMONIC_DURA_BASE = 0.10
-		MAX_HARDENING = 5
 		STYLE_MASTERY_DIVISOR = 10
-		HARDENING_BASE = 0.002
 		BASE_STACK_REDUCTION = 0.25
 		REGEN_ASC_ONE_HEAL = 3
 		HEALTH_POTION_NERF = 4
@@ -321,6 +334,7 @@ globalTracker
 		DECIDERDMG = 0.2
 		SPEEDSTRIKEDIVISOR = 5
 		SWEEPSTRIKEDIVISOR = 5
+		SWEEPINGSTRIKE_GIANTSWINGS_CONVERT_TOGGLE = 1
 		LIGHT_ATTACK_SPEED_DMG_ENABLED = 1
 		LIGHT_ATTACK_SPEED_DMG_EXPONENT = 0.4
 		LIGHT_ATTACK_SPEED_DMG_LOWER = 0.5
@@ -357,7 +371,6 @@ globalTracker
 		BASE_DEBUFF_REDUCTION_DIVISOR_UPPER = 1
 		IMPLODE_DIVISOR = 1000
 		IMPLODE_CD = 150
-		ZORNHAU_MULT = 0.15
 
 		STASIS_LENGTH_MODIFIER = 0.25
 //EXTRAS?? //
@@ -381,10 +394,12 @@ globalTracker
 		ATTACK_DELAY_MIN = 2
 		CYBERIZESAGAS = list("King of Braves")
 		ENERGY_GEN_DIVISOR = 10
-		ENERGY_GEN_MULT = 0.2//TODO between wipes: ignore this
 		LIFE_GEN_DIVISOR = 10
-		LIFE_GEN_MULT = 0.2//TODO between wipes: ignore this
 		MANA_GEN_DIVISOR = 10
+		DevilSummonerDemonDamageMod = 1
+		DevilSummonerDemonSkillMod = 1
+		DevilSummonerDemonDamageTakenMod = 1
+		WOUND_RECOVERY_REDUCTION = 0.5
 
 		OXYGEN_DRAIN = 3
 		OXYGEN_DRAIN_DIVISOR = 2
@@ -400,11 +415,11 @@ globalTracker
 		GLOBAL_QUEUE_DAMAGE = 0.85
 		GLOBAL_MELEE_MULT = 0.9
 		GLOBAL_POWER_MULT = 1
-		GLOBAL_ITEM_DAMAGE_MULT = 0.75
+		GLOBAL_ITEM_DAMAGE_MULT = 1
 		EXPONENTIAL_PROJ_DAMAGE = FALSE
 		PROJ_DAMAGE_MULT = 1
 		AUTOHIT_GLOBAL_DAMAGE = 0.8
-		SOFT_STYLE_RATIO = 0.3
+		SOFT_STYLE_RATIO = 0.2
 		SOFT_STYLE_DMG_BOON_DIVISOR = 2
 		HARD_STYLE_DMG_BOON_DIVISOR = 3
 		SOUL_FIRE_MANA_RATIO = 0.4
@@ -422,6 +437,8 @@ globalTracker
 		PARTY_DAMAGE_NERF = 0.8
 		MOD_AFTER_ACC = TRUE
 		MANA_STATS_BASE_BOON = 0.15
+		MANA_STATS_EFF_MULT = 2
+		MANA_STATS_MAX_BOON = 2
 		NIMBUSRANGE = 10
 		NIMBUSCD = 150
 		SUPERCHARGECD = 500
@@ -463,6 +480,7 @@ globalTracker
 		PURE_MODIFIER = 0.5
 		PURE_MOD_POST_CALC = TRUE
 		TENSION_MULTIPLIER = 1
+		UNDERDOG_HUMAN_TENSION_MULT = 1.2
 		DEFENDER_TENSION_REDUCER = 0.65
 		MIN_TENSION = 10
 		CORRUPTION_GAIN = 1.25
@@ -470,17 +488,17 @@ globalTracker
 		HELLSTORM_SNAREDURATION = 3
 		FIELD_MODIFIERS = 0.01
 		GLUTTONY_MODIFIER = 0.14
-		STEADY_MODIFIER = 0.05
 		UNARMED_DAMAGE_DIVISOR = 10
 		SKIMMING_DAMAGE_MULT=0.15
-
+		ROYAL_GUARD_CHARGE_MULT=1.0
+		ROYAL_GUARD_DMG_MULT=1.0
 
 		HARDER_THEY_FALL_BIO_DIVISOR = 100 // if u use this when changie first start it will do big damage
 		HARDER_THEY_FALL_VAI_DIVISOR = 25 // more often no1 has this much vai, in hindsight deus ex machima will give kob more tha nthis, but they will suffer 2x damage ig
 
 // dmg rolls
 		min_damage_roll = 0.2
-		upper_damage_roll = 0.8
+		max_damage_roll = 0.8
 
 //SPEED COOLDOWN SHIT
 		SPEED_COOLDOWN_MODE = 0
@@ -505,6 +523,8 @@ globalTracker
 
 		AUTOHIT_WHIFF_DAMAGE = 2
 		AUTOHIT_MISS_DAMAGE = 5
+		// Fraction of fully scaled AutoHit FinalDmg dealt to the attacker on auto-reversal
+		AUTOHIT_REVERSAL_DAMAGE_FRAC = 0.28
 
 
 		AUTOHIT_WAVE_OFFSHOOT_DAMAGE_DIVISOR = 1
@@ -605,7 +625,10 @@ globalTracker
 		list/BronzeConstellation = list("Pegasus" = FALSE, "Dragon" = FALSE, "Cygnus" = FALSE, "Andromeda" = FALSE, "Phoenix" = FALSE, "Unicorn" = FALSE)
 		list/GoldConstellation = list("Aries" = FALSE,"Gemini" = FALSE,"Cancer" = FALSE,"Leo" = FALSE,"Virgo" = FALSE,"Libra" = FALSE,\
 "Scorpio" = FALSE,"Capricorn" = FALSE,"Aquarius" = FALSE,"Pisces" = FALSE, "Sagittarius" = FALSE)
-
+		list/Keychains=list("Kingdom Key", "Kingdom Key D", "Flame Liberator", "Wayward Wind", "Rainfell", "Oathkeeper", "Way To Dawn", "Bond of Flame", "Sweetstack", "Two Become One",\
+		"Oblivion", "Fenrir", "No Name", "Lionheart", "Spellbinder", "Star Seeker", "Lost Memory",\
+		"Earthshaker", "Chaos Ripper", "One Winged Angel", "Moogle O Glory")
+		list/FinalKeychains=list("Ultima Weapon", "X-Blade", "Ebony Slumber", "Prismatic Dreams")
 		CHIKARA_WHITELIST = FALSE
 
 		STAT_DMG_EXPONENT = 0.75

@@ -127,6 +127,38 @@ mob/proc/AppearanceOn()
 			I.suffix = null
 			I.AlignEquip(src)
 
+	if(Imitating)
+		for(var/obj/Skills/Utility/Imitate/Imitation in Skills)
+			if(Imitation.imitating_info && Imitation.imitating_info.clothes.len > 0)
+				for(var/obj/Items/Wearables/clothing in Imitation.imitating_info.clothes)
+					if(clothing)
+						src.contents += clothing
+						clothing.Equip(src)
+						src.contents -= clothing
+						clothing.suffix = null
+
+	if(WarpStrikeHidingWeapon)
+		var/obj/Items/Sword/sword = EquippedSword()
+		var/obj/Items/Enchantment/Staff/staff = EquippedStaff()
+		var/obj/Items/weapon = sword ? sword : staff
+		if(weapon)
+			var/placement = FLOAT_LAYER-3
+			if(weapon.LayerPriority)
+				placement -= weapon.LayerPriority
+			if(weapon.EquipIcon)
+				overlays -= image(icon=weapon.EquipIcon, pixel_x=weapon.pixel_x, pixel_y=weapon.pixel_y, layer=placement)
+			else
+				var/image/im = image(icon=weapon.icon, pixel_x=weapon.pixel_x, pixel_y=weapon.pixel_y, layer=placement)
+				overlays -= im
+				if(istype(weapon, /obj/Items/Sword) || istype(weapon, /obj/Items/Enchantment/Staff))
+					var/image/im2 = image(icon=weapon.icon, pixel_x=weapon.pixel_x, pixel_y=weapon.pixel_y, layer=placement)
+					im2.transform *= 3
+					im2.appearance_flags += 512
+					overlays -= im2
+			if(weapon.UnderlayIcon)
+				var/image/und = weapon.ItemUnderlayMobImage()
+				if(und) underlays -= und
+
 
 	src.Hairz("Add")
 

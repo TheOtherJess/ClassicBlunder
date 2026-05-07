@@ -3,7 +3,7 @@
 		IconLock='SweatDrop.dmi'
 		IconApart=1
 		passives = list("Deicide" = 10, "Half-Sword" = 1, "Zornhau" = 1, "EndlessNine" = 1, "LifeGeneration" = 3, \
-		                "KBRes" = 4, "Hardening" = 3, "Unnerve" = 2, "Pressure" = 1, "TensionLock" = 1, "PureDamage"=4)
+		                "KBRes" = 4, "Harden" = 3, "Unnerve" = 2, "Pressure" = 1, "TensionLock" = 1, "PureDamage"=4)
 		StrMult=1.5
 		EndMult=1.75
 		VaizardHealth=3
@@ -60,7 +60,7 @@
 		TimerLimit = 40
 		passives = list("SpiritFlow"=1, "SpiritSword"=1, "ManaStats" = 1, "CallousedHands"=0.5, "PureReduction"=4, "TensionLock" = 1)
 	The_Ultimate_Fist
-		passives = list("CallousedHands"=0.25, "BlurringStrikes" = 4, "Hardening" = 3, "Godspeed" = 2, "DoubleStrike" = 2, "TripleStrike" = 1, "TensionLock" = 1)
+		passives = list("CallousedHands"=0.25, "BlurringStrikes" = 4, "Hardeng" = 3, "Godspeed" = 2, "DoubleStrike" = 2, "TripleStrike" = 1, "TensionLock" = 1)
 		SpdMult=1.5
 		StrMult=1.5
 	Jackpot

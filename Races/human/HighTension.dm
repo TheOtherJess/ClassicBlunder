@@ -19,13 +19,17 @@
         var/ants = passive_handler.Get("Antsy")/10;
 
         var/tensionGain = val * glob.TENSION_MULTIPLIER;
+        if(isRace(HUMAN) && Class=="Underdog")
+            tensionGain *= glob.UNDERDOG_HUMAN_TENSION_MULT
         if(hasHighTensionMult())
             var/mult = getHighTensionMult();
             DEBUGMSG("tension mult triggered! increased by [mult]x");
             tensionGain *= getHighTensionMult();
-        if(ants) tensionGain += ants;
 
-        src.addTension(val, maxTension);
+        if(ants) tensionGain += ants;
+        if(passive_handler.Get("Ashen One"))
+            tensionGain*=1+(Burn/glob.ASHEN_TENSION_DIVISOR)
+        src.addTension(tensionGain, maxTension);
 
     addTension(val, maxVal)
         if(val==maxVal) return
@@ -47,6 +51,7 @@
     tryIncreaseTension()
         if(!isRace(HUMAN) && !isRace(CELESTIAL)) return 0;
         //they have to be human or celestial to get this far
+        if(isMazokuPathHuman()) return 0;
         if(canHT())
             race.transformations[1].transform(src, TRUE);
             return 1;
@@ -55,13 +60,15 @@
             return 1;
         return 0;
     canHT()
+        if(isMazokuPathHuman()) return 0;
         if(src.transActive >= 1) return 0;
         if(transUnlocked >= 1 || HumanHTException()) return 1;
         return 0;
     HumanHTException()
-        if(isRace(HUMAN) && Potential>=20) return 1;
+        if(isRace(HUMAN) && Potential>=10) return 1;
         return 0;
     canHTM()
+        if(isMazokuPathHuman()) return 0;
         if(src.icon_state=="Meditate") return 0;
         if(!isRace(HUMAN) && !isRace(CELESTIAL)) return 0;
         if(src.transUnlocked < 2) return 0;
@@ -69,14 +76,15 @@
         if(src.Tension >= src.getMaxTensionValue()/2) return 1;
         return 0;
     canSHT()
+        if(isMazokuPathHuman()) return 0;
         if(src.transActive != 2) return 0;
         if(transUnlocked >= 3) return 1;
         return 0;
     canSHTM()
+        if(isMazokuPathHuman()) return 0;
         if(!isRace(HUMAN) && !isRace(CELESTIAL)) return 0;
         if(passive_handler.Get("FullTensionLock") && isRace(CELESTIAL))
             src << "You cannot use this until the Full Tension Lock from Activate High Tension subsites."
             return 0
         if(transActive == 3 && transUnlocked>=4) return 1;
         return 0;
-    

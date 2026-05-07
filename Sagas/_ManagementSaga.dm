@@ -911,10 +911,7 @@ mob
 										src.AddSkill(new/obj/Skills/Utility/UltimateHeal)
 										src<<"You can also attempt to heal people, but the keyword is attempt."
 									if(src.RebirthHeroType=="Rainbow")
-										src.RebirthHeroPath="Unsung"
-										src<<"Sorry, there is no way in hell that fate could ever account for you. Nice try, though."
-										src.AddSkill(new/obj/Skills/AutoHit/NeverSeeItComing)
-										src<< "nyoro~n :3c"
+										src<<"You are now the Prismatic Hero of Dreams, who fights with Hearts beating as One. (WIP)"
 										src.AddSkill(new/obj/Skills/Utility/NeverTooEarly)
 										src.AddSkill(new/obj/Skills/Projectile/Beams/TasteTheRainbow)
 										src.AddSkill(new/obj/Skills/Queue/HoldingOutForAHero)

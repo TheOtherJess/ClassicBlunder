@@ -1,7 +1,7 @@
 #define MAGATAMA_SWAP_COOLDOWN 36000 // 1 hour in deciseconds
 #define MAGATAMA_COST_ESCALATION 0.25 // +25% base cost per magatama crafted
 #define MAGATAMA_IMPRINT_FRACTION 1 // True Demon, base value fraction applied on imprint
-#define MAGATAMA_IMPRINT_SCALE   1 // True Demon, fraction of normal scaling rate applied on imprint
+#define MAGATAMA_IMPRINT_SCALE   0.5 // True Demon, fraction of normal scaling rate applied on imprint
 
 mob/var
 	magatama_last_swap = 0
@@ -376,6 +376,34 @@ mob/proc/CraftMagatama()
 	magatama_crafted++
 	src << "You have crafted [M.name]."
 
+	if(passive_handler?.Get("Musubi"))
+		var/list/skill_options = list()
+		var/list/skill_paths = list()
+		for(var/S in M.magatama_skills)
+			if(locate(S) in src)
+				continue
+			var/obj/Skills/temp = new S
+			skill_options += temp.name
+			skill_paths += S
+			del temp
+		for(var/level_str in M.ascension_skills)
+			for(var/S in M.ascension_skills[level_str])
+				if(locate(S) in src)
+					continue
+				if(S in skill_paths)
+					continue
+				var/obj/Skills/temp = new S
+				skill_options += temp.name
+				skill_paths += S
+				del temp
+		if(skill_options.len)
+			var/skill_choice = input(src, "Your inner world expands. Choose one skill from [M.name] to internalize permanently.", "Internalize Skill") in skill_options
+			if(skill_choice)
+				var/cidx = skill_options.Find(skill_choice)
+				if(cidx >= 1 && cidx <= skill_paths.len)
+					src.AddSkill(new skill_paths[cidx])
+					src << "You have internalized [skill_choice] into your inner world."
+
 obj/Items/Magatama/Marogareh
 	name = "Marogareh"
 	desc = "The first Magatama, born when the Conception reshaped the world. A writhing, parasitic organism that awakens the demonic potential within its host."
@@ -451,8 +479,8 @@ obj/Items/Magatama/Narukami
 	name = "Narukami"
 	desc = "A Magatama crackling with divine lightning. It carries the wrath of the thunder god, striking with the fury of the storm."
 	base_passives = list("AirSpellDamage" = 0.15, "ShockResist" = 1, "Shocking" = 5, "AirSpellCooldown" = 0.1, "AirSpellManaCost" = 0.1)
-	passive_scaling = list("AirSpellDamage" = 0.0085, "ShockResist" = 0.04, "Shocking" = 0.15, "Denko Sekka" = 0.05, "AirSpellCooldown" = 0.007, "AirSpellManaCost" = 0.007, "CriticalChance" = 0.25, "CriticalDamage" = 0.0045)
-	ascension_passives = list("2" = list("ThunderHerald" = 1, "Denko Sekka" = 1), "3" = list("CriticalChance" = 5, "CriticalDamage" = 0.05))
+	passive_scaling = list("AirSpellDamage" = 0.0085, "ShockResist" = 0.04, "Shocking" = 0.15, "DenkoSekka" = 0.05, "AirSpellCooldown" = 0.007, "AirSpellManaCost" = 0.007, "CriticalChance" = 0.25, "CriticalDamage" = 0.0045)
+	ascension_passives = list("2" = list("ThunderHerald" = 1, "DenkoSekka" = 1), "3" = list("CriticalChance" = 5, "CriticalDamage" = 0.05))
 	ascension_skills = list("2" = list(/obj/Skills/AutoHit/DemiFiend/Shock))
 	craft_cost = 5000
 
@@ -577,8 +605,8 @@ obj/Items/Magatama/Satan
 obj/Items/Magatama/Adama
 	name = "Adama"
 	desc = "A Magatama shaped from the red clay of the first-formed. Its bearer draws down the storm — thunder surges through their veins, searing any who dare raise a hand against them."
-	base_passives = list("AirSpellDamage" = 0.2, "ManaCapMult" = 0.35, "Denko Sekka" = 2, "AirSpellCooldown" = 0.2, "AirSpellManaCost" = 0.2, "ShockResist" = 1, "Shocking" = 5)
-	passive_scaling = list("AirSpellDamage" = 0.008, "ManaCapMult" = 0.0065, "ShockAbsorb" = 0.02, "Denko Sekka" = 0.05, "AirSpellCooldown" = 0.006, "AirSpellManaCost" = 0.006, "ShockResist" = 0.04, "Shocking" = 0.15, "Fury" = 0.06, "Warping" = 0.03)
+	base_passives = list("AirSpellDamage" = 0.2, "ManaCapMult" = 0.35, "DenkoSekka" = 2, "AirSpellCooldown" = 0.2, "AirSpellManaCost" = 0.2, "ShockResist" = 1, "Shocking" = 5)
+	passive_scaling = list("AirSpellDamage" = 0.008, "ManaCapMult" = 0.0065, "ShockAbsorb" = 0.02, "DenkoSekka" = 0.05, "AirSpellCooldown" = 0.006, "AirSpellManaCost" = 0.006, "ShockResist" = 0.04, "Shocking" = 0.15, "Fury" = 0.06, "Warping" = 0.03)
 	ascension_passives = list("6" = list("ThunderHerald" = 1, "ShockAbsorb" = 1, "Fury" = 2, "Warping" = 1))
 	magatama_skills = list(/obj/Skills/AutoHit/DemiFiend/Bolt_Storm)
 	ascension_skills = list()

@@ -131,6 +131,7 @@ mob
 			if(defender && defender.passive_handler["RoyalGuarding"])
 				var/obj/Skills/Buffs/SlotlessBuffs/RoyalGuard/RG = locate(/obj/Skills/Buffs/SlotlessBuffs/RoyalGuard) in defender.contents
 				if(RG)
+					defender << "<font color= 'green'>ATTACK PARRIED!</font>"
 					RG.SuccessfulParry = 2
 					var/meterGain = max(val * glob.ROYAL_GUARD_CHARGE_MULT, 1)
 					RG.RoyalMeter = min(RG.RoyalMeter + meterGain, 100)
@@ -2826,8 +2827,8 @@ mob
 
 		IsGood()
 			if(hasEldritchPower()) return 0;
-			var/list/EvilRaces=list(DEMON, DRAGON)
-			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie")
+			var/list/EvilRaces=list(CHANGELING, DEMON, ELDRITCH, MAKYO, MAJIN)
+			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie", "Eldritch")
 			//these are all bad.
 			var/good = 0
 			var/evil = 0
@@ -2878,8 +2879,8 @@ mob
 			return 0
 		IsEvil()
 			if(hasEldritchPower()) return 0;
-			var/list/EvilRaces=list(DEMON, DRAGON)
-			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie")
+			var/list/EvilRaces=list(CHANGELING, DEMON, ELDRITCH, MAKYO, MAJIN)
+			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie", "Eldritch")
 			var/good = 0
 			var/evil = 0
 			if(src.passive_handler.Get("Emptiness"))

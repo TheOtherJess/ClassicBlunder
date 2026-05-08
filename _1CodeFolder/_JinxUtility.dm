@@ -207,7 +207,7 @@ mob
 					var/desp = clamp(passive_handler.Get("Persistence"), 0.1, glob.MAX_PERSISTENCE_CALCULATED)
 					if(defender.passive_handler["Determination(Orange)"]||defender.passive_handler["Determination(White)"])
 						desp+=ManaAmount/20
-					if(prob(desp)*glob.PERSISTENCE_CHANCE)
+					if(prob(desp*glob.PERSISTENCE_CHANCE))
 						desp = clamp(desp, 1, glob.PRESISTENCE_DIVISOR_MAX)
 						if(glob.PERSISTENCE_NEGATES_DAMAGE)
 							defender.WoundSelf(val/sqrt(1+desp))//Take all damage as wounds

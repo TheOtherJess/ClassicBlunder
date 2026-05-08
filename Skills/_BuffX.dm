@@ -9876,25 +9876,24 @@ NEW VARIABLES
 						if(p.Target && ismob(p.Target))
 							healthDiff = p.Target.Health-p.Health
 						switch(healthDiff)
-							if(-100 to 2)
+							if(-100 to 5)
 								secretLevel += 0
 								if(p.passive_handler.Get("SpiralTyrant"))
 									secretLevel += 2
 									Tyrant=1
 									TyrantBonus=4
-							if(3 to 15)
+							if(5 to 15)
 								secretLevel += 0
 							if(16 to 25)
 								secretLevel += 1
 							if(26 to 50)
-								secretLevel += 3
+								secretLevel += 1
 							if(51 to 75)
-								secretLevel += 5
+								secretLevel += 2
 							if(76 to 100)
-								secretLevel += 7
+								secretLevel += 3
 						if(secretLevel>7)
 							secretLevel=7
-						PowerMult=1+(0.02*secretLevel*secretLevel)
 						switch(secretLevel)
 							if(1 to 2)
 								SpiralPower=1
@@ -9913,12 +9912,13 @@ NEW VARIABLES
 							SpiralPotential=2
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
-						StrMult=1.25 + (0.03*secretLevel*secretLevel)
-						ForMult=1.25 + (0.03*secretLevel*secretLevel)
-						EndMult=1.25 + (0.035*secretLevel*secretLevel)
-						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
-						TimerLimit= (10 * (p.transUnlocked ? p.transUnlocked : p.AscensionsAcquired)*secretLevel) * TyrantBonus
-						Cooldown = 61 - ((5 * p.AscensionsAcquired) + (5 * secretLevel))
+						PowerMult = 1+(0.015*secretLevel*secretLevel)
+						StrMult = 1.25 + (0.01*secretLevel*secretLevel)
+						ForMult = 1.25 + (0.01*secretLevel*secretLevel)
+						EndMult = 1.25 + (0.04*secretLevel*secretLevel)
+						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower/1.5, "PureReduction" = SpiralPower)
+						TimerLimit= (15 * (secretLevel)) * TyrantBonus
+						Cooldown = 61 - ((5 * p.AscensionsAcquired))
 				KenWave = 2
 				KenWaveIcon='SparkleGreen.dmi'
 				HitSpark='Spiral_Hitspark.dmi'

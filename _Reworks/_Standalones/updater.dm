@@ -248,6 +248,10 @@ update
 		updateMob(mob/p)
 			. = ..()
 			if(p.isRace(HUMAN))
+				if(p.passive_handler.Get("TensionPowered") && p.transActive == 0)
+					p.transActive = 1;
+					p.Revert();
+					//an attempt is made
 				if(!p.passive_handler.Get("DormantDemon") && !p.passive_handler.Get("DeathDefied"))//normal human
 					p << "You are recognized as a NOT Mazoku human."
 					p << "So give me those transformations back, boo.";

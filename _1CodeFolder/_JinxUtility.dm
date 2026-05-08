@@ -3384,8 +3384,8 @@ mob
 			q2.gotoY=q.y
 			q2.gotoZ=q.z
 			q2.AssociatedWarper=q
-			global.Turfs+=q
-			global.Turfs+=q2
+			global.worldObjectList+=q
+			global.worldObjectList+=q2
 			Log("Admin","[ExtractInfo(usr)] made a warper at [usr.x],[usr.y],[usr.z] to warp to [_x],[_y],[_z]!")
 		DashTo(mob/Trg, MaxDistance=24, Delay=0.75, Clashable=0)
 			var/DelayRelease=0

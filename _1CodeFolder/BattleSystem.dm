@@ -955,12 +955,11 @@ proc/Save_Bodies()
 			Types=list()
 	if(Amount % 250 != 0)
 		F["Types"]<<Types
-	hacklol
-	if(fexists("Saves/Bones/File[E++]"))
-		fdel("Saves/Bones/File[E++]")
+	var/cleanup_file = E + 1
+	while(fexists("Saves/Bones/File[cleanup_file]"))
+		fdel("Saves/Bones/File[cleanup_file]")
 		world<<"<small>Server: Objects DEBUG system check: extra bones file deleted!"
-		E++
-		goto hacklol
+		cleanup_file++
 
 proc/Load_Bodies()
 	var/amount=0

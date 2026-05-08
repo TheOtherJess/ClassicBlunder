@@ -5761,7 +5761,7 @@ mob
 				src.Frozen=0
 			if(Z.EndsGetsuga)
 				var/obj/Skills/Buffs/SpecialBuffs/A = src.findOrAddSkill(/obj/Skills/Buffs/SpecialBuffs/Sword/Getsuga_Tenshou_Clad)
-				Z.DamageMult = 0.75+((60 - A.Timer) / 15)
+				Z.DamageMult = 1+((60 - A.Timer) / 10)
 				A.Trigger(src, 1)
 				src << "The power of Getsuga fades from your weapon."
 			if(Z.UsesinForce)
@@ -6906,9 +6906,13 @@ obj
 								if(src.Punt)
 									Hit_Effect(src.Owner, Size=src.Punt)
 								src.Owner.HitEffect(src.Owner, src.UnarmedTech, src.SwordTech)
-								OMsg(m, "[m] redirected the force of the attack back at [src.Owner]!")
-								m << "You redirected the force of the attack back at [src.Owner]!"
-								return
+								if(reversalAcc == WHIFF)
+									OMsg(m, "[m] redirected most of the force of the attack back at [src.Owner]!")
+									m << "You redirected most of the force of the attack back at [src.Owner]!"
+								if(reversalAcc == HIT)
+									OMsg(m, "[m] redirected the force of the attack back at [src.Owner]!")
+									m << "You redirected the force of the attack back at [src.Owner]!"
+									return
 				if(src.DirectWounds)
 					src.Owner.DealWounds(m, src.DirectWounds);
 				if(SpellElement == "Water" && m.passive_handler.Get("ChillAbsorb"))

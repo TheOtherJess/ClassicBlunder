@@ -5,7 +5,6 @@
 
 /mob/proc/getGestaltTier()
 	var/GestaltTier=1
-	if(Saga || CyberCancel) return 1;
 	var/p = get_potential();
 	if(p < 25)
 		GestaltTier = 1

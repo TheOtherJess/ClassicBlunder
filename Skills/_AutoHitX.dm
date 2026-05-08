@@ -6880,7 +6880,11 @@ obj
 				if(src.AngelMagicCompatible && m.passive_handler.Get("Judged"))
 					FinalDmg *= 1.25
 				var/reversalChance = m.GetAutoReversal()
-				if(prob(min(reversalChance * 100, 100)))
+				// Diminishing returns
+				var/reversalProcChance = 0
+				if(reversalChance > 0)
+					reversalProcChance = (reversalChance / (reversalChance + 2)) * 100
+				if(prob(min(reversalProcChance, 100)))
 					if(m.HasAutoReversal())
 						if(!src.SpecialAttack||m.passive_handler.Get("TotalReversal"))
 							var/reversalAcc = Accuracy_Formula(src.Owner, m, AccMult=Precision, BaseChance=glob.WorldDefaultAcc, IgnoreNoDodge=1)

@@ -2,7 +2,8 @@
 // (I fucking hate this shit dude)
 // Flask making and adjusting verb is in _UtilitX.dm at line 1483 (Concoct_Flask)
 #define BASE_MAX_CHARGES 2 // How many charges we start out with
-#define FLASK_CD
+#define FLASK_CD 300
+#define BASE_MAX_SLOTS 2 // How many herb slots we start with
 
 /obj/Items/Flask
     Unwieldy = 1 // Should prevent people from using this outside of meditate
@@ -25,14 +26,30 @@
     var/Tier = 0 // This will be used to upgrade your flask
     var/DrinkMessage
     var/OffMessage
-    var/Slots=2 // How many Herbs/Buffs a charge holds
-    var/Charges = 0 // How many uses you have in your flask before you need to meditate again 
+    var/Slots= 2 // How many Herbs/Buffs a charge holds. It's actually defined in GetMaxFlaskCharges(), this just initilizes it.
+    var/Charges = 2 // How many uses you have in your flask before you need to meditate again. It's actually defined in GetMaxFlaskCharges(), this just initilizes it.
     // Charge refilling is handled in Gains.dm, line 237
     // Below is The Buff We Pass This Shit To and spends charges
     Techniques = list("/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge")
+
+    verb/Imbibe_Flask(mob/P) // We cosnume a charge from the flask!
+        set category = "Skills"
+        if(P.equippedFlask.Charges == 0) return
+        P.reduceCharge() // mob proc that reduces charges
+        if(!usr.CheckSlotless("Flask Charge")) // If no buff, 
+            for(var/typesFromTechniques in src.Techniques) // We want to go fishing 
+                var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques); // then we assign our fish to a var
+                usedFlask.adjust(usr); // We can now pass adjust and trigger procs as if we were in the buff (kind of)
+                usedFlask.Trigger(usr);
+
+/* for(var/typesFromTechniques in src.Techniques)
+    var/obj/Skills/Buffs/Slotlessbuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques);
+    usedFlask.adjust(usr);
+    usedFlask.Trigger(usr);*/
         
 // This is the thing the players actually interact with, it also can be accessed in all the important ways
-/mob/var/obj/Items/Flask/equippedFlask 
+/mob/var/obj/Items/Flask/equippedFlask
+
 
 // What actually handles the Potion Buff and Hopefully works?
 /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge
@@ -42,7 +59,10 @@
     AlwaysOn=1
     CooldownStatic = 1 // No, you will not use technique mastery. 
     Cooldown = 0 // THIS IS HANDLED IN ADJUST FUCK MY CHUD LIFE
+    TimerLimit = 60
+    passives = list() // THese r handled in the adjust proc too
     adjust(mob/P)
+        liveDebugMsg("Flask Charge Adjust Triggered")
         Cooldown = P.GetFlaskCD() 
         // I am so fucking sorry for what is about to happen
         if(P.equippedFlask == 1) // if you chose a  herb, your value for said herb should be 1 and ONLY 1
@@ -52,6 +72,7 @@
             src.HealthHeal = glob.POTIONHEAL/2*(P.equippedFlask.Tier+1)  // 2.5, 5, 7.5 if POTIONHEAL = 5
             src.ManaHeal -= glob.POTIONHEAL*(5-P.equippedFlask.Tier) // T0 = -25, T1 = -20, T3 = -15 if POTIONHEAL=  5
             src.EnergyHeal -= glob.POTIONHEAL*(2-P.equippedFlask.Tier)// T0 = -10, T1 = -5, T3 = 0 if POTIONHEAL=  5
+            liveDebugMsg("Healed [HealthHeal] hp, Deducted [ManaHeal] mana, Deducted [EnergyHeal] energy.")
         if(P.equippedFlask.Mana == 1) // same rule, ONLY THE VALUE OF 1 SHOULD BE HERE
             InstantAffect=1 
             src.ManaHeal = glob.POTIONHEAL*5*(P.equippedFlask.Tier+1) // 25 50 75 mana regen based on tier provided potion heal is the same 
@@ -93,28 +114,25 @@
             passives["Godspeed"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Skimming"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
 
-    verb/Imbibe_Flask(mob/P) // We cosnume a charge from the flask!
-        set category = "Skills"
-        P.reduceCharge() // mob proc that is detched
-        if(P.equippedFlask.Charges == 0) return // If we have no charges, this will return 0, which means false, which means get out
-        if(!usr.BuffOn(src)) // Activate the buff
-            adjust(usr)
-        src.Trigger(usr)
-
 // Procs that handle all this stupid chud shit 
-mob/proc/reduceCharge(mob/P) // Reduces charges, fuck this gave me a headache
+mob/proc/reduceCharge() // Reduces charges, fuck this gave me a headache
     if(equippedFlask.Charges == 0) // Empty 
         src << "You have no Flask Charges left!"
         return
-    else if(equippedFlask.Charges > 3 || equippedFlask.Charges < 0) // Why do you have more than 3? Max flask tier is 2
+    else if(equippedFlask.Charges > GetMaxFlaskCharges() || equippedFlask.Charges < 0) // Why do you have more than 4? Max tier flasks should have 4.
         src << "ERROR: Your number of Flask Charges is [equippedFlask.Charges], this shouldn't be possible. Contact staff."
-        liveDebugMsg("[P] has [equippedFlask.Charges] Flask Charges. This shouldn't be possible.") // I'll thank myself later when someone inevitably exploits flasks.
+        liveDebugMsg("[src] has [equippedFlask.Charges] Flask Charges. This shouldn't be possible.") // I'll thank myself later when someone inevitably exploits flasks.
+        if(equippedFlask.Charges > GetMaxFlaskCharges())
+            equippedFlask.Charges = GetMaxFlaskCharges()
         return
     --equippedFlask.Charges // The whole reason we're here
         
 
-mob/proc/GetMaxCharges() // adds tier to the define
+mob/proc/GetMaxFlaskCharges() // adds tier to the define, used in Gains.dm line 237
     return BASE_MAX_CHARGES + equippedFlask.Tier
 
 mob/proc/GetFlaskCD() // Determines our cooldown
     return FLASK_CD - (equippedFlask.Tier*60) // T0 = FLASK_CD, T1 = FLASK_CD-1 MIN., T2 = FLASK_CD-2MIN. This will probably be rebalanced at some point
+
+mob/proc/GetMaxFlaskSlots() // adds tier to the define, used in _UtilityX.dm line 1550
+    return BASE_MAX_SLOTS + equippedFlask.Tier

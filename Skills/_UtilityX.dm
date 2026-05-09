@@ -1478,6 +1478,100 @@ obj/Skills/Utility
 			else
 				usr << "You must have an incapacitated person in front of you in order to transmute them into a Philosopher's Stone."
 				src.Using=0
+	Concoct_Flask
+		verb/Concoct_Flask()
+			set category = "Utility"
+			var/choice = input(usr, "Choose an option", "Concoct Flask Options") in list("Create New Flask", "Alter Equipped Flask Concoction", "Reset Flask Concoction" ,"Upgrade Existing Flask", "Cancel")
+			if(choice == "Cancel") return
+			if(choice == "Create New Flask")
+				CreateFlask(usr)
+			if(choice == "Alter Equipped Flask Concoction") // change flasks in your contents
+				EditFlaskContent(usr)
+			if(choice == "Reset Flask Concoction")
+				ResetFlask(usr)
+			if(choice == "Upgrade Existing Flask")
+				FlaskUpgrade(usr)
+				return
+		// Makes a new flask 
+		proc/CreateFlask(mob/P)
+			var/SpecificCost = (glob.POTIONCOST * 4)
+			if(P.GetMineral() < SpecificCost) // If we don't have enough... (20k)
+				P << "You don't have enough Mana Bits fuckwit. You need [SpecificCost] Manabits."
+				return
+			else if(P.GetMineral() >= SpecificCost) // If we have enough... (20k)
+				var/obj/Items/Flask/f = new /obj/Items/Flask();
+				f.Slots = P.GetMaxFlaskSlots();
+				P.contents += f;
+				P << "You have created a new Flask!"
+				P.TakeMineral(SpecificCost) //(20k)
+		// Edits which herbs are set to 1 in the flask object
+		proc/EditFlaskContent(mob/P) // The first layer of crimes
+			var/obj/Items/Flask/Option = FlaskChoice(P)
+			liveDebugMsg("Option is now [Option]")
+			if(Option == "Cancel") return 
+			HerbOptions(P, Option)
+
+		// Determines what flask we chose
+		proc/FlaskChoice(mob/P)
+			var/list/FlasksInContents = list("Cancel") // We will throw all your flasks in here
+			for(var/obj/Items/Flask/f in P.contents)
+				FlasksInContents |= f
+			return input(P, "Which Flask do you wish to alter?", "Alter Existing Flask") in FlasksInContents // THIS HAS TO STAY HERE DO NOT MOVE IT
+
+		// Determines what herbs you can add, or if you can put add any at all.	
+		proc/HerbOptions(mob/P, obj/Items/Flask/ChosenFlask)  // Selects herbs
+			ChosenFlask.Slots = P.GetMaxFlaskSlots() // This might be setting it to null
+			liveDebugMsg("[ChosenFlask.Slots]Flask Slots")
+			while(ChosenFlask.Slots > 0) // If you have slots, select them. Cancel 
+				liveDebugMsg("Loop Started")
+				var/list/Choices = list("Cancel") + P.PotionTypes
+				var/herbchoice = input(P, "Choose an herb.", "Alter Existing Flask") in Choices
+				if(herbchoice == "Cancel") return
+				if(ChosenFlask.Slots <= 0)
+					P << "You have no more flask slots!"
+					return
+				TheEvilAssIfWall(P, herbchoice, ChosenFlask)
+				--ChosenFlask.Slots
+			if(ChosenFlask.Slots == 0) // This will only happen if you complete the while loop has intended or someone bugged shit
+				P.TakeMineral(glob.POTIONCOST) // 5k if you don't edit this you dipshit
+		// War crime Proc
+		proc/TheEvilAssIfWall(mob/P, herbchoice, obj/Items/Flask/ChosenFlask)  //You have no idea how much I loathed making this
+			if(herbchoice == "Healing Herbs")
+				ChosenFlask.Heal = 1
+			if(herbchoice == "Magic Herbs")
+				ChosenFlask.Mana = 1
+			if(herbchoice == "Refreshment Herbs")
+				ChosenFlask.Energy = 1
+			if(herbchoice == "Hallucinogens")
+				ChosenFlask.Hallucinogen = 1
+			if(herbchoice == "Stimulant Herbs")
+				ChosenFlask.Searing = 1
+			if(herbchoice == "Numbing Herbs")
+				ChosenFlask.Hard = 1
+			if(herbchoice == "Relaxant Hebrs")
+				ChosenFlask.Flowy = 1
+			if(herbchoice == "Quicksilver Herbs")
+				ChosenFlask.Quicksilver = 1
+		// Resets Flask Slots
+		proc/ResetFlask(mob/P)
+			var/Warning = input(usr, "WARNING: By proceeding you will reset this flasks' total slots. You will not be refunded the mana bits you spent to make the current concoction. Proceed?", "WARNING!") in list("Yes", "No")
+			if(Warning == "No") return // No need for an ifstatement if you pick yes, I'd be fucking amazed if you found a way to give a third input.
+			var/obj/Items/Flask/Option = FlaskChoice(P)
+			Option.Slots = P.GetMaxFlaskSlots()
+			P << "Flask Successfully Reset, it has [Option.Slots] once more."
+
+		// Upgrades flask
+		proc/FlaskUpgrade(mob/P)
+			var/obj/Items/Flask/Option = FlaskChoice(P)
+			var/SpecificCost = (glob.POTIONCOST*4)*(1+Option.Tier)
+			if(P.GetMineral() < SpecificCost)
+				P << "You need [SpecificCost] mana bits to upgrade this flask."
+				return
+			P.TakeMineral(SpecificCost)
+			++Option.Tier
+			P << "You have upgraded your flask. It is now [Option.Tier]."
+			//
+			
 
 // 	Summon_Spirit
 // 		desc="Summon a spirit!  Doesn't work on those with contracts already established."
@@ -3254,7 +3348,7 @@ obj/Skills/Utility
 					ModChoices.Add("Biological Cybernetics")
 			if(M.BioAndroid||M.SuperAndroid)
 				ModChoices.Remove("Biological Cybernetics")
-			if(M.CyberneticMainframe||M.isRace(ANDROID)&&M.Potential<25)
+			if(M.CyberneticMainframe||M.isRace(ANDROID)&&M.Potential<30)
 				ModChoices.Remove("Cybernetic Mainframe")
 
 			ModChoice=input(usr, "What modification would you like to install?", "Cybernetic Augmentation") in ModChoices
@@ -3368,7 +3462,7 @@ obj/Skills/Utility
 					ModDesc="Overdrive allows the augmented to overclock every cybernetically enhanced aspect in exchange for battery life."
 				if("Cybernetic Mainframe")
 					Cost=glob.progress.EconomyCost*300
-					ModDesc="A cybernetic mainframe allows someone to become a complete cyborg, forsaking most of their natural abilities (such as signature skills) in exchange for opening up more avenues of cybernetic customization. For regular Androids, it unlocks a powerful new transformation based on your cybernetic enhancements."
+					ModDesc="A cybernetic mainframe allows someone to become a complete cyborg, forsaking most of their natural abilities in exchange for opening up more avenues of cybernetic customization."
 				if("Biological Cybernetics")
 					Cost=glob.progress.EconomyCost*1000
 					ModDesc="Converts an Android or someone with an enhanced cybernetic mainframe into a Biological Android."

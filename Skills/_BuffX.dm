@@ -2729,7 +2729,6 @@ NEW VARIABLES
 				SignatureTechnique=3
 				Cooldown = -1
 				passives = list("MovementMastery" = 5,"TechniqueMastery" = 5, "Skimming" = 2, "SpiritFlow" = 2, "HybridStrike" = 1)
-				SpiritFlow=1
 				ForMult=1.5
 				StrMult=1.5
 				ActiveMessage="ascends with serene grace as they ascend into the Sky Emperor's Walk!"

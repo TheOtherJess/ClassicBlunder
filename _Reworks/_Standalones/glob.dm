@@ -133,11 +133,12 @@ progressTracker
 		SAGA_T2_POT = 15
 		SAGA_T3_POT = 25
 
-		T1_STYLES = list(10, 20)
-		T2_STYLES = list(25, 35)
+		T1_STYLES = list(10, 20, 25, 35)
+		T2_STYLES = list(25, 35, 45, 55)
 		T3_STYLES = list(50)
 		T1_SIGS = list(10, 20, 30)
 		T2_SIGS = list(25, 45)
+		T3_SIGS = list(50)
 
 /****************************************************
   *  *  *  *  *  * * GLOBAL TRACKER  *  *  *  *  *  *

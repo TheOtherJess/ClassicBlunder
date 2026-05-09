@@ -9899,7 +9899,7 @@ NEW VARIABLES
 							if(51 to 75)
 								secretLevel += 2
 							if(76 to 100)
-								secretLevel += 3
+								secretLevel += 4
 						if(secretLevel>7)
 							secretLevel=7
 						switch(secretLevel)
@@ -9921,10 +9921,10 @@ NEW VARIABLES
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
 						PowerMult = 1+(0.015*secretLevel*secretLevel)
-						StrMult = 1.25 + (0.01*secretLevel*secretLevel)
-						ForMult = 1.25 + (0.01*secretLevel*secretLevel)
-						EndMult = 1.25 + (0.04*secretLevel*secretLevel)
-						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower/1.5, "PureReduction" = SpiralPower)
+						StrMult = 1.25 + (0.035*secretLevel*secretLevel)
+						ForMult = 1.25 + (0.035*secretLevel*secretLevel)
+						EndMult = 1.25 + (0.035*secretLevel*secretLevel)
+						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
 						TimerLimit= (15 * (secretLevel)) * TyrantBonus
 						Cooldown = 61 - ((5 * p.AscensionsAcquired))
 				KenWave = 2

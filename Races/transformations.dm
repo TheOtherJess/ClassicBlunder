@@ -297,7 +297,6 @@ transformation
 				user.AddEndTax(user.UnstoppableForceCounter/10)
 				user.AddSpdTax(user.UnstoppableForceCounter/10)
 				user.UnstoppableForceCounter=0
-			user.transActive--
 			if(!isnull(revertToTrans))
 				user.transActive = revertToTrans
 			user.passive_handler.decreaseList(passives)
@@ -350,7 +349,7 @@ transformation
 			if(stored_profile)
 				user.Profile = stored_profile
 				stored_profile = null
-
+			user.transActive--
 			is_active = FALSE
 
 			revert_animation(user)

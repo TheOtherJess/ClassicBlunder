@@ -133,6 +133,7 @@ progressTracker
 		SAGA_T2_POT = 15
 		SAGA_T3_POT = 25
 
+		//unfortunately these must be set through a very dumb proc in _world.dm
 		T1_STYLES = list(10, 20, 25, 35)
 		T2_STYLES = list(25, 35, 45, 55)
 		T3_STYLES = list(50)
@@ -158,6 +159,14 @@ globalTracker
 				admins << "Xoxo Error: parameter [v] was requested by outputVariableInfo (glob.dm). This is not a globally tracked variable.";
 				return;
 			return "<u>([vars[v]])</u>"
+		resetSignaturePotentials()//this is the very dumb proc.
+			glob.progress.T1_STYLES = list(10, 20, 25, 35)
+			glob.progress.T2_STYLES = list(25, 35, 45, 55)
+			glob.progress.T3_STYLES = list(50)
+			glob.progress.T1_SIGS = list(10, 20, 30)
+			glob.progress.T2_SIGS = list(25, 45)
+			glob.progress.T3_SIGS = list(50)
+			liveDebugMsg("we had to do it to em")
 	var
 
 		progressTracker/progress = new()

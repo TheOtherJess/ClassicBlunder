@@ -24,8 +24,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 	ActiveMessage = "releases a wave of Getsuga!"
 
 	OnHeldRelease(mob/p, benefit, sweet_spot_hit)
-		// _HeldSkill.dm snapshots and restores config vars around this call,
-		// so mutating DamageMult/LockX/LockY here doesn't compound across fires.
+
 		var/icon_used
 		DamageMult *= benefit
 		if(sweet_spot_hit)

@@ -1520,7 +1520,6 @@ obj/Skills/Utility
 		// Determines what herbs you can add, or if you can put add any at all.	
 		proc/HerbOptions(mob/P, obj/Items/Flask/ChosenFlask)  // Selects herbs
 			ChosenFlask.Slots = P.GetMaxFlaskSlots() // This might be setting it to null
-			liveDebugMsg("[ChosenFlask.Slots]Flask Slots")
 			while(ChosenFlask.Slots > 0) // If you have slots, select them. Cancel 
 				var/list/Choices = list("Cancel") + P.PotionTypes
 				var/herbchoice = input(P, "Choose an herb.", "Alter Existing Flask") in Choices

@@ -2125,10 +2125,9 @@ NEW VARIABLES
 			StrMult=1.5
 			OffMult=1.5
 			SpdMult=1.3
-			EndMult=0.9
+			EndMult=0.8
 			DefMult=0.8
-			RecovMult=1.2
-			passives = list("SlayerMod" = 3, "LifeSteal" = 35, "FavoredPrey" = "Depths", "Holymod" = 3, "MovementMastery" = 5, "TechniqueMastery" = 3,"Deicide"= 10)
+			passives = list("SlayerMod" = 3, "LifeSteal" = 10, "FavoredPrey" = "Depths", "MovementMastery" = 3, "TechniqueMastery" = 3, "Deicide"= 5)
 			ManaGlowSize=3
 			ManaGlow="C03434"
 			TextColor=rgb(192, 52, 52)
@@ -2869,12 +2868,18 @@ NEW VARIABLES
 				ActiveMessage="coats their blade with the power of Getsuga!"
 				OffMessage="relinquishes Getsuga from their weapon."
 				var/granted_getsuga = FALSE
+				var/granted_jujisho = FALSE
 				proc/CheckMasteryGrants(mob/p)
 					if(Mastery >= 2 && !granted_getsuga)
 						if(!locate(/obj/Skills/Projectile/Getsuga_Tenshou, p))
 							p.AddSkill(new/obj/Skills/Projectile/Getsuga_Tenshou)
 							p << "<font color='#4488ff'><b>Your mastery of Getsuga Tenshou Clad allows you to fire the raw wave — you have learned Getsuga Tenshou!</b></font>"
 						granted_getsuga = TRUE
+					if(Mastery >= 3 && !granted_jujisho)
+						if(!locate(/obj/Skills/Projectile/Getsuga_Jujisho, p))
+							p.AddSkill(new/obj/Skills/Projectile/Getsuga_Jujisho)
+							p << "<font color='#ffcc00'><b>The cross-shaped Getsuga manifests from your mastery, you have learned Getsuga Jujisho!</b></font>"
+						granted_jujisho = TRUE
 				verb/Getsuga_Clad()
 					set name="Getsuga Clad"
 					set category="Skills"

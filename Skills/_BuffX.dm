@@ -2256,7 +2256,7 @@ NEW VARIABLES
 			SpdMult=1.2
 			ForMult=1.2
 			RecovMult=1.2
-			passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10)
+			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2, "BuffMastery" = 1)
 			FlashChange=1
 			KenWaveIcon='Unbound.dmi'
 			KenWave=1
@@ -2276,30 +2276,30 @@ NEW VARIABLES
 					SpdMult=1.2
 					ForMult=1.2
 					RecovMult=1.2
-					passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10)
+					passives = list("MovementMastery" = 2, "TechniqueMastery" = 2, "BuffMastery" = 1)
 					if(p.isRace(SAIYAN)&&p.transActive>=1||p.isRace(HALFSAIYAN)&&p.transActive>=1||p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race.transformations[p.transActive].mastery==100)
-							passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10,"SuperSaiyanSignature"=1)
+							passives = list("MovementMastery" = 4, "TechniqueMastery" = 4, "BuffMastery" = 5,"SuperSaiyanSignature"=1)
 				if(src.Mastery==2)
 					StrMult=1.25
 					EndMult=1.25
 					SpdMult=1.25
 					ForMult=1.25
 					RecovMult=1.25
-					passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10)
+					passives = list("MovementMastery" = 3, "TechniqueMastery" = 3, "BuffMastery" = 3)
 					if(p.isRace(SAIYAN)&&p.transActive>=1||p.isRace(HALFSAIYAN)&&p.transActive>=1||p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race.transformations[p.transActive].mastery==100)
-							passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10,"SuperSaiyanSignature"=1)
+							passives = list("MovementMastery" = 4, "TechniqueMastery" = 4, "BuffMastery" = 5,"SuperSaiyanSignature"=1)
 				if(src.Mastery==3)
 					StrMult=1.35
 					EndMult=1.35
 					SpdMult=1.35
 					ForMult=1.35
 					RecovMult=1.35
-					passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10)
+					passives = list("MovementMastery" = 4, "TechniqueMastery" = 4, "BuffMastery" = 5)
 					if(p.isRace(SAIYAN)&&p.transActive>=1||p.isRace(HALFSAIYAN)&&p.transActive>=1||p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race.transformations[p.transActive].mastery==100)
-							passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 10,"SuperSaiyanSignature"=1)
+							passives = list("MovementMastery" = 4, "TechniqueMastery" = 4, "BuffMastery" = 5,"SuperSaiyanSignature"=1)
 
 			verb/Unbound_Mode()
 				set category="Skills"
@@ -7225,7 +7225,7 @@ NEW VARIABLES
 			verb/Posture_4()
 				set category="Skills"
 				src.Trigger(usr)
-		Unbound_Mode
+/*		Unbound_Mode
 			SignatureTechnique=3
 			SpecialSlot=1
 			passives = list("MovementMastery" = 5, "TechniqueMastery" = 5, "BuffMastery" = 5, "ManaLeak" = 1)
@@ -7288,7 +7288,7 @@ NEW VARIABLES
 						usr.Activate(new/obj/Skills/AutoHit/Knockoff_Wave)
 				adjust(usr)
 				src.Trigger(usr)
-
+*/
 		Mark_of_the_Crone
 			SignatureTechnique=3
 			SpecialSlot=1

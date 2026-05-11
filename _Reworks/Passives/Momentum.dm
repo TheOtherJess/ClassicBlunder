@@ -28,8 +28,8 @@
     //This is used in handlePostDamage()
     MomentumAccumulate(acu)//acu is the enemy's accupuncture passive
         if(acu && prob(acu * glob.ACUPUNCTURE_BASE_CHANCE))
-            Momentum = clamp(Momentum - acu/glob.ACUPUNCTURE_DIVISOR, 0 , passive_handler["Relentlessness"] ? 100 : glob.MAX_MOMENTUM_STACKS)
+            Momentum = clamp(Momentum - acu/glob.ACUPUNCTURE_DIVISOR, 0 , glob.MAX_MOMENTUM_STACKS)
         else
             var/_momentum = getMomentumValue();
             if(prob(glob.BASE_MOMENTUM_CHANCE * _momentum))
-                Momentum = clamp(Momentum + 1 + _momentum/glob.MOMENTUM_DIVISOR, 0, passive_handler["Relentlessness"] ? 100 : glob.MAX_MOMENTUM_STACKS)
+                Momentum = clamp(Momentum + 1 + _momentum/glob.MOMENTUM_DIVISOR, 0, glob.MAX_MOMENTUM_STACKS)

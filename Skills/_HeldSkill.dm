@@ -26,12 +26,6 @@
 
 // This avoids stat changes to skills persisting across use (mostly for projectiles)
 
-// ResetHeldConfig resets commonly-mutated config vars on a held projectile
-// skill back to the type-definition values. Called by _Projectile.endLife()
-// when the spawned projectile dies, so the next use of the skill enters with
-// a clean slate (regardless of what OnHeldRelease mutated).
-//
-// Add new var names here when adding held skills that mutate other config.
 /obj/Skills/Projectile/proc/ResetHeldConfig()
 	if(!HeldSkill) return
 	DamageMult = initial(DamageMult)

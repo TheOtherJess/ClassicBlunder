@@ -17,14 +17,13 @@ obj/Skills/Projectile/Getsuga_Tenshou
 	HeldSkill = TRUE
 	ChargePeriod = 3
 	SweetSpot = 1.5
-	SweetSpotBenefit = 4.0
+	SweetSpotBenefit = 2
 	ChargeOverlay='DarkShock.dmi'
 	ChargeWaveIcon='KenShockwaveBloodlust.dmi'
 
 	ActiveMessage = "releases a wave of Getsuga!"
 
 	OnHeldRelease(mob/p, benefit, sweet_spot_hit)
-
 		var/icon_used
 		DamageMult *= benefit
 		if(sweet_spot_hit)
@@ -34,6 +33,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 		else
 			icon_used = 'Small Getsuga.dmi'
 		p.Blast(src, p, 1, icon_used)
+		ResetHeldConfig()
 
 	verb/Getsuga_Tenshou()
 		set category = "Skills"

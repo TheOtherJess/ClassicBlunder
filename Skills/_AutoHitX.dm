@@ -7824,10 +7824,10 @@ obj
 	var/tmp/overlay_loop_running = FALSE
 
 	proc/RollSweetSpot()
-		// minimum 0.3, maximum ChargePeriod -0.3.
 		var/min_ss = 3
 		var/period_ticks = round(ChargePeriod * 10)
-		var/max_ss = max(min_ss, period_ticks - 3)
+		var/window_ticks = max(1, round(SweetSpotWindow * 10))
+		var/max_ss = max(min_ss, period_ticks - window_ticks)
 		return rand(min_ss, max_ss) / 10
 
 	proc/StartChain(mob/user, mob/target)
@@ -7837,6 +7837,7 @@ obj
 		chain_count = 0
 		DamageMult = 10
 		ChargePeriod = initial_charge_period
+		SweetSpotWindow = 0.3
 		SweetSpot = RollSweetSpot()
 		target.Suspended = user
 		user.judgement_cut_chain_active = TRUE
@@ -7861,6 +7862,7 @@ obj
 		chain_count = 0
 		DamageMult = 10
 		ChargePeriod = initial_charge_period
+		SweetSpotWindow = 0.3
 		SweetSpot = initial_charge_period / 2
 		Cooldown = saved_cooldown
 		if(user)
@@ -7924,8 +7926,8 @@ obj
 		DamageMult = 10 * (1.2 ** (chain_count - 1))
 		p.Target = chain_target
 		p.Activate(src, ignoreCuck=TRUE, ignoreAttackLock=TRUE)
-		// Prepare the next charge cycle
 		ChargePeriod = max(0.6, initial_charge_period - (chain_count * 0.3))
+		SweetSpotWindow = max(0.1, ChargePeriod * 0.1)
 		SweetSpot = RollSweetSpot()
 		p.held_skill_last_release = 0
 		spawn() ScheduleReengageWindow(p)

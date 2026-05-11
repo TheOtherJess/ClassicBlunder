@@ -1,7 +1,7 @@
 obj/Skills/Projectile/Getsuga_Tenshou
 	name = "Getsuga Tenshou"
 	Cooldown = 120
-
+	NeedsSword=1
 	StrRate = 1
 	ForRate = 1
 	DamageMult = 15
@@ -42,7 +42,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 obj/Skills/Projectile/Getsuga_Jujisho
 	name = "Getsuga Jujisho"
 	Cooldown = 180
-
+	NeedsSword=1
 	StrRate = 1
 	ForRate = 1
 	DamageMult = 30
@@ -111,7 +111,7 @@ obj/Skills/Projectile/Getsuga_Jujisho
 		img1.layer = MOB_LAYER + 0.5
 		C.images += img1
 
-		sleep(4) 
+		sleep(4)
 
 		img1.icon_state = "slash1" // freeze on the static end-frame
 
@@ -148,7 +148,7 @@ obj/Skills/Projectile/Getsuga_Jujisho
 				break
 
 		if(proj)
-			proj.icon_state = "slash3" 
+			proj.icon_state = "slash3"
 			proj.transform = matrix()
 			animate(proj, transform = matrix() * IconSizeGrowTo, time = 5, easing = CUBIC_EASING)
 

@@ -25,6 +25,7 @@
 			usr.Activate(src)
 	Judgment_Cut_End
 		AdaptRate=1
+		NeedsSword=1
 		DamageMult=16
 		Area="Circle"
 		Distance=12
@@ -53,6 +54,7 @@ obj/Skills/Queue
 		Copyable=6
 		HitMessage="warps through time and space!"
 		name="Judgment Cut End"
+		NeedsSword=1
 		DamageMult=1
 		AccuracyMult = 1.175
 		Duration=15

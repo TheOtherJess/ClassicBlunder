@@ -7800,6 +7800,7 @@ obj
 	SkillCost=TIER_5_COST
 	name = "Judgement Cut"
 	Area = "Target"
+	NeedsSword=1
 	Distance = 8
 	DamageMult = 5
 	StrOffense = 1

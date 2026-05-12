@@ -97,12 +97,12 @@ world
         if(ticker % 2 == 0)
             try
                 companion_tick()
-                turf_tick()
             catch()
 
         if(ticker % 5 == 0)
             try
                 ai_tick()
+                turf_tick()
             catch()
 
         try

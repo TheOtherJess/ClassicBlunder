@@ -439,8 +439,8 @@
 	if(held_skill != Z) return
 	ClearHeldChargeState()
 	held_skill_last_release = world.time
-	Z.Cooldown(1, null, src)
 	Z.OnHeldFizzle(src)
+	Z.Cooldown(1, null, src)
 	src << "<font color='red'>Your technique fizzled!</font>"
 
 // Cleanup

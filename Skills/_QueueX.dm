@@ -1679,9 +1679,12 @@ mob
 			if(istype(src.AttackQueue, /obj/Skills/Queue/Judgment_Cut_End) && P && !P.Suspended)
 				P.Suspended = src
 				src.Suspended = src
-				src.dir = turn(get_dir(src, P), 180)
 				var/mob/who = P
 				var/mob/U = src
+				// Heh
+				spawn(10)
+					if(U && who)
+						U.dir = turn(get_dir(U, who), 180)
 				var/obj/Skills/AutoHit/Judgment_Cut_End/AH = locate() in src
 				var/release_delay = AH ? (AH.WindUp * 10 + 10) : 40
 				spawn(release_delay)

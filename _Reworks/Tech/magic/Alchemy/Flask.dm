@@ -94,8 +94,8 @@
             passives["PureReduction"] = -4 + (P.equippedFlask.Tier+1) // T0 = 3, T1 = -2 T2 = -1, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
         if(P.equippedFlask.Searing == 1) // Damage 
-            StrMult = 1.1 + (P.equippedFlask.Tier) // T0 = 1.1, T1 = 1.2, T2 = 1.3
-            ForMult = 1.1 + (P.equippedFlask.Tier) // Same as above
+            StrMult = 1 + (P.equippedFlask.Tier+1/10) // T0 = 1.1, T1 = 1.2, T2 = 1.3
+            ForMult = 1 + (P.equippedFlask.Tier+1/10) // Same as above
             passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost 
             passives["Steady"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["PureReduction"] -= 2 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)

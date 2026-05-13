@@ -1405,16 +1405,12 @@ mob
 						var/obj/Items/Enchantment/Staff/st=src.EquippedStaff()
 						//var/obj/Items/Enchantment/Magic_Crest/mc=src.EquippedCrest()
 						var/obj/Items/Sword/sord=src.EquippedSword()
-						if(passive_handler.Get("Disarmed") && !src.HasLimitlessMagic() && !src.HasBladeFisting())
-							Q.DamageMult = (Q.DamageMult / 2)
 						if(!st&&!(CrestSpell(Q))&&(!sord||sord&&!sord.MagicSword))
 							src << "You need a spell focus to use [Q]."
 							return
 			if(Q.NeedsSword||Q.UnarmedOnly)
 				var/obj/Items/Sword/s=src.EquippedSword()
 				if(Q.NeedsSword)
-					if(passive_handler.Get("Disarmed") && !src.HasBladeFisting())
-						Q.DamageMult = (Q.DamageMult / 2)
 					if((!s && !HasBladeFisting()) && !src.UsingBattleMage())
 						src << "You must have a sword equipped to use this technique."
 						return

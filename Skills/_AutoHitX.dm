@@ -5131,8 +5131,6 @@ mob
 						return
 			Z.adjust(src)
 			Z.SpellSlotModification();
-			if(disarmed_cut)
-				Z.DamageMult = (Z.DamageMult / 2)
 			if(Z.GuardBreak)
 				Z.CanBeBlocked=0
 				Z.CanBeDodged=0
@@ -5209,8 +5207,6 @@ mob
 					return
 			if(Z.NeedsSword)
 				var/obj/Items/Sword/s=src.EquippedSword()
-				if(passive_handler.Get("Disarmed") && s && !src.HasBladeFisting())
-					Z.DamageMult = (Z.DamageMult / 2)
 				if(!s)
 					if(!src.HasBladeFisting() && !src.UsingBattleMage())
 						src << "You need a sword equipped to use [Z]!"

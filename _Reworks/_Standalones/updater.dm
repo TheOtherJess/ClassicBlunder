@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 17
+	var/UPDATE_VERSION = 18
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -40,6 +40,20 @@ globalTracker
 
 
 mob/var/update/updateVersion
+
+// fix for disarm
+/mob/proc/RestoreSkillDamageMultsAfterDisarmFix()
+	if(!Skills || !Skills.len)
+		return 0
+	var/skills_reset = 0
+	for(var/obj/Skills/S in Skills)
+		if(!istype(S, /obj/Skills/Queue) && !istype(S, /obj/Skills/AutoHit) && !istype(S, /obj/Skills/Projectile) && !istype(S, /obj/Skills/Grapple))
+			continue
+		var/def = initial(S.DamageMult)
+		if(S.DamageMult != def)
+			S.DamageMult = def
+			skills_reset++
+	return skills_reset
 
 update
 	var/version = 1
@@ -410,6 +424,14 @@ update
 				if(p.AscensionsAcquired >= 3)
 					p.passive_handler.Increase("PureReduction", 2)
 					p.passive_handler.Increase("PureDamage", 2)
+	version18
+		version = 18;
+		updateMob(mob/p)
+			. = ..()
+			var/fixed = p.RestoreSkillDamageMultsAfterDisarmFix()
+			if(fixed)
+				p << "Your skill DamageMults have been restored. Rejoice."
+
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

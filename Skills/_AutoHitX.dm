@@ -7852,7 +7852,7 @@ obj
 		SweetSpotWindow = 0.3
 		SweetSpot = RollSweetSpot()
 		user.judgement_cut_chain_active = TRUE
-		saved_cooldown = Cooldown
+		saved_cooldown = Cooldown > 0 ? Cooldown : initial(Cooldown)
 		Cooldown = 0
 		if(!overlay_loop_running)
 			overlay_loop_running = TRUE
@@ -7873,7 +7873,7 @@ obj
 		ChargePeriod = initial_charge_period
 		SweetSpotWindow = 0.3
 		SweetSpot = initial_charge_period / 2
-		Cooldown = saved_cooldown
+		Cooldown = saved_cooldown > 0 ? saved_cooldown : initial(Cooldown)
 		if(user)
 			Using = 0
 			cooldown_remaining = 0
@@ -7916,6 +7916,7 @@ obj
 			// hold has started again.
 			if(user.held_skill == src)
 				window_loop_running = FALSE
+				reengage_deadline = world.time + 10
 				return
 			sleep(1)
 		// Window expired
@@ -7973,7 +7974,9 @@ obj
 				return
 			StartChain(p, T)
 		else
-			if(world.time > reengage_deadline) return
+			if(world.time > reengage_deadline)
+				EndChain()
+				return
 		p.BeginHeldSkill(src)
 		if(p.held_skill != src && chain_active && chain_user == p)
 			EndChain()

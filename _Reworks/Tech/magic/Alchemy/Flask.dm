@@ -79,11 +79,11 @@
         */
         if(P.equippedFlask.Mana == 1) //  ONLY THE VALUE OF 1 SHOULD BE HERE 
             StableHeal=1
-            src.ManaHeal = ((glob.POTIONHEAL*(P.equippedFlask.Tier+2))/2) // 5, 10, 15 mana regen a tick based on tier provided potion heal is the same 
+            src.ManaHeal = (glob.POTIONHEAL*(P.equippedFlask.Tier+1)) // 5, 10, 15 mana regen a tick based on tier provided potion heal is the same 
 
         if(P.equippedFlask.Energy == 1) // Same as above
             StableHeal=1
-            src.EnergyHeal = ((glob.POTIONHEAL*(P.equippedFlask.Tier+2))/2) // 5, 10, 15 energy regen a tick
+            src.EnergyHeal = (glob.POTIONHEAL*(P.equippedFlask.Tier+1)) // 5, 10, 15 energy regen a tick
 
         if(P.equippedFlask.Hallucinogen == 1) // This gives you immediate anger and anger buffs at expense of defense
             AutoAnger=1 // Makes you angry instantly

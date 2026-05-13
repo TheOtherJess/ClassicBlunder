@@ -249,6 +249,7 @@
 					var/obj/Effects/Dust/E = new/obj/Effects/Dust()
 					E.loc = M.loc
 					E.layer = EFFECTS_LAYER
+					E.transform = matrix() * 2
 					animate(E, alpha=0, pixel_x=ep[1], pixel_y=ep[2], time=10, easing=SINE_EASING)
 					expel_objs += E
 				sleep(12)

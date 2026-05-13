@@ -2239,13 +2239,13 @@ NEW VARIABLES
 		Spirit_Burst
 			SignatureTechnique=3
 			EnergyThreshold=25
-			passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 3, "PUSpike"=100)
+			passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 			ActiveMessage="spikes their energy in sudden bursts!"
 			OffMessage="quells their energy..."
 			verb/Spirit_Burst()
 				set category="Skills"
 				if(!altered)
-					passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 3, "PUSpike"=100)
+					passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 				src.Trigger(usr)
 		Unbound_Mode
 			SignatureTechnique=3
@@ -12880,6 +12880,7 @@ mob
 					src.ActiveBuff.OffMessage="calms their Cosmo..."
 					src.ActiveBuff.OverlayTransLock=1
 					src.ActiveBuff.AuraLock=1
+					src.ActiveBuff.passives["SpiritPower"] = 0.2*src.SagaLevel
 					// src.ActiveBuff.SenseUnlocked=1
 					if(src.SagaLevel==4)
 						switch(src.ClothGold)

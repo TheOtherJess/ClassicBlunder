@@ -4877,7 +4877,6 @@ mob
 				if(!HeroPresent)
 					src<<"You lack the required party member to use this."
 					return
-			var/disarmed_cut = FALSE
 			if(Z.MagicNeeded&&!src.HasLimitlessMagic())
 				// find people in a zone, if the person in the zone has counterspell up and is not in the party, then return and go on cooldown
 				for(var/mob/x in orange(5, src))
@@ -4896,8 +4895,6 @@ mob
 					src << "Your mana circuits are too damaged to use magic! (until [time2text(src.MagicTaken, "DDD MMM DD hh:mm:ss")])"
 					return;
 				if(Z.Copyable>=3||!Z.Copyable)
-					if(passive_handler.Get("Disarmed") && !src.HasLimitlessMagic() && !src.HasBladeFisting())
-						disarmed_cut = TRUE
 					if(!src.HasSpellFocus(Z))
 						src << "You need a spell focus to use [Z]."
 						return 0
@@ -4916,8 +4913,6 @@ mob
 							usr << "Your [Z] is out of power!"
 							return 0
 			Z.SpellSlotModification();
-			if(disarmed_cut)
-				Z.DamageMult = (Z.DamageMult / 2)
 			if(!Z.Charging)//Only beams get this exception
 				if(!src.CanAttack(3)&&!Z.AttackReplace)
 					return 0
@@ -4977,8 +4972,6 @@ mob
 					src << "You can't use [Z] before you're below [Z.NeedsHealth*(1-src.HealthCut)]% health!"
 					return
 			if(Z.NeedsSword)
-				if(passive_handler.Get("Disarmed")&& !src.HasBladeFisting())
-					Z.DamageMult = (Z.DamageMult / 2)
 				if(!src.EquippedSword())
 					if(!src.HasBladeFisting()&& !src.UsingBattleMage())
 						src << "You need a sword to use this technique!"
@@ -5000,8 +4993,6 @@ mob
 				if(s)
 					if(s.MagicSword)
 						Pass=1
-				if(passive_handler.Get("Disarmed")&& !src.HasLimitlessMagic())
-					Z.DamageMult = (Z.DamageMult / 2)
 				if(!Pass)
 					src << "You need a staff to use this technique!"
 					return
@@ -5574,6 +5565,8 @@ obj
 					src.DamageMult=Z.DamageMult
 					if(Z.TempDamage)
 						src.DamageMult=Z.TempDamage
+					if(Owner)
+						src.DamageMult *= Owner.GetDisarmedProjectileDamageFactor(Z)
 					if(Z.while_warping)
 						DamageMult /= glob.WHILEWARPINGNERF
 						Z.while_warping = FALSE

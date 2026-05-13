@@ -5115,7 +5115,6 @@ mob
 						if(Z.AssociatedGear.Uses<=0)
 							src << "[Z] doesn't have enough power to function!"
 							return FALSE
-			var/disarmed_cut = FALSE
 			if(Z.MagicNeeded&&!src.HasLimitlessMagic())
 				if(src.HasMechanized()&&src.HasLimitlessMagic()!=1)
 					src << "You lack the ability to use magic!"
@@ -5124,15 +5123,11 @@ mob
 					src << "Your mana circuits are too damaged to use magic! (until [time2text(src.MagicTaken, "DDD MMM DD hh:mm:ss")])"
 					return;
 				if(Z.Copyable>=3||!Z.Copyable)
-					if(passive_handler.Get("Disarmed") && !src.HasLimitlessMagic() && !src.HasBladeFisting())
-						disarmed_cut = TRUE
 					if(!src.HasSpellFocus(Z))
 						src << "You need a spell focus to use [Z]."
 						return
 			Z.adjust(src)
 			Z.SpellSlotModification();
-			if(disarmed_cut)
-				Z.DamageMult = (Z.DamageMult / 2)
 			if(Z.GuardBreak)
 				Z.CanBeBlocked=0
 				Z.CanBeDodged=0
@@ -5170,12 +5165,13 @@ mob
 					for(var/obj/Skills/AutoHit/Snowgrave/SG in src)
 						del SG
 				if(Z.HahaWhoops)
+					var/disarm_f = GetDisarmedAutoHitDamageFactor(Z)
 					if(prob(50))
-						src.Target.HealHealth(Z.DamageMult)
+						src.Target.HealHealth(Z.DamageMult * disarm_f)
 						for(var/mob/E in hearers(12,src))
 							E<<"<font color=[src.Text_Color]>[src] says: haha whoops."
 					else
-						src.Target.DoDamage(src.Target,Z.DamageMult)
+						src.Target.DoDamage(src.Target, Z.DamageMult * disarm_f)
 						for(var/mob/E in hearers(12,src))
 							E<<"<font color=[src.Text_Color]>[src] says: Nailed it."
 					return
@@ -5209,8 +5205,6 @@ mob
 					return
 			if(Z.NeedsSword)
 				var/obj/Items/Sword/s=src.EquippedSword()
-				if(passive_handler.Get("Disarmed") && s && !src.HasBladeFisting())
-					Z.DamageMult = (Z.DamageMult / 2)
 				if(!s)
 					if(!src.HasBladeFisting() && !src.UsingBattleMage())
 						src << "You need a sword equipped to use [Z]!"
@@ -6141,7 +6135,7 @@ obj
 			FollowUp = Z.FollowUp
 			FollowUpDelay = Z.FollowUpDelay
 			BuffSelf = Z.BuffSelf
-			src.Damage=Z.DamageMult
+			src.Damage=Z.DamageMult * owner.GetDisarmedAutoHitDamageFactor(Z)
 			src.StepsDamage=Z.StepsDamage
 			src.MagicNeeded=Z.MagicNeeded
 			if(Z.while_warping)
@@ -7858,7 +7852,7 @@ obj
 		SweetSpotWindow = 0.3
 		SweetSpot = RollSweetSpot()
 		user.judgement_cut_chain_active = TRUE
-		saved_cooldown = Cooldown
+		saved_cooldown = Cooldown > 0 ? Cooldown : initial(Cooldown)
 		Cooldown = 0
 		if(!overlay_loop_running)
 			overlay_loop_running = TRUE
@@ -7879,7 +7873,7 @@ obj
 		ChargePeriod = initial_charge_period
 		SweetSpotWindow = 0.3
 		SweetSpot = initial_charge_period / 2
-		Cooldown = saved_cooldown
+		Cooldown = saved_cooldown > 0 ? saved_cooldown : initial(Cooldown)
 		if(user)
 			Using = 0
 			cooldown_remaining = 0
@@ -7922,6 +7916,7 @@ obj
 			// hold has started again.
 			if(user.held_skill == src)
 				window_loop_running = FALSE
+				reengage_deadline = world.time + 10
 				return
 			sleep(1)
 		// Window expired
@@ -7979,7 +7974,9 @@ obj
 				return
 			StartChain(p, T)
 		else
-			if(world.time > reengage_deadline) return
+			if(world.time > reengage_deadline)
+				EndChain()
+				return
 		p.BeginHeldSkill(src)
 		if(p.held_skill != src && chain_active && chain_user == p)
 			EndChain()

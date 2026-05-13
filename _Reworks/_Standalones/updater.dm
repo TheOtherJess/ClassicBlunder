@@ -41,6 +41,20 @@ globalTracker
 
 mob/var/update/updateVersion
 
+// fix for disarm
+/mob/proc/RestoreSkillDamageMultsAfterDisarmFix()
+	if(!Skills || !Skills.len)
+		return 0
+	var/skills_reset = 0
+	for(var/obj/Skills/S in Skills)
+		if(!istype(S, /obj/Skills/Queue) && !istype(S, /obj/Skills/AutoHit) && !istype(S, /obj/Skills/Projectile) && !istype(S, /obj/Skills/Grapple))
+			continue
+		var/def = initial(S.DamageMult)
+		if(S.DamageMult != def)
+			S.DamageMult = def
+			skills_reset++
+	return skills_reset
+
 update
 	var/version = 1
 
@@ -414,6 +428,9 @@ update
 		version = 18;
 		updateMob(mob/p)
 			. = ..()
+			var/fixed = p.RestoreSkillDamageMultsAfterDisarmFix()
+			if(fixed)
+				p << "Your skill DamageMults have been restored. Rejoice."
 			if(p.isRace(BEASTKIN))
 				for(var/a=p.AscensionsAcquired, a > 0, a--)
 					var/ascension/asc = p.race.ascensions[a];

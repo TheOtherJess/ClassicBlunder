@@ -89,8 +89,8 @@
             AutoAnger=1 // Makes you angry instantly
             // Please note: the comments will tell you what the math does   
             AngerMult = 1 + ((P.equippedFlask.Tier+1)/3) // T0 = +33%, T1 = +66%  T2 = +100% anger multiplier
-            EndMult = 0.5 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 endurance mult (DOWNSIDE)
-            DefMult = 0.7 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 endurance mult (DOWNSIDE)
+            EndMult = 0.5 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.6, T1 = 0.7, T3 = 0.8 endurance mult (DOWNSIDE)
+            DefMult = 0.7 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 Defense mult (DOWNSIDE)
             passives["PureReduction"] = -4 + (P.equippedFlask.Tier+1) // T0 = 3, T1 = -2 T2 = -1, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
         if(P.equippedFlask.Searing == 1) // Damage 
@@ -109,7 +109,7 @@
             EndMult = 1 + (P.equippedFlask.Tier+1/10) //T0 = 1.1, T1 = 1.2, T3 = 1.3 endurance mult
             SpdMult = 0.85 + (P.equippedFlask.Tier+1/20) // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
             passives["Harden"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5
-            passives["Unnerve"] = (P.equippedFlask.Tier+1) // T0 = 0.5, T1 = 1, T2 = 1.5
+            passives["Unnerve"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Godspeed"] = -4 + (P.equippedFlask.Tier+1) // T0 = -3, T1 = -2, T2 = -1 (DOWNSIDE)
         if(P.equippedFlask.Quicksilver == 1) // Speed, you must be feeling pretty stupid restricting magic now huh Jess?
             SpdMult = 1 + (P.equippedFlask.Tier+1/10) //T0 = 1.1, T1 = 1.2, T3 = 1.3 speed mult

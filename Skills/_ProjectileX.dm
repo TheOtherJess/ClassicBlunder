@@ -3490,13 +3490,15 @@ obj
 					Charge=2
 					DamageMult=0.6
 					Instinct=1
-					AccMult=2
+					AccMult=1
 					Explode=1
 					Distance=100
 					ZoneAttackX=10
 					ZoneAttackY=10
 					Hover=10
 					Variation=0
+					Homing=3
+					HyperHoming=1
 					Cooldown=180
 					verb/Homing_Finisher()
 						set category="Skills"

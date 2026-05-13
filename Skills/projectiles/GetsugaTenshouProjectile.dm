@@ -36,6 +36,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 		else
 			icon_used = inBankai ? 'Small Getsuga.dmi' : 'Small Getsuga Shikai.dmi'
 		p.Blast(src, p, 1, icon_used)
+		src.Cooldown(1, null, p)
 		ResetHeldConfig()
 
 	verb/Getsuga_Tenshou()

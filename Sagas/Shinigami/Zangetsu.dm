@@ -21,7 +21,7 @@
 	NeedsSword = 1
 	StrRate = 1
 	ForRate = 1
-	DamageMult = 30
+	DamageMult = 35
 	AccMult = 1.3
 	Distance = 20
 	Homing = 1

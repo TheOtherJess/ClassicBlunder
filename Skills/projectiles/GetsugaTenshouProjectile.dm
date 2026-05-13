@@ -1,10 +1,10 @@
 obj/Skills/Projectile/Getsuga_Tenshou
 	name = "Getsuga Tenshou"
-	Cooldown = 120
+	Cooldown = 60
 	NeedsSword=1
 	StrRate = 1
 	ForRate = 1
-	DamageMult = 15
+	DamageMult = 10
 	AccMult = 1.2
 	Distance = 20
 	Homing = 1
@@ -17,7 +17,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 	HeldSkill = TRUE
 	ChargePeriod = 3
 	SweetSpot = 1.5
-	SweetSpotBenefit = 2
+	SweetSpotBenefit = 2.5
 	ChargeOverlay='DarkShock.dmi'
 	ChargeWaveIcon='KenShockwaveBloodlust.dmi'
 
@@ -53,11 +53,11 @@ obj/Skills/Projectile/Getsuga_Tenshou
 
 obj/Skills/Projectile/Getsuga_Jujisho
 	name = "Getsuga Jujisho"
-	Cooldown = 180
+	Cooldown = 120
 	NeedsSword=1
 	StrRate = 1
 	ForRate = 1
-	DamageMult = 30
+	DamageMult = 25
 	AccMult = 1.3
 	Distance = 20
 	Homing = 1

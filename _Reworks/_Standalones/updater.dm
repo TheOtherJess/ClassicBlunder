@@ -444,6 +444,15 @@ update
 			var/fixed = p.RestoreSkillDamageMultsAfterDisarmFix()
 			if(fixed)
 				p << "Your skill DamageMults have been restored. Rejoice."
+			if(p.isRace(BEASTKIN))
+				for(var/a=p.AscensionsAcquired, a > 0, a--)
+					var/ascension/asc = p.race.ascensions[a];
+					asc.revertAscension(p);
+					p.AscensionsAcquired--;
+					p << "Reverted Beastkin ascension [a]"
+				p.race.ascensions = list();
+				p.race.fixAscensions();
+				p << "Gave new Beastkin ascension types."
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25

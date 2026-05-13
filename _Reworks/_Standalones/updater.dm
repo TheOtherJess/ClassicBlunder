@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 17
+	var/UPDATE_VERSION = 18
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -410,6 +410,20 @@ update
 				if(p.AscensionsAcquired >= 3)
 					p.passive_handler.Increase("PureReduction", 2)
 					p.passive_handler.Increase("PureDamage", 2)
+	version18
+		version = 18;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(BEASTKIN))
+				for(var/a=p.AscensionsAcquired, a > 0, a--)
+					var/ascension/asc = p.race.ascensions[a];
+					asc.revertAscension(p);
+					p.AscensionsAcquired--;
+					p << "Reverted Beastkin ascension [a]"
+				p.race.ascensions = list();
+				p.race.fixAscensions();
+				p << "Gave new Beastkin ascension types."
+
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

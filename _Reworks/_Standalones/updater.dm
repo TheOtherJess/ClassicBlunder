@@ -46,12 +46,25 @@ mob/var/update/updateVersion
 	if(!Skills || !Skills.len)
 		return 0
 	var/skills_reset = 0
-	for(var/obj/Skills/S in Skills)
-		if(!istype(S, /obj/Skills/Queue) && !istype(S, /obj/Skills/AutoHit) && !istype(S, /obj/Skills/Projectile) && !istype(S, /obj/Skills/Grapple))
-			continue
-		var/def = initial(S.DamageMult)
-		if(S.DamageMult != def)
-			S.DamageMult = def
+	for(var/obj/Skills/Queue/q in Skills)
+		var/defq = initial(q.DamageMult)
+		if(q.DamageMult != defq)
+			q.DamageMult = defq
+			skills_reset++
+	for(var/obj/Skills/AutoHit/a in Skills)
+		var/defa = initial(a.DamageMult)
+		if(a.DamageMult != defa)
+			a.DamageMult = defa
+			skills_reset++
+	for(var/obj/Skills/Projectile/pr in Skills)
+		var/defp = initial(pr.DamageMult)
+		if(pr.DamageMult != defp)
+			pr.DamageMult = defp
+			skills_reset++
+	for(var/obj/Skills/Grapple/g in Skills)
+		var/defg = initial(g.DamageMult)
+		if(g.DamageMult != defg)
+			g.DamageMult = defg
 			skills_reset++
 	return skills_reset
 

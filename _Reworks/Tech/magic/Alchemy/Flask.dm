@@ -88,33 +88,33 @@
         if(P.equippedFlask.Hallucinogen == 1) // This gives you immediate anger and anger buffs at expense of defense
             AutoAnger=1 // Makes you angry instantly
             // Please note: the comments will tell you what the math does   
-            AngerMult = 1 + ((P.equippedFlask.Tier+1)/3) // T0 = +33%, T1 = +66%  T2 = +100% anger multiplier
-            EndMult = 0.5 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.6, T1 = 0.7, T3 = 0.8 endurance mult (DOWNSIDE)
-            DefMult = 0.7 + ((P.equippedFlask.Tier+1)/10) // T0 = 0.8, T1 = 0.9, T3 = 1 Defense mult (DOWNSIDE)
+            AngerMult = 1 + (P.equippedFlask.Tier+1)/3 // T0 = +33%, T1 = +66%  T2 = +100% anger multiplier
+            EndMult = 0.5 + (P.equippedFlask.Tier+1)/10 // T0 = 0.6, T1 = 0.7, T3 = 0.8 endurance mult (DOWNSIDE)
+            DefMult = 0.7 + (P.equippedFlask.Tier+1)/10 // T0 = 0.8, T1 = 0.9, T3 = 1 Defense mult (DOWNSIDE)
             passives["PureReduction"] = -4 + (P.equippedFlask.Tier+1) // T0 = 3, T1 = -2 T2 = -1, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
         if(P.equippedFlask.Searing == 1) // Damage 
-            StrMult = 1 + (P.equippedFlask.Tier+1/10) // T0 = 1.1, T1 = 1.2, T2 = 1.3
-            ForMult = 1 + (P.equippedFlask.Tier+1/10) // Same as above
+            StrMult = 1 + (P.equippedFlask.Tier+1)/10 // T0 = 1.1, T1 = 1.2, T2 = 1.3
+            ForMult = 1 + (P.equippedFlask.Tier+1)/10 // Same as above
             passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost 
             passives["Steady"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["PureReduction"] -= 2 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)
         if(P.equippedFlask.Flowy == 1) // Dodging
-            DefMult = 1 + ((P.equippedFlask.Tier+1)/4) // T0 = 1.25, T1 = 1.5, T2 = 1.75 // This makes you dodge more
-            StrMult = 0.85 + (P.equippedFlask.Tier+1/20)  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
-            ForMult = 0.85 + (P.equippedFlask.Tier+1/20) // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
+            DefMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = 1.25, T1 = 1.5, T2 = 1.75 // This makes you dodge more
+            StrMult = 0.85 + (P.equippedFlask.Tier+1)/20  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
+            ForMult = 0.85 + (P.equippedFlask.Tier+1)/20 // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
             passives["Flow"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["LikeWater"] = (P.equippedFlask.Tier+1) // Same as Above
         if(P.equippedFlask.Hard == 1) // Defense
-            EndMult = 1 + (P.equippedFlask.Tier+1/10) //T0 = 1.1, T1 = 1.2, T3 = 1.3 endurance mult
-            SpdMult = 0.85 + (P.equippedFlask.Tier+1/20) // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
+            EndMult = 1 + (P.equippedFlask.Tier+1)/10 //T0 = 1.1, T1 = 1.2, T3 = 1.3 endurance mult
+            SpdMult = 0.85 + (P.equippedFlask.Tier+1)/20 // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
             passives["Harden"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5
             passives["Unnerve"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Godspeed"] = -4 + (P.equippedFlask.Tier+1) // T0 = -3, T1 = -2, T2 = -1 (DOWNSIDE)
         if(P.equippedFlask.Quicksilver == 1) // Speed, you must be feeling pretty stupid restricting magic now huh Jess?
-            SpdMult = 1 + (P.equippedFlask.Tier+1/10) //T0 = 1.1, T1 = 1.2, T3 = 1.3 speed mult
-            StrMult = 0.85 + (P.equippedFlask.Tier+1/20)  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
-            ForMult = 0.85 + (P.equippedFlask.Tier+1/20) // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
+            SpdMult = 1 + (P.equippedFlask.Tier+1)/10 //T0 = 1.1, T1 = 1.2, T3 = 1.3 speed mult
+            StrMult = 0.85 + (P.equippedFlask.Tier+1)/20  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
+            ForMult = 0.85 + (P.equippedFlask.Tier+1)/20 // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
             passives["Godspeed"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Skimming"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
 

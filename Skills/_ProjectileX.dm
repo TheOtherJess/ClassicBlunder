@@ -2476,7 +2476,7 @@ obj
 				StrRate=1
 				ForRate=0
 				EndRate=0.75
-				Knockback=1
+				Knockback=2
 				MultiHit=8
 				DamageMult=2
 				AccMult = 1.25

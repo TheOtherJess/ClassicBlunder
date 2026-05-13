@@ -1546,12 +1546,12 @@ obj
 			Cast_Fist
 				SignatureTechnique=1
 				UnarmedOnly=1
-				Area="Cone"
+				Area="Circle"
 				StrOffense=1
-				DamageMult=6
+				DamageMult=12
 				TurfDirt=1
-				Distance=5
-				Size=3
+				Distance=8
+				//Size=3
 				Knockback=10
 				ShockIcon='KenShockwave.dmi'
 				Shockwave=5
@@ -1560,9 +1560,9 @@ obj
 				Launcher=5
 				PostShockwave=1
 				PreShockwave=0
-				BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Muscle_Expand"
-				FollowUp="/obj/Skills/Queue/Warping_Fist"
-				FollowUpDelay=2
+				//BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Muscle_Expand"
+				//FollowUp="/obj/Skills/Queue/Warping_Fist"
+				//FollowUpDelay=2
 				Cooldown=150
 				WindUp=1
 				Earthshaking=20
@@ -4280,6 +4280,7 @@ obj
 				SpecialAttack=1
 				Hurricane="/obj/Skills/Projectile/King_of_Braves/Brave_Tornado"
 				GuardBreak=1
+				ComboMaster=1
 				Grapple=1
 				GrabTrigger="/obj/Skills/Grapple/Erupting_Burning_Finger/Removeable"
 				Knockback=1

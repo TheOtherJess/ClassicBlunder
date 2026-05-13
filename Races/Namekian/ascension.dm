@@ -1,6 +1,4 @@
 ascension
-
-
 	namekian
 		one
 			unlock_potential	=	ASCENSION_ONE_POTENTIAL

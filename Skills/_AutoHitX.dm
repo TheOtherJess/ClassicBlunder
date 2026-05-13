@@ -2010,7 +2010,7 @@ obj
 				Cooldown=150
 				EnergyCost=5
 				Earthshaking=1
-				Speed=1.5
+				Speed=1
 				WindUp=0
 				Instinct=1
 				ActiveMessage="leaps in the air before falling back down, weapon-first!"
@@ -2037,7 +2037,7 @@ obj
 				HitSparkY=-16
 				HitSparkTurns=1
 				HitSparkSize=3
-				Cooldown=-1
+				Cooldown=180
 				EnergyCost=15
 				Instinct=1
 				verb/Zantetsuken()

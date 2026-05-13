@@ -97,7 +97,7 @@
             StrMult = 1.1 + (P.equippedFlask.Tier) // T0 = 1.1, T1 = 1.2, T2 = 1.3
             ForMult = 1.1 + (P.equippedFlask.Tier) // Same as above
             passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost 
-            passives["Steady"] = (P.equippedFlask.Tier+1) // Same as above 
+            passives["Steady"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["PureReduction"] -= 2 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)
         if(P.equippedFlask.Flowy == 1) // Dodging
             DefMult = 1 + ((P.equippedFlask.Tier+1)/4) // T0 = 1.25, T1 = 1.5, T2 = 1.75 // This makes you dodge more

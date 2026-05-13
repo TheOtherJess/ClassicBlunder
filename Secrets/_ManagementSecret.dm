@@ -314,8 +314,9 @@ SecretInformation
 	EldritchShrouded
 		name = "Eldritch (Shrouded)"
 		var/list/ShroudedPassives=list();
-		var/ShroudedOrigin;
-		var/ShroudedSubtype;
+		var/ShroudedOrigin;//assigned at t1
+		var/ShroudedSubtype;//assigned at t2
+		var/ShroudedMastery;//assigned at t6
 		applySecret(mob/p)
 			p << "Your Shrouded origin bubbles to the surface; [currentTier] Steps towards the road to Assimilation have been taken..."
 			//1, 2, and 6 upgrade your "Origin" style enhancements

@@ -3568,7 +3568,7 @@ obj
 				NeedsSword=1
 				Area="Around Target"
 				AdaptRate=1
-				DamageMult=0.25
+				DamageMult=0.5
 				HolyMod=5
 				Distance=5
 				DistanceAround=3
@@ -3599,7 +3599,7 @@ obj
 				NeedsSword=1
 				Area="Around Target"
 				AdaptRate=1
-				DamageMult=0.25
+				DamageMult=0.5
 				AbyssMod=5
 				Distance=5
 				DistanceAround=3

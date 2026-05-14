@@ -178,7 +178,7 @@
 		endAdd = -glob.OVERHWELMING_BASE_END_NERF * total_stacks
 
 /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Charmed
-	TimerLimit = 10
+	TimerLimit = 5
 	AlwaysOn = 0
 	NeedsPassword = 0
 	PauseInRP = 1

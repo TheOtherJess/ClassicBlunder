@@ -186,7 +186,7 @@
 	if(!demon_racial_femme_active) return
 	if(!defender || !defender.client) return
 	if(prob(8))
-		defender.applyCharmed(src, 30)
+		defender.applyCharmed(src, 5)
 
 
 /mob/proc/DemonSnakePoisonCheck(mob/defender)

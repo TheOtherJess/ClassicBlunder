@@ -181,12 +181,12 @@
 			StrMult = 1.4
 			ForMult = 1.35
 			OffMult = 1.3
-			passives = list("KillerInstinct" = 0.15, "Pressure" = 1, "LifeSteal" = 20, "AngerAdaptiveForce" = 0.3)
+			passives = list("KillerInstinct" = 0.15, "Pressure" = 1, "LifeSteal" = 20, "AngerAdaptiveForce" = 0.3, "DemonicInfusion" = 1)
 		else if(tier >= 2)
 			StrMult = 1.25
 			ForMult = 1.15
 			OffMult = 1
-			passives = list("KillerInstinct" = 0.1, "Pressure" = 1, "LifeSteal" = 10, "AngerAdaptiveForce" = 0.2)
+			passives = list("KillerInstinct" = 0.1, "Pressure" = 1, "LifeSteal" = 10, "AngerAdaptiveForce" = 0.2, "DemonicInfusion" = 1)
 		else
 			StrMult = 1.1
 			ForMult = 1

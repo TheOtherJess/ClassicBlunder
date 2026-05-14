@@ -60,8 +60,8 @@
 		ManaCost=6
 		Cooldown=45
 		IconLock='Hit Effect Dark.dmi'
-		IconX=-32
-		IconY=-32
+		LockX=-32
+		LockY=-32
 		IconSize=1.5
 		ActiveMessage="invokes: <font size=+1>VOID BLAST!</font size>"
 		verb/Void_Blast()

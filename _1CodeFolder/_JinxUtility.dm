@@ -3574,7 +3574,13 @@ mob
 					return
 				if(src.Potential<glob.progress.SAGA_T3_POT && src.SagaLevel>=2) // t3
 					return
-				if(src.SagaLevel>=3&&!src.SagaAdminPermission)
+				if(src.Potential<glob.progress.SAGA_T4_POT && src.SagaLevel>=3) // t4
+					return
+				if(src.Potential<glob.progress.SAGA_T5_POT && src.SagaLevel>=4) // t5
+					return
+				if(src.Potential<glob.progress.SAGA_T6_POT && src.SagaLevel>=5) // t6
+					return
+				if(src.SagaLevel>=5&&!src.SagaAdminPermission)
 					return
 				src.saga_up_self()
 				return

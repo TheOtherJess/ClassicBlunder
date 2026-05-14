@@ -1930,10 +1930,9 @@ obj
 				Area="Circle"
 				Distance=2
 				Size=2
-				StrOffense=1
-				CanBeDodged = 0
-				CanBeBlocked = 0
-				DamageMult=8
+				StrOffense=0.75
+				ForOffense=0.25
+				DamageMult=12
 				DelayTime=0.25
 				PreShockwave=1
 				PreShockwaveDelay=1
@@ -1945,6 +1944,7 @@ obj
 				ShockDiminish=1.15
 				ShockTime=4
 				GuardBreak=1
+				ComboMaster=1
 				Rush=5
 				ControlledRush=1
 				HitSparkIcon='Slash - Future.dmi'
@@ -1956,7 +1956,7 @@ obj
 				Launcher=4
 				DelayedLauncher=1
 				Cooldown=150
-				EnergyCost=5
+				EnergyCost=2.5
 				Instinct=1
 				ActiveMessage="delivers swift justice with a flurry of slashes!"
 				verb/Shining_Sword_Slash()
@@ -1968,11 +1968,13 @@ obj
 				Area="Circle"
 				StrOffense=1
 				Distance=5
-				DamageMult=6
+				DamageMult=12
 				Knockback=15
 				WindUp=0.5
 				Slow=1
 				Stunner=2
+				ComboMaster=1;
+				GuardBreak=1;
 				WindupMessage="sheathes their blade..."
 				ActiveMessage="cuts through any and all around them in the flash of an eye!"
 				HitSparkIcon='JudgmentCut.dmi'
@@ -1994,14 +1996,15 @@ obj
 				SignatureTechnique=1
 				NeedsSword=1
 				Area="Wider Wave"
-				StrOffense=1
-				DamageMult=10
+				StrOffense=1.25
+				DamageMult=16
 				TurfDirt=1
 				Distance=12
 				Jump=1
 				Knockback=10
 				FlickAttack=2
 				GuardBreak=1
+				ComboMaster=1;
 				ShockIcon='KenShockwave.dmi'
 				Shockwave=1
 				Shockwaves=1
@@ -2025,11 +2028,13 @@ obj
 				Gravity=5
 				WindUp=1
 				WindupMessage="prepares to deliver a peerless slash..."
-				DamageMult=10
+				DamageMult=18
 				StrOffense=1
+				EndDefense=0.5
 				ActiveMessage="slashes through their enemy in the blink of an eye, aiming to mortally wound them!"
 				Area="Target"
 				GuardBreak=1
+				ComboMaster=1;
 				PassThrough=1
 				MortalBlow=1
 				HitSparkIcon='Slash - Zan.dmi'
@@ -2052,11 +2057,12 @@ obj
 				DelayTime=2
 				Rounds=7
 				IgnoreAlreadyHit = 1
-				DamageMult=2
+				DamageMult=5
 				Knockback=10
-				SpeedStrike = 1
+				SpeedStrike = 2
 				PassThrough=1
 				GuardBreak=1
+				ComboMaster=1;
 				WindUp=0.1
 				WindupMessage="sheathes their blade..."
 				ActiveMessage="begins to step through the battlefield like a passing shadow!"
@@ -2081,16 +2087,18 @@ obj
 				NeedsSword=1
 				Area="Circle"
 				StrOffense=1
+				SpeedStrike=2;
 				Distance=7
 				PassTo=1
-				DamageMult=16.5
+				DamageMult=18
 				WindUp=1
 				GuardBreak=1
+				ComboMaster=1;
 				Knockback=25
 				WindupMessage="lays a hand on their sheathed blade, concentrating for a moment..."
 				ActiveMessage="blasts through surrounding foes with what appears to be a single strike!!"
 				Cooldown=180
-				EnergyCost=15
+				EnergyCost=10
 				verb/Thousand_Man_Slayer()
 					set category="Skills"
 					usr.Activate(src)
@@ -3559,7 +3567,7 @@ obj
 				Copyable=5
 				NeedsSword=1
 				Area="Around Target"
-				AdaptRate=1.5
+				AdaptRate=1
 				DamageMult=0.5
 				HolyMod=5
 				Distance=5
@@ -3590,7 +3598,7 @@ obj
 				Copyable=5
 				NeedsSword=1
 				Area="Around Target"
-				AdaptRate=1.5
+				AdaptRate=1
 				DamageMult=0.5
 				AbyssMod=5
 				Distance=5
@@ -7812,6 +7820,7 @@ obj
 	DamageMult = 5
 	StrOffense = 1
 	EndDefense = 1
+	Copyable=6
 	Cooldown = 75
 	ComboMaster = 1
 	GuardBreak = 1

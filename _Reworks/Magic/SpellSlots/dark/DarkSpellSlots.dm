@@ -33,13 +33,17 @@
 	SpellSlot=1
 	Arachnae_Touch
 		ElementalClass="Dark"
-		DamageMult=6
-		Speed=0.5
+		DamageMult=3
+		MultiShot=3;
+		Speed=0;
+		Piercing=1;
 		AccMult=1.2
 		Distance=12
 		ManaCost=5
 		Cooldown=40
-		IconLock='Hit Effect Dark.dmi'
+		Trail='Hit Effect Dark.dmi'
+		TrailX=-32
+		TrailY=-32
 		ActiveMessage="invokes: <font size=+1>ARACHNAE TOUCH!</font size>"
 		verb/Arachnae_Touch()
 			set category="Skills"
@@ -47,7 +51,7 @@
 
 	Void_Blast
 		ElementalClass="Dark"
-		DamageMult=7.5
+		DamageMult=8
 		Speed=1
 		Homing=1
 		Explode=2
@@ -56,6 +60,8 @@
 		ManaCost=6
 		Cooldown=45
 		IconLock='Hit Effect Dark.dmi'
+		IconX=-32
+		IconY=-32
 		IconSize=1.5
 		ActiveMessage="invokes: <font size=+1>VOID BLAST!</font size>"
 		verb/Void_Blast()

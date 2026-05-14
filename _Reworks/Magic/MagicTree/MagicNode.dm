@@ -295,7 +295,9 @@ globalTracker/var
     if(isRace(POPO) && popoEarlyUnlocks.Find(element)) return 1;
     if((isRace(ANGEL) || isRace(MAKAIOSHIN)) && angelEarlyUnlocks.Find(element)) return 1;
     if((isRace(DEMON) || isRace(MAKAIOSHIN)) && demonEarlyUnlocks.Find(element)) return 1;
-    if(Potential >= glob.AdvancedElementPotential) return 1;
+    if((accessedMagicTrees.len + getMagicalDeficiency()) >=2)
+        if(Potential >= glob.AdvancedElementPotential) return 1;
+        else return 0
     return 0;
 
 /mob/proc/hasEarlyMagicAdvancement()

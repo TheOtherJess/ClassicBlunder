@@ -1,6 +1,6 @@
 obj/Skills/Projectile/Getsuga_Tenshou
 	name = "Getsuga Tenshou"
-	Cooldown = 60
+	Cooldown = 30
 	NeedsSword=1
 	StrRate = 1
 	ForRate = 1

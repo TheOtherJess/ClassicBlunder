@@ -132,6 +132,9 @@ progressTracker
 
 		SAGA_T2_POT = 15
 		SAGA_T3_POT = 25
+		SAGA_T4_POT = 45
+		SAGA_T5_POT = 60
+		SAGA_T6_POT = 75
 
 		//unfortunately these must be set through a very dumb proc in _world.dm
 		T1_STYLES = list(10, 20, 25, 35)

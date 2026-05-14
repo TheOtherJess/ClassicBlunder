@@ -250,5 +250,5 @@ obj/Skills/AutoHit/Spiral
 			else
 				Total*=1
 	if((isRace(HUMAN) && Class=="Underdog") || NobodyOriginType=="Spirit")
-		Total*=1+((SL)/5)
+		Total*=1+((SL)*0.35)
 	return Total

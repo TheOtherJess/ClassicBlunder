@@ -471,7 +471,7 @@ update
 		version = 20;
 		updateMob(mob/p)
 			. = ..()
-			if(p.isRace(NOBODY)&&Class=="Imaginary")
+			if(p.isRace(NOBODY)&&p.Class=="Imaginary")
 				p.passive_handler.Increase("DrainlessPUSpike", 1)
 				if(p.AscensionsAcquired>=1)
 					p.passive_handler.Increase("EnergyGeneration", 2)

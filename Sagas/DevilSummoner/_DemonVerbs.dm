@@ -412,7 +412,7 @@
 	demon_active_name = demon_name
 
 	src << "You summon <b>[demon_name]</b>!"
-	demon_summon_cooldown = world.time + 600  // 60s
+	demon_summon_cooldown = world.time + 300  // 30s
 
 	// Tier 4+ racial passive
 	if(SagaLevel >= 4 && dd.demon_race)
@@ -441,7 +441,7 @@
 	demon_active      = null
 	demon_active_name = ""
 	src << "You unsummon your demon."
-	demon_summon_cooldown = world.time + 600  // 60s
+	demon_summon_cooldown = world.time + 300  // 30s
 
 
 /mob/proc/ExecuteFusion(name_a, name_b)

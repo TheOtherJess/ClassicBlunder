@@ -73,7 +73,7 @@ obj/Skills/proc/Cooldown(var/modify=1, var/Time, mob/p, var/announce_cd=1)
 				if(src.SpellElement)
 					var/elem_cd_red = m.getSpellElementCooldownReduction(src.SpellElement)
 					if(elem_cd_red)
-						modify *= (1 - elem_cd_red)
+						modify *= (1 - min(elem_cd_red, 0.80))
 			else
 				if(m.Hustling())
 					modify*=0.75

@@ -513,6 +513,8 @@ globalTracker
 		ROYAL_GUARD_CHARGE_MULT=1.0
 		ROYAL_GUARD_DMG_MULT=1.0
 
+		CASTING_PASSIVE_DIVISOR = 4
+
 		TILE_DURATION_DIVISOR=2
 
 		HARDER_THEY_FALL_BIO_DIVISOR = 100 // if u use this when changie first start it will do big damage

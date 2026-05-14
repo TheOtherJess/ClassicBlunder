@@ -999,7 +999,7 @@ var/global/list/DEMON_UNIQUE_SKILLS = list(
 
 	proc/DemonMarinKarin(mob/target)
 		if(!DemonValidTarget(target)) return FALSE
-		target.applyCharmed(src, 10)
+		target.applyCharmed(src, 5)
 		DemonSpawnVFX(target)
 		return TRUE
 

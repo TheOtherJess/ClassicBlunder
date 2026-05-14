@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 19
+	var/UPDATE_VERSION = 20
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -467,7 +467,18 @@ update
 					p.race.ascensions |= new/ascension/beastkin/five
 					p.race.ascensions |= new/ascension/beastkin/six
 					p << "You have <b>actually</b> been given new ascensions as a Beastkin now.";
-
+	version20
+		version = 20;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(NOBODY)&&p.Class=="Imaginary")
+				p.passive_handler.Increase("DrainlessPUSpike", 1)
+				if(p.AscensionsAcquired>=1)
+					p.passive_handler.Increase("EnergyGeneration", 2)
+					p.passive_handler.Increase("ManaGeneration", 1)
+				if(p.AscensionsAcquired>=2)
+					p.passive_handler.Increase("EnergyGeneration", 2)
+					p.passive_handler.Increase("ManaGeneration", 1)
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

@@ -48,7 +48,7 @@
 			OffMult = 1
 			passives = list("Scorching" = 1, "Momentum" = 1)
 	verb/Fire_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Water_Gestalt_Buff
@@ -77,7 +77,7 @@
 			DefMult = 1
 			passives = list("Chilling" = 1, "FluidForm" = 1)
 	verb/Water_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Earth_Gestalt_Buff
@@ -106,7 +106,7 @@
 			DefMult = 1
 			passives = list("Shattering" = 1, "Harden" = 1)
 	verb/Earth_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Wind_Gestalt_Buff
@@ -135,7 +135,7 @@
 			OffMult = 1
 			passives = list("Shocking" = 1, "Afterimages" = 1)
 	verb/Wind_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Light_Gestalt_Buff
@@ -164,7 +164,7 @@
 			DefMult = 1
 			passives = list("LifeGeneration" = 1, "BuffMastery" = 1)
 	verb/Light_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Dark_Gestalt_Buff
@@ -193,7 +193,7 @@
 			OffMult = 1
 			passives = list("KillerInstinct" = 0.1, "Pressure" = 1, "AngerAdaptiveForce" = 0.1)
 	verb/Dark_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Time_Gestalt_Buff
@@ -222,7 +222,7 @@
 			DefMult = 1
 			passives = list("TechniqueMastery" = 2, "DebuffDurationReduction" = 1)
 	verb/Time_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)
 
 /obj/Skills/Buffs/SpecialBuffs/Space_Gestalt_Buff
@@ -251,5 +251,5 @@
 			OffMult = 1
 			passives = list("Warping" = 1, "Flicker" = 1)
 	verb/Space_Gestalt_Buff()
-		set hidden = 1
+		set category="Skills"
 		src.Trigger(usr)

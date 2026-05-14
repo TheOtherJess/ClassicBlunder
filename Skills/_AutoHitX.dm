@@ -7820,6 +7820,7 @@ obj
 	DamageMult = 5
 	StrOffense = 1
 	EndDefense = 1
+	Copyable=6
 	Cooldown = 75
 	ComboMaster = 1
 	GuardBreak = 1

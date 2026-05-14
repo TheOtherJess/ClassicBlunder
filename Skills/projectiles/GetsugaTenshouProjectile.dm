@@ -17,7 +17,7 @@ obj/Skills/Projectile/Getsuga_Tenshou
 	HeldSkill = TRUE
 	ChargePeriod = 3
 	SweetSpot = 1.5
-	SweetSpotBenefit = 2.5
+	SweetSpotBenefit = 2
 	ChargeOverlay='DarkShock.dmi'
 	ChargeWaveIcon='KenShockwaveBloodlust.dmi'
 

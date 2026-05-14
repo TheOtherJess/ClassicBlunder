@@ -7870,7 +7870,6 @@ obj
 	proc/EndChain()
 		if(!chain_active) return
 		var/mob/user = chain_user
-		var/mob/target = chain_target
 		chain_active = FALSE
 		window_loop_running = FALSE
 		if(user)

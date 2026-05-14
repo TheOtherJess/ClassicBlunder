@@ -1377,10 +1377,17 @@ mob
 			return TRUE
 
 		// now require 50+ mastery
+		// no longer requires 50+ mastery with limited rank up magic :evil emoji:
 		demonDevilTriggerSinMastery()
 			if(!isInDemonDevilTrigger()) return FALSE
+			var/MasteryValue=50
+			if(passive_handler.Get("Limited Rank-Up"))
+				if(Secret)
+					MasteryValue=25
+				else if(!Secret)
+					return TRUE
 			var/transformation/current = race.transformations[transActive]
-			return current.mastery >= 50
+			return current.mastery >= MasteryValue
 
 		// Used by the Devil Arm icon-swap path. Demon-only sins / disguise stay
 		// gated by isInDemonDevilTrigger; this one also covers makaioshin forms.

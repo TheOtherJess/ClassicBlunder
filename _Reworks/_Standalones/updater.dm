@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 18
+	var/UPDATE_VERSION = 19
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -453,6 +453,20 @@ update
 				p.race.ascensions = list();
 				p.race.fixAscensions();
 				p << "Gave new Beastkin ascension types."
+	version19
+		version = 19;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(BEASTKIN))
+				p.race.ascensions = list();
+				if(p.race.ascensions.len <= 0)
+					p.race.ascensions |= new/ascension/beastkin/one
+					p.race.ascensions |= new/ascension/beastkin/two
+					p.race.ascensions |= new/ascension/beastkin/three
+					p.race.ascensions |= new/ascension/beastkin/four
+					p.race.ascensions |= new/ascension/beastkin/five
+					p.race.ascensions |= new/ascension/beastkin/six
+					p << "You have <b>actually</b> been given new ascensions as a Beastkin now.";
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25

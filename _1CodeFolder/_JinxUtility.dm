@@ -2373,6 +2373,8 @@ mob
 				Off = getMechStat(findMecha(), Off)
 			Off+=OffAdded
 			Off+=src.GetEquippedWeaponStatAdd("Off")
+			if(src.HasManaStats())
+				Off += getManaStatsBoon()
 			var/Mod=1
 			Mod+=(src.OffMultTotal-1)
 			// if(src.isRace(HUMAN))
@@ -2497,6 +2499,8 @@ mob
 
 			Def+=DefAdded
 			Def+=src.GetEquippedWeaponStatAdd("Def")
+			if(src.HasManaStats())
+				Def += getManaStatsBoon()
 			var/Mod=1
 			Mod+=(src.DefMultTotal-1)
 			// if(src.isRace(HUMAN))

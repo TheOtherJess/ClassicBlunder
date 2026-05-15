@@ -116,4 +116,7 @@
 					ActiveMessage="invokes a powerful: <font size=+1>MENTIS IMPERIUM!</font size>"
 		verb/Mentis_Imperium()
 			set category="Skills"
-			usr.UseProjectile(src)
+			usr<<"Giving you the new skill."
+			usr.AddSkill(new/obj/Skills/AutoHit/Magic/Air/Breaking_Twister)
+			del src
+//			usr.UseProjectile(src)

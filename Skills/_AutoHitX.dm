@@ -6770,7 +6770,7 @@ obj
 				if(TurfMud)
 					m.AddSlow(TurfMud, Owner)
 				if(Reinforcement && Owner)
-					Owner.HealHealth(Reinforcement)
+					Owner.HealHealth(Reinforcement/20)
 				if(TurfBurn)
 					m.AddBurn(TurfBurn, Owner)
 				if(grabNerf)

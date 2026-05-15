@@ -8,6 +8,7 @@
 		Area="Circle"
 		Distance=5
 		DamageMult=10
+		Instinct=1
 		Slow=1
 		SpecialAttack=1
 		ForOffense=1

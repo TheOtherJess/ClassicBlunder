@@ -10,6 +10,7 @@
 		DamageMult=12
 		SpecialAttack=1
 		StrOffense=1
+		Instinct=1
 		CanBeDodged=1
 		CanBeBlocked=0
 		FlickAttack=1
@@ -31,6 +32,30 @@
 			set category="Skills"
 			adjust(usr)
 			usr.Activate(src)
+
+	Arachnae_Touch
+		ElementalClass="Dark"
+		DamageMult=4
+		Rounds=3
+		Area="Wave"
+		ForOffense=1
+		Instinct=1
+		Distance=12
+		ManaCost=5
+		Cooldown=45
+		HitSparkIcon='Hit Effect Dark.dmi'
+		HitSparkSize=1
+		HitSparkDispersion=3
+		HitSparkTurns=0
+		TurfStrike=1
+		ActiveMessage="invokes: <font size=+1>ARACHNAE TOUCH!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=4
+				Cooldown=45
+		verb/Arachnae_Touch()
+			set category="Skills"
+			usr.UseProjectile(src)
 
 /obj/Skills/Projectile/Magic/Dark
 	SpellElement="Dark"

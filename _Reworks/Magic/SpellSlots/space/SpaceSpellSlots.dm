@@ -9,6 +9,7 @@
 		Distance=5
 		DamageMult=10
 		Knockback=3
+		Instinct=1
 		SpecialAttack=1
 		ForOffense=1
 		CanBeDodged=1
@@ -37,6 +38,7 @@
 		Area="Target"
 		Distance=6
 		DamageMult=10
+		Instinct=1
 		SpecialAttack=1
 		ForOffense=1
 		CanBeDodged=1

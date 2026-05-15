@@ -7,6 +7,7 @@
 		ElementalClass="Wind"
 		Area="Circle"
 		Distance=5
+		Instinct=1
 		DamageMult=6
 		Paralyzing=3
 		Knockback=2
@@ -36,6 +37,34 @@
 			set category="Skills"
 			adjust(usr)
 			usr.Activate(src)
+
+	Mentis_Imperium
+		ElementalClass="Wind"
+		DamageMult=6
+		Paralyzing=4
+		Area="Wave"
+		ForOffense=1
+		Instinct=1
+		Distance=12
+		ManaCost=5
+		Cooldown=45
+		HitSparkIcon='Air Render.dmi'
+		HitSparkSize=1
+		HitSparkDispersion=3
+		HitSparkTurns=0
+		TurfStrike=1
+		ActiveMessage="invokes: <font size=+1>MENTIS IMPERIUM!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=6
+				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+					DamageMult=8
+					Distance=15
+					Area="Wide Wave"
+					ActiveMessage="invokes a powerful: <font size=+1>MENTIS IMPERIUM!</font size>"
+		verb/Mentis_Imperium()
+			set category="Skills"
+			usr.UseProjectile(src)
 
 /obj/Skills/Buffs/SlotlessBuffs/Magic/Air
 	SpellElement="Air"

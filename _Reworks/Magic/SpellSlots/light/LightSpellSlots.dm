@@ -19,6 +19,31 @@
 			adjust(usr)
 			src.Trigger(usr)
 
+/obj/Skills/AutoHit/Magic/Light
+	SpellElement="Light"
+	SpellSlot=1
+	Lightspeed
+		ElementalClass="Light"
+		DamageMult=8
+		Area="Wave"
+		ForOffense=1
+		Instinct=1
+		Distance=15
+		ManaCost=5
+		Cooldown=35
+		HitSparkIcon='AvalonLight.dmi'
+		HitSparkSize=1
+		HitSparkDispersion=3
+		HitSparkTurns=0
+		TurfStrike=1
+		ActiveMessage="invokes: <font size=+1>LIGHTSPEED!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=8
+		verb/Lightspeed()
+			set category="Skills"
+			usr.UseProjectile(src)
+
 /obj/Skills/Projectile/Magic/Light
 	SpellElement="Light"
 	SpellSlot=1

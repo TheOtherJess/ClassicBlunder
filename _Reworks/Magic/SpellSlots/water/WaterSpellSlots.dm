@@ -34,6 +34,7 @@
 		Area="Target"
 		Distance=5
 		DamageMult=8
+		Instinct=1
 		Freezing=2
 		Slow=1
 		SpecialAttack=1

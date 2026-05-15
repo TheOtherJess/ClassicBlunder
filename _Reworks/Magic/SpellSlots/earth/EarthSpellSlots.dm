@@ -8,6 +8,7 @@
 		Area="Circle"
 		Distance=4
 		DamageMult=7.5
+		Instinct=1
 		Crushing=3
 		SpecialAttack=1
 		StrOffense=1

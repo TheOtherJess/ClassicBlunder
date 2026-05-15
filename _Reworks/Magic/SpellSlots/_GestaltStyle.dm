@@ -69,12 +69,12 @@
 			StyleEnd = 1.9
 			StyleFor = 1.75
 			StyleDef = 1.6
-			passives = list("Harden" = 1, "Steady" = 1, "Grit" = 2, "MeleeResist" = 1, "Tenacity" = 2, "PureReduction" = 3)
+			passives = list("Harden" = 1, "Steady" = 1, "MeleeResist" = 1, "Tenacity" = 2, "PureReduction" = 3)
 		else if(tier >= 2)
 			StyleEnd = 1.4
 			StyleFor = 1.35
 			StyleDef = 1.3
-			passives = list("Harden" = 1, "Steady" = 1, "Grit" = 2, "MeleeResist" = 1)
+			passives = list("Harden" = 1, "Steady" = 1, "MeleeResist" = 1, "PureReduction" = 2)
 		else
 			StyleEnd = 1.2
 			StyleFor = 1.15

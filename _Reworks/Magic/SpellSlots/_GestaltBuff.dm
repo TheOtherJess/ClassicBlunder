@@ -94,12 +94,12 @@
 			ForMult = 1.4
 			EndMult = 1.35
 			DefMult = 1.3
-			passives = list("Shattering" = 1, "Harden" = 1, "EarthHerald" = 1, "Grit" = 1, "Juggernaut" = 1, "BlockChance" = 20, "CriticalBlock" = 0.2)
+			passives = list("Shattering" = 1, "Harden" = 1, "EarthHerald" = 1, "Juggernaut" = 1, "BlockChance" = 20, "CriticalBlock" = 0.2)
 		else if(tier >= 2)
 			ForMult = 1.25
 			EndMult = 1.15
 			DefMult = 1
-			passives = list("Shattering" = 1, "Harden" = 1, "EarthHerald" = 1, "Grit" = 1)
+			passives = list("Shattering" = 1, "Harden" = 1, "EarthHerald" = 1)
 		else
 			ForMult = 1.1
 			EndMult = 1

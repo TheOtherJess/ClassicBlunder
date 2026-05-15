@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 20
+	var/UPDATE_VERSION = 21
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -487,6 +487,21 @@ update
 				p.passive_handler.Set("Limited Rank-Up", 0)
 				p<<"<b>Whoops you weren't supposed to have that lol</b>"
 			p.refundNewMagicTreeOld()
+			if(p.isRace(DEMIFIEND) && p.Saga == "Devil Summoner" && p.SagaLevel > 0)
+				var/effective_level
+				if(p.demon_party_cap >= 12)      effective_level = 6
+				else if(p.demon_party_cap >= 10) effective_level = 5
+				else if(p.demon_party_cap >= 8)  effective_level = 4
+				else if(p.demon_party_cap >= 6)  effective_level = 3
+				else if(p.demon_party_cap >= 4)  effective_level = 2
+				else effective_level = 1
+
+				if(effective_level < p.SagaLevel)
+					var/target = p.SagaLevel
+					p.SagaLevel = effective_level
+					while(p.SagaLevel < target)
+						p.SagaLevel++
+						p.tierUpSaga("Devil Summoner")
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

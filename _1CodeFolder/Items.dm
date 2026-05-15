@@ -392,6 +392,10 @@ obj/Items
 				if(usr.getTotalMagicLevel() < 20)
 					usr << "Your total magic level is not high enough to craft Limited Rank-Up Magic. (Requires 20 or higher.)"
 					return
+				if(!usr.HasFragments(src.Cost * glob.progress.EconomyCost))
+					usr << "You don't have enough fragments to buy [src]."
+					return
+				usr.TakeFragments(src.Cost * glob.progress.EconomyCost)
 				manaCost = 100
 			if(istype(src, /obj/Items/Enchantment/PocketDimensionGenerator))
 				if(!usr.HasFragments(src.Cost*glob.progress.EconomyCost))

@@ -1,7 +1,7 @@
 /obj/Skills/Buffs/SlotlessBuffs/Makyo
 	Awaken_Star_Power
 		passives = list("StarPower" = 1)
-		VaizardHealth = 35
+		VaizardHealth = 50
 		VaizardShatter = 1
 		StrTax=0.45
 		ForTax=0.45

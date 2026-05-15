@@ -1763,14 +1763,14 @@ mob
 				return 1
 			if(Saga=="Keyblade")
 				return 1
-			if(isRace(ELF))
+			if(isRace(FAE))
 				return 1
 			return 0
 		GetManaGeneration()
 			var/managen = passive_handler.Get("ManaGeneration")
 			if(Saga=="Keyblade")
 				managen+=SagaLevel/2
-			if(isRace(ELF))
+			if(isRace(FAE))
 				managen += AscensionsAcquired
 			return managen
 		HasMystic()
@@ -3033,7 +3033,7 @@ mob
 				return 0
 			return 1
 		SteadyRace()
-			if(src.race.type in list(MAJIN, MAKYO, NAMEKIAN, BEASTKIN, ELDRITCH, ELF, DRAGON, MAKAIOSHIN))
+			if(src.race.type in list(MAJIN, MAKYO, NAMEKIAN, BEASTKIN, ELDRITCH, FAE, DRAGON, MAKAIOSHIN))
 				return 1
 			return 0
 		TransRace()
@@ -3620,7 +3620,7 @@ mob
 				if(Saga&&Saga!="Keyblade")
 					return FALSE
 			// if(reqRace == HUMAN) return
-			if(isRace(reqRace) || path == "Any" && reqRace == ELF && Saga=="Keyblade")
+			if(isRace(reqRace) || path == "Any" && reqRace == FAE && Saga=="Keyblade")
 				if(passive_handler.Get("Innovation"))
 					switch(path)
 						if("Sword")

@@ -2028,8 +2028,7 @@ mob
 				Total*=1*((100-src.DownToEarth)/100)
 			return Total
 		HasGodKi()
-	//		if(passive_handler["MaouKi"])
-	//			return 0
+			if(passive_handler.Get("Deicide") || passive_handler.Get("EndlessNine") || passive_handler.Get("Null")) return 0;
 			if(passive_handler["CreateTheHeavens"])
 				return 1
 			if(passive_handler["Hidden Potential"]||passive_handler["Orange Namekian"])
@@ -2054,6 +2053,7 @@ mob
 				return 1
 			return 0
 		GetGodKi()
+			if(passive_handler.Get("Deicide") || passive_handler.Get("EndlessNine") || passive_handler.Get("Null")) return 0;
 			var/Total=passive_handler.Get("GodKi")
 			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)//||secretDatum.secretVariable["EldritchInstinct"]==1&&src.Potential>=55)
 				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")//||secretDatum.secretVariable["EldritchInstinct"]==1)

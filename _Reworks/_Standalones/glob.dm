@@ -254,10 +254,10 @@ globalTracker
 		celestialObjectTicks
 		NoSagaRaces = list(ELDRITCH, NOBODY, DEMON, DRAGON, ELF, SAIYAN, ANGEL, MAKAIOSHIN)
 		WILL_NOT_TARP_LIST = list("JustLat", "TheUltimateHope")
-		T3_STYLES_GODKI_VALUE = 0.15
-		T3_SAGA_STLYE_GODKI = 0
-		T4_STYLES_GODKI_VALUE = 0.1
-		T4_SAGA_STLYE_GODKI = 0
+		T3_STYLES_GODKI_VALUE = 0.15//Would recommend moving this to 0.25
+		T3_SAGA_STLYE_GODKI = 0//TODO BETWEEN WIPES: Style. =_=
+		T4_STYLES_GODKI_VALUE = 0.15//Would recommend this also be 0.25 for a cumulative 0.5
+		T4_SAGA_STLYE_GODKI = 0//TODO BETWEEN WIPES: Style. =_=
 		SENSE7GODKI=0.25
 		SENSE8GODKI=0.25
 		SENSE9GODKI=0.25

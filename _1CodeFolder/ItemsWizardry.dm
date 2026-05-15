@@ -160,7 +160,7 @@ obj/Items/Enchantment
 	Limited_Rank_Up_Magic
 		name = "Limited Rank-Up Magic"
 		desc = "A mere fraction of the true potential of Rank-Up Magic. Only Demons and Makaioshins can make use of it."
-		Cost = 2000
+		Cost=2000
 		Grabbable = 1
 		EnchType = "BasicEnchantment"
 		SubType = "Any"

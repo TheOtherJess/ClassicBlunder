@@ -957,6 +957,7 @@ obj/Items/Sword
 		HighFrequency=1
 		TechType="MilitaryTechnology"
 		SubType="Melee Weaponry"
+		desc="A specialized form of a light sword that is most effective in the hands of those with cybernetic implants. Responds particularly well to alloys. (Quicksilver Alloy, Resistant Coating, and Fiber Bonding Agents)."
 		unsheatheIcon = 'KATANA SILVER.dmi'
 		unsheatheOffsetX = -16
 		unsheatheOffsetY = -16

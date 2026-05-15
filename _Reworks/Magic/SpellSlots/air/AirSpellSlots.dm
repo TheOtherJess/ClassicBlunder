@@ -64,7 +64,8 @@
 					ActiveMessage="invokes a powerful: <font size=+1>MENTIS IMPERIUM!</font size>"
 		verb/Mentis_Imperium()
 			set category="Skills"
-			usr.UseProjectile(src)
+			adjust(usr)
+			usr.Activate(src)
 
 /obj/Skills/Buffs/SlotlessBuffs/Magic/Air
 	SpellElement="Air"
@@ -116,4 +117,6 @@
 					ActiveMessage="invokes a powerful: <font size=+1>MENTIS IMPERIUM!</font size>"
 		verb/Mentis_Imperium()
 			set category="Skills"
-			usr.UseProjectile(src)
+			usr<<"Giving you the new skill."
+			usr.AddSkill(new/obj/Skills/AutoHit/Magic/Air/Mentis_Imperium)
+			del src

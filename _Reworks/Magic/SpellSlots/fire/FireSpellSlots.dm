@@ -66,7 +66,8 @@
 					ActiveMessage="invokes a powerful: <font size=+1>DRAGON ARC!</font size>"
 		verb/Dragon_Arc()
 			set category="Skills"
-			usr.UseProjectile(src)
+			adjust(usr)
+			usr.Activate(src)
 
 /obj/Skills/Projectile/Fire
 	SpellElement="Fire"
@@ -99,7 +100,9 @@
 					ActiveMessage="invokes a powerful: <font size=+1>DRAGON ARC!</font size>"
 		verb/Dragon_Arc()
 			set category="Skills"
-			usr.UseProjectile(src)
+			usr<<"Giving you the new skill."
+			usr.AddSkill(new/obj/Skills/AutoHit/Magic/Fire/Dragon_Arc)
+			del src
 
 	Fireball
 		ElementalClass="Fire"

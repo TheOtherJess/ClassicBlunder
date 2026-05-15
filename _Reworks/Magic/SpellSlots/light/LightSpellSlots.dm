@@ -42,7 +42,8 @@
 				DamageMult=8
 		verb/Lightspeed()
 			set category="Skills"
-			usr.UseProjectile(src)
+			adjust(usr)
+			usr.Activate(src)
 
 /obj/Skills/Projectile/Magic/Light
 	SpellElement="Light"
@@ -62,7 +63,9 @@
 				DamageMult=8
 		verb/Lightspeed()
 			set category="Skills"
-			usr.UseProjectile(src)
+			usr<<"Giving you the new skill."
+			usr.AddSkill(new/obj/Skills/AutoHit/Magic/Light/Lightspeed)
+			del src
 
 	Solar_Burst
 		ElementalClass="Light"

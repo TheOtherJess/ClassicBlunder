@@ -55,7 +55,9 @@
 				Cooldown=45
 		verb/Arachnae_Touch()
 			set category="Skills"
-			usr.UseProjectile(src)
+			adjust(usr)
+			usr.Activate(src)
+
 
 /obj/Skills/Projectile/Magic/Dark
 	SpellElement="Dark"
@@ -80,7 +82,9 @@
 				Cooldown=45
 		verb/Arachnae_Touch()
 			set category="Skills"
-			usr.UseProjectile(src)
+			usr<<"Giving you the new skill."
+			usr.AddSkill(new/obj/Skills/AutoHit/Magic/Dark/Arachnae_Touch)
+			del src
 
 	Void_Blast
 		ElementalClass="Dark"

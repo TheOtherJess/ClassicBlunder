@@ -7,7 +7,7 @@
 		ElementalClass="Fire"
 		Area="Arc"
 		Distance=5
-		DamageMult=4
+		DamageMult=7.5
 		Scorching=2
 		SpecialAttack=1
 		ForOffense=1
@@ -27,8 +27,9 @@
 		ActiveMessage="invokes: <font size=+1>BLAZING WHIP!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=7.5
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
-					DamageMult=6
+					DamageMult=9
 					Distance=7
 					ActiveMessage="invokes a powerful: <font size=+1>BLAZING WHIP!</font size>"
 		verb/Blazing_Whip()
@@ -41,7 +42,7 @@
 	SpellSlot=1
 	Dragon_Arc
 		ElementalClass="Fire"
-		DamageMult=3
+		DamageMult=6
 		Radius=1;
 		Scorching=1
 		Knockback=2
@@ -52,12 +53,14 @@
 		MultiTrail = 1
 		Distance=12
 		ManaCost=4
-		Cooldown=40
+		Cooldown=45
 		Trail='Fireball.dmi'
 		TrailVariance = 32;
 		ActiveMessage="invokes: <font size=+1>DRAGON ARC!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=6
+				Cooldown=45
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 					Speed=0.5
 					Distance=15
@@ -69,7 +72,7 @@
 
 	Fireball
 		ElementalClass="Fire"
-		DamageMult=5
+		DamageMult=8
 		Scorching=2
 		Homing=1
 		AccMult=1.1
@@ -82,6 +85,7 @@
 		ActiveMessage="invokes: <font size=+1>FIREBALL!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=8
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 					Scorching=3
 					Knockback=5

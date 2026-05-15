@@ -36,8 +36,7 @@
 /mob/proc/DemonIsElemental(dname)
 	var/datum/demon_data/dd = DEMON_DB[dname]
 	if(!dd) return FALSE
-	var/r = dd.demon_race
-	return (r == "Erthys" || r == "Aeros" || r == "Aquans" || r == "Flaemis")
+	return (dd.demon_race == "Element")
 
 /mob/proc/IsTrueDemonOnly(demon_name)
 	if(!demon_name) return FALSE

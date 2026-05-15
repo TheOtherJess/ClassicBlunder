@@ -7,7 +7,7 @@
 		ElementalClass="Space"
 		Area="Circle"
 		Distance=5
-		DamageMult=8
+		DamageMult=10
 		Knockback=3
 		SpecialAttack=1
 		ForOffense=1
@@ -24,6 +24,9 @@
 		TurfShift='Gravity.dmi'
 		TurfShiftDuration=3
 		ActiveMessage="invokes: <font size=+1>FLUX!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=10
 		verb/Flux()
 			set category="Skills"
 			adjust(usr)

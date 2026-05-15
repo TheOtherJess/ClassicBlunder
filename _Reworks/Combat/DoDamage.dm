@@ -160,7 +160,7 @@
 	// _Move.dm:116 and the Past per-10-Cripple block above. PURE_MODIFIER pre-calc
 	// scaling matches the base puredmg path.
 	if(src.hasMagePassive(/mage_passive/dark/Iconoclast))
-		var/icon_pd = round(abs(src.Health - defender.Health) / 5)
+		var/icon_pd = round(abs(defender.Health - src.Health) / 20)
 		if(icon_pd > 0)
 			if(!glob.PURE_MOD_POST_CALC)
 				icon_pd *= glob.PURE_MODIFIER

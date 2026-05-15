@@ -6211,7 +6211,7 @@ obj
 							if(TurfMud)
 								spellTarget.AddSlow(TurfMud, src.Owner)
 							if(Reinforcement && src.Owner)
-								src.Owner.HealHealth(Reinforcement)
+								src.Owner.HealHealth(Reinforcement/20)
 							if(TurfBurn)
 								spellTarget.AddBurn(TurfBurn, src.Owner)
 						if(Owner.Attunement == "Fox Fire")

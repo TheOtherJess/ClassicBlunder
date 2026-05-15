@@ -418,6 +418,7 @@ globalTracker
 		DevilSummonerDemonDamageMod = 1
 		DevilSummonerDemonSkillMod = 1
 		DevilSummonerDemonDamageTakenMod = 1
+		DEMON_SUMMONER_GRANT_FACTOR = 0.5
 		WOUND_RECOVERY_REDUCTION = 0.5
 
 		OXYGEN_DRAIN = 3

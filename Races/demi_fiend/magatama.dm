@@ -162,8 +162,9 @@ obj/Items/Magatama
 
 		equipMagatama(mob/user)
 			suffix = "*Equipped*"
-			scaled_passives = getScaledPassives(user)
-			user.passive_handler.increaseList(scaled_passives)
+			if(!user.HasTrueDemonPath() || !user.magatama_imprinted || !user.magatama_imprinted[type])
+				scaled_passives = getScaledPassives(user)
+				user.passive_handler.increaseList(scaled_passives)
 			if(!user.passive_handler?.Get("Musubi"))
 				grantSkills(user)
 			if(!user.passive_handler?.Get("Shijima"))
@@ -189,6 +190,11 @@ obj/Items/Magatama
 
 		refreshPassives(mob/user)
 			if(suffix != "*Equipped*") return
+			if(user.HasTrueDemonPath() && user.magatama_imprinted && user.magatama_imprinted[type])
+				if(!user.passive_handler?.Get("Musubi"))
+					revokeSkills(user)
+					grantSkills(user)
+				return
 			if(scaled_passives)
 				user.passive_handler.decreaseList(scaled_passives)
 			scaled_passives = getScaledPassives(user)

@@ -766,7 +766,7 @@ obj/Skills/Utility
 					usr << "[Target]'s secret has already reached its peak."
 					src.Using = 0
 					return
-				Target.secretDatum.tierUp(1, Target)
+				Target.secretDatum.tierUp(Target.secretDatum.currentTier+1, Target)
 				Target << "Eldritch insight deepens your understanding. Your [Target.Secret] has advanced!"
 				usr << "You guide [Target]'s [Target.Secret] to a higher tier."
 				OMsg(usr, "[usr] channels eldritch insight into [Target], amplifying their secret potential.")

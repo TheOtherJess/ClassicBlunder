@@ -46,7 +46,7 @@
 	if(p.secretDatum)
 		var/confirm = alert(usr, "Are you sure you want to tier up [p]'s [p.secretDatum.name]?",,"Yes","No")
 		if(confirm == "No") return
-		p.secretDatum.tierUp(1, p)
+		p.secretDatum.tierUp(p.secretDatum.currentTier+1, p)
 
 /mob/proc/getSecretLevel()
 	if(secretDatum)
@@ -70,30 +70,13 @@ SecretInformation
 		potentialRecieved = glob.progress.DaysOfWipe*glob.progress.PotentialDaily
 		nextTierUp = 3
 		applySecret(p)
-/*
-	proc/checkTierUp(mob/p)
-		if(currentTier < maxTier)
-	/*		if(p.Potential >= potentialRecieved + (glob.progress.PotentialDaily*nextTierUp))
-				potentialRecieved = glob.progress.DaysOfWipe
-				if(currentTier + 1 <= tierUnlocked)
-					tierUp(1, p)*/
-			if(currentTier > lastCheckedTier)
-				tierUp(currentTier-lastCheckedTier, p)
-*/
 
 
 	proc/tierUp(num, mob/p)
+		while(currentTier < num)
+			currentTier++;
+			applySecret(p);
 		lastCheckedTier = currentTier
-		if(currentTier < maxTier)
-			var/difference = maxTier - currentTier
-			for(var/x in 1 to num)
-				if(difference > 0)
-					currentTier++
-					applySecret(p)
-					difference--
-					lastCheckedTier = currentTier
-				else
-					break
 	proc/tierDown(num)
 		if(currentTier > 1)
 			currentTier -= num
@@ -318,7 +301,7 @@ SecretInformation
 		var/ShroudedSubtype;//assigned at t2
 		var/ShroudedMastery;//assigned at t6
 		applySecret(mob/p)
-			p << "Your Shrouded origin bubbles to the surface; [currentTier] Steps towards the road to Assimilation have been taken..."
+			p << "Your Shrouded origin bubbles to the surface; [currentTier] Step\s towards the road to Assimilation have been taken..."
 			//1, 2, and 6 upgrade your "Origin" style enhancements
 			//I'm not being lazy, I'm being ~efficient~
 			if(currentTier==3)

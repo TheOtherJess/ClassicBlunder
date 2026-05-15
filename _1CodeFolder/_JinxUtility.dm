@@ -1653,7 +1653,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Str", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 
 			Str+=EffectiveAsc
 			//stat ascensions gained through racial or saga improvements
@@ -1853,7 +1854,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("For", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			For+=EffectiveAsc
 			var/enhanced = getEnhanced("Force")
 			For+=src.EnhancedForce ? enhanced : 0
@@ -2048,7 +2050,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("End", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			End+=EffectiveAsc
 			var/enhanced = getEnhanced("Endurance")
 			End+=EnhancedEndurance ? enhanced : 0
@@ -2216,7 +2219,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Spd", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Spd+=EffectiveAsc
 			var/enhanced = getEnhanced("Speed")
 			Spd+=EnhancedSpeed ? enhanced : 0
@@ -2364,7 +2368,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Off", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Off+=EffectiveAsc
 			var/enhanced = getEnhanced("Aggression")
 			Off+=EnhancedAggression ? enhanced : 0
@@ -2485,7 +2490,8 @@ mob
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Def", SP)
 			if(isRace(POPO))
-				EffectiveAsc*=GetPowerUpRatio()
+				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Def+=EffectiveAsc
 			var/enhanced = getEnhanced("Reflexes")
 			Def+=EnhancedReflexes ? enhanced : 0

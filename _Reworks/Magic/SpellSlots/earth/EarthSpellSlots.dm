@@ -45,7 +45,7 @@
 		ManaDrain=0.01
 		EndMult=1.15
 		PureReduction=2
-		passives=list("Harden" = 1, "MeleeResist" = 1)
+		passives=list("Harden" = 1, "MeleeResist" = 1, "PureReduction" = 5)
 		ActiveMessage="wraps themselves in a ward of living stone!"
 		OffMessage="lets the stone crumble away..."
 		adjust(mob/p)

@@ -385,6 +385,7 @@
 					break
 			// Revert owner-targeted passive
 			old.RemoveDemonPassives()
+			old.RemoveSummonerPassiveGrants()
 			old.ai_owner = null // Stop AI loop immediately
 			animate(old, alpha=0, time=8)
 			spawn(8) del(old)

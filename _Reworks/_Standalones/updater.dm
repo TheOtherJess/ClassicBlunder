@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 21
+	var/UPDATE_VERSION = 22
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -502,6 +502,27 @@ update
 					while(p.SagaLevel < target)
 						p.SagaLevel++
 						p.tierUpSaga("Devil Summoner")
+	version22
+		version = 22;
+		updateMob(mob/p)
+			. = ..()
+				if(p.isRace(POPO))
+					if(p.AscensionsAcquired==3)
+						p.StrAscension = 6
+						p.ForAscension = 6
+						p.EndAscension = 6
+						p.OffAscension = 6
+						p.DefAscension = 6
+						p.SpdAscension = 7.5
+						p.RecovAscension = 6
+					if(p.AscensionsAcquired==6)
+						p.StrAscension = 21
+						p.ForAscension = 21
+						p.EndAscension = 21
+						p.OffAscension = 21
+						p.DefAscension = 21
+						p.SpdAscension = 24
+						p.RecovAscension = 21
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

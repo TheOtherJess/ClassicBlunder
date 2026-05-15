@@ -3733,7 +3733,7 @@ obj
 					adjust(mob/p)
 						var/asc = p.AscensionsAcquired
 						if(!altered)
-							if(p.isInnovative(ELF, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 								if(p.passive_handler.Get("HotHundred") || p.passive_handler.Get("Warping"))
 									EndRate = 0.5
 									Radius=1
@@ -3796,7 +3796,7 @@ obj
 						disableInnovation(usr)
 					adjust(mob/p)
 						if(!altered)
-							if(p.isInnovative(ELF, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 								var/asc = p.AscensionsAcquired
 								ManaCost = clamp(p.ManaAmount, 15,100)
 								Blasts = ManaCost/(4+asc)
@@ -6211,7 +6211,7 @@ obj
 							if(TurfMud)
 								spellTarget.AddSlow(TurfMud, src.Owner)
 							if(Reinforcement && src.Owner)
-								src.Owner.HealHealth(Reinforcement)
+								src.Owner.HealHealth(Reinforcement/20)
 							if(TurfBurn)
 								spellTarget.AddBurn(TurfBurn, src.Owner)
 						if(Owner.Attunement == "Fox Fire")

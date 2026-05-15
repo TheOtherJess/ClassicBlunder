@@ -185,7 +185,7 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 		three
 			unlock_potential = ASCENSION_THREE_POTENTIAL
 			anger=0.2
-			on_ascension_message = "ouughhh ascension 3"
+			on_ascension_message = "As you progress further down the mastery of yourself, your blood awakens its ancient history..."
 			onAscension(mob/owner)
 				if(!applied)
 					var/choice = owner.race?:Racial
@@ -267,9 +267,10 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 		four
 			unlock_potential = ASCENSION_FOUR_POTENTIAL
 			anger = 0.5
-			on_ascension_message = "ouughhh ascension 4"
+			on_ascension_message = "Your ancestors and their mutations grow more potent, breaching the realm of divinity..."
 			onAscension(mob/owner)
 				if(!applied)
+					owner.passive_handler.Increase("GodKi", 0.25);
 					var/choice = owner.race?:Racial
 					switch(choice)
 						if("Heart of The Beastkin")
@@ -346,9 +347,10 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
 			anger = 0.5
-			on_ascension_message = "ouughhh ascension 5"
+			on_ascension_message = "Altered forever and eternally by the Riftwalker's Artifacts, you can be said to be demi-divine..."
 			onAscension(mob/owner)
 				if(!applied)
+					owner.passive_handler.Increase("GodKi", 0.25);
 					var/choice = owner.race?:Racial
 					switch(choice)
 						if("Heart of The Beastkin")
@@ -426,9 +428,11 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 		six
 			unlock_potential = ASCENSION_SIX_POTENTIAL
 			anger = 1;
-			on_ascension_message = "ouughhh ascension 6"
+			on_ascension_message = {"... This is what it was all for. The mutations, the artifacts, the corruption - it was all in pursuit of divinity.
+Today, another God of the Rifts is born."}
 			onAscension(mob/owner)
 				if(!applied)
+					owner.passive_handler.Increase("GodKi", 0.5);
 					var/choice = owner.race?:Racial
 					switch(choice)
 						if("Heart of The Beastkin")

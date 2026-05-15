@@ -448,8 +448,7 @@ mob/Players/Stat()
 /mob/var/SpawnDisplay;
 
 /mob/proc/outputVitals()
-	var/vaiHealth = hasClearSight()&&Target.VaizardHealth ? " ([Target.VaizardHealth])" : ""
-	var/healthDisplay = "[Target.Health][vaiHealth]%"
+	var/healthDisplay = "[Target.Health]([Target.VaizardHealth])%"
 	SpawnDisplay="[Target.SpawnArea]"
 	if(src.Target.passive_handler.Get("Obfuscated Origin"))
 		SpawnDisplay = "<font color='red'><b>Unknowable</b></font color>"

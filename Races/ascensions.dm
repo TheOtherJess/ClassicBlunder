@@ -196,7 +196,8 @@ ascension
 
 		choiceSelection(mob/owner)
 			if(owner.isRace(BEASTKIN) && owner.AscensionsAcquired >= 2)
-				owner.race.ascensions[owner.AscensionsAcquired+1].choices = owner.getRiftAscensionOptions();
+				var/ascension/a = owner.race.ascensions[owner.AscensionsAcquired+1];
+				if(!pickingChoice) owner.race.ascensions[owner.AscensionsAcquired+1].choices = owner.getRiftAscensionOptions();
 			if(!choices) return
 			if(choices.len == 0 || choiceSelected || pickingChoice) return
 			pickingChoice = TRUE

@@ -33,7 +33,7 @@
 		ElementalClass="Water"
 		Area="Target"
 		Distance=5
-		DamageMult=5
+		DamageMult=8
 		Freezing=2
 		Slow=1
 		SpecialAttack=1
@@ -42,7 +42,7 @@
 		CanBeBlocked=0
 		FlickAttack=1
 		ManaCost=5
-		Cooldown=40
+		Cooldown=45
 		HitSparkIcon='SnowBurst2.dmi'
 		HitSparkSize=1
 		HitSparkDispersion=6
@@ -50,8 +50,10 @@
 		ActiveMessage="invokes: <font size=+1>RIPTIDE!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=8
+				Cooldown=45
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
-					DamageMult=7.5
+					DamageMult=11
 					Freezing=3
 					ActiveMessage="invokes a powerful: <font size=+1>RIPTIDE!</font size>"
 		verb/Riptide()
@@ -64,7 +66,7 @@
 	SpellSlot=1
 	Frost_Shamshir
 		ElementalClass="Water"
-		DamageMult=4
+		DamageMult=7
 		AccMult=1.1
 		Freezing=2
 		Homing=1
@@ -77,8 +79,9 @@
 		ActiveMessage="invokes: <font size=+1>FROST SHAMSHIR!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=7
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
-					DamageMult=6
+					DamageMult=9
 					Freezing=3
 					ActiveMessage="invokes a powerful: <font size=+1>FROST SHAMSHIR!</font size>"
 		verb/Frost_Shamshir()

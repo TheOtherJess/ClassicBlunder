@@ -59,7 +59,7 @@
 
 	Void_Blast
 		ElementalClass="Dark"
-		DamageMult=10
+		DamageMult=12
 		Speed=1
 		Homing=1
 		Explode=2
@@ -72,6 +72,9 @@
 		LockY=-32
 		IconSize=1.5
 		ActiveMessage="invokes: <font size=+1>VOID BLAST!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=12
 		verb/Void_Blast()
 			set category="Skills"
 			usr.UseProjectile(src)

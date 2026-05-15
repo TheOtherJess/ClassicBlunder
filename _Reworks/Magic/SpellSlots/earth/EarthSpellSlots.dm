@@ -26,8 +26,9 @@
 		ActiveMessage="invokes: <font size=+1>SEISMIC ENTRY!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=7.5
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
-					DamageMult=7.5
+					DamageMult=11
 					Distance=6
 					ActiveMessage="invokes a powerful: <font size=+1>SEISMIC ENTRY!</font size>"
 		verb/Seismic_Entry()

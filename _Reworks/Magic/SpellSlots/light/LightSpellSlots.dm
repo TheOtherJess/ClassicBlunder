@@ -24,7 +24,7 @@
 	SpellSlot=1
 	Lightspeed
 		ElementalClass="Light"
-		DamageMult=6
+		DamageMult=8
 		Speed=0.1
 		AccMult=1.1
 		Distance=15
@@ -32,13 +32,16 @@
 		Cooldown=35
 		IconLock='AvalonLight.dmi'
 		ActiveMessage="invokes: <font size=+1>LIGHTSPEED!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=8
 		verb/Lightspeed()
 			set category="Skills"
 			usr.UseProjectile(src)
 
 	Solar_Burst
 		ElementalClass="Light"
-		DamageMult=7.5
+		DamageMult=11
 		Speed=1
 		AccMult=1.1
 		Homing=1
@@ -49,6 +52,9 @@
 		IconLock='AvalonLight.dmi'
 		IconSize=1.5
 		ActiveMessage="invokes: <font size=+1>SOLAR BURST!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=11
 		verb/Solar_Burst()
 			set category="Skills"
 			usr.UseProjectile(src)

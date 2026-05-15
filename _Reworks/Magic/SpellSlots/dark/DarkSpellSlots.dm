@@ -7,14 +7,14 @@
 		ElementalClass="Dark"
 		Area="Arc"
 		Distance=3
-		DamageMult=8
+		DamageMult=12
 		SpecialAttack=1
 		StrOffense=1
 		CanBeDodged=1
 		CanBeBlocked=0
 		FlickAttack=1
 		ManaCost=5
-		Cooldown=40
+		Cooldown=45
 		HitSparkIcon='Hit Effect Dark.dmi'
 		HitSparkSize=1
 		HitSparkDispersion=6
@@ -33,14 +33,14 @@
 	SpellSlot=1
 	Arachnae_Touch
 		ElementalClass="Dark"
-		DamageMult=3
+		DamageMult=4
 		MultiShot=3;
 		Speed=0;
 		Piercing=1;
 		AccMult=1.2
 		Distance=12
 		ManaCost=5
-		Cooldown=40
+		Cooldown=45
 		Trail='Hit Effect Dark.dmi'
 		TrailX=-32
 		TrailY=-32
@@ -51,7 +51,7 @@
 
 	Void_Blast
 		ElementalClass="Dark"
-		DamageMult=8
+		DamageMult=10
 		Speed=1
 		Homing=1
 		Explode=2

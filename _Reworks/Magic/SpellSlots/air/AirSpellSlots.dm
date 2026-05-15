@@ -7,7 +7,7 @@
 		ElementalClass="Wind"
 		Area="Circle"
 		Distance=5
-		DamageMult=3
+		DamageMult=6
 		Paralyzing=3
 		Knockback=2
 		SpecialAttack=1
@@ -45,7 +45,7 @@
 		ManaCost=8
 		ManaDrain=0.01
 		SpdMult=1.15
-		passives=list("FluidForm" = 1, "Godspeed" = 1)
+		passives=list("FluidForm" = 2, "Flow" = 2, "Godspeed" = 2, "Skimming" = 1)
 		ActiveMessage="wraps themselves in a veil of wind!"
 		OffMessage="lets the wind dissipate..."
 		adjust(mob/p)
@@ -65,14 +65,14 @@
 	SpellSlot=1
 	Mentis_Imperium
 		ElementalClass="Wind"
-		DamageMult=4
+		DamageMult=6
 		Paralyzing=4
 		Speed=0.5
 		Homing=1
 		AccMult=1.1
 		Distance=12
 		ManaCost=5
-		Cooldown=40
+		Cooldown=45
 		IconLock='Air Render.dmi'
 		ActiveMessage="invokes: <font size=+1>MENTIS IMPERIUM!</font size>"
 		adjust(mob/p)

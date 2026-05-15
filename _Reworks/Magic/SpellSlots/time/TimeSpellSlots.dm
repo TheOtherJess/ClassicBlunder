@@ -7,7 +7,7 @@
 		ElementalClass="Time"
 		Area="Circle"
 		Distance=5
-		DamageMult=7
+		DamageMult=10
 		Slow=1
 		SpecialAttack=1
 		ForOffense=1
@@ -24,6 +24,9 @@
 		TurfShift='Gravity.dmi'
 		TurfShiftDuration=3
 		ActiveMessage="invokes: <font size=+1>TEMPUS CESSAT!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=10
 		verb/Tempus_Cessat()
 			set category="Skills"
 			adjust(usr)
@@ -39,9 +42,12 @@
 		ManaDrain=0.01
 		SpdMult=1.2
 		Godspeed=1
-		passives=list("Godspeed" = 1, "BlurringStrikes" = 2, "FluidForm" = 1)
+		passives=list("Godspeed" = 6, "BlurringStrikes" = 2, "FluidForm" = 1, "Skimming" = 2)
 		ActiveMessage="accelerates through time!"
 		OffMessage="slows back to a normal pace..."
+		adjust(mob/p)
+			if(!altered)
+				passives=list("Godspeed" = 6, "BlurringStrikes" = 2, "FluidForm" = 1, "Skimming" = 2)
 		verb/Haste()
 			set category="Skills"
 			adjust(usr)

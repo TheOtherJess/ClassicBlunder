@@ -27,8 +27,9 @@
 		ActiveMessage="invokes: <font size=+1>BREAKING TWISTER!</font size>"
 		adjust(mob/p) //Coded out for Balance checking reasons.
 			if(!altered)
+				DamageMult=6
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
-					DamageMult=4.5
+					DamageMult=8
 					Distance=7
 					ActiveMessage="invokes a powerful: <font size=+1>BREAKING TWISTER!</font size>"
 		verb/Breaking_Twister()
@@ -50,6 +51,7 @@
 		OffMessage="lets the wind dissipate..."
 		adjust(mob/p)
 			if(!altered)
+				passives=list("FluidForm" = 2, "Flow" = 2, "Godspeed" = 2, "Skimming" = 1)
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 					TimerLimit=30
 					SpdMult=1.25
@@ -77,6 +79,7 @@
 		ActiveMessage="invokes: <font size=+1>MENTIS IMPERIUM!</font size>"
 		adjust(mob/p)
 			if(!altered)
+				DamageMult=6
 				if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
 					Speed=0.25
 					Distance=15

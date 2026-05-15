@@ -23,6 +23,10 @@
 		TurfShift='Dark.dmi'
 		TurfShiftDuration=3
 		ActiveMessage="invokes: <font size=+1>SHADOW CLEAVE!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=12
+				Cooldown=45
 		verb/Shadow_Cleave()
 			set category="Skills"
 			adjust(usr)
@@ -45,6 +49,10 @@
 		TrailX=-32
 		TrailY=-32
 		ActiveMessage="invokes: <font size=+1>ARACHNAE TOUCH!</font size>"
+		adjust(mob/p)
+			if(!altered)
+				DamageMult=4
+				Cooldown=45
 		verb/Arachnae_Touch()
 			set category="Skills"
 			usr.UseProjectile(src)

@@ -1,7 +1,7 @@
 /obj/Skills/Buffs/SlotlessBuffs/Makyo
 	Awaken_Star_Power
 		passives = list("StarPower" = 1)
-		VaizardHealth = 50
+		VaizardHealth = 35
 		VaizardShatter = 1
 		StrTax=0.45
 		ForTax=0.45
@@ -14,11 +14,11 @@
 		StrMult=1.5
 		ForMult=1.5
 		EndMult=1.5
-		ActiveMessage="ignites the spark of the Makyo Star within them, as its power, once thought lost, shines brightly within them!!!"
+		ActiveMessage="ignites the spark of the Makyo Star within them, as its power, once thought lost, shines brightly!!!"
 		OffMessage="shrivels up as the power of the star leaves them."
 		adjust(mob/p)
 			var/TaxSub
-			TaxSub=p.AscensionsAcquired*0.1
+			TaxSub=p.AscensionsAcquired*0.05
 			if(TaxSub>0.35)
 				TaxSub=0.35
 			StrTax=0.45-TaxSub

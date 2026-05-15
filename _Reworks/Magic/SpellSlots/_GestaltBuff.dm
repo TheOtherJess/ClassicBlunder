@@ -36,12 +36,12 @@
 			// is gated by (Anger||HasCalmAnger()) in _JinxUtility.dm, which leaves it
 			// dead for non-Mazoku/Wrathful/etc. mages. Tenacity is universal and fits
 			// the same defensive role.
-			passives = list("Scorching" = 1, "Momentum" = 1, "FireHerald" = 1, "Brutalize" = 1, "CriticalChance" = 20, "CriticalDamage" = 0.2, "Tenacity" = 2)
+			passives = list("Scorching" = 3, "Momentum" = 1, "FireHerald" = 1, "HeavyHitter" = 1,"Tenacity" = 2)
 		else if(tier >= 2)
 			ForMult = 1.25
 			StrMult = 1.15
 			OffMult = 1
-			passives = list("Scorching" = 1, "Momentum" = 1, "FireHerald" = 1, "Brutalize" = 1, "CriticalChance" = 10, "CriticalDamage" = 0.1)
+			passives = list("Scorching" = 2, "Momentum" = 1, "FireHerald" = 1, "HeavyHitter" = 1)
 		else
 			ForMult = 1.1
 			StrMult = 1
@@ -181,12 +181,12 @@
 			StrMult = 1.4
 			ForMult = 1.35
 			OffMult = 1.3
-			passives = list("KillerInstinct" = 0.15, "Pressure" = 1, "LifeSteal" = 20, "AngerAdaptiveForce" = 0.3, "DemonicInfusion" = 1)
+			passives = list("KillerInstinct" = 0.15, "Pressure" = 1, "AngerAdaptiveForce" = 0.3, "DemonicInfusion" = 1)
 		else if(tier >= 2)
 			StrMult = 1.25
 			ForMult = 1.15
 			OffMult = 1
-			passives = list("KillerInstinct" = 0.1, "Pressure" = 1, "LifeSteal" = 10, "AngerAdaptiveForce" = 0.2, "DemonicInfusion" = 1)
+			passives = list("KillerInstinct" = 0.1, "Pressure" = 1, "AngerAdaptiveForce" = 0.2, "DemonicInfusion" = 1)
 		else
 			StrMult = 1.1
 			ForMult = 1

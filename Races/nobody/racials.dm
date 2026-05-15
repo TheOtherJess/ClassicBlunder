@@ -107,7 +107,8 @@
 		OffMult=1.35
 		SpdMult=1.35
 		passives = list()
-		ActiveMessage="draws from the darkness of the unknown, calling forth power that never was!"
+		ActiveMessage="draws from their authority over oblivion, calling forth power over mortality!"
+		OffMessage="contains their superiority."
 		verb/Lord_of_the_Castle()
 			set category="Skills"
 			src.Trigger(usr)

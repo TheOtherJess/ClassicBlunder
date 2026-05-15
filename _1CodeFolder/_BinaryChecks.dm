@@ -2041,7 +2041,7 @@ mob
 				return 0
 			if(passive_handler["EndlessNine"])
 				return 0
-			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3||secretDatum.secretVariable["EldritchInstinct"])
+			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)
 				return 1
 			if(passive_handler.Get("GodKi"))
 				return 1

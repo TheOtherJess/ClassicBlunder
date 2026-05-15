@@ -15,12 +15,12 @@
 			StyleStr = 1.9
 			StyleFor = 1.75
 			StyleOff = 1.6
-			passives = list("HeavyHitter" = 1, "Scorching" = 1, "Momentum" = 2, "Brutalize" = 2, "MartialMagic" = 1, "PureDamage" = 3)
+			passives = list("HeavyHitter" = 1, "Scorching" = 1, "Momentum" = 2, "Brutalize" = 1, "MartialMagic" = 1, "PureDamage" = 3, "CriticalChance" = 20, "CriticalDamage" = 0.2)
 		else if(tier >= 2)
 			StyleStr = 1.4
 			StyleFor = 1.35
 			StyleOff = 1.3
-			passives = list("HeavyHitter" = 1, "Scorching" = 1, "Momentum" = 2, "Brutalize" = 1)
+			passives = list("HeavyHitter" = 1, "Scorching" = 1, "Momentum" = 2, "Brutalize" = 0.5, "CriticalChance" = 10, "CriticalDamage" = 0.1)
 		else
 			StyleStr = 1.2
 			StyleFor = 1.15

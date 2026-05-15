@@ -190,7 +190,8 @@ globalTracker/var/
     list/availableMagicNodes=list();//nodes that CAN be unlocked, but haven't been
 
 globalTracker/var
-    MagicNodeRPPCost=20;
+    MagicNodeRPPCost=25;
+    OldMagicNodeRPPCost=10;
     SecondElementPotential=20;
     AdvancedElementPotential=40;
 
@@ -320,7 +321,9 @@ globalTracker/var
         if(2)
             alert("You've mastered all the magic you can without dedicating yourself as a mage (Investment of a T3).  Are you sure you want to give up other avenues of power?");
         if(3)
-            alert("In order to achieve greater magical mastery, you'll have to access knowledge beyond the normal progression of a mage (Investment of a T4). Are you sure you want to dedicate that level of training?");
+            alert("You've reached the peak of magical mastery! ... There's nothing beyond this point, you've learned all you can! ... Right?")
+            //alert("In order to achieve greater magical mastery, you'll have to access knowledge beyond the normal progression of a mage (Investment of a T4). Are you sure you want to dedicate that level of training?");
+            return 0;
         if(4)
             alert("You've reached the peak of magical mastery! ... There's nothing beyond this point, you've learned all you can! ... Right?")
             return 0;

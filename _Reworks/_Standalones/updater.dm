@@ -479,6 +479,14 @@ update
 				if(p.AscensionsAcquired>=2)
 					p.passive_handler.Increase("EnergyGeneration", 2)
 					p.passive_handler.Increase("ManaGeneration", 1)
+	version21
+		version = 21;
+		updateMob(mob/p)
+			. = ..()
+			if(p.passive_handler.Get("Limited Rank-Up"))
+				p.passive_handler.Set("Limited Rank-Up", 0)
+				p<<"<b>Whoops you weren't supposed to have that lol</b>"
+			p.refundNewMagicTreeOld()
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

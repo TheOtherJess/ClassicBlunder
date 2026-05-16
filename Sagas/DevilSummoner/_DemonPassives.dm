@@ -169,6 +169,12 @@ var/global/list/DEMON_PASSIVE_DB = list()
 	// Owner-side mods
 	var/list/passive_owner_grants = null
 
+	var/demon_base_str = 0
+	var/demon_base_for = 0
+	var/demon_base_end = 0
+	var/demon_base_spd = 0
+	var/demon_base_def = 0
+
 /mob/Player/AI/Demon/proc/ApplyDemonPassives()
 	if(!demon_data) return
 	if(!ai_owner)   return
@@ -266,7 +272,7 @@ var/global/list/DEMON_PASSIVE_DB = list()
 			passive_handler.Increase("DebuffReversal", 1)
 
 		// =================== NULLS (DEMON) ===================
-		if("Null Phys")  resist_phys  *= 0.50   // 50% reduction per spec
+		if("Null Phys")  resist_phys   = 0.50
 		if("Null Fire")  resist_fire   = 0
 		if("Null Ice")   resist_ice    = 0
 		if("Null Elec")  resist_elec   = 0
@@ -390,9 +396,55 @@ var/global/list/DEMON_PASSIVE_DB = list()
 	if(ai_owner)
 		ai_owner.demon_soul_dmg_pct      = 0
 		ai_owner.demon_soul_transfer_pct = 0
-	// Demon mob is being deleted on despawn so internal vars don't need a manual undo,
-	// but clearing applied_passives is harmless.
+	// Prevents stacking
 	if(applied_passives) applied_passives.Cut()
+
+	resist_phys     = 1.0
+	resist_fire     = 1.0
+	resist_ice      = 1.0
+	resist_elec     = 1.0
+	resist_force    = 1.0
+	resist_curse    = 1.0
+	resist_almighty = 1.0
+
+	passive_repel_phys  = FALSE
+	passive_repel_fire  = FALSE
+	passive_repel_ice   = FALSE
+	passive_repel_elec  = FALSE
+	passive_repel_force = FALSE
+	passive_drain_phys  = FALSE
+	passive_drain_fire  = FALSE
+	passive_drain_ice   = FALSE
+	passive_drain_elec  = FALSE
+	passive_drain_force = FALSE
+
+	dmg_mult_fire   = 1.0
+	dmg_mult_ice    = 1.0
+	dmg_mult_elec   = 1.0
+	dmg_mult_force  = 1.0
+
+	passive_add_paralyze        = 0
+	passive_add_poison          = 0
+	passive_add_stone           = 0
+	passive_double_strike       = FALSE
+	passive_attack_all          = FALSE
+	passive_dual_shadow         = FALSE
+	passive_ultimate_hit_active = FALSE
+	passive_grimoire_active     = FALSE
+	passive_victory_cry         = FALSE
+	passive_race_o              = FALSE
+	passive_race_d              = FALSE
+	passive_extra_one           = FALSE
+
+	if(demon_base_str)
+		StrMod = demon_base_str
+		ForMod = demon_base_for
+		EndMod = demon_base_end
+		SpdMod = demon_base_spd
+		DefMod = demon_base_def
+
+	passive_handler = new()
+
 	passive_life_stream_active = FALSE
 
 

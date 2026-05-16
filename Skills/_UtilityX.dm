@@ -971,6 +971,8 @@ obj/Skills/Utility
 				Upgrades.Add("Silver")
 				Upgrades.Add("Ultima!?")
 				Upgrades.Add("Ultima (True)")
+			if(Type=="Sword"||Type=="Armor")
+				Upgrades.Add("Magic")
 
 			if(Chosen:HighFrequency>=1)
 				Upgrades.Remove("Fire")
@@ -1016,6 +1018,10 @@ obj/Skills/Utility
 				//T5
 				if("Ultima!?")
 					Cost*=100
+				if("Magic")
+					Cost*=400
+					if(Type=="Armor")
+						Cost*=1.5
 				//T6?!
 				if("Ultima (True)")
 					Cost*=400
@@ -1071,6 +1077,12 @@ obj/Skills/Utility
 							if("Refine")
 								usr<<"[Chosen] has its class traits magnified through steady effort..."
 								Chosen:ExtraClass=1
+							if("Magic")
+								usr<<"[Chosen] has blessed their equipment with magic, turning it into a focus."
+								if(Type=="Sword")
+									Chosen:MagicSword=1
+								if(Type=="Armor")
+									Chosen:MagicArmor=1
 							if("Ultima!?")
 								usr << "[Chosen] glows a chaotic rainbow for a few moments.  Grasping [Chosen] makes you feel unstoppable..."
 								Chosen:Element="Chaos"
@@ -1492,7 +1504,7 @@ obj/Skills/Utility
 			if(choice == "Upgrade Existing Flask")
 				FlaskUpgrade(usr)
 				return
-		// Makes a new flask 
+		// Makes a new flask
 		proc/CreateFlask(mob/P)
 			var/SpecificCost = (glob.POTIONCOST * 4)
 			if(P.GetMineral() < SpecificCost) // If we don't have enough... (20k)
@@ -1507,7 +1519,7 @@ obj/Skills/Utility
 		// Edits which herbs are set to 1 in the flask object
 		proc/EditFlaskContent(mob/P) // The first layer of crimes
 			var/obj/Items/Flask/Option = FlaskChoice(P)
-			if(Option == "Cancel") return 
+			if(Option == "Cancel") return
 			HerbOptions(P, Option)
 
 		// Determines what flask we chose
@@ -1517,10 +1529,10 @@ obj/Skills/Utility
 				FlasksInContents |= f
 			return input(P, "Which Flask do you wish to alter?", "Alter Existing Flask") in FlasksInContents // THIS HAS TO STAY HERE DO NOT MOVE IT
 
-		// Determines what herbs you can add, or if you can put add any at all.	
+		// Determines what herbs you can add, or if you can put add any at all.
 		proc/HerbOptions(mob/P, obj/Items/Flask/ChosenFlask)  // Selects herbs
 			ChosenFlask.Slots = P.GetMaxFlaskSlots() // This might be setting it to null
-			while(ChosenFlask.Slots > 0) // If you have slots, select them. Cancel 
+			while(ChosenFlask.Slots > 0) // If you have slots, select them. Cancel
 				var/list/Choices = list("Cancel") + P.PotionTypes
 				var/herbchoice = input(P, "Choose an herb.", "Alter Existing Flask") in Choices
 				if(herbchoice == "Cancel")
@@ -1557,7 +1569,7 @@ obj/Skills/Utility
 			if(Warning == "No") return // No need for an ifstatement if you pick yes, I'd be fucking amazed if you found a way to give a third input.
 			var/obj/Items/Flask/Option = FlaskChoice(P)
 			Option.Slots = P.GetMaxFlaskSlots() // Set slots to max
-			// Inellegant solution to reset every variable to 0. 
+			// Inellegant solution to reset every variable to 0.
 			Option.Heal = 0
 			Option.Mana = 0
 			Option.Energy = 0
@@ -1585,7 +1597,7 @@ obj/Skills/Utility
 			++Option.Tier
 			P << "You have upgraded your flask. It is now a Tier [Option.Tier] Flask."
 			//
-			
+
 
 // 	Summon_Spirit
 // 		desc="Summon a spirit!  Doesn't work on those with contracts already established."

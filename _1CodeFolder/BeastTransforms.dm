@@ -97,10 +97,11 @@
 				OffMult = 1.5
 				if(p.transUnlocked==1)
 					TimerLimit = 4800
-					IconTransform = 'SDTBlue.dmi'
-					TopOverlayLock='SDTRedWings.dmi'
-					TopOverlayX=-10
-					Enlarge=3
+					if(!altered)
+						IconTransform = 'SDTBlue.dmi'
+						TopOverlayLock='SDTRedWings.dmi'
+						TopOverlayX=-10
+						Enlarge=3
 					var/SS1pot=40-p.Potential
 					if(SS1pot<5)
 						SS1pot=5
@@ -138,11 +139,12 @@
 			PowerMult = 1.6
 			if(p.oozaru_type=="Demonic")
 				TimerLimit = 4800
-				IconTransform = 'SDTBlue.dmi'
-				TopOverlayLock='SDTRedWings.dmi'
-				TopOverlayX=-10
-				TopOverlayY=-10
-				Enlarge=3
+				if(!altered)
+					IconTransform = 'SDTBlue.dmi'
+					TopOverlayLock='SDTRedWings.dmi'
+					TopOverlayX=-10
+					TopOverlayY=-10
+					Enlarge=3
 
 
 	Trigger(var/mob/User, Override=0)

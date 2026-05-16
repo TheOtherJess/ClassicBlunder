@@ -1647,14 +1647,14 @@ mob
 						EldritchMod=0.25*/
 			Str+=EldritchMod
 			var/EffectiveAsc=src.StrAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("Str")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Str", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 
 			Str+=EffectiveAsc
 			//stat ascensions gained through racial or saga improvements
@@ -1848,14 +1848,14 @@ mob
 						EldritchMod=0*/
 			For+=EldritchMod
 			var/EffectiveAsc=src.ForAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("For")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("For", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			For+=EffectiveAsc
 			var/enhanced = getEnhanced("Force")
 			For+=src.EnhancedForce ? enhanced : 0
@@ -2044,14 +2044,14 @@ mob
 						EldritchMod=1*/
 			End+=EldritchMod
 			var/EffectiveAsc=src.EndAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("End")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("End", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			End+=EffectiveAsc
 			var/enhanced = getEnhanced("Endurance")
 			End+=EnhancedEndurance ? enhanced : 0
@@ -2213,14 +2213,14 @@ mob
 						EldritchMod=0*/
 			Spd+=EldritchMod
 			var/EffectiveAsc=src.SpdAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("Spd")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Spd", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Spd+=EffectiveAsc
 			var/enhanced = getEnhanced("Speed")
 			Spd+=EnhancedSpeed ? enhanced : 0
@@ -2362,14 +2362,14 @@ mob
 						EldritchMod=0*/
 			Off+=EldritchMod
 			var/EffectiveAsc=src.OffAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("Off")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Off", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Off+=EffectiveAsc
 			var/enhanced = getEnhanced("Aggression")
 			Off+=EnhancedAggression ? enhanced : 0
@@ -2484,14 +2484,14 @@ mob
 						EldritchMod=0.5*/
 			Def+=EldritchMod
 			var/EffectiveAsc=src.DefAscension
+			if(isRace(POPO)&&ActiveBuff)
+				var/HoldingBackLess=(passive_handler["Holding Back"]/10)
+				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			if(passive_handler.Get("Half Manifestation"))
 				EffectiveAsc+=src.HandleManifestation("Def")
 			if(passive_handler.Get("SpiralPowerUnlocked"))
 				var/SP=passive_handler.Get("SpiralPowerUnlocked")
 				EffectiveAsc+=src.HandleSpiralUnlock("Def", SP)
-			if(isRace(POPO))
-				var/HoldingBackLess=(10-passive_handler["Holding Back"])/10
-				EffectiveAsc*=(GetPowerUpRatio()*HoldingBackLess)
 			Def+=EffectiveAsc
 			var/enhanced = getEnhanced("Reflexes")
 			Def+=EnhancedReflexes ? enhanced : 0

@@ -2258,7 +2258,7 @@ NEW VARIABLES
 			verb/Spirit_Burst()
 				set category="Skills"
 				if(!altered)
-					passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
+					passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 				src.Trigger(usr)
 		Unbound_Mode
 			SignatureTechnique=3

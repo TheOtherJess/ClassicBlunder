@@ -2777,6 +2777,7 @@ obj
 								Freezing = 2 + p.Potential/10
 								ManaCost = round(p.getTotalMagicLevel()/3) + 3
 								Slow=0.25
+								ActiveMessage="invokes a powerful: <font size=+1>BLIZZARD!</font size>"
 							else
 								Rounds=initial(Rounds)
 								Knockback=0
@@ -2835,6 +2836,7 @@ obj
 									Rounds = clamp(p.getTotalMagicLevel()/5, 1, 4)
 									DamageMult = 1 + p.Potential/25 + p.getTotalMagicLevel()/10
 									DamageMult= clamp(DamageMult/Rounds, 0.001, 15)
+									ActiveMessage="invokes a powerful: <font size=+1>BLIZZARA!</font size>"
 
 								else
 									return
@@ -2886,6 +2888,7 @@ obj
 							//	NoAttackLock=1
 							//	DamageMult/=Rounds
 								ManaCost = 10
+								ActiveMessage="invokes a powerful: <font size=+1>BLIZZAGA!</font size>"
 							else
 								Rounds=initial(Rounds)
 								Knockback=0
@@ -2940,6 +2943,7 @@ obj
 								Rounds= max(1, round(magicLevel/5) + asc)
 								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)/(Rounds)
 								ManaCost = 3*(DamageMult/4)
+								ActiveMessage="invokes a powerful: <font size=+1>THUNDER!</font size>"
 							else
 								Rush=0
 								ControlledRush=0
@@ -2989,6 +2993,7 @@ obj
 									usr.UseProjectile(th)
 									DamageMult=4
 									usr.ManaAmount-=5
+									ActiveMessage="invokes a powerful: <font size=+1>THUNDARA!</font size>"
 								else
 									return
 
@@ -3035,6 +3040,7 @@ obj
 								WindUp=2
 								Thunderstorm=7
 								ManaCost = 7.5
+								ActiveMessage="invokes a powerful: <font size=+1>THUNDAGA!</font size>"
 							else
 								DamageMult=2
 								Rounds=5

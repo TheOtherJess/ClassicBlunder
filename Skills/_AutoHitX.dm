@@ -2767,7 +2767,7 @@ obj
 					ActiveMessage="invokes: <font size=+1>BLIZZARD!</font size>"
 					adjust(mob/p)
 						if(!altered)
-							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								Rounds=round(p.getTotalMagicLevel()/5)
 								Knockback=1
 								Distance= 6 + round(p.getTotalMagicLevel()/5)
@@ -2777,6 +2777,7 @@ obj
 								Freezing = 2 + p.Potential/10
 								ManaCost = round(p.getTotalMagicLevel()/3) + 3
 								Slow=0.25
+								ActiveMessage="invokes a powerful: <font size=+1>BLIZZARD!</font size>"
 							else
 								Rounds=initial(Rounds)
 								Knockback=0
@@ -2819,7 +2820,7 @@ obj
 					adjust(mob/p)
 						// make it cast a projectile that is like hell zone grenade
 						if(!altered)
-							if(!isInnovationDisable(p) && p.isInnovative(FAE, "Any"))
+							if(!isInnovationDisable(p) && p.isInnovative(FAE, "Any") || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								if(!Using && usr.ManaAmount >= 11)
 									if(!locate(/obj/Skills/Projectile/Blizzara, usr))
 										usr.AddSkill(new/obj/Skills/Projectile/Blizzara)
@@ -2835,6 +2836,7 @@ obj
 									Rounds = clamp(p.getTotalMagicLevel()/5, 1, 4)
 									DamageMult = 1 + p.Potential/25 + p.getTotalMagicLevel()/10
 									DamageMult= clamp(DamageMult/Rounds, 0.001, 15)
+									ActiveMessage="invokes a powerful: <font size=+1>BLIZZARA!</font size>"
 
 								else
 									return
@@ -2875,7 +2877,7 @@ obj
 						disableInnovation(usr)
 					adjust(mob/p)
 						if(!altered)
-							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 							//	Rounds = 3 + p.Potential/25
 								Distance = 7
 								Freezing = 6 + p.getTotalMagicLevel()
@@ -2886,6 +2888,7 @@ obj
 							//	NoAttackLock=1
 							//	DamageMult/=Rounds
 								ManaCost = 10
+								ActiveMessage="invokes a powerful: <font size=+1>BLIZZAGA!</font size>"
 							else
 								Rounds=initial(Rounds)
 								Knockback=0
@@ -2928,7 +2931,7 @@ obj
 						disableInnovation(usr)
 					adjust(mob/p)
 						if(!altered)
-							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								var/asc = p.AscensionsAcquired
 								var/magicLevel = p.getTotalMagicLevel()
 								Rush=5
@@ -2940,6 +2943,7 @@ obj
 								Rounds= max(1, round(magicLevel/5) + asc)
 								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)/(Rounds)
 								ManaCost = 3*(DamageMult/4)
+								ActiveMessage="invokes a powerful: <font size=+1>THUNDER!</font size>"
 							else
 								Rush=0
 								ControlledRush=0
@@ -2980,7 +2984,7 @@ obj
 						// make it cast a projectile that is like hell zone grenade
 						ManaCost = 5
 						if(!altered)
-							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								if(!Using && usr.ManaAmount >= 10)
 									if(!locate(/obj/Skills/Projectile/Thundara, usr))
 										usr.AddSkill(new/obj/Skills/Projectile/Thundara)
@@ -2989,6 +2993,7 @@ obj
 									usr.UseProjectile(th)
 									DamageMult=4
 									usr.ManaAmount-=5
+									ActiveMessage="invokes a powerful: <font size=+1>THUNDARA!</font size>"
 								else
 									return
 
@@ -3023,7 +3028,7 @@ obj
 						disableInnovation(usr)
 					adjust(mob/p)
 						if(!altered)
-							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p))
+							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								Rounds = 200
 								DamageMult = 0.05
 								Icon='VR Cloud.png'
@@ -3035,6 +3040,7 @@ obj
 								WindUp=2
 								Thunderstorm=7
 								ManaCost = 7.5
+								ActiveMessage="invokes a powerful: <font size=+1>THUNDAGA!</font size>"
 							else
 								DamageMult=2
 								Rounds=5

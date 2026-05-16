@@ -82,6 +82,12 @@
 		else if(dd.demon_skills && dd.demon_skills.len)
 			active_skills = dd.demon_skills.Copy()
 
+		demon_base_str = StrMod
+		demon_base_for = ForMod
+		demon_base_end = EndMod
+		demon_base_spd = SpdMod
+		demon_base_def = DefMod
+
 		// Apply DS2 passives
 		ApplyDemonPassives()
 		ApplySummonerPassiveGrants()

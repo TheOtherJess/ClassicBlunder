@@ -728,11 +728,11 @@
 		return
 
 	var/chosen_level = cd.base_level
-	var/cost = cd.base_level * 500
+	var/cost = cd.base_level * 250
 
 	if(level_choice == "recorded")
 		chosen_level = cd.demon_potential
-		cost = cd.demon_potential * 500
+		cost = cd.demon_potential * 250
 
 	if(!HasFragments(cost))
 		src << "Insufficient Mana Bits. You need [cost] to withdraw [demon_name]."

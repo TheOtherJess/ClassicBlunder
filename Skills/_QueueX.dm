@@ -636,6 +636,7 @@ obj
 					DamageMult=3
 					Counter=1
 					Stunner=5
+					ComboMaster=1
 					KBMult=4
 					KBAdd=5
 					BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Hado_Kakusei"

@@ -99,6 +99,9 @@
 		Finisher="/obj/Skills/Queue/Finisher/Plasma_Formation"
 		verb/Plasma_Blade()
 			set hidden=1
+			if(!adjust)
+				passives = list( "HybridStyle" = "MysticStyle", "Wuju" = 1, "CriticalChance" = 40, "CriticalDamage"= 0.05, "Shocking" = 4, "ThunderHerald" = 1, \
+				"Instinct" = 1, "Flicker" = 1, "Fury" = 2.5, "Iaijutsu" = 3, "BlurringStrikes" = 1.5, "Rain" = 3, "SpiritSword" = 1, "SpiritFlow"=4);
 			Trigger(usr)
 	Bloodwhetter
 		SignatureTechnique=3

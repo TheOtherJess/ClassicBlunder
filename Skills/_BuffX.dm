@@ -4323,6 +4323,11 @@ NEW VARIABLES
 								if(usr.Maimed<0)
 									usr.Maimed=0
 								OMsg(usr, "[usr] recovers from being maimed!")
+						if(usr.isRace(MAJIN))
+							if(usr.StrCut||usr.EndCut||usr.SpdCut||usr.ForCut||usr.OffCut||usr.DefCut||usr.HealthCut||usr.EnergyCut||usr.ManaCut)
+								usr.HealOmniCut(1)
+								OMsg(usr, "[usr] recovers from all permanent injuries!");
+
 
 		Elemental_Infusion
 			ActiveMessage="infuses their weaponry with elemental energy!"

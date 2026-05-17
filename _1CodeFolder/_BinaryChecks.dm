@@ -884,6 +884,7 @@ mob
 			if(passive_handler.Get("Null")) return 1;
 			return 0;
 		HasNullTarget()
+			if(isRace(DEMIFIEND) || istype(src, /mob/Player/AI/Demon)) return 0;
 			if(Target) if(Target.HasNull() && !HasMaouKi()) return 1;
 			return 0;
 		HasBleedHit()
@@ -1909,7 +1910,7 @@ mob
 					Return-=100
 				if(m.isRace(MAKYO))
 					Return-=(5*m.AscensionsAcquired)
-				if(m.HasGodKi() && !m.HasNull())
+				if(m.HasGodKi() && !m.HasNull() && !m.isRace(DEMIFIEND) && !istype(m, /mob/Player/AI/Demon))
 					if(src.HasMythical())
 						Return-=(m.GetGodKi())*(100-(src.HasMythical()*100))
 					else

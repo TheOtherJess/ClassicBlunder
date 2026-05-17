@@ -2196,6 +2196,8 @@ mob
 		GetManaLeak()
 			var/Return=0
 			Return+=passive_handler.Get("ManaLeak")
+			if(passive_handler.Get("Dream Within a Dream"))
+				Return/=4
 			return Return
 		GetManaCapMult()
 			return 1 + passive_handler.Get("ManaCapMult")

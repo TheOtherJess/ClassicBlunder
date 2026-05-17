@@ -434,7 +434,6 @@ mob/proc/Conscious()
 			src.TotalInjury/=2
 			src.TotalFatigue/=2
 			src.OMessage(15,"<font color='green'><b>[src] refuses to let fate get the better of them!!!</b></font color>","<font color=blue>[src]([src.key]) regains consciousness.")
-			src<<"<font color='green'><b>(You can get up and keep fighting every time this procs!)</b></font color>"
 		else if(src.passive_handler.Get("Neverending Hope"))
 			src.Health=30
 			src.Energy=EnergyMax/2

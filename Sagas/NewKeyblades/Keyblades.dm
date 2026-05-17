@@ -241,7 +241,7 @@ proc/
 			if("Fenrir")
 				return 1.5
 			if("No Name")
-				return 1.5
+				return 1.75
 			if("Lionheart")
 				return 1.5
 			if("Spellbinder")
@@ -599,7 +599,7 @@ proc/
 				KeybladePassives=list("PULock" = 1, "AbyssMod" = 1+(2*Boost),"EnergyGeneration" = 3+Boost, "Momentum" = 2,"SpiritFlow" =1+round(Boost/3))
 				return KeybladePassives
 			if("Fenrir")
-				KeybladePassives=list("PULock" = 1, "Steady" = 3, "Brutalize" = Boost, "Extend" = 1, "Conductor" = -50, "DemonicDurability" = Boost, "AngerAdaptiveForce" = 0.2*Boost)
+				KeybladePassives=list("PULock" = 1, "Steady" = 3, "Brutalize" = Boost/1.5, "Extend" = 1, "Conductor" = -50, "DemonicDurability" = Boost, "AngerAdaptiveForce" = 0.2*Boost)
 				return KeybladePassives
 			if("No Name")
 				KeybladePassives=list("PULock" = 1, "HardStyle" = 1)
@@ -617,7 +617,7 @@ proc/
 				KeybladePassives=list("PULock" = 1, "HybridStrike" = 1, "Flow" = 3, "Instinct" = 3)
 				return KeybladePassives
 			if("Ultima Weapon")
-				KeybladePassives=list("PULock" = 1, "PureDamage" = 4, "PureReduction" = 4)
+				KeybladePassives=list("PULock" = 1, "PureDamage" = 10, "PureReduction" = 10)
 				return KeybladePassives
 //heavy
 			if("Earthshaker")
@@ -633,13 +633,13 @@ proc/
 				KeybladePassives=list("PULock" = 1, "Extend" = 1, "CashCow" = 2, "SoftStyle" = 1, "Blubber" = Boost/4)
 				return KeybladePassives
 			if("Ebony Slumber")
-				KeybladePassives=list("PULock" = 1)
+				KeybladePassives=list("PULock" = 1, "Dreamless Sleep" = 1, "GodKi" = 0.25)
 				return KeybladePassives
 			if("Prismatic Dreams")
-				KeybladePassives=list("PULock" = 1)
+				KeybladePassives=list("PULock" = 1, "Dream Within a Dream" =1, "GodKi" = 0.25)
 				return KeybladePassives
 			if("X-Blade")
-				KeybladePassives=list("PULock" = 1, "GodKi" = 0.15)
+				KeybladePassives=list("PULock" = 1, "GodKi" = 0.5)
 				return KeybladePassives
 /*
 		switch(KC)

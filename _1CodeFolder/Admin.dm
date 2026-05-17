@@ -799,6 +799,12 @@ mob/proc/AdminDoKO(mob/A)
 				world << "<font color=red><b>Death-X-Evolution...</b></font>"
 				de.Trigger(A)
 			return
+		if(A.passive_handler.Get("Rank-Down Protection"))
+			A.OMessage(20, "[A] was just knocked out by ADMIN!", "<font color=red>[A] was just knocked out by ADMIN!")
+			sleep(20)
+			src << "<b><font color='green'>...but [A]'s fate is not for you to shepherd!</b></font color>"
+			A.OMessage(15, "<b><font color=[A.Text_Color]><font size=+1>...but [A] was protected by the Lord's Grace!</b></font color></font size>", "<font color=blue>[A]([A.key]) denies death.")
+			return
 		A.Unconscious(null, "ADMIN")
 		Log("Admin", "<font color=red>[ExtractInfo(src)] admin-KOed [ExtractInfo(A)].")
 

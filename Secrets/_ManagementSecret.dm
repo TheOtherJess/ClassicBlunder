@@ -213,18 +213,23 @@ SecretInformation
 					p << "Your blood's beat is razor sharp...You've awakened the power of the Ripple!"
 					giveSkills(p)
 					giveVariables(p)
+					p.OxygenMax+=50
 				if(2)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 2
+					p.OxygenMax+=50
 				if(3)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 2
+					p.OxygenMax+=50
 				if(4)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 4
+					p.OxygenMax+=50
 				if(5)
 					p << "Your mastery of the Ripple has reached its peak."
 					nextTierUp = 999
+					p.OxygenMax+=50
 
 
 	Vampire

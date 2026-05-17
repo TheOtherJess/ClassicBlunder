@@ -8,14 +8,14 @@
 /obj/Items/Flask
     Unwieldy = 1 // Should prevent people from using this outside of meditate
     icon = 'Icons/enchantment/Magic Potion.dmi'
-    // 0 means they will not trigger if statements 
-    // 1 means they will 
+    // 0 means they will not trigger if statements
+    // 1 means they will
     // Basic Healing effects
     var/Heal=0
-    var/Energy=0  
+    var/Energy=0
     var/Mana=0
     // Damaging effects
-    //var/Toxic=0 
+    //var/Toxic=0
     // Passive Effects
     var/Hallucinogen=0 // Anger Buffs
     var/Searing=0 // Damage Buffs
@@ -33,15 +33,15 @@
 
     verb/Imbibe_Flask() // We cosnume a charge from the flask!
         set category = "Skills"
-        if(usr.hasSecret("Heavenly Restriction") && usr.secretDatum?:hasRestriction("Magic")) 
+        if(usr.hasSecret("Heavenly Restriction") && usr.secretDatum?:hasRestriction("Magic"))
             usr << "Your body cannot possibly accept this."
             return
-        if(usr.equippedFlask.Charges == 0) 
+        if(usr.equippedFlask.Charges == 0)
             usr << "You have no Flask Charges left!"
             return
         usr.reduceCharge() // mob proc that reduces charges
-        if(!usr.CheckSlotless("Flask Charge")) // If no buff, 
-            for(var/typesFromTechniques in src.Techniques) // We want to go fishing 
+        if(!usr.CheckSlotless("Flask Charge")) // If no buff,
+            for(var/typesFromTechniques in src.Techniques) // We want to go fishing
                 var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques); // then we assign our fish to a var
                 usedFlask.adjust(usr); // We can now pass adjust and trigger procs as if we were in the buff (kind of)
                 usedFlask.Trigger(usr);
@@ -50,7 +50,7 @@
     var/obj/Skills/Buffs/Slotlessbuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques);
     usedFlask.adjust(usr);
     usedFlask.Trigger(usr);*/
-        
+
 // This is the thing the players actually interact with, it also can be accessed in all the important ways
 /mob/var/obj/Items/Flask/equippedFlask
 
@@ -61,25 +61,25 @@
     ActiveMessage="imbibes a concoction from their Flask!"
     TextColor=rgb(149, 255, 0)
     AlwaysOn=1
-    CooldownStatic = 1 // No, you will not use technique mastery. 
+    CooldownStatic = 1 // No, you will not use technique mastery.
     Cooldown = 0 // THIS IS HANDLED IN ADJUST FUCK MY CHUD LIFE
     TimerLimit = 60
     passives = list() // THese r handled in the adjust proc too
     adjust(mob/P)
-        Cooldown = P.GetFlaskCD() 
+        Cooldown = P.GetFlaskCD()
         InstantAffect = 1
         // I am so fucking sorry for what is about to happen
         /* SOMEONE BROKE THESE PROCS SO THEY ONLY WORK PER TIC WHICH MAKES IT IMPOSSIBLE TO HAVE A BALANCED HEALTH POTION I FUCKING HATE THESE ANIMALS
         if(P.equippedFlask.Heal == 1) // if you chose a  herb, your value for said herb should be 1 and ONLY 1
             StableHeal=1
-            //Check glob.dm for POTIONHEAL 
+            //Check glob.dm for POTIONHEAL
             src.HealthHeal = glob.POTIONHEAL/2*(P.equippedFlask.Tier+1)  // 2.5, 5, 7.5 if POTIONHEAL = 5
             src.ManaHeal = (-1)*glob.POTIONHEAL*(5-P.equippedFlask.Tier) // T0 = -25, T1 = -20, T3 = -15 if POTIONHEAL=  5
             src.EnergyHeal = (-1)*glob.POTIONHEAL*(2-P.equippedFlask.Tier)// T0 = -10, T1 = -5, T3 = 0 if POTIONHEAL=  5
         */
-        if(P.equippedFlask.Mana == 1) //  ONLY THE VALUE OF 1 SHOULD BE HERE 
+        if(P.equippedFlask.Mana == 1) //  ONLY THE VALUE OF 1 SHOULD BE HERE
             StableHeal=1
-            src.ManaHeal = (glob.POTIONHEAL*(P.equippedFlask.Tier+1)) // 5, 10, 15 mana regen a tick based on tier provided potion heal is the same 
+            src.ManaHeal = (glob.POTIONHEAL*(P.equippedFlask.Tier+1)) // 5, 10, 15 mana regen a tick based on tier provided potion heal is the same
 
         if(P.equippedFlask.Energy == 1) // Same as above
             StableHeal=1
@@ -87,18 +87,18 @@
 
         if(P.equippedFlask.Hallucinogen == 1) // This gives you immediate anger and anger buffs at expense of defense
             AutoAnger=1 // Makes you angry instantly
-            // Please note: the comments will tell you what the math does   
-            AngerMult = 1 + (P.equippedFlask.Tier+1)/3 // T0 = +33%, T1 = +66%  T2 = +100% anger multiplier
+            // Please note: the comments will tell you what the math does
+            AngerMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = +25%, T1 = +50%  T2 = +75% anger multiplier
             EndMult = 0.5 + (P.equippedFlask.Tier+1)/10 // T0 = 0.6, T1 = 0.7, T3 = 0.8 endurance mult (DOWNSIDE)
             DefMult = 0.7 + (P.equippedFlask.Tier+1)/10 // T0 = 0.8, T1 = 0.9, T3 = 1 Defense mult (DOWNSIDE)
-            passives["PureReduction"] = -4 + (P.equippedFlask.Tier+1) // T0 = 3, T1 = -2 T2 = -1, PS: -1 PureReduction = 5% extra damage taken,
+            passives["PureReduction"] = -10 + (P.equippedFlask.Tier+1) // T0 = -9, T1 = -8 T2 = -7, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
-        if(P.equippedFlask.Searing == 1) // Damage 
+        if(P.equippedFlask.Searing == 1) // Damage
             StrMult = 1 + (P.equippedFlask.Tier+1)/10 // T0 = 1.1, T1 = 1.2, T2 = 1.3
             ForMult = 1 + (P.equippedFlask.Tier+1)/10 // Same as above
-            passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost 
+            passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost
             passives["Steady"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
-            passives["PureReduction"] -= 2 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)
+            passives["PureReduction"] -= 7 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)
         if(P.equippedFlask.Flowy == 1) // Dodging
             DefMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = 1.25, T1 = 1.5, T2 = 1.75 // This makes you dodge more
             StrMult = 0.85 + (P.equippedFlask.Tier+1)/20  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
@@ -118,9 +118,9 @@
             passives["Godspeed"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Skimming"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
 
-// Procs that handle all this stupid chud shit 
+// Procs that handle all this stupid chud shit
 mob/proc/reduceCharge() // Reduces charges, fuck this gave me a headache
-    if(equippedFlask.Charges == 0) // Empty 
+    if(equippedFlask.Charges == 0) // Empty
         src << "You have no Flask Charges left!"
         return
     else if(equippedFlask.Charges > GetMaxFlaskCharges() || equippedFlask.Charges < 0) // Why do you have more than 4? Max tier flasks should have 4.
@@ -130,7 +130,7 @@ mob/proc/reduceCharge() // Reduces charges, fuck this gave me a headache
             equippedFlask.Charges = GetMaxFlaskCharges()
         return
     --equippedFlask.Charges // The whole reason we're here
-        
+
 
 mob/proc/GetMaxFlaskCharges() // adds tier to the define, used in Gains.dm line 237
     return BASE_MAX_CHARGES + equippedFlask.Tier

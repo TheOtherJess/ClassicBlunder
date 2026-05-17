@@ -89,16 +89,16 @@
             AutoAnger=1 // Makes you angry instantly
             // Please note: the comments will tell you what the math does
             AngerMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = +25%, T1 = +50%  T2 = +75% anger multiplier
-            EndMult = 0.5 + (P.equippedFlask.Tier+1)/10 // T0 = 0.6, T1 = 0.7, T3 = 0.8 endurance mult (DOWNSIDE)
-            DefMult = 0.7 + (P.equippedFlask.Tier+1)/10 // T0 = 0.8, T1 = 0.9, T3 = 1 Defense mult (DOWNSIDE)
+            EndMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 endurance mult (DOWNSIDE)
+            DefMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 Defense mult (DOWNSIDE)
             passives["PureReduction"] = -10 + (P.equippedFlask.Tier+1) // T0 = -9, T1 = -8 T2 = -7, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
         if(P.equippedFlask.Searing == 1) // Damage
             StrMult = 1 + (P.equippedFlask.Tier+1)/10 // T0 = 1.1, T1 = 1.2, T2 = 1.3
             ForMult = 1 + (P.equippedFlask.Tier+1)/10 // Same as above
-            passives["PureDamage"] = (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5 // 5% to 15% dmg boost
+            passives["PureDamage"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3 // 10% to 30% dmg boost
             passives["Steady"] = (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
-            passives["PureReduction"] -= 7 - (P.equippedFlask.Tier) // T0 = -2, T 1= -1 T2 = 0 // 10% to 5% extra damage taken (DOWNSIDE)
+            passives["PureReduction"] -= 5 - (P.equippedFlask.Tier) // T0 = -4, T1= -3 T2 = -2 // 20% to 10% extra damage taken (DOWNSIDE)
         if(P.equippedFlask.Flowy == 1) // Dodging
             DefMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = 1.25, T1 = 1.5, T2 = 1.75 // This makes you dodge more
             StrMult = 0.85 + (P.equippedFlask.Tier+1)/20  // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)

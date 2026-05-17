@@ -277,11 +277,6 @@
     // active dump (consume Grit for a Vai Health shield) only existed as a Beastheart
     // racial skill. Grant the same skill to mages so the listed passive actually does
     // something for them.
-    if((element == "Earth" || element == "Light") && new_tier >= 2)
-        var/obj/Skills/grit_skill = FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Racial/Beastkin/The_Grit)
-        if(!grit_skill)
-            findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Racial/Beastkin/The_Grit)
-            src << "Your Gestalt-honed grit can now be channeled into a Vai Health shield."
 
 /mob/proc/removeGestaltForElement(element)
     var/style_path = getGestaltStylePath(element)

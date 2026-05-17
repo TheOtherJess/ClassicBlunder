@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 22
+	var/UPDATE_VERSION = 23
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -523,6 +523,15 @@ update
 					p.DefAscension = 21
 					p.SpdAscension = 24
 					p.RecovAscension = 21
+	version23
+		version = 23;
+		updateMob(mob/p)
+			. = ..()
+			if(p.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Racial/Beastkin/The_Grit))
+				if(p.Class!="Heart of The Beastkin")
+					p.passive_handler.Set("Grit", 0)
+					for(var/obj/Skills/Buffs/SlotlessBuffs/Racial/Beastkin/The_Grit/TG in p)
+						del TG
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

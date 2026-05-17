@@ -79,6 +79,9 @@ mob/var
 	tmp/BlindImmune=0
 	tmp/GrabTime
 	tmp/CloudedHeartActive = FALSE
+	tmp/mirror_parry_active   = FALSE
+	tmp/mirror_reflect_active = FALSE
+	tmp/mirror_hold_slowing   = FALSE
 	custom_scent
 	custom_powerup
 	customPUnameInclude = FALSE

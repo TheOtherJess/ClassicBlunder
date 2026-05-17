@@ -1475,6 +1475,7 @@ obj/Items/Tech
 					usr << "You're already preparing a super soldier serum!"
 					return
 				if(usr.isRace(ANDROID))
+					usr << "You can't put the super soldier juice in a robot, sorry."
 					return
 				if(usr.icon_state!="Meditate")
 					usr << "You need to be sitting down to use this properly."
@@ -1564,7 +1565,7 @@ obj/Items/Tech
 			addToGlobalListeners(src)
 			suffix = "[toggled_on ? "On -- Freq: [Frequency]" : "Off -- Freq:[Frequency]"]"
 	PDA
-		TechType="Telecommunications"
+		TechType="BasicTechnology"
 		SubType="Any"
 		Cost=0.1
 		var/htmlq={"<html><head><title>PDA Title!</title></head><body><body bgcolor=black text=white><h1>Heading!</h1><p>Paragraph!</body></html>"}

@@ -3081,6 +3081,7 @@ mob
 		HasSpellFocus(var/obj/Skills/Z)
 			var/obj/Items/Enchantment/Staff/st=src.EquippedStaff()
 			var/obj/Items/Sword/sord=src.EquippedSword()
+			var/obj/Items/Armor/amor=src.EquippedArmor()
 			var/Pass=0
 			if(src.Saga=="Persona"||src.Saga=="Magic Knight")
 				Pass=1
@@ -3106,6 +3107,9 @@ mob
 				Pass=1
 			if(sord)
 				if(sord.MagicSword || passive_handler.Get("MagicSword"))
+					Pass=1
+			if(amor)
+				if(amor.MagicArmor)
 					Pass=1
 			if(st)
 				Pass=1

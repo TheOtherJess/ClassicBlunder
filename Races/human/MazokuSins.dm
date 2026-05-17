@@ -74,7 +74,6 @@ mob
 			ShockSize /= 2
 
 /transformation/human/high_tension/mazoku
-	revertToTrans = 0
 	pot_trans = 2
 	passives = list(\
 		"Conductor" = 10,\
@@ -101,7 +100,6 @@ mob
 			ShockSize/=2
 
 /transformation/human/high_tension_MAX/mazoku
-	revertToTrans = 0
 	pot_trans = 3
 	form_aura_icon = 'AurasBig.dmi'
 	form_aura_icon_state = "HT2"
@@ -131,7 +129,6 @@ mob
 			ShockSize/=2
 
 /transformation/human/super_high_tension/mazoku
-	revertToTrans = 0
 	pot_trans = 3
 	form_aura_icon = 'SpiralAura.dmi'
 	form_aura_x = -32
@@ -164,7 +161,6 @@ mob
 			ShockSize/=2
 
 /transformation/human/super_high_tension_MAX/mazoku
-	revertToTrans = 0
 	pot_trans = 5
 	passives = list(\
 		"Conductor" = 10,\
@@ -195,7 +191,6 @@ mob
 			ShockSize/=2
 
 /transformation/human/unlimited_high_tension/mazoku
-	revertToTrans = 0
 	pot_trans = 15
 	passives = list(\
 		"Conductor" = 10,\
@@ -264,9 +259,6 @@ mob
 		for(var/wav = 5, wav > 0, wav--)
 			KenShockwave(user, icon='KenShockwaveDivine.dmi', Size=ShockSize, Blend=2, Time=8)
 			ShockSize /= 2
-		for(var/mob/M in view(user))
-			if(M.client)
-				ScreenShatter(M)
 		if(user.client)
 			ScreenShatter(user)
 

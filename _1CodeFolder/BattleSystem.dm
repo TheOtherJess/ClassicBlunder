@@ -677,6 +677,8 @@ mob/proc/Death(mob/P,var/text,var/SuperDead=0, var/NoRemains=0, var/Zombie, extr
 			src.race.transformations += new /transformation/demon/devil_trigger/mazoku()
 			if(src.AscensionsAcquired >= 6)
 				src.race.transformations += new /transformation/human/sacred_energy_aura()
+			if(src.transUnlocked < 3)
+				src.transUnlocked = 3
 		Conscious()
 		world<<"<font color=red><b>[src] has awakened.</b></font>"
 		return

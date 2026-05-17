@@ -133,8 +133,5 @@ transformation
 				for(var/wav=5, wav>0, wav--)
 					KenShockwave(user, icon='KenShockwaveBloodlust.dmi', Size=ShockSize, Blend=2, Time=8)
 					ShockSize/=2
-				for(var/mob/M in view(user))
-					if(M.client)
-						ScreenShatter(M)
-					if(user.client)
-						ScreenShatter(user)
+				LightningStrike2(user)
+				DarknessFlash(user, SetTime=5)

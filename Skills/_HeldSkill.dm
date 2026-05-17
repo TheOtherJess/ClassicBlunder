@@ -8,7 +8,8 @@
 
 /obj/Skills
 	var/HeldSkill        = FALSE  // Enable held-charge behavior for this skill
-	var/ChargePeriod     = 3      // Max hold time in seconds, hold too long = fizzle
+	var/NoFizzle         = FALSE  // If TRUE, exceeding ChargePeriod auto-releases
+	var/ChargePeriod     = 3      // Max hold time in seconds
 	var/SweetSpot        = 0      // Seconds from charge start when sweet spot opens (0 = disabled)
 	var/SweetSpotWindow  = 0.3    // Width of the sweet spot window in seconds (default 0.3s = 3 ticks)
 	var/SweetSpotBenefit = 1.5    // ChargeBenefit value when the sweet spot window is hit
@@ -23,6 +24,10 @@
 	// Override in individual skills to execute the charged attack.
 
 /obj/Skills/proc/OnHeldFizzle(mob/p)
+
+/obj/Skills/proc/OnHeldStart(mob/p)
+	// Called once when BeginHeldSkill successfully begins charging
+	// Override to apply effects that last for the duration of the hold
 
 // This avoids stat changes to skills persisting across use (mostly for projectiles)
 
@@ -154,6 +159,7 @@
 
 	held_skill_macro_key = key
 
+	Z.OnHeldStart(src)
 	spawn() ChargeLoop(Z)
 
 
@@ -384,9 +390,12 @@
 			FizzleHeldSkill(Z)
 			return
 
-		// Overheld fizzle
+		// Overheld, fizzle normally, or auto-release if the skill opts out
 		if(world.time - held_charge_start > Z.ChargePeriod * 10)
-			FizzleHeldSkill(Z)
+			if(Z.NoFizzle)
+				ReleaseHeldSkill()
+			else
+				FizzleHeldSkill(Z)
 			return
 
 		// closing the visual gap after BeginHeldSkill's initial pulse.
@@ -408,8 +417,11 @@
 
 	// Overheld
 	if(hold_ticks > Z.ChargePeriod * 10)
-		FizzleHeldSkill(Z)
-		return
+		if(Z.NoFizzle)
+			hold_ticks = Z.ChargePeriod * 10 
+		else
+			FizzleHeldSkill(Z)
+			return
 
 	var/benefit = clamp(hold_ticks / (Z.ChargePeriod * 10), 0.0, 1.0)
 	var/sweet_spot_hit = FALSE

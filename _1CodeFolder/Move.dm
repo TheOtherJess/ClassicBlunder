@@ -150,6 +150,8 @@ mob/proc/MovementSpeed()
 			Delay/=2
 		else
 			Delay*=4
+	if(src.mirror_hold_slowing)
+		Delay *= 4  
 	if(src.Attracted)
 		Delay*=4
 	if(src.SenseRobbed>=1&&(src.SenseUnlocked<=src.SenseRobbed&&src.SenseUnlocked>5))

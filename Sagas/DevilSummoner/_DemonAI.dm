@@ -158,7 +158,7 @@
 		if(target == src) return
 		if(istype(target, /mob/Player) && "[ai_owner.ckey]" in target.ai_alliances) return
 		if(ai_owner.party && ai_owner.party.members && (target in ai_owner.party.members)) return
-		var/dmg = DemonComputeKernelDamage(target, StrMod) * next_attack_multiplier * glob.DevilSummonerDemonDamageMod
+		var/dmg = DemonComputeKernelDamage(target, StrMod * StrMultTotal) * next_attack_multiplier * glob.DevilSummonerDemonDamageMod
 		if(next_attack_multiplier > 1)
 			if(ai_owner) ai_owner << "<font color='#ffaa00'>[name]'s charged attack connects!</font>"
 			next_attack_multiplier = 1
@@ -218,9 +218,9 @@
 			powerDif = clamp(powerDif, glob.MIN_POWER_DIFF, glob.MAX_POWER_DIFF)
 		var/atk = max(0.01, atk_val)
 		var/def = max(0.01, target.getEndStat(1))
-		if(demon_summoner_spirit_sword > 0)    atk += ForMod * demon_summoner_spirit_sword
-		if(demon_summoner_spirit_hand > 0)     atk += ForMod * demon_summoner_spirit_hand / 4
-		if(demon_summoner_calloused_grant > 0) atk += EndMod * demon_summoner_calloused_grant
+		if(demon_summoner_spirit_sword > 0)    atk += ForMod * ForMultTotal * demon_summoner_spirit_sword
+		if(demon_summoner_spirit_hand > 0)     atk += ForMod * ForMultTotal * demon_summoner_spirit_hand / 4
+		if(demon_summoner_calloused_grant > 0) atk += EndMod * EndMultTotal * demon_summoner_calloused_grant
 		if(demon_summoner_brutalize_grant > 0) def = max(0.01, def * (1 - demon_summoner_brutalize_grant))
 		return (powerDif ** glob.DMG_POWER_EXPONENT) * (glob.CONSTANT_DAMAGE_EXPONENT + glob.MELEE_EFFECTIVENESS) ** -(def ** glob.DMG_END_EXPONENT / atk ** glob.DMG_STR_EXPONENT)
 

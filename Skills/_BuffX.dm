@@ -931,7 +931,7 @@ NEW VARIABLES
 				"/obj/Skills/Projectile/Gear/Installed/Installed_Missile_Launcher", \
 				"/obj/Skills/Buffs/SlotlessBuffs/WeaponSystems/Beam_Saber")
 					init(obj/Items/Gear/Mobile_Suit/mecha, mob/player)
-						passives = list("GiantForm" = 1, "DebuffResistance" = 2, "VenomImmune" = 1, "SweepingStrike" = 1, \
+						passives = list("Piloting" = 1, "GiantForm" = 1, "DebuffResistance" = 2, "VenomImmune" = 1, "SweepingStrike" = 1, \
 						"Steady" = mecha.Level/2, "Duelist" = mecha.Level/2, "NoDodge" = 1, "Juggernaut" = mecha.Level/2, "Reversal" = 0.25)
 						if(player.PilotingProwess >= 5)
 							passives["NoDodge"] = 0

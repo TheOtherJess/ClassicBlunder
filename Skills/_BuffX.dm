@@ -876,7 +876,7 @@ NEW VARIABLES
 				ActiveMessage="powers up their giant mobile suit!"
 				OffMessage="burns out the fusion cell in their mecha..."
 				proc/init(obj/Items/Gear/Mobile_Suit/mecha, mob/player)
-					PowerMult = 1.25 + (mecha.Level * 0.25) + (player.AngerMax / (8 - mecha.Level))
+					PowerMult = 1.25 + (mecha.Level * 0.25) + (player.AngerMax / (10))
 					if(player.Saga == "King of Braves" || player.Secret == "Spiral")
 						passives["SpecialBuffLock"] = 0
 						SpecialBuffLock = 0
@@ -920,7 +920,7 @@ NEW VARIABLES
 				"/obj/Skills/Buffs/SlotlessBuffs/WeaponSystems/Beam_Saber")
 					init(obj/Items/Gear/Mobile_Suit/mecha, mob/player)
 						passives = list("Piloting" = 1,"SpecialBuffLock" = 1,"GiantForm" = 1, "DebuffResistance" = 2, "VenomImmune" = 1, "SweepingStrike" = 1, \
-						"CriticalChance" = mecha.Level*7, "CriticalDamage" = mecha.Level*0.15, "Steady" = mecha.Level, "Duelist" = mecha.Level, "NoDodge" = 1)
+						"CriticalChance" = mecha.Level*10, "CriticalDamage" = mecha.Level*0.1, "Steady" = mecha.Level, "Duelist" = mecha.Level, "NoDodge" = 1)
 						if(player.PilotingProwess >= 5)
 							passives["NoDodge"] = 0
 						..()
@@ -931,7 +931,7 @@ NEW VARIABLES
 				"/obj/Skills/Projectile/Gear/Installed/Installed_Missile_Launcher", \
 				"/obj/Skills/Buffs/SlotlessBuffs/WeaponSystems/Beam_Saber")
 					init(obj/Items/Gear/Mobile_Suit/mecha, mob/player)
-						passives = list("GiantForm" = 1, "DebuffResistance" = 2, "VenomImmune" = 1, "SweepingStrike" = 1, \
+						passives = list("Piloting" = 1, "GiantForm" = 1, "DebuffResistance" = 2, "VenomImmune" = 1, "SweepingStrike" = 1, \
 						"Steady" = mecha.Level/2, "Duelist" = mecha.Level/2, "NoDodge" = 1, "Juggernaut" = mecha.Level/2, "Reversal" = 0.25)
 						if(player.PilotingProwess >= 5)
 							passives["NoDodge"] = 0
@@ -2259,6 +2259,22 @@ NEW VARIABLES
 				set category="Skills"
 				if(!altered)
 					passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
+				src.Trigger(usr)
+		Power_of_Destruction
+			BuffName = "Power of Destruction - Omen"
+			SignatureTechnique=3
+			Mastery=-1
+			UnrestrictedBuff=1
+			StrMult=1.5
+			ForMult=1.5
+			EndMult=1.2
+			passives = list("BulletKill" = 1, "Deflection" = 5, "Persistence" = 1, "UnderDog" = 15,\
+								"Power of Destruction" = 1, "Field of Destruction" = 1, "CursedWounds"=1, "HardStyle"=1, "BleedHit" = 0.25)
+			DarkChange=1
+			ActiveMessage="taps into the power of a Destroyer, harnessing their overwhelming sense of self."
+			OffMessage="casts aside their destructive power."
+			verb/Power_of_Destruction()
+				set category="Skills"
 				src.Trigger(usr)
 		Unbound_Mode
 			SignatureTechnique=3
@@ -3962,7 +3978,7 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 0.5, "SwordAscensionSecond" = 2, "TechniqueMastery" = 10, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1, "GodKi" = 0.5, "MasterfulCasting" = 5)
+							passives = list("ManaLeak" = 3, "SwordAscensionSecond" = 2, "TechniqueMastery" = 10, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1, "GodKi" = 0.5, "MasterfulCasting" = 5)
 							passives+=GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=3
 				src.Trigger(usr)
@@ -4000,6 +4016,11 @@ NEW VARIABLES
 						ForMult=1.75
 						StrMult=1.75
 						SpdMult=2
+				else if(p.passive_handler.Get("Dreamless Sleep"))
+					passives = list("CursedWounds" = 1, "GodSpeed" = 2, "Pursuer" = 5, "Flicker" = 3, "Instinct" = 4, "Flow" = 4, "TechniqueMastery" = 7, "QuickCast" = 2)
+					ForMult=1.5
+					StrMult=1.5
+					SpdMult=1.75
 				else
 					passives = list("ManaLeak"= 1, "CursedWounds" = 1, "GodSpeed" = 1, "Pursuer" = 3, "Flicker" = 3, "Instinct" = 3, "TechniqueMastery" = 5, "QuickCast" = 2)
 					ForMult=1.25
@@ -4323,6 +4344,11 @@ NEW VARIABLES
 								if(usr.Maimed<0)
 									usr.Maimed=0
 								OMsg(usr, "[usr] recovers from being maimed!")
+						if(usr.isRace(MAJIN))
+							if(usr.StrCut||usr.EndCut||usr.SpdCut||usr.ForCut||usr.OffCut||usr.DefCut||usr.HealthCut||usr.EnergyCut||usr.ManaCut)
+								usr.HealOmniCut(1)
+								OMsg(usr, "[usr] recovers from all permanent injuries!");
+
 
 		Elemental_Infusion
 			ActiveMessage="infuses their weaponry with elemental energy!"
@@ -7362,6 +7388,41 @@ NEW VARIABLES
 					"PureReduction" = 1+(usr.AscensionsAcquired*(0.75+PactBoostDef)), "Pursuer" = 2, "HellPower" = 0.1+(PactBoostPow/2), \
 					"Gum Gum" = 1, "Extend" = 1,"Unbreakable" = 0.25+PactBoostDef,"Undeterred" = 1)
 				src.Trigger(usr)
+
+		Aspect_of_the_Successor
+			SignatureTechnique=4
+			SpecialSlot=1
+			AutoAnger=1
+			AngerThreshold=2
+			IconLock='AuraMysticBig.dmi'
+			IconLockBlend=4
+			StrMult = 1.3
+			ForMult = 1.3
+			EndMult = 1.3
+			LockX=-32
+			LockY=-32
+			SagaSignature=1
+			PowerMult = 2
+			AngerMult= 3
+			ManaDrain=0.05
+			ManaThreshold = 10
+			FlashChange=1
+			KenWave=2
+			KenWaveIcon='KenShockwaveDivine.dmi'
+			KenWaveSize=0.2
+			KenWaveTime=5
+			KenWaveBlend=2
+			Cooldown=-1
+			ActiveMessage="let the Rage of the One True Angel guide their actions!"
+			OffMessage = "let go of the Blessing of the Successor."
+			verb/Aspect_of_the_Successor()
+				set category="Skills"
+				if(!usr.BuffOn(src))
+					var/asc = usr.AscensionsAcquired
+					passives = list("PureDamage" = 5+asc, "PureReduction" = 5+asc, "GodKi" = 0.1+(asc/10), "Rank-Down Protection" = 1, "DebuffResistance" = 3+asc, "Heavensent" = 1+asc, \
+					"Extend" = 1+asc, "Unstoppable" = 1, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3)
+				src.Trigger(usr)
+
 
 		God_Ki
 			SignatureTechnique=4

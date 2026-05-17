@@ -3362,6 +3362,7 @@ obj
 					MultiHit = 3
 					Stunner = 2
 					Radius = 1
+					ComboMaster=1
 					IconSize = 1.25
 					Dodgeable=0
 					Cooldown = 150

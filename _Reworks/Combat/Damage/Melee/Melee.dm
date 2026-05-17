@@ -295,7 +295,7 @@
 				var/atk = getStatDmg2()
 				if(enemy.passive_handler.Get("Field of Destruction")||enemy.passive_handler.Get("The Immovable Object"))
 					if(HasHybridStrike())
-						atk/=clamp(sqrt(1+GetFor(GetHybridStrike())/15),1,3)
+						atk/=clamp(sqrt(1+GetFor(GetHybridStrike())/30),1,3)
 				var/def = enemy.getEndStat(1)
 				var/brutalize = GetBrutalize()
 				if(brutalize)

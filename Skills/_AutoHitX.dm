@@ -6543,7 +6543,7 @@ obj
 						atk *= (1 + elem_dmg_bonus)
 				if(m.passive_handler.Get("Field of Destruction")||m.passive_handler.Get("The Immovable Object"))
 					if(Owner.HasHybridStrike())
-						atk/=clamp(sqrt(1+Owner.GetFor(Owner.GetHybridStrike())/15),1,3)
+						atk/=clamp(sqrt(1+Owner.GetFor(Owner.GetHybridStrike())/30),1,3)
 				DEBUGMSG("atk final is: [atk]")
 				var/dmgMulti = Damage
 				if(Owner.HasSpiritFlow())

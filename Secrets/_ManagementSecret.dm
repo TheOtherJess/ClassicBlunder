@@ -213,18 +213,23 @@ SecretInformation
 					p << "Your blood's beat is razor sharp...You've awakened the power of the Ripple!"
 					giveSkills(p)
 					giveVariables(p)
+					p.OxygenMax+=50
 				if(2)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 2
+					p.OxygenMax+=50
 				if(3)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 2
+					p.OxygenMax+=50
 				if(4)
 					p << "Your mastery of the Ripple improves!"
 					nextTierUp = 4
+					p.OxygenMax+=50
 				if(5)
 					p << "Your mastery of the Ripple has reached its peak."
 					nextTierUp = 999
+					p.OxygenMax+=50
 
 
 	Vampire
@@ -532,7 +537,7 @@ SecretInformation
 			applySecretVariable(p, restriction, pickImprove(p, restriction))
 
 
-	SageArts
+	SageArts//TODO BETWEEN WIPES: Make this Senjutsu jesus fucking christ
 		name = "Senjutsu"
 		givenSkills = list("/obj/Skills/Buffs/SlotlessBuffs/Senjutsu/Senjutsu_Focus", "/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Sennin_Mode")
 		applySecret(mob/p)
@@ -766,10 +771,10 @@ mob/Admin3/verb
 					P.ModifyPrime+=1
 					P.Secret="Hamon"
 					P.giveSecret("Hamon")
-				if("Sage Arts")
+				if("Senjutsu")
 					P.ModifyPrime+=1
-					P.Secret="Senjutsu"
-					P.giveSecret("SageArts")
+					P.Secret="Senjutsu"//i want to krill myself.
+					P.giveSecret("SageArts")//better yet i want to krill whoever made it this way
 				if("Haki")
 					// P.ModifyPrime+=1
 					P.Secret="Haki"

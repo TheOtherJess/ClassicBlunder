@@ -1219,6 +1219,16 @@ mob
 			AddOffTax(Val)
 			AddDefTax(Val)
 			AddSpdTax(Val)
+		HealOmniCut(val)
+			StrCut-=min(val, StrCut);
+			ForCut-=min(val, ForCut);
+			EndCut-=min(val, EndCut);
+			OffCut-=min(val, OffCut);
+			DefCut-=min(val, DefCut);
+			SpdCut-=min(val, SpdCut);
+			HealthCut-=min(val, HealthCut);
+			EnergyCut-=min(val, EnergyCut);
+			ManaCut-=min(val, ManaCut);
 		AddStrTax(Val)
 			if(src.HasTaxThreshold())
 				if(src.StrTax>=src.GetTaxThreshold())

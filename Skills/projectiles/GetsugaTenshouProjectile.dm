@@ -28,6 +28,11 @@ obj/Skills/Projectile/Getsuga_Tenshou
 		var/baseDmg = initial(DamageMult)
 		var/bonus = p.CheckSlotless("Tensa Zangetsu") ? 5 : 0
 		DamageMult = (baseDmg + bonus) * benefit
+		if(prob(1) || p.passive_handler.Get("Critical Getsuga"))
+			DamageMult *= 1.5
+			ActiveMessage = "'s Getsuga sparks black--?!?"
+		else
+			ActiveMessage = "releases a wave of Getsuga!"
 		var/inBankai = p.CheckSlotless("Tensa Zangetsu")
 		if(sweet_spot_hit)
 			icon_used = inBankai ? 'Big Getsuga.dmi' : 'Big Getsuga Shikai.dmi'

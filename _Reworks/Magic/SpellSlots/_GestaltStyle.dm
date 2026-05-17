@@ -123,17 +123,17 @@
 			StyleEnd = 1.9
 			StyleSpd = 1.75
 			StyleDef = 1.6
-			passives = list("Steady" = 1, "HolyMod" = 5, "BuffMastery" = 2, "Grit" = 1, "Fury" = 2)
+			passives = list("Steady" = 1, "HolyMod" = 5, "BuffMastery" = 2, "Fury" = 2, "ManaGeneration" = 3, "EnergyGeneration" = 3)
 		else if(tier >= 2)
 			StyleEnd = 1.4
 			StyleSpd = 1.35
 			StyleDef = 1.3
-			passives = list("Steady" = 1, "HolyMod" = 3, "BuffMastery" = 2, "Grit" = 1)
+			passives = list("Steady" = 1, "HolyMod" = 3, "BuffMastery" = 2, "Fury" = 2, "ManaGeneration" = 2, "EnergyGeneration" = 2)
 		else
 			StyleEnd = 1.2
 			StyleSpd = 1.15
 			StyleDef = 1.1
-			passives = list("Steady" = 1, "HolyMod" = 1)
+			passives = list("Steady" = 1, "HolyMod" = 1, "ManaGeneration" = 1, "EnergyGeneration" = 1)
 	verb/Light_Gestalt()
 		set hidden = 1
 		src.Trigger(usr)

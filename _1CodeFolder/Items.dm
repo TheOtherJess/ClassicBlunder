@@ -792,6 +792,7 @@ obj/Items/Armor
 	//InnatelyAscended//just in case
 	//Element
 	var/Conjured=0
+	var/MagicArmor=1
 	Unobtainable=1
 	UpdatesDescription=1
 	Repairable=1
@@ -1494,7 +1495,7 @@ obj/Items/proc/Equip(mob/A)
 		A.overlays+=im
 	else if(!istype(src, /obj/Items/Flask)) // Hijacks ur code lol lmao
 		var/image/im=image(icon=src.icon, pixel_x=src.pixel_x, pixel_y=src.pixel_y, layer=placement)
-			
+
 		if(istype(src, /obj/Items/Sword) || istype(src, /obj/Items/Enchantment/Staff))
 			if(A.ArmamentGlow)
 				im.filters += A.ArmamentGlow
@@ -2323,14 +2324,14 @@ obj/Items/proc/ObjectUse(var/mob/Players/User=usr)
 			OMsg(usr, "[usr] steals [src] from [OldLoc]!")
 			usr.contents+=src
 			usr.Grid("Loot", Lootee=OldLoc)
-			
-	if(istype(src, /obj/Items/Flask)) // we pass the equipped flask proc stored in User (a mob), 
+
+	if(istype(src, /obj/Items/Flask)) // we pass the equipped flask proc stored in User (a mob),
 		if(User.equippedFlask && User.equippedFlask != src) // we check if they have a flask equipped and if it's not the source of this
 			User << "You already have a Flask Equipped" // Dimwit
 			return
 		User.equippedFlask = null
 		src.AlignEquip(User)
-			
+
 
 
 

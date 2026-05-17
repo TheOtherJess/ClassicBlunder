@@ -70,6 +70,7 @@ mob/tierUpSaga(Path)
 						src << "Yata No Kagami lends it's mirrored frame to you, promising to reflect any attacks."
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Yata_no_Kagami/Mirror_Protection)
 						src.AddSkill(new/obj/Skills/Yata_no_Kagami/Mirror_Prison)
+						src.AddSkill(new/obj/Skills/Yata_no_Kagami/Mirror_Reflection)
 						src.AddSkill(new/obj/Skills/Buffs/NuStyle/SwordStyle/Imperial_Heritage)
 
 					if("Durendal")

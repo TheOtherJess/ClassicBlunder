@@ -793,6 +793,7 @@
 #include "Sagas\Weapon Soul\Durendal\Oliphant.dm"
 #include "Sagas\Weapon Soul\Guan Yu\Guan_Yu.dm"
 #include "Sagas\Weapon Soul\Kusanagi\Kusanagi.dm"
+#include "Sagas\Weapon Soul\Kusanagi\Mirror_Reflection.dm"
 #include "Sagas\Weapon Soul\Kusanagi\Yasakani_no_Magatama.dm"
 #include "Sagas\Weapon Soul\Kusanagi\Yata_No_Kagami.dm"
 #include "Sagas\Weapon Soul\Masamune\Masamune.dm"

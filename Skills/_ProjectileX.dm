@@ -6011,6 +6011,22 @@ obj
 										a:Move(W)
 								return
 							else
+								// Mirror Reflection parry/reflect
+								if(istype(a, /mob))
+									var/mob/def = a
+									if(def.mirror_reflect_active)
+										def.mirror_reflect_active = FALSE
+										KenShockwave(def, icon='Icons/Effects/KenShockwave.dmi', Size=1.5, Blend=2, Time=8)
+										var/mob/attacker = src.Owner
+										src.Owner    = def
+										src.Homing   = attacker
+										src.HyperHoming = 1
+										src.Distance = max(src.Distance, 20)
+										return
+									if(def.mirror_parry_active)
+										def.mirror_parry_active = FALSE
+										KenShockwave(def, icon='Icons/Effects/KenShockwave.dmi', Size=1.5, Blend=2, Time=8)
+										return
 								var/Deflect=0
 								/*var/defIntim = m.GetIntimidation()
 								var/atkIntim = Owner.GetIntimidation()

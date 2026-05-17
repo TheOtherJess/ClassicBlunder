@@ -6468,6 +6468,15 @@ obj
 				AlreadyHit |= m
 				for(var/obj/AutoHitter/ah in autohitChildren)
 					ah.AlreadyHit |= m
+				// Mirror Reflection from Kusanagi
+				var/mirror_reflect = FALSE
+				if(m.mirror_parry_active)
+					m.mirror_parry_active = FALSE
+					KenShockwave(m, icon='Icons/Effects/KenShockwave.dmi', Size=1.5, Blend=2, Time=8)
+					return
+				if(m.mirror_reflect_active)
+					m.mirror_reflect_active = FALSE
+					mirror_reflect = TRUE
 				if(istype(Owner, /mob/Player/AI) && m != Owner)
 					var/mob/Player/AI/a = Owner
 					if(!a.ai_team_fire && a.AllianceCheck(m))
@@ -6962,6 +6971,11 @@ obj
 						src.Owner.passive_handler.Increase("Combustion", src.Combustion)
 					if(src.IceAge)
 						src.Owner.passive_handler.Increase("IceAge", src.IceAge)
+					if(mirror_reflect && Owner)
+						KenShockwave(m, icon='Icons/Effects/KenShockwave.dmi', Size=1.5, Blend=2, Time=8)
+						flick("Attack", Owner)
+						Owner.DoDamage(Owner, FinalDmg, src.UnarmedTech, src.SwordTech, Destructive=src.Destructive, Autohit=TRUE)
+						return
 					damageDealt = src.Owner.DoDamage(m, FinalDmg, src.UnarmedTech, src.SwordTech, Destructive=src.Destructive, innateLifeSteal = LifeSteal, Autohit = TRUE)
 					if(src.CriticalChance)
 						src.Owner.passive_handler.Decrease("CriticalChance", src.CriticalChance)

@@ -91,7 +91,7 @@
             AngerMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = +25%, T1 = +50%  T2 = +75% anger multiplier
             EndMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 endurance mult (DOWNSIDE)
             DefMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 Defense mult (DOWNSIDE)
-            passives["PureReduction"] -= -10 + (P.equippedFlask.Tier+1) // T0 = -9, T1 = -8 T2 = -7, PS: -1 PureReduction = 5% extra damage taken,
+            passives["PureReduction"] -= 10 + (P.equippedFlask.Tier+1) // T0 = -9, T1 = -8 T2 = -7, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] = ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
         if(P.equippedFlask.Searing == 1) // Damage
             StrMult = 1 + (P.equippedFlask.Tier+1)/10 // T0 = 1.1, T1 = 1.2, T2 = 1.3

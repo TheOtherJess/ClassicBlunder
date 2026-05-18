@@ -44,6 +44,9 @@ transformation
 					mastery=75
 				if(user.Potential>=35&&mastery<100)
 					mastery=100
+				if(user.Potential>=45&&user.transUnlocked<2)
+					user.transUnlocked=2
+					user<<"<b>Through your staggering mastery over Super Saiyan, you have naturally unlocked Super Saiyan Two!</b>"
 				if(mastery >= 50)
 					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2, user))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2)
@@ -176,6 +179,16 @@ transformation
 					mastery=75
 				if(user.Potential>=43&&mastery<100)
 					mastery=100
+				if(mastery >= 100)
+					passives = list("Instinct" = 2, "Flow" = 2, "Flicker" = 1, "Pursuer" = 2, "PureDamage" = 3, "PureReduction" = 3, "SaiyanPower2"=0.75)
+				if(user.Potential>=55&&user.transUnlocked<3)
+					if(user.isRace(SAIYAN)||user.isRace(HALFSAIYAN)&&user.Class=="Justice"&&(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive))
+						user.transUnlocked=3
+						user<<"<b>Through your staggering mastery over Super Saiyan Two, you have naturally unlocked Super Saiyan Three!</b>"
+				if(user.Potential>=60&& user.Class == "Compassion")
+					if(user.isRace(HALFSAIYAN))
+						user.transUnlocked=3
+						user<<"<b>Your unsurpassed potential is now yours to command! (Unlocked Ultimate Form)</b>"
 				if(mastery >= 100 && user.Class == "Justice")
 					if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive)
 						if(mastery >= 100)
@@ -231,7 +244,7 @@ transformation
 			form_icon_2_icon = 'SS3Sparks.dmi'
 			form_hair_icon = 'Hair_SSj3.dmi'
 			form_icon_1_icon = 'Hair_SSj3.dmi'
-			passives = list("Flicker" = 1, "Pursuer" = 1, "PureDamage" = 1, "PureReduction" = 1, "SaiyanPower3"=0.7)
+			passives = list("Flicker" = 1, "Pursuer" = 1, "PureDamage" = 2, "PureReduction" = 2, "SaiyanPower3"=1)
 			//Autounlocked at 65, intended to be unlocked at 45
 			unlock_potential = 65
 			speedadd = 0.5 //these are additive. base is 1, so 0.3=1.3x

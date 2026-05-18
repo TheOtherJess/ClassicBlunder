@@ -53,20 +53,9 @@ mob
 	offense = 1.4
 	defense = 1.4
 	endurance = 1.4
-	passives = list(\
-		"TechniqueMastery" = 6,\
-		"BuffMastery" = 6,\
-		"PureReduction" = 6,\
-		"PureDamage" = 6,\
-		"GodKi" = 1.5,\
-		"HellRisen" = 1,\
-		"DemonicDurability" = 6,\
-		"Brutalize" = 6,\
-		"MovementMastery" = 6,\
-		"Steady" = 6,\
-		"ManaStats" = 6\
-	)
 	transformation_message = "usrName becomes a Devil!"
+	mastery_boons(mob/user)
+		passives = list("GodKi" = 0.2+(user.AscensionsAcquired/10), "HellRisen" = 0.75, "DemonicDurability" = 6, "Brutalize" = 2, "PureDamage" = user.AscensionsAcquired, "PureReduction" = user.AscensionsAcquired, "MovementMastery" = user.AscensionsAcquired, "BuffMastery"=user.AscensionsAcquired)
 	transform_animation(mob/user)
 		var/ShockSize = 5
 		for(var/wav = 5, wav > 0, wav--)

@@ -1512,8 +1512,8 @@ NEW VARIABLES
 			ActiveMessage="unleashes the might of a Super Namekian!"
 			OffMessage="tires out..."
 			adjust(mob/p)
-				passives = list("MagnifiedStr" = 0.2*min(round(p.Potential/10, 1),1), "MagnifiedEnd" = 0.2*min(round(p.Potential/10, 1),1),"MagnifiedFor" = 0.2*min(round(p.Potential/10, 1),1),\
-					"MagnifiedOff" = 0.2*min(round(p.Potential/10, 1),1),"MagnifiedDef" = 0.2*min(round(p.Potential/10, 1),1))
+				passives = list("MagnifiedStr" = 0.2*round(p.Potential/10, 1), "MagnifiedEnd" = 0.2*round(p.Potential/10, 1),"MagnifiedFor" = 0.2*round(p.Potential/10, 1),\
+					"MagnifiedOff" = 0.2*round(p.Potential/10, 1),"MagnifiedDef" = 0.2*round(p.Potential/10, 1),"MovementMastery" = 1*round(p.Potential/10, 1))
 			verb/Super_Namekian()
 				set category="Skills"
 				if(!usr.BuffOn(src))
@@ -4072,12 +4072,11 @@ NEW VARIABLES
 			IconLock='Ripple Arms.dmi'
 			LockX=0
 			LockY=0
-			TimerLimit=60
-			Cooldown=120
+			Cooldown=1
 			ActiveMessage="projects a disciplined aura as their fists crackle with lightning!"
 			OffMessage="releases their tremendous focus..."
 			adjust(mob/p)
-				passives = list("SoftStyle" = p.SagaLevel, "StunningStrike" = p.SagaLevel/2, "SpiritHand" = p.SagaLevel / 1.25, "Paralyzing" = p.SagaLevel/2)
+				passives = list("SoftStyle" = p.SagaLevel, "StunningStrike" = p.SagaLevel/2, "SpiritHand" = p.SagaLevel, "Paralyzing" = p.SagaLevel/2, "ComboMaster" = 1)
 			verb/Denjin_Renki()
 				set category="Skills"
 				if(!usr.BuffOn(src))
@@ -4499,7 +4498,7 @@ NEW VARIABLES
 			SagaSignature=1
 			Mastery=-1
 			UnrestrictedBuff=1
-			passives = list("MagnifiedStr" = 0.35, "MagnifiedEnd" = 0.35,"MagnifiedFor" = 0.35, "MovementMastery" = 4, "SaiyanPower2"=0.5,\
+			passives = list("MagnifiedStr" = 0.35, "MagnifiedEnd" = 0.35,"MagnifiedFor" = 0.35, "MovementMastery" = 4, "SaiyanPower2"=0.75,\
 				"Flicker" = 2, "Pursuer" = 2, "PureDamage" = 1, "PureReduction" = 1)
 			ActiveMessage="magnifies their Super Saiyan 2 power!"
 			OffMessage="releases their magnified power..."
@@ -9874,9 +9873,10 @@ NEW VARIABLES
 					..()
 			Full_Moon_Form
 				adjust(mob/p)
+					TimerLimit=180
 					if(!altered)
 						if(p.Secret == "Werewolf")
-							passives = list("SpecialBuffLock" = 1,"Curse" = 1, "Godspeed" =  p.secretDatum.currentTier*2, "MovementMastery" = p.secretDatum.currentTier * 2,\
+							passives = list("SpecialBuffLock" = 1,"Curse" = 1, "Godspeed" =  p.secretDatum.currentTier*2,\
 							 "Pursuer" = 2, "BlurringStrikes" = p.secretDatum.currentTier)
 							MovementMastery = p.secretDatum.currentTier * 2
 							Godspeed = p.secretDatum.currentTier * 2
@@ -9899,7 +9899,7 @@ NEW VARIABLES
 				HitSpark='Hit Effect Vampire.dmi'
 				HitX=-32
 				HitY=-32
-				TimerLimit=60
+				TimerLimit=180
 				NameFake="Wolf"
 				ActiveMessage="becomes the incarnation of wild nature itself!"
 				OffMessage="retains their humanity..."
@@ -9948,6 +9948,7 @@ NEW VARIABLES
 					var/SpiralPotential
 					if(!altered)
 						var/secretLevel = p.secretDatum.currentTier
+						var/asc = p.AscensionsAcquired
 						if(p.Target && ismob(p.Target))
 							healthDiff = p.Target.Health-p.Health
 						switch(healthDiff)
@@ -9989,10 +9990,10 @@ NEW VARIABLES
 							p.PilotingProwess=SpiralPotential
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
-						PowerMult = 1+(0.015*secretLevel*secretLevel)
-						StrMult = 1.25 + (0.035*secretLevel*secretLevel)
-						ForMult = 1.25 + (0.035*secretLevel*secretLevel)
-						EndMult = 1.25 + (0.035*secretLevel*secretLevel)
+						PowerMult = 1+(0.015*secretLevel*secretLevel) + (0.005*asc*asc)
+						StrMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
+						ForMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
+						EndMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
 						TimerLimit= (15 * (secretLevel)) * TyrantBonus
 						Cooldown = 61 - ((5 * p.AscensionsAcquired))

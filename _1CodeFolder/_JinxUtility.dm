@@ -554,22 +554,25 @@ mob
 
 			// WEREWOLF HUNGER MECHANIC
 			if(src.Secret == "Werewolf" && CheckSlotless("New Moon Form"))
-				var/SecretInformation/Werewolf/s = src.secretDatum
-				s.addHunger(val)
-				Update_Stat_Labels()
+				if(!SecondStrike)
+					var/SecretInformation/Werewolf/s = src.secretDatum
+					s.addHunger(val)
+					Update_Stat_Labels()
 			//END WEREWOLF HUNGER MECHANIC
 
 			if(hasSecret("Eldritch"))
-				var/SecretInformation/Eldritch/s = src.secretDatum
-				s.addMadness(src,val*(s.getMadnessLimit(src)/100))
-				Update_Stat_Labels()
+				if(!SecondStrike)
+					var/SecretInformation/Eldritch/s = src.secretDatum
+					s.addMadness(src,val*(s.getMadnessLimit(src)/100))
+					Update_Stat_Labels()
 
 			if(defender.hasSecret("Eldritch"))
-				var/SecretInformation/Eldritch/s = defender.secretDatum
-				s.addMadness(defender,val*(s.getMadnessLimit(defender)/100))
-				defender.Update_Stat_Labels()
+				if(!SecondStrike)
+					var/SecretInformation/Eldritch/s = defender.secretDatum
+					s.addMadness(defender,val*(s.getMadnessLimit(defender)/100))
+					defender.Update_Stat_Labels()
 
-			if(src.HasLifeSteal() || innateLifeSteal)
+			if(src.HasLifeSteal()&&!SecondStrike || innateLifeSteal&&!SecondStrike)
 				var/CursedBlood=0
 				var/NoBlood=0
 				NoBlood=defender.CyberCancel

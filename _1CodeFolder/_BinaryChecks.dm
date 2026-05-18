@@ -1209,6 +1209,10 @@ mob
 			if(passive_handler.Get("Compassion")&&Health<=50)
 				if(Target.Health>Health)
 					Return += 5*clamp((proportionalHealth("Lower")/10),1,4)
+			if(passive_handler.Get("SpiralPowerUnlocked")||passive_handler.Get("Longing"))
+				if(src.Target.HasGodKi())
+					if(Target.GetGodKi() > GetGodKi())
+						Return += 2*(Target.GetGodKi()/GetGodKi())
 			if(Class=="Heroic"&&ActiveBuff)
 				Return*=1.5
 			return Return
@@ -1241,6 +1245,10 @@ mob
 			if(passive_handler.Get("Compassion")&&Health>51)
 				if(Target.Health>Health)
 					Return += 3*clamp((proportionalHealth("Lower")/10),1,4)
+			if(passive_handler.Get("SpiralPowerUnlocked")||passive_handler.Get("Longing"))
+				if(src.Target.HasGodKi())
+					if(Target.GetGodKi() > GetGodKi())
+						Return += 2*(Target.GetGodKi()/GetGodKi())
 			if(DownToEarth>0)
 				Return*=1*((100-DownToEarth)/100)
 			if(Class=="Heroic"&&ActiveBuff)

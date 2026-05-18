@@ -617,7 +617,7 @@ proc/
 				KeybladePassives=list("PULock" = 1, "HybridStrike" = 1, "Flow" = 3, "Instinct" = 3)
 				return KeybladePassives
 			if("Ultima Weapon")
-				KeybladePassives=list("PULock" = 1, "PureDamage" = 10, "PureReduction" = 10)
+				KeybladePassives=list("PULock" = 1, "PureDamage" = 10, "PureReduction" = 10, "GodKi" = 0.25)
 				return KeybladePassives
 //heavy
 			if("Earthshaker")

@@ -21,6 +21,7 @@
 		HitMessage="manifests the One who Completed Them-- and together, crushes through all obstacles!"
 		BuffSelf=0
 		HitSparkIcon = 'Slash_Multi.dmi'
+		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Final_Session"
 
 	Big_Boot
 		Instinct=2

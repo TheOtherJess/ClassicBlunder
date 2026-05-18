@@ -483,6 +483,7 @@ mob/var
 	EnergyAssimilators=0
 	EnhancedSmell=0
 	BioAndroid=0
+	PerfectForm=0
 	SuperAndroid=0
 	CyberneticMainframe
 	SampleCollected=0

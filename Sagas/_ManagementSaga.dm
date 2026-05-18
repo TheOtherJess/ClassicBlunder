@@ -119,7 +119,7 @@ mob/Admin3/verb
 	SagaManagement(mob/Players/P in players)
 		set category="Admin"
 		var/Level7=0
-		var/list/SagaList=list("Cancel","Ansatsuken","Devil Summoner","Eight Gates","Cosmo","King of Courage", "Hero","Hiten Mitsurugi-Ryuu","Kamui","Keyblade","King of Braves","Path of a Hero: Rebirth","Sharingan","Shinigami","Weapon Soul", "Unlimited Blade Works","Force")
+		var/list/SagaList=list("Cancel","Ansatsuken","Devil Summoner","Eight Gates","Cosmo", "Hero","Hiten Mitsurugi-Ryuu","Kamui","Keyblade","King of Braves","Path of a Hero: Rebirth","Sharingan","Shinigami","Weapon Soul", "Unlimited Blade Works","Force")
 		if(P.Saga)
 			if(P.Saga=="Keyblade"||P.Saga=="Weapon Soul"||P.Saga=="Cosmo"||P.Saga=="King of Braves"||P.Saga=="Hiten Mitsurugi-Ryuu"||P.Saga=="Shinigami")
 				Level7=1

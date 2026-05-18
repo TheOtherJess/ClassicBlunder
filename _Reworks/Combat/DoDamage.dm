@@ -38,10 +38,8 @@
 		// event schedules its own decrease, so two hits 5s apart give 20 LifeSteal
 		// for the first 5s, 10 for the next 5s, then back to baseline.
 		if(src.hasMagePassive(/mage_passive/dark/Shadowbringer))
-			src.passive_handler.Increase("LifeSteal", 10)
-			spawn(100)
-				if(src && src.passive_handler)
-					src.passive_handler.Decrease("LifeSteal", 10)
+			if(CheckSlotless("Shadow Infusion")) SlotlessBuffs["Shadow Infusion"].Timer = 0;
+			else findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Shadow_Infusion);
 		DamageSelf(val)
 		return 0;
 	else if(defender == null)

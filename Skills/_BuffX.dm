@@ -1724,6 +1724,41 @@ NEW VARIABLES
 			verb/Saiyan_Carnage()
 				set category="Skills"
 				src.Trigger(usr)
+		SaiyanPurity
+			SignatureTechnique=3
+			Mastery=1
+			UnrestrictedBuff=1
+			StrMult=1.3
+			ForMult=1.3
+			OffMult=1.25
+			KenWave=5
+			KenWaveSize=0.5
+			KenWaveIcon='KenShockwaveDivine.dmi'
+			passives = list("GodKi" = 0.1, "EnergyGeneration" = 3, "SlayerMod" = 1.5, "FavoredPrey" = "Mortal")
+			ActiveMessage="manifests the superiority of their birthright!"
+			OffMessage="lets their contempt for mortal life regress."
+			adjust(mob/p)
+				var/transformation/saiyan/super_saiyan_rose/rose = locate(/transformation/saiyan/super_saiyan_rose) in p.race.transformations
+				if(rose)
+					if(rose.mastery >= 25)
+						ActiveMessage="anger at their Lessers manifests into sparks of godhood!"
+						passives = list("GodKi" = 0.2, "EnergyGeneration" = 3, "SlayerMod" = 2, "FavoredPrey" = "Mortal", "Heavensent" = 1)
+						AngerMult=1.1
+					if(rose.mastery >= 50)
+						ActiveMessage="manifests true animosity towards mortalss!"
+						passives = list("GodKi" = 0.3, "EnergyGeneration" = 4, "SlayerMod" = 3, "FavoredPrey" = "Mortal", "Heavensent" = 2)
+						AngerMult=1.3
+					if(rose.mastery >= 75)
+						ActiveMessage="'s animosity manifests them as close to perfection as they can get!"
+						passives = list("GodKi" = 0.4, "EnergyGeneration" = 5, "SlayerMod" = 4, "FavoredPrey" = "Mortal", "Heavensent" = 3)
+						AngerMult=1.4
+					if(rose.mastery >= 100)
+						ActiveMessage="becomes the perfect image of Godhood!"
+						passives = list("GodKi" = 0.5, "EnergyGeneration" = 5, "SlayerMod" = 5, "FavoredPrey" = "All", "Purity" = 1, "BeyondPurity" = 1, "Heavensent" = 4)
+						AngerMult=1.5
+			verb/Saiyan_Purity()
+				set category="Skills"
+				src.Trigger(usr)
 		SuperSaiyanPerfected
 			SignatureTechnique=3
 			Mastery=1

@@ -31,7 +31,7 @@ globalTracker/var/SYMBIOTE_DMG_TEST = 2
                 . += percent
         else
             . += forced
-        if(defender.HasNull())
+        if(defender.HasNull() && !isRace(DEMIFIEND) && !defender.isRace(DEMIFIEND) && !istype(src, /mob/Player/AI/Demon) && !istype(defender, /mob/Player/AI/Demon))
             . = 0;
 
 
@@ -42,7 +42,7 @@ globalTracker/var/
 #define VALID_SPEC_DMG_TYPE list("Holy", "Abyss", "Slayer", "Deicide")//only slayer is implemented atm
 /mob/proc/attackModifiers(mob/defender, list/forcedDmgList=list())
     var/godKiNerf = NO_GOD_KI_REDUCTION;
-    if(defender.HasGodKi() && !HasGodKi() && !HasNull()) godKiNerf += max(0, (glob.MORTAL_VS_GOD_SPEC_DMG_REDUCTION * defender.GetGodKi()));
+    if(defender.HasGodKi() && !HasGodKi() && !HasNull() && !isRace(DEMIFIEND) && !defender.isRace(DEMIFIEND) && !istype(src, /mob/Player/AI/Demon) && !istype(defender, /mob/Player/AI/Demon)) godKiNerf += max(0, (glob.MORTAL_VS_GOD_SPEC_DMG_REDUCTION * defender.GetGodKi()));
     if(passive_handler.Get("Enraged") && Anger)
         if(!defender.Anger || Anger > defender.Anger)
             . += passive_handler.Get("Enraged") / glob.ENRAGED_DAMAGE_DIVISOR

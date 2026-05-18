@@ -1554,7 +1554,8 @@ mob
 								A.NeedsInjury=rand(10,A.TooMuchInjury-5)
 
 					if(A.ManaThreshold&&!A.Using&&!src.KO&&!AGLock)//TODO: Align the requirements and variables more sensibly in this area
-						if(src.ManaAmount>=A.ManaThreshold)
+						if(src.ManaAmount>max(ManaMax, A.ManaThreshold))//this basically only applies to senjutsu so
+							if(A.BuffName=="Sage Mode") A.adjust(src);
 							A.Trigger(src,Override=1)
 					if(A.NeedsAnger&&!A.Using&&!src.KO&&!AGLock)
 						if(src.Anger)

@@ -3977,7 +3977,7 @@ obj/Items/Gear
 				if(answer == "Yes")
 					MechType = input(player, "What type?") in list("Speed","Tank","Assault")
 			else
-				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault", "MobileFighter")
+				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault")
 		proc/setup(mob/player)
 			var/level2 = Level>=2 ? 1 : 0
 			var/level4 = Level>=4 ? 1 : 0

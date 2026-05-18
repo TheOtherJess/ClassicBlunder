@@ -89,7 +89,8 @@
 				SpdMult = 0.7
 				OffMult = 1.4
 			if("Demonic")
-				IconTransform = 'DTRed.dmi'
+				if(!altered)
+					IconTransform = 'DTRed.dmi'
 				TransformX = 0
 				TransformY = 0
 				StrMult = 1.35

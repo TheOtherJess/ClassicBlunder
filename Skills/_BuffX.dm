@@ -2287,7 +2287,7 @@ NEW VARIABLES
 		Spirit_Burst
 			SignatureTechnique=3
 			EnergyThreshold=25
-			passives = list("SweepingStrikes"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
+			passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 			ActiveMessage="spikes their energy in sudden bursts!"
 			OffMessage="quells their energy..."
 			verb/Spirit_Burst()
@@ -11936,8 +11936,8 @@ NEW VARIABLES
 			Sennin_Mode
 				BuffName="Sage Mode"
 				ManaThreshold=125
-				TooLittleMana=50
-				passives = list("ManaLeak" = 2, "ManaStats" = 1, "DrainlessMana" = 1, "MagicFocus" = 1, "AllOutAttack" = 1, "SuperDash" = 1)
+				TooLittleMana=25
+				passives = list("SweepingStrike" = 1, "ManaLeak" = 1, "ManaStats" = 1, "DrainlessMana" = 1, "MagicFocus" = 1, "AllOutAttack" = 1, "SuperDash" = 1)
 				ManaLeak=2
 				ManaStats=1
 				DrainlessMana=1
@@ -11950,6 +11950,16 @@ NEW VARIABLES
 				IconLayer=4
 				ActiveMessage="integrates the natural energy in their body; subtle markings appear around their eyes!"
 				OffMessage="loses their markings as the natural energy runs dry..."
+				adjust(mob/p)
+					var/mastery = p.secretDatum.currentTier;
+					passives["ManaLeak"] = max(0.1, 1 - (mastery*0.2))
+					passives["ManaStats"] = mastery
+					passives["SuperDash"] = 1 + (mastery * 0.2);
+					passives["Pursuer"] = mastery;
+					passives["Godspeed"] = mastery;
+					passives["PureDamage"] = round(mastery / 2);
+					passives["PureReduction"] = round(mastery / 2);
+					
 mob
 	proc
 		UseBuff(var/obj/Skills/Buffs/B, var/Override)

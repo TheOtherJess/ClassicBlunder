@@ -548,17 +548,11 @@ SecretInformation
 					giveVariables(p)
 				if(2)
 					p << "Handling natrual energy becomes easier..."
-					var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Sennin_Mode/focus = new()
-					focus = locate() in p
-					if(!focus)
-						p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Sennin_Mode)
-						focus = locate() in p
 					var/obj/Skills/Queue/Rasengan/r = new()
 					r = locate() in p
 					if(!r)
 						p.AddSkill(new/obj/Skills/Queue/Rasengan)
 						p << "You have learned the Rasengan!"
-					focus.passives["ManaStats"] = 2
 					nextTierUp = 4
 				if(3)
 					p << "Your mastery of natural energy is coming close to its peak..."
@@ -570,17 +564,11 @@ SecretInformation
 						p << "You have learned the Oodama Rasengan!"
 				if(4)
 					p << "You have climbed the mountain of natural energy, and have become a Sage!"
-					var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Sennin_Mode/focus = new()
-					focus = locate() in p
-					if(!focus)
-						p.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Sennin_Mode)
-						focus = locate() in p
 					var/obj/Skills/Projectile/Rasenshuriken/r = new()
 					r = locate() in p
 					if(!r)
 						p.AddSkill(new/obj/Skills/Projectile/Rasenshuriken)
 						p << "You have learned the Rasenshuriken!"
-					focus.passives["ManaStats"] = 3
 					nextTierUp = 4
 				if(5)
 					nextTierUp=999

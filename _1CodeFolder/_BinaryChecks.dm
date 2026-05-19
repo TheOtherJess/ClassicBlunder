@@ -2063,12 +2063,6 @@ mob
 		GetGodKi()
 			if(passive_handler.Get("Deicide") || passive_handler.Get("EndlessNine") || passive_handler.Get("Null")) return 0;
 			var/Total=passive_handler.Get("GodKi")
-			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)//||secretDatum.secretVariable["EldritchInstinct"]==1&&src.Potential>=55)
-				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")//||secretDatum.secretVariable["EldritchInstinct"]==1)
-					Total+=glob.T3_STYLES_GODKI_VALUE
-			if(glob.T4_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=4&&src.Potential>=70)//||secretDatum.secretVariable["EldritchInstinct"]==1&&src.Potential>=70)
-				if(src.SagaLevel<1&&!glob.T4_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")//||secretDatum.secretVariable["EldritchInstinct"]==1)
-					Total+=glob.T4_STYLES_GODKI_VALUE
 			if(src.HasSpiritPower()>=1 && FightingSeriously(src, 0))
 				if(src.Health<=(30+src.TotalInjury)*src.GetSpiritPower())
 					if(src.SenseUnlocked<7)//saintz
@@ -2115,6 +2109,14 @@ mob
 				Total += 0.25
 			if(Total>=glob.GOD_KI_CAP)
 				Total=glob.GOD_KI_CAP
+			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)
+				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
+					if(Total<=glob.T3_STYLES_GODKI_VALUE)
+						Total=glob.T3_STYLES_GODKI_VALUE
+			if(glob.T4_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=4&&src.Potential>=70)
+				if(src.SagaLevel<1&&!glob.T4_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
+					if(Total<=glob.T4_STYLES_GODKI_VALUE)
+						Total=glob.T4_STYLES_GODKI_VALUE
 			if(src.DownToEarth>0)
 				Total*=1*((100-src.DownToEarth)/100)
 			if(src.passive_handler.Get("The Power of Stories"))

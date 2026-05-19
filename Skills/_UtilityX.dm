@@ -697,6 +697,20 @@ obj/Skills/Utility
 				usr.Observing=0
 				return
 			else
+				if(selector.passive_handler.Get("Anti-Scrying"))
+					var/antiscry = 1
+					if(usr.passive_handler.Get("God's Gaze"))
+						antiscry = 0
+					else if(usr.HasGodKi())
+						if(usr.passive_handler.Get("GodKi") > selector.passive_handler.Get("GodKi"))
+							antiscry = 0
+					if(antiscry)
+						usr << "<b><font color=[selector.Text_Color]><font size=+1>[selector] reflects your attempt at Scrying-- You feel yourself struck with retribution!</b></font color></font size>"
+						selector << "<b>[usr] has attempted to observe you!</b>"
+						usr.DoDamage(usr, 25)
+						if (usr.Health <= 0)
+							usr.Unconscious(null, "scrying disruption!")
+						return
 				Observify(usr,selector)
 				if(usr.HasEmptyGrimoire())
 					usr << "[selector] - ([selector.x], [selector.y], [selector.z])"

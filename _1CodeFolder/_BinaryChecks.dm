@@ -2113,7 +2113,7 @@ mob
 					Total=0.25//fully ascended dragon
 			if(passive_handler.Get("CreateTheHeavens") && src.DoubleHelix>=5&&isRace(HUMAN))
 				Total += 0.25
-			if(Total>=glob.GOD_KI_CAP)
+			if(Total>=glob.GOD_KI_CAP && !passive_handler.Get("God"))
 				Total=glob.GOD_KI_CAP
 			if(src.DownToEarth>0)
 				Total*=1*((100-src.DownToEarth)/100)

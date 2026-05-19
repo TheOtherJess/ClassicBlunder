@@ -57,6 +57,8 @@ mob/proc/GetAssess()
 		IntimDisplay=1
 	if(src.HasGodKi()&&!src.passive_handler.Get("Utterly Powerless"))
 		GodKiDisplay=src.GetGodKi()
+		if(src.passive_handler.Get("God"))
+			GodKiDisplay="???"
 	else
 		GodKiDisplay=0
 	if(src.HasMaouKi()&&!src.passive_handler.Get("Utterly Powerless"))
@@ -68,6 +70,8 @@ mob/proc/GetAssess()
 	if(power_display < 1 || power_display == null||src.passive_handler.Get("Utterly Powerless"))
 		power_display = 1
 	var/PotentialDisplay=src.Potential
+	if(passive_handler.Get("God"))
+		PotentialDisplay="???"
 	if(passive_handler.Get("Utterly Powerless"))
 		PotentialDisplay=1
 		BaseDisplay=1

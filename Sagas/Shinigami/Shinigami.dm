@@ -62,7 +62,7 @@ mob/tierUpSaga(Path)
 
 			if(5)
 				src << "You have mastered your Bankai. Its drain fades..."
-				src.passive_handler.Increase("GodKi", 0.25)
+				src.passive_handler.Increase("GodKi", 0.15)
 				switch(ShinigamiRelease)
 					if("Zangetsu")
 						if(!locate(/obj/Skills/Buffs/SpecialBuffs/Sword/Getsuga_Tenshou_Clad, src))
@@ -71,7 +71,7 @@ mob/tierUpSaga(Path)
 				updateShinigamiAscended()
 
 			if(6)
-				src.passive_handler.Increase("GodKi", 0.25)
+				src.passive_handler.Increase("GodKi", 0.1)
 				switch(ShinigamiRelease)
 					if("Zangetsu")
 						if(!locate(/obj/Skills/Buffs/SpecialBuffs/Sword/Final_Getsuga_Tenshou, src))

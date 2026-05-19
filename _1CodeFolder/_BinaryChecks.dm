@@ -1983,8 +1983,7 @@ mob
 			return Return
 
 		HasMaouKi()
-			if(passive_handler["MaouKi"])
-				return 0
+			if(passive_handler.Get("MaouKi")) return 0//nevermind lets just leave that alone
 			return 0
 		GetMaouKi()
 			var/Total=passive_handler.Get("GodKi")

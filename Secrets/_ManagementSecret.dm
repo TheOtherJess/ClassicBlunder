@@ -7,6 +7,7 @@
 #define VALID_SECRET_LIST list("Jagan Eye", "Haki", "Hamon", "Vampire", "Werewolf", "Heavenly Restriction", "Senjutsu", "Shin",\
 "Ultra Instinct", "Zombie", "Necromancy", "Eldritch", "Eldritch (Shrouded)", "Eldritch (Reflected)", "Black Flash", "Spiral")
 #define RACIAL_SECRETS list("Eldritch (Shrouded)", "Eldritch (Reflected)")
+#define RARE_LIST list(MAKAIOSHIN, MAJIN, DEMON, ANGEL, ELDRITCH, DEMIFIEND)
 
 //thank you hadoje
 /mob/var/SecretInformation/secretDatum = new()
@@ -152,7 +153,7 @@ SecretInformation
 				return 0*/
 			if(prob((currentTier**glob.CONQ_HAKI_CHANCE)+4) && secretVariable["ConquerorsHaki"] != 1)
 				unlockConquerorsHaki(p)
-		proc/unlockConquerorsHaki(mob/p)
+		proc/unlockConquerorsHaki(mob/p)//god i want to stick this shit in a blender
 			p << "You have the qualities of a King..."
 			p << "You have awakened the power of Conqueror's Haki!"
 			secretVariable["ConquerorsHaki"] = 1
@@ -740,6 +741,9 @@ mob/Admin3/verb
 		if(P.Secret)
 			src << "They already have a secret."
 			return
+		if(P.RaceInRareList())
+			src << "No."
+			return
 		else
 			switch(Selection)
 				if("Spirits of The World")
@@ -803,3 +807,8 @@ mob
 			if(src.secretDatum.secretVariable["HakiCounter[Type]"]>=100&&!src.secretDatum.secretVariable["HakiSpecialization"])
 				src.secretDatum.secretVariable["HakiSpecialization"]="[Type]"
 				src << "Your Haki becomes centered around the Color of [Type]!"
+
+/mob/proc/RaceInRareList()
+	for(var/x in RARE_LIST)
+		if(isRace(x)) return 1;
+	return 0;

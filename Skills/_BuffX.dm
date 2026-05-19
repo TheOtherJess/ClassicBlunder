@@ -2869,7 +2869,7 @@ NEW VARIABLES
 				SignatureTechnique=5
 				ForMult=5
 				NoSword=0
-				passives = list("MaouKi" = 1, "GodKi" = 0.5, "MovingCharge" = 1, "QuickCast" = 6, "DualCast" = 3, "SpiritStrike" = 1, "ThunderHerald", "IceHerald", "AbyssMod" = 5, \
+				passives = list("MaouKi" = 1, "GodKi" = 0.5, "MovingCharge" = 1, "QuickCast" = 6, "DualCast" = 3, "SpiritStrike" = 1, "ThunderHerald", "IceHerald", "AbyssMod" = 10, \
 									"AmuletBeaming" = 1, "MartialMagic" = 1, "Atomizer" = 1, "SuperCharge" = 2, "BetterAim" = 5, "DemonicInfusion" = 1, "CriticalChance" = 35, "CriticalDamage" = 0.15)
 				ElementalDefense = "Void"
 				ElementalOffense = "Void"

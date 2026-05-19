@@ -48,12 +48,10 @@ globalTracker/var/
             . += passive_handler.Get("Enraged") / glob.ENRAGED_DAMAGE_DIVISOR
     var/forcedHoly = getForcedDamageType("Holy", forcedDmgList)
     if(HasHolyMod() || forcedHoly)
-        var/holyMag = max(HasHolyMod() ? GetHolyMod() : 0, forcedHoly)
-        . += HolyDamage(defender, holyMag) / glob.HOLY_DAMAGE_DIVISOR
+        . += (HolyDamage(defender, forcedHoly) / glob.HOLY_DAMAGE_DIVISOR)
     var/forcedAbyss = getForcedDamageType("Abyss", forcedDmgList)
     if(HasAbyssMod() || forcedAbyss)
-        var/abyssMag = max(HasAbyssMod() ? GetAbyssMod() : 0, forcedAbyss)
-        . += AbyssDamage(defender, abyssMag) / glob.ABYSS_DAMAGE_DIVISOR
+        . += (AbyssDamage(defender, forcedAbyss) / glob.ABYSS_DAMAGE_DIVISOR)
     . += GetSlayerMod(defender, getForcedDamageType("Slayer", forcedDmgList)) / glob.SLAYER_DAMAGE_DIVISOR; //validates within the GetSlayerMod proc, which does still need to be moved out of _binaryChecks
     if(passive_handler.Get("Deicide")) . += DeicideDamage(defender) / glob.DEICIDE_DAMAGE_DIVISOR
     else . /= max(NO_GOD_KI_REDUCTION, godKiNerf);

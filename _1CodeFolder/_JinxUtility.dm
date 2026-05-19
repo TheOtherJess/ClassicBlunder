@@ -1499,7 +1499,7 @@ mob
 
 			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 1.5*(Health/100))
 				mult = 1.5*(Health/100)
-			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50)
+			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
 				mult = 0
 			return mult
 
@@ -2980,26 +2980,11 @@ mob
 			// holy strength when the attacker has no HolyMod passive.
 			var/HolyDamageValue = Forced ? Forced : src.GetHolyMod()
 			if(P.CheckSlotless("Devil Arm") && !P.isRace(DEMON) && !P.isRace(MAKAIOSHIN))
-				if(!Forced)
-					return HolyDamageValue
-				else
-					return HolyDamageValue
+				return HolyDamageValue
 			if(P.UsingMuken())
-				if(!Forced)
-					return (-1)*src.GetHolyMod()
-				else
-					return (-1)*Forced
+				return ((-1)*HolyDamageValue);
 			else if(P.IsEvil() || HasBeyondPurity())
-				if(!Forced)
-					return HolyDamageValue
-				else
-					return HolyDamageValue
-			else if(src.GetSpiritPower()>=0.25)
-				if(!Forced)
-					var/spiritPower = (GetSpiritPower() / 2)
-					return max(HolyDamageValue*spiritPower, 1)
-				else
-					return HolyDamageValue
+				return HolyDamageValue
 			else
 				return 1
 		AbyssDamage(mob/P, Forced=0)//Stick this in the DoDamage proc.
@@ -3008,13 +2993,8 @@ mob
 			var/AbyssDamageValue = Forced ? Forced : src.GetAbyssMod()
 			if(P.UsingMuken())
 				return (-1)*AbyssDamageValue
-			if(HasMaouKi())
-				return 2*src.GetAbyssMod()
 			else if(P.IsGood())
 				return AbyssDamageValue
-			else if(GetSpiritPower()>=0.25)
-				var/spiritPower = (GetSpiritPower() / 2)
-				return clamp(AbyssDamageValue*spiritPower, 0.001, 10)
 			return 0.001
 
 		SpiritShift()

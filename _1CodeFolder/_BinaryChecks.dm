@@ -2107,6 +2107,17 @@ mob
 					Total=0.25//fully ascended dragon
 			if(passive_handler.Get("CreateTheHeavens") && src.DoubleHelix>=5&&isRace(HUMAN))
 				Total += 0.25
+			var/OSGK=CheckSpecial("OverSoul") ? 0.1 : 0
+			if(Saga=="Weapon Soul")
+				if(SagaLevel==5)
+					if(Total<=glob.T3_STYLES_GODKI_VALUE*1.1+OSGK)
+						Total=glob.T3_STYLES_GODKI_VALUE*1.1+OSGK			
+				if(SagaLevel==5)
+					if(Total<=glob.T3_STYLES_GODKI_VALUE*1.2+OSGK)
+						Total=glob.T3_STYLES_GODKI_VALUE*1.2+OSGK
+				if(SagaLevel==7)
+					if(Total<=glob.T4_STYLES_GODKI_VALUE*1.2+OSGK)
+						Total=glob.T4_STYLES_GODKI_VALUE*1.2+OSGK
 			if(Total>=glob.GOD_KI_CAP && !passive_handler.Get("God"))
 				Total=glob.GOD_KI_CAP
 			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)

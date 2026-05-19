@@ -735,71 +735,72 @@ mob/Admin3/verb
 	SecretManagement(var/mob/P in players)
 		set category="Admin"
 		if(!P.client) return
-		var/list/validSecrets = VALID_SECRET_LIST;
-		validSecrets.Remove(RACIAL_SECRETS);
-		var/Selection=input(src, "Which aspect of power does [P] awaken to?", "Secret Management") in validSecrets;
 		if(P.Secret)
 			src << "They already have a secret."
 			return
 		if(P.RaceInRareList())
 			src << "No."
 			return
-		else
-			switch(Selection)
-				if("Spirits of The World")
-					var/path = input(src, "Which path of Spirits of The World do you wish to follow?", "Spirits of The World") in list("Goetic Virtue", "Stellar Constellation", "Elven Sanctuary")
-					// for now, admins pick it, as there
-					P.Secret = path
-					var/newpath = replacetext(path, " ", "_")
-					newpath = "Spirits_Of_The_World/[newpath]"
-					P.giveSecret(newpath)
-				if("Heavenly Restriction")
-					P.Secret = "Heavenly Restriction"
-					P.giveSecret("HeavenlyRestriction")
-				if("Jagan Eye")
-					P.Secret = "Jagan Eye"
-					P.giveSecret("JaganEye")
-				if("Hamon of the Sun")
-					P.ModifyPrime+=1
-					P.Secret="Hamon"
-					P.giveSecret("Hamon")
-				if("Senjutsu")
-					P.ModifyPrime+=1
-					P.Secret="Senjutsu"//i want to krill myself.
-					P.giveSecret("SageArts")//better yet i want to krill whoever made it this way
-				if("Haki")
-					// P.ModifyPrime+=1
-					P.Secret="Haki"
-					P.giveSecret("Haki")
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armor_Lite)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armor)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Shield_Lite)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Shield)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Relax_Lite)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Relax)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Future_Flash_Lite)
-					// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Future_Flash)
-					P << "Possessing such an overwhelming amount of willpower, you learn to chart destiny through your own ambition!"
-				if("Werewolf")
-					P.Secret="Werewolf"
-					P.giveSecret("Werewolf")
-				if("Eldritch")
-					P.Secret = "Eldritch"
-					P.giveSecret("Eldritch")
-				if("Vampire")
-					P.Secret="Vampire"
-					P.giveSecret("Vampire")
-				if("Shin")
-					P.Secret="Shin"
-					P.giveSecret("Shin")
-				if("Black Flash")
-					P.Secret="Black Flash"
-					P.giveSecret("BlackFlash")
-				if("Spiral")
-					P.Secret="Spiral"
-					P.giveSecret("Spiral")
+		var/list/validSecrets = list("Cancel");
+		validSecrets |= VALID_SECRET_LIST;
+		validSecrets.Remove(RACIAL_SECRETS);
+		var/Selection=input(src, "Which aspect of power does [P] awaken to?", "Secret Management") in validSecrets;
+		if(Selection=="Cancel") return;
+		switch(Selection)
+			if("Spirits of The World")
+				var/path = input(src, "Which path of Spirits of The World do you wish to follow?", "Spirits of The World") in list("Goetic Virtue", "Stellar Constellation", "Elven Sanctuary")
+				// for now, admins pick it, as there
+				P.Secret = path
+				var/newpath = replacetext(path, " ", "_")
+				newpath = "Spirits_Of_The_World/[newpath]"
+				P.giveSecret(newpath)
+			if("Heavenly Restriction")
+				P.Secret = "Heavenly Restriction"
+				P.giveSecret("HeavenlyRestriction")
+			if("Jagan Eye")
+				P.Secret = "Jagan Eye"
+				P.giveSecret("JaganEye")
+			if("Hamon of the Sun")
+				P.ModifyPrime+=1
+				P.Secret="Hamon"
+				P.giveSecret("Hamon")
+			if("Senjutsu")
+				P.ModifyPrime+=1
+				P.Secret="Senjutsu"//i want to krill myself.
+				P.giveSecret("SageArts")//better yet i want to krill whoever made it this way
+			if("Haki")
+				// P.ModifyPrime+=1
+				P.Secret="Haki"
+				P.giveSecret("Haki")
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armor_Lite)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armor)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Shield_Lite)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Shield)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Relax_Lite)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Relax)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Future_Flash_Lite)
+				// P.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Future_Flash)
+				P << "Possessing such an overwhelming amount of willpower, you learn to chart destiny through your own ambition!"
+			if("Werewolf")
+				P.Secret="Werewolf"
+				P.giveSecret("Werewolf")
+			if("Eldritch")
+				P.Secret = "Eldritch"
+				P.giveSecret("Eldritch")
+			if("Vampire")
+				P.Secret="Vampire"
+				P.giveSecret("Vampire")
+			if("Shin")
+				P.Secret="Shin"
+				P.giveSecret("Shin")
+			if("Black Flash")
+				P.Secret="Black Flash"
+				P.giveSecret("BlackFlash")
+			if("Spiral")
+				P.Secret="Spiral"
+				P.giveSecret("Spiral")
 mob
 	proc
 		AddHaki(var/Type)

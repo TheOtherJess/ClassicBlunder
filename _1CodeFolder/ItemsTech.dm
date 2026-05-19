@@ -3864,6 +3864,23 @@ obj/Items/Gear
 			src.desc="A replacement limb.  A [Choice] gear has been integrated within it."
 			del Choice
 			src.Using=0
+	Hougyoku
+		TechType="CyberEngineering"
+		SubType="Blasphemy"
+		var/Partial=1
+		var/Complete=0
+		Cost=500000000000
+		InfiniteUses=1
+		var/LastUse
+		verb/Awaken_Dreams() //saga
+			set category = "Hougyoku"
+			usr<<"soon"
+		verb/Awaken_Potential() //ascension
+			set category = "Hougyoku"
+			usr<<"soon"
+		verb/Awaken_Power()//transformation
+			set category = "Hougyoku"
+			usr<<"soon"
 	Dark_Factor_Fragment
 		TechType="CyberEngineering"
 		SubType="Blasphemy"

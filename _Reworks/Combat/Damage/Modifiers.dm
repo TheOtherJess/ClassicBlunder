@@ -80,7 +80,7 @@ globalTracker/var/
     var/found = 0
     if(HasBeyondPurity() || Z.BeyondPurity)
         if(HasHolyMod() || Z.HolyMod)
-            if(defender.IsGood())
+            if(defender.IsGood()&&glob.BEYOND_PURITY_AUTOHIT)
                 found = 1
         if(found)
             return TRUE

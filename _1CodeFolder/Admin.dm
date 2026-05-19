@@ -491,6 +491,9 @@ mob/Admin2/verb
 				m << "You have been maimed!"
 	EditPassiveHandler(mob/m in world)
 		set category = "Admin"
+		if(m.passive_handler.Get("Rank-Down Protection") && !usr.passive_handler.Get("True Edit"))
+			m.OMessage(15, "<b><font color=[m.Text_Color]><font size=+1>[m] was protected from the effects of Rank Magic!</b></font color></font size>", "<font color=blue>[m]([m.key]) cannot be Edited.")
+			return
 		src.Edit(m.passive_handler)
 
 	ViewPassives(mob/m in world)
@@ -1755,6 +1758,12 @@ mob/Admin2/verb
 	Edit(atom/A in world)
 		set category = "Admin"
 		A = src.AdminResolveTargetedContent(A)
+		if(istype(A, /mob))
+			var/mob/M = A
+			if(M.passive_handler.Get("Rank-Down Protection") && !usr.passive_handler.Get("True Edit"))
+				M.OMessage(15, "<b><font color=[M.Text_Color]><font size=+1>[M] was protected from the effects of Rank Magic!</b></font color></font size>", "<font color=blue>[M]([M.key]) cannot be Edited.")
+				return
+
 		var/list/browserOptions = list()
 		browserOptions.Add("+find");
 		winset(usr, null, list2params(browserOptions));

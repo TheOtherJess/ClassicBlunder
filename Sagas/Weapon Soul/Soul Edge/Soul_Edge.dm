@@ -248,7 +248,7 @@ obj/Skills/Buffs/SpecialBuffs/Heavenly_Regalia/Soul_Edge
 /obj/Skills/Buffs/NuStyle/SwordStyle //slightly weaker than t2. maybe make it scaling???
 	Stained_Memories
 		StyleActive="Stained Memories"
-		passives = list("CallousedHands" = 0.1, "Shearing" = 2)
+		passives = list("CallousedHands" = 0.1, "Shearing" = 2,"Zornhau" = 1)
 		StyleEnd=1.25
 		StyleStr=1.25
 		Finisher="/obj/Skills/Queue/Finisher/Rook_Splitter"
@@ -257,6 +257,7 @@ obj/Skills/Buffs/SpecialBuffs/Heavenly_Regalia/Soul_Edge
 			StyleEnd = 1.05 + (0.05 * p.SagaLevel)
 			passives["CallousedHands"] = 0.1 + (0.05* p.SagaLevel)
 			passives["Shearing"] = 2+p.SagaLevel
+			passives["Zornhau"] = 1+(0.25*p.SagaLevel)
 		verb/Stained_Memories()
 			set hidden=1
 			adjust(usr)

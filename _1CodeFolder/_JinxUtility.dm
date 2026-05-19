@@ -1487,17 +1487,20 @@ mob
 				mult = lustPart + greedPart + sinDmgPart + slothPart
 				if(mult < 0)
 					mult = 0
-				if(mult > 3)
-					mult = 3
+				if(mult > 1 && Secret)
+					mult = 1
+				if(mult > 2)
+					mult = 2
 
 			if(mult < 0)
 				mult = 0
 
-			mult += pride_bonus
+			mult += pride_bonus*(Health/100)
 
-			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 1.5)
-				mult = 1.5
-
+			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 1.5*(Health/100))
+				mult = 1.5*(Health/100)
+			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50)
+				mult = 0
 			return mult
 
 		getTargetingMeCount()

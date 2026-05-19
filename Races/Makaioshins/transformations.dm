@@ -45,7 +45,7 @@ transformation
 				..()
 			mastery_boons(mob/user)
 				if(mastery >= 25)
-					passives = list("AngerAdaptiveForce" = 0.25, "TechniqueMastery" = 2, "Juggernaut" = 1, "HellRisen" = 0.25)
+					passives = list("GodKi" = 0.15, "AngerAdaptiveForce" = 0.25, "TechniqueMastery" = 2, "Juggernaut" = 1, "HellRisen" = 0.25)
 					strength = 1.3
 					speed = 1.3
 					offense = 1.3
@@ -53,7 +53,7 @@ transformation
 					force = 1.3
 					endurance = 1.3
 				if(mastery >= 50)
-					passives = list( "AngerAdaptiveForce" = 0.5,"TechniqueMastery" = 4, "FluidForm" = 1, "Juggernaut" = 1.5, "HellRisen" = 0.5)
+					passives = list("GodKi" = 0.15, "AngerAdaptiveForce" = 0.5,"TechniqueMastery" = 4, "FluidForm" = 1, "Juggernaut" = 1.5, "HellRisen" = 0.5)
 					strength = 1.4
 					speed = 1.4
 					offense = 1.4
@@ -61,7 +61,7 @@ transformation
 					force = 1.4
 					endurance = 1.4
 				if(mastery >= 75)
-					passives = list("AngerAdaptiveForce" = 0.75,"TechniqueMastery" = 6, "FluidForm" = 1.5, "Juggernaut" = 2,"HellRisen" = 0.75)
+					passives = list("GodKi" = 0.15, "AngerAdaptiveForce" = 0.75,"TechniqueMastery" = 6, "FluidForm" = 1.5, "Juggernaut" = 2,"HellRisen" = 0.75)
 					strength = 1.5
 					speed = 1.5
 					offense = 1.5

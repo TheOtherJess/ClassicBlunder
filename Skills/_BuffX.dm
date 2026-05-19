@@ -4159,8 +4159,6 @@ NEW VARIABLES
 			OffMult=1.3
 			DefMult=1.2
 			SpdMult=2
-			GodKi=0.25
-			passives=list("GodKi"=0.25)
 			Transform="Weapon"
 			Slotless = TRUE
 			SpecialSlot = FALSE

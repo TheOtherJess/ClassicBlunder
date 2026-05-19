@@ -976,9 +976,8 @@ mob/proc/
 			if(src.PowerBoost)
 				Ratio*=src.PowerBoost
 		//	var/SSJBoost=1//i see you, unused-as-of-yet variable. don't think i don't
-			if(isRace(SAIYAN)&&transActive&&ActiveBuff)
-				if(passive_handler.Get("SaiyanPower"))
-					Ratio*=src.GetSaiyanPower()
+			if(passive_handler.Get("SaiyanPower"))
+				Ratio*=src.GetSaiyanPower()
 			if(isRace(SAIYAN)&&passive_handler.Get("SpiralPowerUnlocked")||isRace(HALFSAIYAN)&&passive_handler.Get("SpiralPowerUnlocked"))
 				switch(transUnlocked)
 					if(0)

@@ -3855,7 +3855,7 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 2, "Pursuer" = 1, "Flicker" = 1, "StunningStrike" = 1, "DoubleStrike" = 1 + usr.SagaLevel/3, "MasterfulCasting" = 1)
+							passives = list("ManaLeak" = 2, "Pursuer" = 1+ (usr.SagaLevel/2), "Flicker" = 1+ (usr.SagaLevel/2), "StunningStrike" = 1, "DoubleStrike" = 1 + (usr.SagaLevel/2), "MasterfulCasting" = 1)
 							passives+=GetKeybladePassives(usr.SyncAttached)
 
 							usr.LimitCounter+=1
@@ -3885,6 +3885,7 @@ NEW VARIABLES
 								usr.LimitCounter=0
 								return
 							usr.LimitCounter+=1
+						passives = list("ManaLeak"= 1, "TechniqueMastery" = 5, "PureDamage" = usr.SagaLevel, "PureReduction" = usr.SagaLevel, "StunningStrike" = 1, "LifeSteal" = 20, "Conductor" = 20)
 				src.Trigger(usr)
 		Wisdom_Form
 			FlashChange=1
@@ -3914,6 +3915,7 @@ NEW VARIABLES
 								usr.LimitCounter=0
 								return
 							usr.LimitCounter+=1
+						passives = list("ManaLeak"= 1, "QuickCast"= usr.SagaLevel/2, "TechniqueMastery" = 5, "Skimming" = 1, "DualCast" = 1, "SpecialStrike" = 1, "MasterfulCasting" = usr.SagaLevel/2, "PureDamage" = usr.SagaLevel/2, "PureReduction" = usr.SagaLevel/2)
 				src.Trigger(usr)
 		Master_Form
 			FlashChange=1
@@ -3961,7 +3963,8 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 2, "SwordAscensionSecond" = 2, "TechniqueMastery" = 5, "Pursuer" = 1, "QuickCast" = 4, "Flicker" = 1, "DoubleStrike" = 3, "DualCast" = 1, "MovementMastery" = 8, "MovingCharge" = 1, "MasterfulCasting" = 2)
+							passives = list("ManaLeak" = 2, "SwordAscensionSecond" = usr.SagaLevel, "TechniqueMastery" = 5, "Pursuer" = 1, "QuickCast" = 4, "Flicker" = 1, \
+								"DoubleStrike" = 3, "DualCast" = 1, "MovementMastery" = 5+usr.SagaLevel, "MovingCharge" = 1, "MasterfulCasting" = 2, "PUSpike" = 50, "DrainlessPUSpike" = 1)
 							passives += GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=2
 				src.Trigger(usr)
@@ -4013,7 +4016,7 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 3, "SwordAscensionSecond" = 2, "TechniqueMastery" = 10, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1, "GodKi" = 0.5, "MasterfulCasting" = 5)
+							passives = list("ManaLeak" = 3, "SwordAscensionSecond" = 6, "TechniqueMastery" = 10, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1, "GodKi" = 0.25, "MasterfulCasting" = 5)
 							passives+=GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=3
 				src.Trigger(usr)

@@ -613,6 +613,7 @@ globalTracker
 		SLAYER_DAMAGE_CLAMP = 10
 		SPIRIT_FORM_BASE_RATE = 0.15
 		SPIRIT_FORM_LEAK_VAL = 3
+		BEYOND_PURITY_AUTOHIT = 0
 // -- items -- //
 
 		JSON_PASSIVES = list()

@@ -39,7 +39,7 @@ transformation
 
 			mastery_boons(mob/user)
 				if(mastery >= 25)
-					passives = list("HellRisen" = 0.5, "DemonicDurability" = 2, "Brutalize" = 1, "PureDamage" = 3, "PureReduction" = 3)
+					passives = list("HellRisen" = 0.5, "DemonicDurability" = 2, "Brutalize" = 2, "PureDamage" = 3, "PureReduction" = 3)
 					strength = 1.15
 					speed = 1.25
 					offense = 1.25

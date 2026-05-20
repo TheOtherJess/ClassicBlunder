@@ -45,6 +45,8 @@ client
 				winset(src,"SOUTHEAST+UP","parent=[m];name=SOUTHEAST+UP;command=southeast-up")
 
 
+mob/var/tmp/dir_locked = 0
+
 mob/Players
 
 	//	This will initiate movement whenever a client logs into a /mob/player.
@@ -319,12 +321,19 @@ mob
 							dir_y = pick(DIRSY)
 
 						//	If you don't want diagonal steps broken in two use this line.
-						if((src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
-							src.dir=dir_x+dir_y
+						var/step_d=dir_x+dir_y
+						if(!src.dir_locked&&(src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
+							src.dir=step_d
 						if(src.Attracted&&get_dist(src, src.AttractedTo)>=3)
 							src.dir=get_dir(src, src.AttractedTo)
-						if(src.Allow_Move(src.dir))
-							step(src,src.dir)
+							step_d=src.dir
+						var/locked_dir=0
+						if(src.dir_locked)
+							locked_dir=src.dir
+						if(src.Allow_Move(step_d))
+							step(src,step_d)
+							if(locked_dir)
+								src.dir=locked_dir
 						else
 							return 0
 
@@ -333,24 +342,38 @@ mob
 					else
 						if(prob(src.Confused) || passive_handler.Get("Manic") ? prob(passive_handler.Get("Manic") * 5) : 0)
 							dir_x = pick(DIRSX)
-						if(src.Beaming!=2&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
-							src.dir=dir_x
+						var/step_d=dir_x
+						if(!src.dir_locked&&src.Beaming!=2&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
+							src.dir=step_d
 						if(src.Attracted&&get_dist(src, src.AttractedTo)>=3)
 							src.dir=get_dir(src, src.AttractedTo)
-						if(src.Allow_Move(src.dir))
-							step(src,src.dir)
+							step_d=src.dir
+						var/locked_dir=0
+						if(src.dir_locked)
+							locked_dir=src.dir
+						if(src.Allow_Move(step_d))
+							step(src,step_d)
+							if(locked_dir)
+								src.dir=locked_dir
 
 						return 1
 				else
 					if(dir_y)
 						if(prob(src.Confused) || passive_handler.Get("Manic") ? prob(passive_handler.Get("Manic") * 5) : 0)
 							dir_y = pick(DIRSY)
-						if((src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
-							src.dir=dir_y
+						var/step_d=dir_y
+						if(!src.dir_locked&&(src.Beaming!=2||src.HasTurningCharge())&&!src.Stasis&&!src.Frozen&&!src.Launched&&!src.Stunned&&!src.PoweringUp)
+							src.dir=step_d
 						if(src.Attracted&&get_dist(src, src.AttractedTo)>=3)
 							src.dir=get_dir(src, src.AttractedTo)
-						if(src.Allow_Move(src.dir))
-							step(src,src.dir)
+							step_d=src.dir
+						var/locked_dir=0
+						if(src.dir_locked)
+							locked_dir=src.dir
+						if(src.Allow_Move(step_d))
+							step(src,step_d)
+							if(locked_dir)
+								src.dir=locked_dir
 						else
 							return 0
 						return 1

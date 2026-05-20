@@ -19,6 +19,8 @@
 	var/ChargeBenefit    = 0      // Set on release
 	var/HeldVerbName     = null   // Optional override for macro detection;
 	                              // defaults to Z.name if null
+	var/InfiniteHold     = FALSE  // If TRUE, hold continues indefinitely
+	var/FireRate         = 0      // Smaller number = faster
 
 /obj/Skills/proc/OnHeldRelease(mob/p, var/benefit, var/sweet_spot_hit = FALSE)
 	// Override in individual skills to execute the charged attack.
@@ -28,6 +30,9 @@
 /obj/Skills/proc/OnHeldStart(mob/p)
 	// Called once when BeginHeldSkill successfully begins charging
 	// Override to apply effects that last for the duration of the hold
+
+/obj/Skills/proc/OnHeldTick(mob/p)
+	// Called by ChargeLoop, tick based on FireRate, smaller = faster
 
 // This avoids stat changes to skills persisting across use (mostly for projectiles)
 
@@ -155,6 +160,8 @@
 		held_charge_overlay_ref = I
 		overlays += I
 	ShowHeldChargeBar(Z)
+	if(Z.InfiniteHold)
+		UpdateHeldChargeBar(1)
 	KenShockwave(src, icon=Z.ChargeWaveIcon, Size=0.5, Blend=Z.ChargeWaveBlend, Time=8)
 
 	held_skill_macro_key = key
@@ -383,6 +390,7 @@
 // ChargeLoop runs for the duration of the hold
 
 /mob/proc/ChargeLoop(var/obj/Skills/Z)
+	var/last_tick_fire = 0
 	while(held_skill == Z)
 		// Interrupt conditions
 		var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Charmed/charm_skill = locate(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Charmed) in src
@@ -390,19 +398,25 @@
 			FizzleHeldSkill(Z)
 			return
 
-		// Overheld, fizzle normally, or auto-release if the skill opts out
-		if(world.time - held_charge_start > Z.ChargePeriod * 10)
-			if(Z.NoFizzle)
-				ReleaseHeldSkill()
-			else
-				FizzleHeldSkill(Z)
-			return
+		if(Z.InfiniteHold)
+			if(Z.FireRate > 0 && world.time - last_tick_fire >= Z.FireRate)
+				Z.OnHeldTick(src)
+				last_tick_fire = world.time
+		else
+			// Overheld, fizzle normally, or auto-release if the skill opts out
+			if(world.time - held_charge_start > Z.ChargePeriod * 10)
+				if(Z.NoFizzle)
+					ReleaseHeldSkill()
+				else
+					FizzleHeldSkill(Z)
+				return
+
+			var/hold_ticks = world.time - held_charge_start
+			var/progress = clamp(hold_ticks / (Z.ChargePeriod * 10), 0, 1)
+			UpdateHeldChargeBar(progress)
 
 		// closing the visual gap after BeginHeldSkill's initial pulse.
 		KenShockwave(src, icon=Z.ChargeWaveIcon, Size=0.5, Blend=Z.ChargeWaveBlend, Time=8)
-		var/hold_ticks = world.time - held_charge_start
-		var/progress = clamp(hold_ticks / (Z.ChargePeriod * 10), 0, 1)
-		UpdateHeldChargeBar(progress)
 
 		sleep(2)
 
@@ -411,6 +425,13 @@
 /mob/proc/ReleaseHeldSkill()
 	var/obj/Skills/Z = held_skill
 	if(!Z) return
+
+	if(Z.InfiniteHold)
+		Z.ChargeBenefit = 1
+		ClearHeldChargeState()
+		held_skill_last_release = world.time
+		Z.OnHeldRelease(src, 1, FALSE)
+		return
 
 	var/hold_ticks = world.time - held_charge_start
 	UpdateHeldChargeBar(clamp(hold_ticks / (Z.ChargePeriod * 10), 0, 1))

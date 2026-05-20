@@ -139,7 +139,8 @@ var/list/SkillTree=list(
 ),
 
 "BlastT5"=list(
-			"/obj/Skills/Projectile/Cataclysmic_Orb"=200
+			"/obj/Skills/Projectile/Cataclysmic_Orb"=200,
+			"/obj/Skills/Projectile/Desperado_Blaster"=200
 ),
 "MagicT1"=list(
 			"/obj/Skills/Buffs/SlotlessBuffs/Magic/Reinforce_Object"=40,

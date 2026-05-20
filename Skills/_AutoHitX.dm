@@ -3575,7 +3575,7 @@ obj
 				Area="Around Target"
 				AdaptRate=1
 				DamageMult=0.5
-				HolyMod=5
+				HolyMod=1.15
 				Distance=5
 				DistanceAround=3
 				EnergyCost=10
@@ -3596,6 +3596,8 @@ obj
 				HitSparkY=0
 				Cooldown=75
 				Instinct=1
+				adjust(mob/p)
+					HolyMod=1.15
 				verb/Holy_Justice()
 					set category="Skills"
 					usr.Activate(src)
@@ -3606,7 +3608,7 @@ obj
 				Area="Around Target"
 				AdaptRate=1
 				DamageMult=0.5
-				AbyssMod=5
+				AbyssMod=1.15
 				Distance=5
 				DistanceAround=3
 				EnergyCost=10
@@ -3627,6 +3629,8 @@ obj
 				HitSparkY=0
 				Cooldown=75
 				Instinct=1
+				adjust(mob/p)
+					AbyssMod=1.15
 				verb/Doom_of_Damocles()
 					set category="Skills"
 					usr.Activate(src)

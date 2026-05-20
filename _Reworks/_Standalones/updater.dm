@@ -536,7 +536,7 @@ update
 		version = 24;
 		updateMob(mob/p)
 			. = ..()
-			if(p.isRace(DRAGON)==Class=="Gold")
+			if(p.isRace(DRAGON)&&p.Class=="Gold")
 				if(p.AscensionsAcquired>=1)
 					p.StrAscension += 0.5
 				if(p.AscensionsAcquired>=2)

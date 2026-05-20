@@ -2873,8 +2873,8 @@ mob
 
 		IsGood()
 			if(hasEldritchPower()) return 0;
-			var/list/EvilRaces=list(CHANGELING, DEMON, ELDRITCH, MAKYO, MAJIN)
-			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie", "Eldritch")
+			var/list/EvilRaces=list(CHANGELING, DEMON, MAKYO, MAJIN)
+			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie")
 			//these are all bad.
 			var/good = 0
 			var/evil = 0
@@ -2925,8 +2925,8 @@ mob
 			return 0
 		IsEvil()
 			if(hasEldritchPower()) return 0;
-			var/list/EvilRaces=list(CHANGELING, DEMON, ELDRITCH, MAKYO, MAJIN)
-			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie", "Eldritch")
+			var/list/EvilRaces=list(CHANGELING, DEMON, MAKYO, MAJIN)
+			var/list/EvilSecrets=list("Vampire", "Werewolf", "Zombie")
 			var/good = 0
 			var/evil = 0
 			if(src.passive_handler.Get("Emptiness"))

@@ -11465,6 +11465,7 @@ NEW VARIABLES
 						var/asc = p.AscensionsAcquired
 						var/money
 						var/cap=glob.progress.DailyGrindCap*30*3*(asc+1)
+						var/effectivemoney=0;
 						for(var/obj/Money/m in p.contents)
 							money = m.Level
 							effectivemoney=m.Level

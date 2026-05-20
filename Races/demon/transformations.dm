@@ -38,18 +38,18 @@ transformation
 						da.applyDTIcons(user)
 
 			mastery_boons(mob/user)
-					strength = 1
-					speed = 1
-					offense = 1
-					defense = 1
-					force = 1
-					endurance = 1
-					enduranceadd = 0.5
-					offenseadd = 0.5
-					defenseadd = 0.5
-					strengthadd = 0.5
-					forceadd = 0.5
-					speedadd = 0.5
+				strength = 1
+				speed = 1
+				offense = 1
+				defense = 1
+				force = 1
+				endurance = 1
+				enduranceadd = 0.5
+				offenseadd = 0.5
+				defenseadd = 0.5
+				strengthadd = 0.5
+				forceadd = 0.5
+				speedadd = 0.5
 				if(mastery >= 25)
 					passives = list("HellRisen" = 0.5, "DemonicDurability" = 2, "Brutalize" = 2, "PureDamage" = 3, "PureReduction" = 3)
 					enduranceadd = 0.5

@@ -47,15 +47,26 @@ mob
 	form_aura_icon = 'Amazing Super Demon Aura.dmi'
 	form_aura_x = -32
 	autoAnger = 1
-	strength = 1.3
-	force = 1.3
-	speed = 1.4
-	offense = 1.4
-	defense = 1.4
-	endurance = 1.4
+	strength = 1
+	force = 1
+	speed = 1
+	offense = 1
+	defense = 1
+	endurance = 1
 	transformation_message = "usrName becomes a Devil!"
 	mastery_boons(mob/user)
-		passives = list("GodKi" = 0.2+(user.AscensionsAcquired/10), "HellRisen" = 0.75, "DemonicDurability" = 6, "Brutalize" = 2, "PureDamage" = user.AscensionsAcquired, "PureReduction" = user.AscensionsAcquired, "MovementMastery" = user.AscensionsAcquired, "BuffMastery"=user.AscensionsAcquired)
+		passives = list("GodKi" = 0.25+((user.AscensionsAcquired-3)/10), "HellRisen" = 0.75, "DemonicDurability" = 6, "Brutalize" = 2, "PureDamage" = user.AscensionsAcquired, "PureReduction" = user.AscensionsAcquired, "MovementMastery" = user.AscensionsAcquired, "BuffMastery"=user.AscensionsAcquired)
+		strength = 1 // to clear out people who already have it
+		force = 1
+		speed = 1
+		offense = 1
+		defense = 1
+		endurance = 1
+		enduranceadd = 0.5
+		offenseadd = 0.5
+		defenseadd = 0.5
+		strengthadd = 0.5
+		forceadd = 0.5
 	transform_animation(mob/user)
 		var/ShockSize = 5
 		for(var/wav = 5, wav > 0, wav--)
@@ -211,12 +222,11 @@ mob
 	form_glow_y = -32
 	autoAnger = 1
 	pot_trans = 15
-	strength = 1.3
-	force = 1.3
-	speed = 1.4
-	offense = 1.4
-	defense = 1.4
-	endurance = 1.4
+	enduranceadd = 2
+	offenseadd = 2
+	defenseadd = 2
+	strengthadd = 2
+	forceadd = 2
 	passives = list(\
 		"Conductor" = 50,\
 		"HighTension" = 0.75,\
@@ -232,7 +242,7 @@ mob
 		"DoubleHelix" = 1,\
 		"UnlimitedHighTension" = 1,\
 		"CreateTheHeavens" = 1,\
-		"GodKi" = 1.5,\
+		"GodKi" = 1,\
 		"HellRisen" = 1,\
 		"DemonicDurability" = 6,\
 		"Brutalize" = 6,\

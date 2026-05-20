@@ -28,6 +28,18 @@
         verb/Acrobat()
             set hidden=1
             src.Trigger(usr)
+	Tenken
+		SignatureTechnique = 3
+		Copyable=0
+		StyleSpd=1.65
+		StyleOff=1.35
+		StyleActive="Tenken"
+		passives = list("HybridStyle" = "UnarmedStyle", "Fury" = 2, "BlurringStrikes" = 2, "SweepingStrike" = 1, "BladeFisting" = 1, \
+				"Iaijutsu" = 3, "Musoken" = 1, "CriticalChance" = 30, "CriticalDamage"= 0.1, "Extend" = 1, "Instinct" = 2, "Godspeed" = 3)
+		Finisher="/obj/Skills/Queue/Finisher/Gatotsu_Rokujin"
+		verb/Tenken()
+			set hidden=1
+			src.Trigger(usr)
     Fierce_Deity
         SignatureTechnique = 3
         StyleOff=1.25

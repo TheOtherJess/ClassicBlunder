@@ -11,11 +11,11 @@ transformation
 			transformation_message = "Reality begins to fray around usrName. Comprehension eludes you."
 			detrans_message = "usrName becomes fully real once more..."
 			mastery_boons(mob/user)
-				enduranceadd = 0.05*user.AscensionsAcquired
-				offenseadd = 0.05*user.AscensionsAcquired
-				defenseadd = 0.05*user.AscensionsAcquired
-				strengthadd = 0.05*user.AscensionsAcquired
-				forceadd = 0.05*user.AscensionsAcquired
+				enduranceadd = 0.15*user.AscensionsAcquired
+				offenseadd = 0.15*user.AscensionsAcquired
+				defenseadd = 0.15*user.AscensionsAcquired
+				strengthadd = 0.15*user.AscensionsAcquired
+				forceadd = 0.15*user.AscensionsAcquired
 			transform_animation(mob/user)
 				LightningStrike2(user)
 				DarknessFlash(user, SetTime=5)
@@ -36,11 +36,11 @@ transformation
 			transformation_message = "usrName reveals itself to the detriment of all!"
 			detrans_message = "usrName bottles up the unreality... halfway a person..."
 			mastery_boons(mob/user)
-				enduranceadd = 0.125*user.AscensionsAcquired
-				offenseadd = 0.125*user.AscensionsAcquired
-				defenseadd = 0.125*user.AscensionsAcquired
-				strengthadd = 0.125*user.AscensionsAcquired
-				forceadd = 0.125*user.AscensionsAcquired
+				enduranceadd = 0.25*user.AscensionsAcquired
+				offenseadd = 0.25*user.AscensionsAcquired
+				defenseadd = 0.25*user.AscensionsAcquired
+				strengthadd = 0.25*user.AscensionsAcquired
+				forceadd = 0.25*user.AscensionsAcquired
 			transform_animation(mob/user)
 				if(user.hasSecret("Eldritch (Shrouded)"))
 					user.MobColor=null;

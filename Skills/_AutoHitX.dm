@@ -2941,8 +2941,9 @@ obj
 								Size=0.5
 								WindUp=0.25
 								Rounds= max(1, round(magicLevel/5) + asc)
-								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)/(Rounds)
-								ManaCost = 3*(DamageMult/4)
+								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)
+								ManaCost = 5
+								NoAttackLock=1
 								ActiveMessage="invokes a powerful: <font size=+1>THUNDER!</font size>"
 							else
 								Rush=0
@@ -2991,8 +2992,9 @@ obj
 									var/obj/Skills/Projectile/Thundara/th = usr.FindSkill(/obj/Skills/Projectile/Thundara)
 									th.adjust(usr)
 									usr.UseProjectile(th)
-									DamageMult=4
-									usr.ManaAmount-=5
+									DamageMult=7
+									Rounds=2
+									NoAttackLock=1
 									ActiveMessage="invokes a powerful: <font size=+1>THUNDARA!</font size>"
 								else
 									return

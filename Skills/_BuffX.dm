@@ -11465,7 +11465,7 @@ NEW VARIABLES
 						var/asc = p.AscensionsAcquired
 						var/money
 						var/cap=glob.progress.DailyGrindCap*30*3*(asc+1)
-						var/effectivemoney=0;
+						var/effectivemoney
 						for(var/obj/Money/m in p.contents)
 							money = m.Level
 							effectivemoney=m.Level
@@ -11989,7 +11989,7 @@ NEW VARIABLES
 					passives["Godspeed"] = mastery;
 					passives["PureDamage"] = round(mastery / 2);
 					passives["PureReduction"] = round(mastery / 2);
-					
+
 mob
 	proc
 		UseBuff(var/obj/Skills/Buffs/B, var/Override)

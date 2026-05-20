@@ -27,7 +27,9 @@ mob
 
 			if(mult < 0)
 				mult = 0
-			// HopeFactor is not capped here.
+			if(mult>1.5)
+				mult = 1.5
+			// HopeFactor is now capped here.
 
 			return mult
 
@@ -35,7 +37,7 @@ mob
 			if(amount <= 0) return
 			if(!isInHighTension()) return
 			if(!passive_handler || !passive_handler.Get("ApathyFactor")) return
-			ApathyDamageBonus = min(3, ApathyDamageBonus + amount * 0.01)
+			ApathyDamageBonus = min(1.5, ApathyDamageBonus + amount * 0.01)
 
 		resetApathyBonus()
 			ApathyDamageBonus = 0
@@ -55,7 +57,7 @@ mob
 	endurance = 1
 	transformation_message = "usrName becomes a Devil!"
 	mastery_boons(mob/user)
-		passives = list("GodKi" = 0.25+((user.AscensionsAcquired-3)/10), "HellRisen" = 0.75, "DemonicDurability" = user.AscensionsAcquired/4, "Brutalize" = user.AscensionsAcquired/6, "PureDamage" = user.AscensionsAcquired, "PureReduction" = user.AscensionsAcquired, "MovementMastery" = user.AscensionsAcquired, "BuffMastery"=user.AscensionsAcquired/2)
+		passives = list("GodKi" = 0.25+((user.AscensionsAcquired-3)/10), "HellRisen" = user.AscensionsAcquired/10, "DemonicDurability" = user.AscensionsAcquired/4, "Brutalize" = user.AscensionsAcquired/6, "PureDamage" = user.AscensionsAcquired, "PureReduction" = user.AscensionsAcquired, "MovementMastery" = user.AscensionsAcquired, "BuffMastery"=user.AscensionsAcquired/2)
 		strength = 1 // to clear out people who already have it
 		force = 1
 		speed = 1
@@ -238,7 +240,7 @@ mob
 		"UnderDog" = 2,\
 		"Tenacity" = 17,\
 		"StyleMastery" = 6,\
-		"SuperHighTension" = 2,\
+		"SuperHighTension" = 1,\
 		"DoubleHelix" = 1,\
 		"UnlimitedHighTension" = 1,\
 		"CreateTheHeavens" = 1,\
@@ -247,8 +249,6 @@ mob
 		"DemonicDurability" = 6,\
 		"Brutalize" = 6,\
 		"MovementMastery" = 6,\
-		"Steady" = 6,\
-		"ManaStats" = 6\
 	)
 	transformation_message = "usrName awakens their Sacred Energy Aura!"
 	transform_animation(mob/user)

@@ -40,6 +40,7 @@ ascension
 						ecoAdd = 2
 						endurance = 1
 						speed = 1
+						strength = 0.5
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1)
 						strength = 1
@@ -85,6 +86,7 @@ ascension
 						ecoAdd = 1
 						endurance = 1.25
 						speed = 1.25
+						strength = 0.5
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1, "DoubleStrike" = 1)
 						strength = 1
@@ -132,6 +134,7 @@ ascension
 						ecoAdd = 1
 						endurance = 2
 						speed = 2
+						strength = 0.75
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1, "TripleStrike" = 1)
 						strength = 1.5
@@ -177,6 +180,7 @@ ascension
 						ecoAdd = 1
 						endurance = 2.5
 						speed = 2.5
+						strength = 1
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1, "AsuraStrike" = 1)
 						strength = 2
@@ -222,6 +226,7 @@ ascension
 						ecoAdd = 1
 						endurance = 2.5
 						speed = 2.5
+						strength = 1
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1, "DoubleStrike" = 1, "TripleStrike" = 1)
 						strength = 2
@@ -266,6 +271,7 @@ ascension
 						ecoAdd = 1
 						endurance = 3
 						speed = 3
+						strength = 1.5
 					if("Dark")
 						passives += list("Fury" = 1, "Momentum" = 1, "AsuraStrike" = 1)
 						strength = 2

@@ -549,6 +549,8 @@ obj/Skills/Grapple
 			src.ThrowDir=User.dir
 			if(src.Using)
 				return
+			if(User.HeldSkillBlocksAction(src))
+				return
 			if(!heavenlyRestrictionIgnore&&User.Secret=="Heavenly Restriction" && User.secretDatum?:hasRestriction("Grapples"))
 				return
 			if(!heavenlyRestrictionIgnore&&User.Secret=="Heavenly Restriction" && User.secretDatum?:hasRestriction("All Skills"))

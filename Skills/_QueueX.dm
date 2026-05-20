@@ -1321,6 +1321,7 @@ obj
 mob
 	proc
 		SetQueue(var/obj/Skills/Queue/Q)
+			if(src.HeldSkillBlocksAction(Q)) return
 			if(src.passive_handler.Get("Silenced"))
 				src << "You can't use [Q] you are silenced!"
 				return 0

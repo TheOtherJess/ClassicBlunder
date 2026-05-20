@@ -6894,7 +6894,29 @@ NEW VARIABLES
 					set category="Mecha"
 					init(usr.findMecha())
 					src.Trigger(usr)
+			Super_Mode
+				TimerLimit = 120
+				PhysicalHitsLimit = 1
+				TextColor=rgb(255, 255, 32)
+				ActiveMessage="activates Super Mode!"
+				OffMessage="deactivates Super Mode..."
+				Cooldown=120
+				proc/init(obj/Items/Gear/Mobile_Suit/mecha)
+					if(!mecha) return
+					ManaGlow = "#FFFF00"
+					ManaGlowSize = 1
+					passives = list("SuperMode"=1, "PUSpike" = 50, "KiControl" = 1, "DrainlessPUSpike" = 1)
 
+				verb/Super_Mode()
+					set category="Mecha"
+					init(usr.findMecha())
+					src.Trigger(usr)
+					if(usr.canDoATransform())
+						usr.Transform();
+					if(usr.canDoATransform())
+						usr.Transform();
+					if(usr.canDoATransform())
+						usr.Transform();
 
 
 			Turbo_Drive
@@ -11442,12 +11464,18 @@ NEW VARIABLES
 						if(altered) return
 						var/asc = p.AscensionsAcquired
 						var/money
+						var/cap=glob.progress.DailyGrindCap*30*3*(asc+1)
 						for(var/obj/Money/m in p.contents)
 							money = m.Level
-						NeedsHealth = 10 + (5 * asc)
-						TooMuchHealth = 20 + (5 * asc)
+							effectivemoney=m.Level
+						if(effectivemoney>cap)
+							effectivemoney=cap
+						var/moneyovercap=sqrt(money-cap)
+						var/endmoney=effectivemoney+moneyovercap
+						NeedsHealth = 10 + (7.5 * asc)
+						TooMuchHealth = 20 + (7.5 * asc)
 
-						var/baseMultMod = 1 + max(0,money/glob.racials.GOLD_DRAGON_FORMULA)
+						var/baseMultMod = 1 + max(0,endmoney/glob.racials.GOLD_DRAGON_FORMULA)
 						PowerMult = baseMultMod
 						SpdMult = baseMultMod
 						StrMult = baseMultMod

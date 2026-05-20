@@ -3029,8 +3029,8 @@ obj
 					adjust(mob/p)
 						if(!altered)
 							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
-								Rounds = 200
-								DamageMult = 0.05
+								Rounds = 20
+								DamageMult = 0.5
 								Icon='VR Cloud.png'
 								IconX=-13
 								Size = 8

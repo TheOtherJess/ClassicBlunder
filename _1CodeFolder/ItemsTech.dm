@@ -3992,14 +3992,20 @@ obj/Items/Gear
 			if(MechType)
 				var/answer = input(player, "Do you want to change your mech's type? Each type has a different boon") in list("Yes","No")
 				if(answer == "Yes")
-					MechType = input(player, "What type?") in list("Speed","Tank","Assault")
+					if(MechType=="MobileFighter")
+						Augment= "None"
+					MechType = input(player, "What type?") in list("Speed","Tank","Assault", "MobileFighter")
+					if(MechType=="MobileFighter")
+						Augment= "Super_Mode"
 			else
-				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault")
+				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault", "MobileFighter")
 		proc/setup(mob/player)
 			var/level2 = Level>=2 ? 1 : 0
 			var/level4 = Level>=4 ? 1 : 0
-			if(Drive == "None")
+			if(Drive == "None"&&MechType!="MobileFighter")
 				Drive = input(player, "What type of drive do you want to use?", "Drive") in list("Supersonic","Fortress", "Destroyer")
+			if(MechType=="MobileFighter")
+				Augment= "Super_Mode"
 			if(level2)
 				if(Drive == "Supersonic")
 					Augment = "Trans_Am"
@@ -4041,7 +4047,7 @@ obj/Items/Gear
 				var/result = input(usr, "What type?") in list("Speed","Tank","Assault", "MobileFighter")
 				MechType = result
 			Techniques = list("/obj/Skills/Buffs/ActiveBuffs/Gear/Mobile_Suit/[MechType]")
-			if(Augment != "None"&&MechType!="Fighter")
+			if(Augment != "None")
 				Techniques += "/obj/Skills/Buffs/SlotlessBuffs/WeaponSystems/[Augment]"
 				if(Drive == "Fortress")
 					Techniques += list("/obj/Skills/Projectile/Gear/Installed/Giga_Laser", \

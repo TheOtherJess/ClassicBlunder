@@ -532,6 +532,17 @@ update
 					p.passive_handler.Set("Grit", 0)
 					for(var/obj/Skills/Buffs/SlotlessBuffs/Racial/Beastkin/The_Grit/TG in p)
 						del TG
+	version24
+		version = 24;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(DRAGON)==Class=="Gold")
+				if(p.AscensionsAcquired>=1)
+					p.StrAscension += 0.5
+				if(p.AscensionsAcquired>=2)
+					p.StrAscension += 0.5
+				if(p.AscensionsAcquired>=3)
+					p.StrAscension += 0.75
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

@@ -2044,6 +2044,8 @@ mob
 			if(src.CheckSlotless("Saiyan Soul")&&Target&&!src.HasGodKiBuff())
 				if(!src.Target.CheckSlotless("Saiyan Soul")&&src.Target.HasGodKi())
 					return 1
+			if(Saga=="Weapon Soul" && SagaLevel>=5)
+				return 1
 			if(passive_handler["DisableGodKi"])
 				return 0
 			if(passive_handler["EndlessNine"])
@@ -2111,8 +2113,8 @@ mob
 			if(Saga=="Weapon Soul")
 				if(SagaLevel==5)
 					if(Total<=glob.T3_STYLES_GODKI_VALUE*1.1+OSGK)
-						Total=glob.T3_STYLES_GODKI_VALUE*1.1+OSGK			
-				if(SagaLevel==5)
+						Total=glob.T3_STYLES_GODKI_VALUE*1.1+OSGK
+				if(SagaLevel==6)
 					if(Total<=glob.T3_STYLES_GODKI_VALUE*1.2+OSGK)
 						Total=glob.T3_STYLES_GODKI_VALUE*1.2+OSGK
 				if(SagaLevel==7)

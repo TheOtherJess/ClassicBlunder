@@ -677,13 +677,21 @@ obj/Skills
 					spawn(2)RecoverImage(Target)
 					spawn(4)RecoverImage(Target)
 					if(usr.Power*((!usr.HasNullTarget() ? usr.GetGodKi()**3 : 0))>Target.Power*min((!Target.HasNullTarget() ? Target.GetGodKi()**3 : 0),1)||Target.KO)
+						OMsg(usr, "[usr] destroys the existence of [Target]!", "[usr] DESTROYED [Target].")
+						if(Target.passive_handler.Get("Emptiness")||Target.isRace(ELDRITCH))
+							sleep(30)
+							OMsg(usr, "...but there is no existence for [usr] to destroy.", "[usr] FAILED TO DESTROY [Target].")
+							return
+						if(Target.passive_handler.Get("EndlessNine"))
+							sleep(30)
+							OMsg(usr, "...but [Target] rejects the legitimacy of the divine, rendering [usr]'s attempts fruitless.", "[usr] FAILED TO DESTROY [Target].")
+							return
 						Target.Savable=0
 						if(istype(Target, /mob/Players))
 							fdel("Saves/Players/[Target.ckey]")
 						animate(Target,alpha=0,time=30)
 						spawn(30)
 							del(Target)
-						OMsg(usr, "[usr] destroys the existence of [Target]!", "[usr] DESTROYED [Target].")
 					else
 						OMsg(usr, "[Target] resists the destructive energies of [usr]!", "[usr] failed to DESTROY [Target].")
 

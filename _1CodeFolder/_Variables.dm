@@ -66,6 +66,7 @@ mob/var
 	tmp/obj/Skills/Projectile/BusterTech//holds a buster technique, holy fuqq
 	tmp/list/mob/BeingObserved=list()//this holds the observer, and sends them messages
 	tmp/list/BeingTargetted=list() //list of mobs currently targetting
+	tmp/Airborne = 0
 	tmp/is_dashing = 0
 	tmp/verb_delay = 0
 	tmp/last_autohit

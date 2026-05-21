@@ -49,6 +49,8 @@
 		return
 	if(Suspended)
 		return
+	if(Airborne)
+		return
 	if(judgement_cut_chain_active)
 		return
 	if(SecondStrike || ThirdStrike || AsuraStrike)

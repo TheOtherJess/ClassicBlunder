@@ -27,6 +27,8 @@ mob/Click()
 		if(src.passive_handler.Get("Nightmare")&&usr!=src)
 			usr<<"<font color=red>You must be seeing things..."
 			return
+		if(src.Airborne)
+			return
 		usr.SetTarget(src)
 		for(var/sb in usr.SlotlessBuffs)
 			var/obj/Skills/Buffs/b = usr.SlotlessBuffs[sb]

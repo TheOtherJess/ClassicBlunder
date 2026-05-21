@@ -117,6 +117,7 @@
 	if(!Z || !Z.HeldSkill) return
 	var/client/C = client
 	if(!C) return
+	if(src.Airborne) return
 
 	// All guards run before touching any charge state.
 

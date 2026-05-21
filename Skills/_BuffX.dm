@@ -11995,6 +11995,8 @@ mob
 		UseBuff(var/obj/Skills/Buffs/B, var/Override)
 			. = TRUE
 			if(HeldSkillBlocksAction(B)) return
+			if(src.Airborne)
+				return
 			B.SpellSlotModification();
 			if(src.BuffOn(B))
 				if(B.MakesArmor)

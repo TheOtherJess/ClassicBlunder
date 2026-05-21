@@ -4845,6 +4845,8 @@ mob
 				Z.while_warping = FALSE
 			if(src.Stasis)
 				return FALSE
+			if(src.Airborne)
+				return FALSE
 			if(!Z.heavenlyRestrictionIgnore&&Secret=="Heavenly Restriction" && secretDatum?:hasRestriction("Projectiles"))
 				return FALSE
 			if(!Z.heavenlyRestrictionIgnore&&Secret=="Heavenly Restriction" && secretDatum?:hasRestriction("All Skills"))
@@ -5877,6 +5879,8 @@ obj
 									return
 						if(a==src.Owner&&!src.Backfire)
 							src.loc=a.loc
+							return
+						if(istype(a, /mob) && a:Airborne)
 							return
 						if(!src.Radius&&src.loc!=a.loc)
 							src.loc=a.loc

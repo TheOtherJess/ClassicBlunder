@@ -1565,11 +1565,11 @@ mob
 						//Keychain
 						var/Style
 						if(src.KeybladeType=="Sword")
-							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Command Style", "Wingblade", "Cyclone"))
+							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Wingblade", "Cyclone"))
 						if(src.KeybladeType=="Shield")
-							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Command Style", "Rock Breaker", "Dark Impulse"))
+							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Rock Breaker", "Dark Impulse"))
 						if(src.KeybladeType=="Staff")
-							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Command Style", "Ghost Drive", "Blade Charge"))
+							Style=prompt("Your mastery of both keyblades and magical elements allows you to refine your command style.",  "Which style do you develop?", list("Ghost Drive", "Blade Charge"))
 						switch(Style)
 							if("Wingblade")
 								src.AddSkill(new/obj/Skills/Buffs/NuStyle/SwordStyle/Command/Wing_Blade_Style)

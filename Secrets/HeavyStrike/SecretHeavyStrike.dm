@@ -298,6 +298,6 @@
                 FollowUpDelay=0
                 FollowUp="/obj/Skills/AutoHit/Spiral/Giga_Drill_Maximum"
             else
-                KBMult3
+                KBMult=3
                 KBAdd=25
                 FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact"

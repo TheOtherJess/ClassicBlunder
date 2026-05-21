@@ -1375,13 +1375,13 @@ mob/Admin2/verb
 		if(!M.passive_handler)
 			M.passive_handler = new
 		if(M.HasTestMode())
-			M.passive_handler.Set("TestMode", 0)
+			M.passive_handler.Set("TestMode", 0, TRUE)
 			Log("Admin", "[ExtractInfo(usr)] disabled Test Mode on [ExtractInfo(M)].")
 			usr << "Test Mode is now OFF for [M]."
 			if(M.client)
 				M << "Admin Test Mode is now OFF. Skill cooldowns are normal."
 		else
-			M.passive_handler.Set("TestMode", 1)
+			M.passive_handler.Set("TestMode", 1, TRUE)
 			Log("Admin", "[ExtractInfo(usr)] enabled Test Mode on [ExtractInfo(M)].")
 			usr << "Test Mode is now ON for [M]."
 			if(M.client)

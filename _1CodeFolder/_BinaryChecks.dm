@@ -1298,7 +1298,7 @@ mob
 					return 1
 			return 0
 		HasTestMode()
-			if(passive_handler && passive_handler.Get("TestMode"))
+			if(passive_handler && passive_handler.tmp_passives["TestMode"])
 				return 1
 			return 0
 		GetTechniqueMastery()

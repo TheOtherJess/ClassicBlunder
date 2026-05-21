@@ -23,7 +23,7 @@ scaling with potential as well
 	StrMult = 1
 	adjust(mob/p)
 		if(altered) return
-		passives = list("CalmAnger" = 1, "Instinct" = 2, "PureDamage" = 2, "Persistence" = p.AscensionsAcquired/2\
+		passives = list("CalmAnger" = 1, "Instinct" = 2, "PureDamage" = 2, "Persistence" = p.AscensionsAcquired/2, \
 						"LikeWater" = 1 + round(p.Potential/25,1), "AbyssMod" = round(p.Potential/40,1), \
 						"BleedHit"=1.5, "FavoredPrey" = "Depths", "SlayerMod"= 0.25*(p.AscensionsAcquired+1))
 		StrMult = 1.15 + (p.Potential/150)
@@ -47,7 +47,7 @@ scaling with potential as well
 	adjust(mob/p)
 		if(altered) return
 		passives = list("CalmAnger" = 1, \
-						"LikeWater" = 2 + round(p.Potential/25,1), "Flicker" = 1, "Pursuer" = 1, "PureDamage" = 2, "PureReduction" = 1, "HellPower" = 0.15, "Persistence" = p.AscensionsAcquired\
+						"LikeWater" = 2 + round(p.Potential/25,1), "Flicker" = 1, "Pursuer" = 1, "PureDamage" = 2, "PureReduction" = 1, "HellPower" = 0.15, "Persistence" = p.AscensionsAcquired, \
 						"Instinct" = 3, "AbyssMod" = round(p.Potential/30,1), "BleedHit"=0.75, "FavoredPrey" = "Depths","SlayerMod"= 0.25*(p.AscensionsAcquired+1))
 		StrMult = 1.2 + (p.Potential/100)
 		ForMult = 1.2 + (p.Potential/100)
@@ -69,7 +69,7 @@ scaling with potential as well
 	adjust(mob/p)
 		if(altered) return
 		passives = list("CalmAnger" = 1, "BleedHit"=0.25,"PureReduction" = 2, \
-						"LikeWater" = 2 + round(p.Potential/20,1),"SlayerMod"= 0.5*(p.AscensionsAcquired+1), "HellPower" = 0.4, "Persistence" = p.AscensionsAcquired\
+						"LikeWater" = 2 + round(p.Potential/20,1),"SlayerMod"= 0.5*(p.AscensionsAcquired+1), "HellPower" = 0.4, "Persistence" = p.AscensionsAcquired, \
 						"Powerhouse" = 1 + (p.Potential/75), "Instinct" = 4, "Flicker" = 2, "Pursuer" = 2, "PureDamage" = 2.5, "AbyssMod" = round(p.Potential/20,1), "FavoredPrey" = "Depths")
 		StrMult = 1.25 + (p.Potential/75)
 		ForMult = 1.25 + (p.Potential/75)

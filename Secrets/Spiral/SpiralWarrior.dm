@@ -216,7 +216,7 @@ obj/Skills/AutoHit/Spiral
 		Divide=1
 		Knockback=30
 		WindUp = 0.5
-		WindupMessage=<b>GIGA DRILL...</b>"
+		WindupMessage="<b>GIGA DRILL...</b>"
 		ActiveMessage="yells: <font size =+1><b>...MAXIMUM!!!</b></font size>"
 		HitSparkIcon='drill.dmi'
 		HitSparkX=-8
@@ -252,7 +252,7 @@ obj/Skills/AutoHit/Spiral
 		TurfStrike=1
 		TurfShift='Dirt1.dmi'
 		TurfShiftDuration=3
-		WindupMessage=<b>LAGANN...</b>"
+		WindupMessage="<b>LAGANN...</b>"
 		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
 /mob/proc/HandleSpiralUnlock(var/Stat, SL)
 	var/CA=AscensionsAcquired

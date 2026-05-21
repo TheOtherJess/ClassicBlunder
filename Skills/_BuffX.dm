@@ -7448,21 +7448,23 @@ NEW VARIABLES
 
 		Aspect_of_the_Successor
 			SignatureTechnique=4
-			SpecialSlot=1
+			SpecialSlot=0
+			Slotless=1
 			AutoAnger=1
 			AngerThreshold=2
 			IconLock='AuraMysticBig.dmi'
 			IconLockBlend=4
-			StrMult = 1.3
-			ForMult = 1.3
-			EndMult = 1.3
+			StrMult = 1.5
+			ForMult = 1.5
+			EndMult = 1.5
+			SpdMult = 1.5
+			OffMult = 1.5
+			DefMult = 1.5
 			LockX=-32
 			LockY=-32
 			SagaSignature=1
 			PowerMult = 2
 			AngerMult= 3
-			ManaDrain=0.05
-			ManaThreshold = 10
 			FlashChange=1
 			KenWave=2
 			KenWaveIcon='KenShockwaveDivine.dmi'
@@ -7470,16 +7472,26 @@ NEW VARIABLES
 			KenWaveTime=5
 			KenWaveBlend=2
 			Cooldown=-1
-			ActiveMessage="let the Rage of the One True Angel guide their actions!"
-			OffMessage = "let go of the Blessing of the Successor."
+			ActiveMessage="let the Wrath of God manifest through their actions!"
+			OffMessage = "cannot keep the sliver of His power within..."
 			verb/Aspect_of_the_Successor()
 				set category="Skills"
 				if(!usr.BuffOn(src))
 					var/asc = usr.AscensionsAcquired
-					passives = list("PureDamage" = 5+asc, "PureReduction" = 5+asc, "GodKi" = 0.1+(asc/10), "Rank-Down Protection" = 1, "DebuffResistance" = 3+asc, "Heavensent" = 1+asc, \
-					"Extend" = 1+asc, "Unstoppable" = 1, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3)
+					passives = list("PureDamage" = 5+asc, "PureReduction" = 5+asc, "GodKi" = 0.1+(asc/10), "DebuffResistance" = 3+asc, "Heavensent" = 1+asc, \
+					"Extend" = 1+asc, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3, "BleedHit" = 1, "FatigueLeak" = 1)
 				src.Trigger(usr)
 
+		Gods_Protection
+			SpecialSlot=0
+			Slotless=1
+			ActiveMessage="is shielded from outside influences, thanks to God's power!"
+			OffMessage="does not require God's Protection any longer."
+			passives = list("Rank-Down Protection" = 1, "Anti-Scrying" = 1)
+			verb/Gods_Protection()
+				set category="Skills"
+				set name="God's Protection"
+				src.Trigger(usr)
 
 		God_Ki
 			SignatureTechnique=4

@@ -6689,10 +6689,7 @@ obj
 					if(m in src.Owner.party.members)
 						FinalDmg *= 1+src.Owner.passive_handler.Get("TeamHater")
 
-				if(!src.CanBeBlocked&&!src.CanBeDodged)
-					FinalDmg *= glob.AUTOHIT_GLOBAL_DAMAGE
-				else
-					FinalDmg*=1.5
+				FinalDmg*= glob.AUTOHIT_GLOBAL_DAMAGE
 				DEBUGMSG("after glob mod: [FinalDmg]")
 
 				if(m.passive_handler.Get("Siphon")&&src.ForDmg)

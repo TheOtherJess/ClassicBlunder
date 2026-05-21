@@ -2424,7 +2424,7 @@ mob
 			switch(preyType)//no check for "All" because it will always be valid if there is an enemy
 				if("Secret") if(!enemy.Secret || (enemy.race.type in INHERENT_SECRET)) invalid++;
 				if("Saga") if(!enemy.Saga) invalid++;
-				if("Transformations") if(!enemy.transActive) invalid++
+				if("Transformations") if(!enemy.transActive||enemy.transActive!=enemy.transUnlocked) invalid++
 				if("Gender") if(enemy.Gender=="Male"||enemy.Gender=="Political") invalid++
 				if("Mortal") if((enemy.race.type in DEPTHS_RACES) || (enemy.race.type in BEYOND_RACES)) invalid++;
 				if("Depths") if(!(enemy.race.type in DEPTHS_RACES)) invalid++;

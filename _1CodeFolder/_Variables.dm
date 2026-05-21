@@ -67,6 +67,7 @@ mob/var
 	tmp/list/mob/BeingObserved=list()//this holds the observer, and sends them messages
 	tmp/list/BeingTargetted=list() //list of mobs currently targetting
 	tmp/Airborne = 0
+	var/AirborneInterrupted = 0
 	tmp/is_dashing = 0
 	tmp/verb_delay = 0
 	tmp/last_autohit

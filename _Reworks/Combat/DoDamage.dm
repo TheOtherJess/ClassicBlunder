@@ -18,6 +18,8 @@
 /mob/proc/newDoDamage(mob/defender, val, unarmed, sword, secondhit, thirdhit, trueMult, spiritAtk, destructive, autohit)
 	if(inStasis() || defender.inStasis())
 		return 0;
+	if(defender.Airborne)
+		return 0
 	if(defender.AdminOverwatchActive)
 		return 0;
 	if(defender == src)

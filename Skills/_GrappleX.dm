@@ -551,6 +551,8 @@ obj/Skills/Grapple
 				return
 			if(User.HeldSkillBlocksAction(src))
 				return
+			if(User.Airborne)
+				return
 			if(!heavenlyRestrictionIgnore&&User.Secret=="Heavenly Restriction" && User.secretDatum?:hasRestriction("Grapples"))
 				return
 			if(!heavenlyRestrictionIgnore&&User.Secret=="Heavenly Restriction" && User.secretDatum?:hasRestriction("All Skills"))

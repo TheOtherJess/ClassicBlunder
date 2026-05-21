@@ -1325,6 +1325,8 @@ mob
 			if(src.passive_handler.Get("Silenced"))
 				src << "You can't use [Q] you are silenced!"
 				return 0
+			if(src.Airborne)
+				return
 			if(Q.Using)
 				return//Can't use if on cooldown
 			if(istype(Q, /obj/Skills/Queue/Heavy_Strike) && src.passive_handler["Heavy Strike"] == "Warp Strike")

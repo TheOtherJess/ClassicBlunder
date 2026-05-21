@@ -91,7 +91,8 @@ var/list/SkillTree=list(
 ),
 "UnarmedT5"=list(
 			"/obj/Skills/Grapple/The_Show_Stopper"=200,
-			"/obj/Skills/Queue/GET_DUNKED"=200
+			"/obj/Skills/Queue/GET_DUNKED"=200,
+			"/obj/Skills/AutoHit/Meteor_Strike"=200
 
 ),
 

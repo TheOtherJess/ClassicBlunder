@@ -224,6 +224,32 @@ obj/Skills/AutoHit/Spiral
 		HitSparkDispersion=1
 		ComboMaster=1
 		Cooldown=180
+		FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact"
+	Lagann_Impact
+		AlwaysAnnounceCooldown = 1
+		Area="Arc"
+		AdaptRate=1
+		DamageMult=2
+		Rush=10
+		ControlledRush=1
+		Rounds=1
+		Knockback=15
+		ComboMaster=1
+		RoundMovement=0
+		NoAttackLock=1
+		NoLock=1
+		Cooldown=60
+		Size=2
+		Distance=2
+		Instinct=10
+		ComboMaster=1
+		ShockIcon='KenShockwave.dmi'
+		Shockwave=5
+		Shockwaves=1
+		TurfStrike=1
+		TurfShift='Dirt1.dmi'
+		TurfShiftDuration=3
+		ActiveMessage="yells: <b>LAGANN IMPACT!!</b>"
 /mob/proc/HandleSpiralUnlock(var/Stat, SL)
 	var/CA=AscensionsAcquired
 	var/TA=CA+SL

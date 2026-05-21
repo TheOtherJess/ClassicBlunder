@@ -6916,7 +6916,7 @@ NEW VARIABLES
 				verb/Transform()
 					set category="Mecha"
 					set name="Transform!"
-					if(usr.passive_handler.Get(SuperMode))
+					if(usr.passive_handler.Get("SuperMode"))
 						if(usr.StandardTransformRequirements())
 							usr.Transform()
 			Turbo_Drive

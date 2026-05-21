@@ -295,6 +295,7 @@
             if(p.passive_handler.Get("SpiralPowerUnlocked")>=3)
                 KBMult=0.1
                 KBAdd=0
+                FollowUpDelay=0
                 FollowUp="/obj/Skills/AutoHit/Spiral/Giga_Drill_Maximum"
             else
                 KBMult3

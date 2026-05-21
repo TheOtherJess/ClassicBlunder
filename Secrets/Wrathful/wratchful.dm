@@ -48,7 +48,6 @@ scaling with potential as well
 		SpdMult = clamp(0.75 + (p.Potential/250),0.75,1)
 		OffMult = 1.2 + p.Potential/250
 		HealthDrain = 0.007 - (p.Potential * 0.000025)
-		PowerMult = 1 + (p.Potential/200)
 	Trigger(mob/User, Override=FALSE)
 		adjust(User)
 		..()
@@ -104,12 +103,11 @@ scaling with potential as well
 	BuffName = "Chou Wrathful"
 	adjust(mob/p)
 		if(altered) return
-		passives = list("GiantForm" = 1, "AutoAnger" = 1, "Harden" = round(p.Potential/10,1), "DemonicDurability" = round(p.Potential/15,1), "AngerAdaptiveForce" = round(p.Potential/100), \
+		passives = list("GiantForm" = 1, "AutoAnger" = 1, "Harden" = round(p.Potential/10,1), "DemonicDurability" = round(p.Potential/50,1), "AngerAdaptiveForce" = round(p.Potential/200), \
 						"Powerhouse" = 1 + (p.Potential/75), "Instinct" = 3, "Flow" = 3, "Flicker" = 2, "Pursuer" = 2, "PureDamage" = 1, "PureReduction" = 1)
 		EndMult = 1 + (p.Potential/125)
 		StrMult = 1 + (p.Potential/125)
 		ForMult = 1 + (p.Potential/125)
-		PowerMult = 1 + (p.Potential/150)
 		AngerMult = 1 + (p.Potential/100)
 		EnergyHeal = 0.005 * p.Potential
 		HealthDrain = 0.018 - (p.Potential * 0.00005)
@@ -130,12 +128,11 @@ scaling with potential as well
 	BuffName = "Full Power Chou Wrathful"
 	adjust(mob/p)
 		if(altered) return
-		passives = list("GiantForm" = 1, "AutoAnger" = 1, "Harden" = round(p.Potential/5,1), "DemonicDurability" = round(p.Potential/10,1), "AngerAdaptiveForce" = round(p.Potential/100), \
+		passives = list("GiantForm" = 1, "AutoAnger" = 1, "Harden" = round(p.Potential/5,1), "DemonicDurability" = round(p.Potential/25,1), "AngerAdaptiveForce" = round(p.Potential/200), \
 						"Powerhouse" = 2 + (p.Potential/25), "Instinct" = 4, "Flow" = 4, "Flicker" = 3, "Pursuer" = 3, "BuffMastery" = 3, "PureDamage" = 1.5, "PureReduction" = 1.5)
 		EndMult = 1 + (p.Potential/100)
 		StrMult = 1 + (p.Potential/100)
 		ForMult = 1 + (p.Potential/100)
-		PowerMult = 1 + (p.Potential/100)
 		HealthDrain = 0.015 - (p.Potential * 0.000016)
 		EnergyHeal = 0.01 * p.Potential
 		AngerMult = 1 + (p.Potential/100)

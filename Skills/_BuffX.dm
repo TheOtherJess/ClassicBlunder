@@ -6897,7 +6897,8 @@ NEW VARIABLES
 					init(usr.findMecha())
 					src.Trigger(usr)
 			Super_Mode
-				TimerLimit = 120
+				TimerLimit = 30
+				Cooldown=120
 				TextColor=rgb(255, 255, 32)
 				ActiveMessage="activates Super Mode!"
 				OffMessage="deactivates Super Mode..."
@@ -6912,14 +6913,12 @@ NEW VARIABLES
 					set category="Mecha"
 					init(usr.findMecha())
 					src.Trigger(usr)
-					if(usr.CanTransform())
-						usr.Transform();
-					if(usr.CanTransform())
-						usr.Transform();
-					if(usr.CanTransform())
-						usr.Transform();
-
-
+				verb/Transform()
+					set category="Mecha"
+					set name="Transform!"
+					if(usr.passive_handler.Get("SuperMode"))
+						if(usr.StandardTransformRequirements())
+							usr.Transform()
 			Turbo_Drive
 				TimerLimit=30
 				HotHundred=1

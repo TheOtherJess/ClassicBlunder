@@ -701,7 +701,7 @@ mob/Players/verb
 		if(!(world.time > usr.verb_delay)) return
 		is_dashing = 0
 		if(isRace(BEASTKIN) && race?:Racial == "Feather Knife")
-			passive_handler.passives["Secret Knives"] = "Feathers"
+			passive_handler.passives["Extra Secret Knives"] = "Feathers"
 		if(isRace(BEASTKIN) && race?:Racial == "Fox Fire")
 			passive_handler.passives["Heavy Strike"] = "Fox Fire"
 		if(isRace(BEASTKIN) && race?:Racial == "Monkey King")

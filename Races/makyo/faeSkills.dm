@@ -58,7 +58,7 @@
 					passives["Pursuer"] = 2 * p.AscensionsAcquired
 				else
 					if(p.AscensionsAcquired)
-						AngerPoint = 50+ (5 * p.AscensionsAcquired)
+						AngerPoint = 5+ (2 * p.AscensionsAcquired)
 						passives["Pursuer"] = 0.5 * p.AscensionsAcquired
 					AngerMult=1
 			..()

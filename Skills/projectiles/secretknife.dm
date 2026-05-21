@@ -32,7 +32,7 @@
 			var/asc = p.AscensionsAcquired
 			var/dmgMult = 1.5 + (asc/2)
 			var/maxBlasts = 6 + p.AscensionsAcquired
-			var/lowestCD = 6 - p.AscensionsAcquired
+			var/lowestCD = 12 - p.AscensionsAcquired
 			if(p.SlotlessBuffs["Clean Cuts"])
 				Blasts = maxBlasts + 1
 				Cooldown = lowestCD

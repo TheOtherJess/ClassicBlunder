@@ -80,12 +80,14 @@ proc/MeteorStrike(mob/attacker, obj/Skills/AutoHit/Meteor_Strike/Z)
 
 	// Airborne state  (untargetable, blocks all outgoing actions, blocks incoming damage, density=0)
 	attacker.Airborne = 1
+	attacker.AirborneInterrupted = 1
 	attacker.density = 0
 
 	sleep(50)
 
 	if(!attacker) return
 	attacker.Airborne = 0
+	attacker.AirborneInterrupted = 0
 	attacker.density = 1
 
 	// Crash at target if still valid, otherwise land at current position

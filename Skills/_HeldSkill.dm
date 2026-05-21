@@ -185,10 +185,7 @@
 
 	return null
 
-// Builds (or rebuilds) the client's macro key cache and schedules a refresh
-// every 5 minutes so macro changes mid-session are picked up automatically.
-// On first login this fires once from client/New(), after which it reschedules
-// itself. The old cache remains valid during background refreshes.
+// Builds the client's held-skill macro key cache only on login now, should help with lag/dcs, players will just need to relog if they change key for their hold skill
 /client/proc/RebuildHeldSkillKeyCache()
 	if(!src) return
 	held_skill_cache_build_start = world.time
@@ -202,6 +199,7 @@
 		if(raw) held_names += _normalizeHeldName(raw)
 
 	var/list/new_cache = list()
+	var/list/shortcut_key_map = list()  // shortcut slot number
 
 	var/macro_set_str = winget(src, null, "macro")
 	var/macro_params = params2list(macro_set_str)
@@ -226,6 +224,10 @@
 			if(!cmd) continue
 
 			var/norm_cmd = _normalizeHeldName(cmd)
+			for(var/sc_n = 1, sc_n <= 10, sc_n++)
+				if(norm_cmd == "skill shortcut [sc_n]")
+					shortcut_key_map["[sc_n]"] = key_name
+					break
 			for(var/held_name in held_names)
 				if(findtext(norm_cmd, held_name))
 					new_cache[norm_cmd] = key_name
@@ -236,10 +238,28 @@
 			var/cmd = winget(src, k, "command")
 			if(!cmd) continue
 			var/norm_cmd = _normalizeHeldName(cmd)
+			for(var/sc_n = 1, sc_n <= 10, sc_n++)
+				if(norm_cmd == "skill shortcut [sc_n]")
+					shortcut_key_map["[sc_n]"] = k
+					break
 			for(var/held_name in held_names)
 				if(findtext(norm_cmd, held_name))
 					new_cache[norm_cmd] = k
 					break
+
+	// For any skill shortcut slot whose bound key was found, add a cache entry
+	var/mob/sc_mob = src.mob
+	if(sc_mob && sc_mob.shortcuts)
+		for(var/sc_n = 1, sc_n <= 10, sc_n++)
+			var/sc_key = shortcut_key_map["[sc_n]"]
+			if(!sc_key) continue
+			var/obj/Skills/sc_skill = sc_mob.shortcuts.vars["shortcut[sc_n]"]
+			if(!sc_skill || !sc_skill.HeldSkill) continue
+			var/sc_raw = sc_skill.HeldVerbName ? sc_skill.HeldVerbName : sc_skill.name
+			if(!sc_raw) continue
+			var/sc_norm = _normalizeHeldName(sc_raw)
+			if(!new_cache[sc_norm])
+				new_cache[sc_norm] = sc_key
 
 	// Because new_cache is filtered to held skills only, this loop never touches
 	// movement keys, hotbar slots, or any other binding.
@@ -250,8 +270,6 @@
 	// both vars become visible together, after all +UP macros are set.
 	held_skill_macro_set = set_name
 	held_skill_key_cache = new_cache
-
-	spawn(3000) RebuildHeldSkillKeyCache()
 
 
 /mob/proc/ShowHeldChargeBar(var/obj/Skills/Z)

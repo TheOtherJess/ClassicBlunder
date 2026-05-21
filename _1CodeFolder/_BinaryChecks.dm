@@ -1214,7 +1214,7 @@ mob
 					if(Target.GetGodKi() > GetGodKi())
 						Return += 2*((1+Target.GetGodKi())/(1+GetGodKi()))
 			if(Class=="Heroic"&&ActiveBuff)
-				Return*=1.5
+				Return*=1.25
 			return Return
 		HasPureReduction()
 			var/Return=0
@@ -1252,7 +1252,7 @@ mob
 			if(DownToEarth>0)
 				Return*=1*((100-DownToEarth)/100)
 			if(Class=="Heroic"&&ActiveBuff)
-				Return*=1.5
+				Return*=1.25
 			return Return
 		Hustling()
 			if(passive_handler.Get("Hustle") || HasMythical() > 0.25 || (passive_handler["Rage"] && Health <= 25))
@@ -1298,7 +1298,7 @@ mob
 					return 1
 			return 0
 		HasTestMode()
-			if(passive_handler && passive_handler.Get("TestMode"))
+			if(passive_handler && passive_handler.tmp_passives["TestMode"])
 				return 1
 			return 0
 		GetTechniqueMastery()
@@ -2424,7 +2424,7 @@ mob
 			switch(preyType)//no check for "All" because it will always be valid if there is an enemy
 				if("Secret") if(!enemy.Secret || (enemy.race.type in INHERENT_SECRET)) invalid++;
 				if("Saga") if(!enemy.Saga) invalid++;
-				if("Transformations") if(!enemy.transActive) invalid++
+				if("Transformations") if(!enemy.transActive||enemy.transActive!=enemy.transUnlocked) invalid++
 				if("Gender") if(enemy.Gender=="Male"||enemy.Gender=="Political") invalid++
 				if("Mortal") if((enemy.race.type in DEPTHS_RACES) || (enemy.race.type in BEYOND_RACES)) invalid++;
 				if("Depths") if(!(enemy.race.type in DEPTHS_RACES)) invalid++;

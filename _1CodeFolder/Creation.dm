@@ -346,6 +346,13 @@ mob/Players
 					src.Reincarnate()
 
 		src.SetCyberCancel()
+		if(src.AirborneInterrupted)
+			src.AirborneInterrupted = 0
+			src.Airborne = 0
+			src.density = 1
+			src.alpha = 255
+			src.pixel_z = 0
+			animate(src)
 		src.AppearanceOn()
 
 		if(src.EnergyMax!=100)
@@ -482,6 +489,13 @@ mob/Players
 		MajinAbsorbOnLogin()
 		return
 	Logout()
+		if(src.Airborne)
+			src.Airborne = 0
+			src.AirborneInterrupted = 0
+			src.density = 1
+			src.alpha = 255
+			src.pixel_z = 0
+			animate(src)
 		ForceClearHeldChargeState()
 		MajinAbsorbOnLogout()
 		DevilSummonerLogout()

@@ -3993,10 +3993,10 @@ obj/Items/Gear
 				var/answer = input(player, "Do you want to change your mech's type? Each type has a different boon") in list("Yes","No")
 				if(answer == "Yes")
 					if(MechType=="MobileFighter")
-						Augment= "None"
+						Augment = "None"
 					MechType = input(player, "What type?") in list("Speed","Tank","Assault", "MobileFighter")
 					if(MechType=="MobileFighter")
-						Augment= "Super_Mode"
+						Augment = "Super_Mode"
 			else
 				MechType = input(player, "What type of mech do you want to use?", "Mech Type") in list("Speed","Tank","Assault", "MobileFighter")
 		proc/setup(mob/player)
@@ -4053,6 +4053,9 @@ obj/Items/Gear
 					Techniques += list("/obj/Skills/Projectile/Gear/Installed/Giga_Laser", \
 				"/obj/Skills/Projectile/Gear/Installed/Missle_Onslaught", "/obj/Skills/Projectile/Gear/Installed/Laser_Circus")
 			src.Using=1
+			usr.Revert()
+			usr.Revert()
+			usr.Revert()
 			src.ObjectUse(usr)
 			src.Using=0
 		verb/Set_Start_Code()

@@ -167,6 +167,10 @@ obj
 						ManaCost=100
 						Mastery=4
 						AllOutAttack=1
+						adjust(mob/p)
+							if(p.SagaLevel>=5)
+								passives["Deicide"] = 10*(p.SagaLevel-4)
+								passives["EndlessNine"] = 0.15*(p.SagaLevel-4)
 						verb/Ansatsuken_Style()
 							set hidden=1
 							src.Trigger(usr)

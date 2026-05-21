@@ -1214,7 +1214,7 @@ mob
 					if(Target.GetGodKi() > GetGodKi())
 						Return += 2*((1+Target.GetGodKi())/(1+GetGodKi()))
 			if(Class=="Heroic"&&ActiveBuff)
-				Return*=1.5
+				Return*=1.25
 			return Return
 		HasPureReduction()
 			var/Return=0
@@ -1252,7 +1252,7 @@ mob
 			if(DownToEarth>0)
 				Return*=1*((100-DownToEarth)/100)
 			if(Class=="Heroic"&&ActiveBuff)
-				Return*=1.5
+				Return*=1.25
 			return Return
 		Hustling()
 			if(passive_handler.Get("Hustle") || HasMythical() > 0.25 || (passive_handler["Rage"] && Health <= 25))

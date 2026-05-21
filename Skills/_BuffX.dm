@@ -2060,6 +2060,8 @@ NEW VARIABLES
 					passives = list("Maki" = 1, "Curse" = 1, "Instinct" = 1, "Flow" = 1, "Godspeed" = 1 + secretLevel/2, \
 					"CalmAnger"=1, FatigueLeak = clamp(3 - secretLevel/2,0 , 3), \
 					"PureDamage" = 1 + secretLevel)
+					if(secretLevel>=4)
+						passives["MovingCharge"] = 1
 
 				verb/Jagan_Eye()
 					set category="Skills"
@@ -6896,11 +6898,10 @@ NEW VARIABLES
 					src.Trigger(usr)
 			Super_Mode
 				TimerLimit = 120
-				PhysicalHitsLimit = 1
 				TextColor=rgb(255, 255, 32)
 				ActiveMessage="activates Super Mode!"
 				OffMessage="deactivates Super Mode..."
-				Cooldown=120
+				Cooldown=1
 				proc/init(obj/Items/Gear/Mobile_Suit/mecha)
 					if(!mecha) return
 					ManaGlow = "#FFFF00"
@@ -6911,11 +6912,11 @@ NEW VARIABLES
 					set category="Mecha"
 					init(usr.findMecha())
 					src.Trigger(usr)
-					if(usr.canDoATransform())
+					if(usr.CanTransform())
 						usr.Transform();
-					if(usr.canDoATransform())
+					if(usr.CanTransform())
 						usr.Transform();
-					if(usr.canDoATransform())
+					if(usr.CanTransform())
 						usr.Transform();
 
 

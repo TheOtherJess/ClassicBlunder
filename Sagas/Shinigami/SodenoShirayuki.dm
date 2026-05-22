@@ -35,6 +35,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 			passives["ManaLeak"] = 2
 		if(SL > 3)
 			passives["IceHerald"] = 1 // Enhances the potency of the Shikai once you obtain baseline Bankai by giving your crits more OOMPH.
+			passives["IceAge"] = he 7.5 * SL, // This is Combustion but for Chill. Seems pretty thematic.
 
 		EndMult = 1.1 + (0.1 * SL) // I feel like ICE IS HARD makes a lot of sense here. Someone else can do the stats if they want somethign more thematic.
 		ForMult = 1.1 + (0.1 * SL)
@@ -83,12 +84,13 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 		if(altered) return
 		var/SL = p.SagaLevel
 		passives = list(
-			"PureDamage"     = 1.25 * SL, //Made this a multiplier instead of an additive, Because Rukia's bankai is INCREDIBLY strong in what it does.
+			"PureDamage"     = 1.5 * SL, //Made this a multiplier instead of an additive, Because Rukia's bankai is INCREDIBLY strong in what it does.
 			"ChillResist"    = 2 * SL, // This should make it so that Chill hurts you less.
 			"Chilling"       = 4 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
 			"SpiritSword"    = 0.5 * SL, //Rukia always comes off as a proper hybrid as a Shinigami should be, so give users of her release soem Spirit Sword.
 			"CriticalChance" = 1 * SL,
 			"CriticalDamage" = 0.1 * SL,
+			"AbsoluteZero"   = 1, // This gives other debuffs scaling off Chill stacks.
 			"IceHerald"      = 1, // Lets you use IceHerald in Bankai, Always.
 			"IceAge"         = 10 + (10 * SL), // This is Combustion but for Chill. Seems pretty thematic.
 			"AttackSpeed"    = -5 + (0.5 * SL), //Ice makes you cold. Rukia is shown having difficulty moving in her Bankai, may need it's numbers tweaked.
@@ -221,7 +223,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 				src.ManaGlowSize = 0
 				M.AppearanceOff()
 				M.AppearanceOn()
-				OMsg(M, "<b>[M] calls out, \"Bankai... [M.BankaiPrefix] [M.AsauchiName]!\"</b>")
+				OMsg(M, "<b>[M] calls out, \"Bankai... [M.BankaiPrefix]!\"</b>")
 		else
 			src.Trigger(usr)
 

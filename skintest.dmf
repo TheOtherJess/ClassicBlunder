@@ -2093,6 +2093,21 @@ window "mapwindow"
 		border = sunken
 		saved-params = ""
 		text = "Shatter"
+	elem "BarBleed"
+		type = LABEL
+		pos = 236,436
+		size = 64x20
+		anchor1 = 50,100
+		anchor2 = -1,-1
+		font-family = "@Microsoft JhengHei Light"
+		font-size = 6
+		font-style = "bold"
+		text-color = #cc0000
+		background-color = #000000
+		is-visible = false
+		border = sunken
+		saved-params = ""
+		text = "Bleed"
 	elem "BarOxygen"
 		type = LABEL
 		pos = 410,436

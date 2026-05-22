@@ -1026,6 +1026,8 @@ mob/proc/
 		if(passive_handler.Get("Ashen One"))
 			Ratio*=1+(Burn/glob.ASHEN_BURN_POWER_DIVISOR)
 		Ratio += (scalingEldritchPower() * 2 / 10);
+		if(passive_handler.Get("NameCurse")=="Black Ant")
+			Ratio*=0.01
 		Power=Ratio*GetPowerUpRatio()
 
 		if(Power < 1)
@@ -1280,6 +1282,11 @@ mob/proc/Update_Stat_Labels()
 			src<<output("BUR: [round(Burn, 1)]","BarBurning")
 		else
 			winshow(src, "BarBurning",0)
+		if(src.Bleed>0)
+			winshow(src, "BarBleed",1)
+			src<<output("BLD: [round(Bleed, 1)]","BarBleed")
+		else
+			winshow(src, "BarBleed",0)
 		if(src.Doomed>0||src.DownToEarth>0)
 			winshow(src, "BarDoomed",1)
 			if(src.Doomed>0)

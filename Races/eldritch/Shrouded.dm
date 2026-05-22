@@ -127,6 +127,7 @@
                 if(es.ShroudedOrigin=="Saiyan") es.ShroudedMastery = "Despair"
                 if(es.ShroudedOrigin=="Namekian") es.ShroudedMastery = "Eternity"
                 src << "After being coated in the ichor of the Sea of Darkness, you are the master of <b>[es.ShroudedMastery]</b>."
+            src << "You exhibit perfect mastery over your Shrouded Origin!"
             switch(es.ShroudedMastery)
                 if("Rifts")
                     es.ShroudedPassives["TripleStrike"] = 0.5;
@@ -208,7 +209,7 @@
         return 0;
     var/Cost = GetTetherWarpCost();
     if(GetMineral() < Cost)//always costs mana bits for Shrouded to warp
-        src << "You don't have enough mana bits to warp (You needs [Commas(Cost)])"
+        src << "You don't have enough mana bits to warp (You need [Commas(Cost)])"
         return 0;
     var/list/tetherOptions = findTetherPacts();
     if(!tetherOptions)
@@ -273,3 +274,4 @@ obj/Skills/Utility
             //aesthetics
             usr.loc = choice.loc;
             OMsg(usr, "<font color='purple'>...<b>[usr]'s Shroud</b> drags their body through space to a fellow Tether!!</font color>");
+            Cooldown();

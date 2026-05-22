@@ -6669,7 +6669,7 @@ obj
 				if(WearingArmor)//Reduced delay and accuracy
 					Precision*=src.Owner.GetArmorAccuracy(WearingArmor)
 
-				if(src.CanBeBlocked||m.passive_handler.Get("YataNoKagami")||m.passive_handler.Get("The Crownless King"))
+				if(src.CanBeBlocked||m.passive_handler.Get("YataNoKagami")||m.passive_handler.Get("The Crownless King")||m.passive_handler.Get("IgnoreNoWhiff"))
 					if(Accuracy_Formula(src.Owner, m, AccMult=Precision, BaseChance=glob.WorldDefaultAcc, IgnoreNoDodge=0) == WHIFF)
 						if(!src.Owner.NoWhiff())
 							var/obj/Items/Sword/s = Owner.EquippedSword()
@@ -6811,7 +6811,7 @@ obj
 					m.applySnare(Snaring, SnaringOverlay)
 				//EFFECTS HERE
 
-				if(src.CanBeDodged||m.passive_handler.Get("YataNoKagami"))
+				if(src.CanBeDodged||m.passive_handler.Get("YataNoKagami")||m.passive_handler.Get("IgnoreNoWhiff"))
 					var/loc=m.loc
 					if(m.AttackQueue&&(m.AttackQueue.Counter||m.AttackQueue.CounterTemp))
 						m.dir=get_dir(m, src.Owner)

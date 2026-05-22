@@ -187,6 +187,9 @@ mob/Move()
 		for(var/mob/M in oview(range, src))
 			if(M != src && M.density)
 				src.Melee1(dmgmulti =(0.15), forcedTarget = M)*/
+	if(Bleed > 0 && !Knockback && !is_dashing && client)
+		WoundSelf(0.01)
+
 	if(src.Grab)
 		src.Grab_Update()
 

@@ -2248,6 +2248,18 @@ mob
 			return 0
 		GetScorching()
 			return passive_handler.Get("Scorching")
+		HasBloodletting()
+			if(passive_handler.Get("Bloodletting"))
+				return 1
+			return 0
+		GetBloodletting()
+			return passive_handler.Get("Bloodletting")
+		HasSniper()
+			if(passive_handler.Get("Sniper"))
+				return 1
+			return 0
+		GetSniper()
+			return passive_handler.Get("Sniper")
 		HasChilling()
 			if(passive_handler.Get("Chilling"))
 				return 1

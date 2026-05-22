@@ -3633,6 +3633,10 @@ mob
 
 			if(src.req_pot(glob.progress.T2_SIGS[2]) && src.req_sigs(1, 2))
 				DevelopSignature(src, 2, "Signature")
+			
+			if(src.req_pot(glob.progress.T3_SIGS[1]) && src.req_sigs(0, 3))
+				DevelopSignature(src, 3, "Signature")
+			
 		YeetSignatures()
 			for(var/obj/Skills/s in src.Skills)
 				if(s.SignatureTechnique)

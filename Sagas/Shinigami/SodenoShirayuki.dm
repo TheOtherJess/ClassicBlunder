@@ -245,7 +245,7 @@ obj/Skills/AutoHit
 		HitSparkX=0
 		HitSparkY=0
 		Cooldown=120
-		EnergyCost=10
+		ManaCost=10
 		TurfStrike=1
 		TurfShift='IceGround.dmi'
 		TurfShiftDuration=3
@@ -276,7 +276,7 @@ obj/Skills/AutoHit
 		HitSparkX=0
 		HitSparkY=0
 		Cooldown=120
-		EnergyCost=10
+		ManaCost=10
 		TurfStrike=1
 		TurfShift='IceGround.dmi'
 		TurfShiftDuration=3

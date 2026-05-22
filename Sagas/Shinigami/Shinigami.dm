@@ -3,7 +3,11 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
+<<<<<<< HEAD
 	var/list/Releases = list("Zangetsu", "Senbonzakura")
+=======
+	var/list/Releases = list("Zangetsu", "Shirayuki")
+>>>>>>> a51b60950e1056cf7a83767e3a74ccaa8057455b
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -78,12 +82,18 @@ mob/tierUpSaga(Path)
 					if("Zangetsu")
 						src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Tensa_Zangetsu)
+<<<<<<< HEAD
 					if("Senbonzakura")
 						src.BankaiPrefix = input(src, "Your Bankai takes shape. What suffix comes after your Zanpakutō's name?", "Bankai Suffix") as text
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi)
 						if(!locate(/obj/Skills/SenbonzakuraGoukei, src))
 							src.AddSkill(new/obj/Skills/SenbonzakuraGoukei)
 							src << "The petals converge at your will. You can now use <b>Goukei</b>."
+=======
+					if("Shirayuki")
+						src.BankaiPrefix = input(src, "Your Bankai takes shape. What is your Zanpakutō's true name?", "Bankai Prefix") as text
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Bankai/HakkanoTogame)
+>>>>>>> a51b60950e1056cf7a83767e3a74ccaa8057455b
 				updateShinigamiAscended()
 
 			if(5)

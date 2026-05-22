@@ -760,7 +760,7 @@ mob/Admin3/verb
 			if("Jagan Eye")
 				P.Secret = "Jagan Eye"
 				P.giveSecret("JaganEye")
-			if("Hamon of the Sun")
+			if("Hamon")
 				P.ModifyPrime+=1
 				P.Secret="Hamon"
 				P.giveSecret("Hamon")

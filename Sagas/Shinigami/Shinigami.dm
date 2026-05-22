@@ -48,7 +48,6 @@ mob/tierUpSaga(Path)
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zangetsu)
 					if("Senbonzakura")
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura)
-
 					if("Shirayuki")
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Shikai/SodenoShirayuki)
 						src.AddSkill(new/obj/Skills/AutoHit/Tsukishiro)

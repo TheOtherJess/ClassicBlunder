@@ -184,8 +184,11 @@ mob
 						val=((-1)*defender.VaizardHealth)
 						defender.VaizardHealth=0
 				else
-					if(defender.passive_handler.Get("Determination(Black)"))
+					var/PD=src.passive_handler.Get("Piercing") //don't make this over 1. if anyone makes it over 1 i will kill them. hell, if anyone makes it equal to 1 i will also kill you. i swear to go. unless it's me, then it's okay. d
+					if(src.passive_handler.Get("Determination(Black)"))
 						val/=4
+					else if(src.passive_handler.Get("Piercing"))
+						val*=PD
 					else
 						val=0
 

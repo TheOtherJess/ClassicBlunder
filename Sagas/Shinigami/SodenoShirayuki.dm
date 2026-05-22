@@ -113,6 +113,10 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 	verb/Bankai()
 		set name = "Bankai"
 		set category = "Skills"
+		//Remove the below message once it's finished.
+		src<<"You Bankai is currently incomplete, code wise. Don't worry, it should be done soon :tm: <3"
+		return
+		//Remove the above message once it's finished.
 		if(!src.SlotlessOn)
 			if(!usr.InShinigamiForm)
 				usr << "You must be in Shinigami Form to use Bankai."
@@ -225,7 +229,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 
 // PUT SKILLS HERE. The Shikai ones should probably feel somewhere around the potency of a T1 Sig, but with some scaling.
 obj/Skills/AutoHit
-	Tsukshiro
+	Tsukishiro
 		StrOffense=0
 		ForOffense=1
 		Rounds=10
@@ -292,7 +296,7 @@ obj/Skills/AutoHit
 				usr.Activate(src)
 
 obj/Skills/Buffs
-	Shirafune
+	Shirafune // Unlocks at T3
 		name = "Shirafune"
 		TimerLimit=30
 		Cooldown=120

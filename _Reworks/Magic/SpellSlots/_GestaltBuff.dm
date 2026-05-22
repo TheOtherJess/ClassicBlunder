@@ -210,12 +210,12 @@
 			ForMult = 1.4
 			SpdMult = 1.35
 			DefMult = 1.3
-			passives = list("TechniqueMastery" = 2, "DebuffDurationReduction" = 1, "Blubber" = 2, "Godspeed" = 1, "FluidForm" = 1, "Entropic" = 1)
+			passives = list("TechniqueMastery" = 2, "DebuffDurationReduction" = 1, "Blubber" = 2, "Godspeed" = 1, "FluidForm" = 1, "Entropic" = 1,"IgnoreNoWhiff" = 1)
 		else if(tier >= 2)
 			ForMult = 1.25
 			SpdMult = 1.15
 			DefMult = 1
-			passives = list("TechniqueMastery" = 2, "DebuffDurationReduction" = 1, "Blubber" = 2, "Godspeed" = 1)
+			passives = list("TechniqueMastery" = 2, "DebuffDurationReduction" = 1, "Blubber" = 2, "Godspeed" = 1,"IgnoreNoWhiff" = 1)
 		else
 			ForMult = 1.1
 			SpdMult = 1
@@ -239,12 +239,12 @@
 			SpdMult = 1.4
 			ForMult = 1.35
 			OffMult = 1.3
-			passives = list("Warping" = 1, "Flicker" = 1, "Siphon" = 2, "PUSpike" = 5, "Steady" = 2, "Vortex" = 5)
+			passives = list("Warping" = 1, "Flicker" = 1, "Siphon" = 2, "PUSpike" = 5, "Steady" = 2, "Vortex" = 5,"BetterAim"=5)
 		else if(tier >= 2)
 			SpdMult = 1.25
 			ForMult = 1.15
 			OffMult = 1
-			passives = list("Warping" = 1, "Flicker" = 1, "Siphon" = 2, "PUSpike" = 5)
+			passives = list("Warping" = 1, "Flicker" = 1, "Siphon" = 2, "PUSpike" = 5,"BetterAim"=3)
 		else
 			SpdMult = 1.1
 			ForMult = 1

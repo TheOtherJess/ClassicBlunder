@@ -208,7 +208,7 @@
         return 0;
     var/Cost = GetTetherWarpCost();
     if(GetMineral() < Cost)//always costs mana bits for Shrouded to warp
-        src << "You don't have enough mana bits to warp (You needs [Commas(Cost)])"
+        src << "You don't have enough mana bits to warp (You need [Commas(Cost)])"
         return 0;
     var/list/tetherOptions = findTetherPacts();
     if(!tetherOptions)

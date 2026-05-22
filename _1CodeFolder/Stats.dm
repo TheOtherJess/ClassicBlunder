@@ -1026,6 +1026,8 @@ mob/proc/
 		if(passive_handler.Get("Ashen One"))
 			Ratio*=1+(Burn/glob.ASHEN_BURN_POWER_DIVISOR)
 		Ratio += (scalingEldritchPower() * 2 / 10);
+		if(passive_handler.Get("NameCurse")=="Black Ant")
+			Ratio*=0.01
 		Power=Ratio*GetPowerUpRatio()
 
 		if(Power < 1)

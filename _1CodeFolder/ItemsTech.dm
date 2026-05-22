@@ -3877,7 +3877,18 @@ obj/Items/Gear
 			usr<<"soon"
 		verb/Awaken_Potential() //ascension
 			set category = "Hougyoku"
-			usr<<"soon"
+			var/list/who=list("Cancel")
+			for(var/mob/Players/M in view(3, usr))
+				who.Add(M)
+			var/mob/Players/selector=input("Who do you want to unlock the next ascension of?","Awaken Potential")in who||null
+			if(selector=="Cancel")
+				src.Using=0
+				return
+			for(var/a in selector.race.ascensions)
+				var/ascension/asc = a
+				if(!asc.checkAscensionUnlock(src,selector.Potential+10)) continue
+				asc.onAscension(selector)
+				src.Using=0
 		verb/Awaken_Power()//transformation
 			set category = "Hougyoku"
 			usr<<"soon"

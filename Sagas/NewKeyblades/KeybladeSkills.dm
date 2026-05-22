@@ -375,3 +375,33 @@ obj
 						if(!usr.BuffOn(src))
 							adjust(usr)
 						src.Trigger(usr)
+				SyncBlade
+					ActiveMessage="draws forth a second Keyblade!"
+					OffMessage="releases their Keyblade back to the light..."
+					ABuffNeeded=list("Keyblade")
+					MakesSecondSword=1
+					FlashDraw=1
+					MagicSword=1
+					SwordClass="Wooden"
+					SwordAscension=2
+					SwordName="Keyblade"
+					PULock=1
+					SwordX=-32
+					SwordY=-32
+					swordHasHistory=1
+					passives = list("MagicSword" = 1)
+					Cooldown=30
+					verb/SyncBlade()
+						set category="Skills"
+						if(!usr.BuffOn(src))
+							passives = list()
+							if(usr.CheckActive("Keyblade"))
+								if(!src.Using)
+									src.SwordClassSecond=GetKeychainClass(usr.SyncAttached)
+									src.SwordDamageSecond=GetKeychainDamage(usr.SyncAttached)
+									src.SwordAccuracySecond=GetKeychainAccuracy(usr.SyncAttached)
+									src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
+									src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
+									src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
+									passives+=GetKeybladePassives(usr.SyncAttached)
+						src.Trigger(usr)

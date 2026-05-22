@@ -46,17 +46,30 @@ mob/tierUpSaga(Path)
 				switch(ShinigamiRelease)
 					if("Zangetsu")
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zangetsu)
+<<<<<<< HEAD
 					if("Senbonzakura")
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura)
+=======
+					if("Shirayuki")
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Shikai/SodenoShirayuki)
+						src.AddSkill(new/obj/Skills/AutoHit/Tsukishiro)
+						src.AddSkill(new/obj/Skills/AutoHit/Hakuren)
+>>>>>>> a51b60950e1056cf7a83767e3a74ccaa8057455b
 				updateShinigamiAscended()
 
 			if(3)
 				src << "You have mastered your Shikai. Its drain fades..."
 				switch(ShinigamiRelease)
+<<<<<<< HEAD
 					if("Senbonzakura")
 						if(!locate(/obj/Skills/SenbonzakuraPetalWall, src))
 							src.AddSkill(new/obj/Skills/SenbonzakuraPetalWall)
 							src << "Your control over your petals sharpens. You can now use <b>Petal Wall</b>."
+=======
+					if("Shirayuki")
+						src.AddSkill(new/obj/Skills/Buffs/Shirafune)
+						src<<"You learn <i>San no mai, Shirafune!</i>"
+>>>>>>> a51b60950e1056cf7a83767e3a74ccaa8057455b
 				updateShinigamiAscended()
 
 			if(4)

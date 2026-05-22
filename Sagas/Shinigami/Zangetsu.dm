@@ -18,6 +18,7 @@
 /obj/Skills/Projectile/True_Getsuga_Tenshou
 	name = "True Getsuga Tenshou"
 	Cooldown = 180
+	ManaCost=25
 	NeedsSword = 1
 	StrRate = 1
 	ForRate = 1

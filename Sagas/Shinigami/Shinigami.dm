@@ -34,7 +34,7 @@ mob/proc/gainShinigami()
 	src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form)
 	src.AddSkill(new/obj/Skills/Buffs/NuStyle/SwordStyle/Zanjutsu)
 
-	src << "A <b>[src.ZanpakutoClass]</b> Zanpakutō and Shihakushō have formed for you. Name them, learn them, for they are an extension of your soul."
+	src << "A <b>[src.ZanpakutoClass]</b> Zanpakutō and <b>[src.ShihakushoClass]</b> Shihakushō have formed for you, serving as an extension of your soul."
 	src << "Use <b>Shinigami Form</b> to don your Zanpakutō and Shihakushō."
 
 
@@ -113,17 +113,17 @@ mob/tierUpSaga(Path)
 
 			if(7)
 				src.passive_handler.Increase("GodKi", 0.25)
-				for(var/obj/Skills/Buffs/SlotlessBuffs/Mugetsu_Aftermath/MA in src)
-					if(MA.SlotlessOn)
-						MA.Trigger(src)
-					del MA
-				src.StrCut = 0
-				src.EndCut = 0
-				src.ForCut = 0
-				src.ManaCut = 0
-				src.EnergyCut = 0
 				switch(ShinigamiRelease)
 					if("Zangetsu")
+						for(var/obj/Skills/Buffs/SlotlessBuffs/Mugetsu_Aftermath/MA in src)
+							if(MA.SlotlessOn)
+								MA.Trigger(src)
+							del MA
+						src.StrCut = 0
+						src.EndCut = 0
+						src.ForCut = 0
+						src.ManaCut = 0
+						src.EnergyCut = 0
 						if(!locate(/obj/Skills/Projectile/Getsuga_Jujisho, src))
 							src.AddSkill(new/obj/Skills/Projectile/Getsuga_Jujisho)
 						if(!locate(/obj/Skills/Projectile/True_Getsuga_Tenshou, src))

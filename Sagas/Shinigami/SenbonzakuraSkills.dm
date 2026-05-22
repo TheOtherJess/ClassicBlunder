@@ -38,12 +38,12 @@
 				sleep(1)
 			if(src) del src
 
-
 // Saga Level 4
 /obj/Skills/SenbonzakuraGoukei
 	name = "Goukei"
-	Cooldown = 30
-
+	Cooldown = 60
+	ManaCost=10
+	var/goukei_active = FALSE
 	verb/Goukei()
 		set name = "Goukei"
 		set category = "Skills"
@@ -51,6 +51,12 @@
 			usr << "Goukei can only be used in Bankai."
 			return
 		if(Using || cooldown_remaining) return
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken/hkt = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+		if(hkt && hkt.SlotlessOn) return
+		var/obj/Skills/SenbonzakuraPetalWall/pw = usr.FindSkill(/obj/Skills/SenbonzakuraPetalWall)
+		if(pw && pw.wall_active) return
+		var/obj/Skills/SenbonzakuraSenkei/sk = usr.FindSkill(/obj/Skills/SenbonzakuraSenkei)
+		if(sk && sk.senkei_active) return
 		var/mob/target = usr.Target
 		if(!target || !target.loc)
 			usr << "No target selected."
@@ -60,22 +66,34 @@
 			return
 		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi/bk = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi)
 		if(!bk || !bk.SlotlessOn) return
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		src.Cooldown(1, null, usr)
+		if(src.ManaCost) usr.LoseMana(src.ManaCost)
 		var/mob/user = usr
 
-		// Mark petals inactive and converge on target
-		for(var/obj/Effects/Senbonzakura_Petal/p in bk.petals)
-			if(!p) continue
-			p.inactive = TRUE
+		// Mark petals inactive and disable dragging while converging
+		bk.setPetalsInactive(TRUE, 255)
+		if(user.client)
+			user.client.senbonzakura_dragging = FALSE
+			winset(user.client, "mapwindow.map", "right-click=0")
 		bk.convergence_target = target
 
+		src.goukei_active = TRUE
 		spawn()
 			// Wait for petals to travel toward the target
 			sleep(10)
 			if(!target || !target.loc || !bk.SlotlessOn)
+				src.goukei_active = FALSE
 				bk.convergence_target = null
 				bk.setPetalsInactive(FALSE, 255)
+				if(user && user.client)
+					winset(user.client, "mapwindow.map", "right-click=1")
 				return
+
+			// Hide petals now that they've converged
+			bk.setPetalsInactive(TRUE, 0)
 
 			var/obj/Effects/GoukeiOverlay/GE = new(null)
 			GE.pixel_z = target.pixel_z
@@ -102,6 +120,7 @@
 			sleep(5)
 			if(target && GE) target.vis_contents -= GE
 			del GE
+			src.goukei_active = FALSE
 			bk.convergence_target = null
 			// Snap petals to user before re-enabling.
 			if(user && user.loc)
@@ -111,11 +130,14 @@
 					p.wpy = user.y
 					bk.updatePetalLocFromPixels(p)
 			bk.setPetalsInactive(FALSE, 255)
+			if(user && user.client)
+				winset(user.client, "mapwindow.map", "right-click=1")
 
 
 // Saga Level 5
 /obj/Skills/SenbonzakuraSenkei
 	name = "Senkei"
+	ManaCost=15
 	Cooldown = 120
 	var/senkei_active = FALSE
 	var/list/inner_swords
@@ -199,7 +221,17 @@
 			usr << "Senkei is already active."
 			return
 		if(Using || cooldown_remaining) return
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken/hkt = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+		if(hkt && hkt.SlotlessOn) return
+		var/obj/Skills/SenbonzakuraPetalWall/pw = usr.FindSkill(/obj/Skills/SenbonzakuraPetalWall)
+		if(pw && pw.wall_active) return
+		var/obj/Skills/SenbonzakuraGoukei/gk = usr.FindSkill(/obj/Skills/SenbonzakuraGoukei)
+		if(gk && gk.goukei_active) return
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		src.Cooldown(1, null, usr)
+		if(src.ManaCost) usr.LoseMana(src.ManaCost)
 		senkei_active = TRUE
 		var/mob/user = usr
 		// disable petals for the duration of Senkei
@@ -237,15 +269,27 @@
 	Cooldown = -1
 	ManaGlow = "#FFFFFF"
 	ManaGlowSize = 3
-	StrMult = 1.3
-	EndMult = 1.3
-	ForMult = 1.3
-	SpdMult = 1.3
-	OffMult = 1.3
-	DefMult = 1.3
-	passives = list()
+	StrMult = 1.5
+	EndMult = 1.5
+	ForMult = 1.5
+	SpdMult = 1.5
+	OffMult = 1.5
+	DefMult = 1.5
+	passives = list("BleedHit" = 1, "BulletKill" = 1, "SpiritSword" = 2, "HybridStrike" = 3, "SpiritFlow" = 4, "Duelist" = 5, "CriticalChance" = 25, "CriticalDamage" = 0.25)
 	ActiveMessage = "murmurs quietly... \"Shukei: Hakuteiken.\""
 	OffMessage = "lets the white glow of Hakuteiken fade..."
+
+	Trigger(mob/user, Override=0)
+		var/wasOn = src.SlotlessOn
+		..()
+		if(!user) return
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi/bk = user.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi)
+		if(!wasOn && src.SlotlessOn)
+			// hide and disable petals for the duration
+			if(bk) bk.setPetalsInactive(TRUE, 0)
+		else if(wasOn && !src.SlotlessOn)
+			// restore petals if Bankai still active
+			if(bk && bk.SlotlessOn) bk.setPetalsInactive(FALSE, 255)
 
 	verb/Hakuteiken()
 		set name = "Shukei: Hakuteiken"
@@ -255,15 +299,15 @@
 			return
 		if(Using || cooldown_remaining) return
 		if(src.SlotlessOn) return
-		src.Cooldown(1, null, usr)
 		src.Trigger(usr)
+		src.Cooldown(1, null, usr)
 
 
 // Saga Level 7
 /obj/Skills/SenbonzakuraIkkaSenjinka
 	name = "Ikka Senjinka"
 	Cooldown = 180
-
+	ManaCost=20
 	verb/Ikka_Senjinka()
 		set name = "Ikka Senjinka"
 		set category = "Skills"
@@ -271,6 +315,12 @@
 			usr << "Ikka Senjinka can only be used in Bankai."
 			return
 		if(Using || cooldown_remaining) return
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken/hkt = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+		if(hkt && hkt.SlotlessOn) return
+		var/obj/Skills/SenbonzakuraPetalWall/pw = usr.FindSkill(/obj/Skills/SenbonzakuraPetalWall)
+		if(pw && pw.wall_active) return
+		var/obj/Skills/SenbonzakuraGoukei/gk = usr.FindSkill(/obj/Skills/SenbonzakuraGoukei)
+		if(gk && gk.goukei_active) return
 		var/obj/Skills/SenbonzakuraSenkei/sk = locate(/obj/Skills/SenbonzakuraSenkei, usr)
 		if(!sk || !sk.senkei_active)
 			usr << "Senkei must be active to use Ikka Senjinka."
@@ -279,7 +329,11 @@
 		if(!target || !target.loc)
 			usr << "No target selected."
 			return
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		src.Cooldown(1, null, usr)
+		if(src.ManaCost) usr.LoseMana(src.ManaCost)
 		var/mob/user = usr
 		var/list/all_swords = sk.inner_swords.Copy()
 		all_swords += sk.outer_swords.Copy()

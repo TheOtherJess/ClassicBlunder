@@ -35,7 +35,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 			passives["ManaLeak"] = 2
 		if(SL > 3)
 			passives["IceHerald"] = 1 // Enhances the potency of the Shikai once you obtain baseline Bankai by giving your crits more OOMPH.
-			passives["IceAge"] = he 7.5 * SL, // This is Combustion but for Chill. Seems pretty thematic.
+			passives["IceAge"] = 7.5 * SL // This is Combustion but for Chill. Seems pretty thematic.
 
 		EndMult = 1.1 + (0.1 * SL) // I feel like ICE IS HARD makes a lot of sense here. Someone else can do the stats if they want somethign more thematic.
 		ForMult = 1.1 + (0.1 * SL)

@@ -320,6 +320,7 @@ mob/proc/Unconscious(mob/P,var/text)
 	src.PowerControl=100
 	src.ClearFrenzyOnKO()
 	src.Burn=0
+	src.Bleed=0
 	src.AfterImageStrike=0
 	src.VaizardHealth=0
 	src.ForceCancelBeam()
@@ -405,6 +406,7 @@ mob/proc/Unconscious(mob/P,var/text)
 		src.Grab_Release()
 	Poison = 0
 	Burn = 0
+	Bleed = 0
 	Shatter = 0
 	Slow = 0
 	Shock = 0
@@ -809,6 +811,7 @@ mob/proc/Death(mob/P,var/text,var/SuperDead=0, var/NoRemains=0, var/Zombie, extr
 		src.Conscious()
 		src.Poison=0
 		src.Burn=0
+		src.Bleed=0
 		src.Slow=0
 		src.Shatter=0
 		src.HardenAccumulated=0
@@ -1089,6 +1092,7 @@ mob/proc/Leave_Body(var/SuperDead=0, var/Zombie, var/ForceVoid=0)
 			src << "Your fate has been sealed by an overwhelming force; you move on immediately to the realm of the dead..."
 			src.loc=locate(glob.DEATH_LOCATION[1], glob.DEATH_LOCATION[2], glob.DEATH_LOCATION[3])
 	src.Burn=0
+	src.Bleed=0
 	src.Poison=0
 	src.Slow=0
 	src.Shatter=0

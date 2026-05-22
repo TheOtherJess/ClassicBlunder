@@ -4,6 +4,9 @@
 #define BURN_NERF 1
 #define POISON_STACKS_DIVISOR 100
 #define POISON_NERF 1
+#define BASE_BLEED_DAMAGE 0.06
+#define BLEED_STACK_DIVISOR 25
+#define BLEED_NERF 1
 
 
 
@@ -15,6 +18,9 @@ globalTracker/var/PoisonNerf = POISON_NERF
 globalTracker/var/maxBurnDamage = BASE_BURN_DAMAGE
 globalTracker/var/BurnStackDivisor = BURN_STACK_DIVISOR
 globalTracker/var/BurnNerf = BURN_NERF
+globalTracker/var/maxBleedDamage = BASE_BLEED_DAMAGE
+globalTracker/var/BleedStackDivisor = BLEED_STACK_DIVISOR
+globalTracker/var/BleedNerf = BLEED_NERF
 globalTracker/var/DEBUFF_STACK_RESISTANCE = 100
 globalTracker/var/HELLFIRE_VALUE_MOD = 2
 globalTracker/var/MAX_DEBUFF_CLAMP = 0.05
@@ -81,6 +87,8 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 			Unconscious(null, "burning up!")
 		if(typeOfDebuff == "Frenzy")
 			Unconscious(null, "succumbing to Frenzy!")
+		if(typeOfDebuff == "Bleed")
+			Unconscious(null, "bleeding out!")
 	if(typeOfDebuff == "Frenzy")
 		if(src.IsDarkDragonPlayer())
 			reduceDebuffStacks(typeOfDebuff)
@@ -127,6 +135,11 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 				Frenzy -= (frenzyBase + ((GetEnd(0.15)+GetStr(0.15)) * (1+ (GetDebuffResistance() / 4))  )) * 0.1
 			if(Frenzy<0)
 				Frenzy = 0
+		if("Bleed")
+			if(Bleed>0)
+				Bleed -= base * (1 + (GetDebuffResistance() / 4))
+			if(Bleed<0)
+				Bleed = 0
 
 /mob/var/tmp/last_implode
 mob/proc/implodeDebuff(n, type)

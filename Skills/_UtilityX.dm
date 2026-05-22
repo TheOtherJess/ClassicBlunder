@@ -16,6 +16,7 @@
 	Slow=0
 	Shock=0
 	Shatter=0
+	Bleed=0
 	HealthAnnounce25=0
 	HealthAnnounce10=0
 	seventhSenseTriggered = 0

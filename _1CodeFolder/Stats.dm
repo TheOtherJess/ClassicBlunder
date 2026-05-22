@@ -1280,6 +1280,11 @@ mob/proc/Update_Stat_Labels()
 			src<<output("BUR: [round(Burn, 1)]","BarBurning")
 		else
 			winshow(src, "BarBurning",0)
+		if(src.Bleed>0)
+			winshow(src, "BarBleed",1)
+			src<<output("BLD: [round(Bleed, 1)]","BarBleed")
+		else
+			winshow(src, "BarBleed",0)
 		if(src.Doomed>0||src.DownToEarth>0)
 			winshow(src, "BarDoomed",1)
 			if(src.Doomed>0)

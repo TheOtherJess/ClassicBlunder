@@ -26,7 +26,7 @@ proc
 	ElementalCheck(var/mob/Attacker, var/mob/Defender, var/ForcedDebuff=0, var/DebuffIntensity=glob.DEBUFF_INTENSITY, list/bonusElements,damageOnly = FALSE, list/onlyTheseElements)
 		var/list/attackElements = list()
 		var/list/defenseElements = list()
-		var/list/forcedDebuffs = list("Scorching", "Freezing", "Shattering", "Paralyzing", "Toxic")
+		var/list/forcedDebuffs = list("Scorching", "Freezing", "Shattering", "Paralyzing", "Toxic", "Bloodletting")
 		var/burningBonus = max(0, Attacker.passive_handler.Get("Burning"))
 		var/scorchingBonus = max(0, Attacker.passive_handler.Get("Scorching"))
 		var/chillingBonus = max(0, Attacker.passive_handler.Get("Chilling"))
@@ -37,6 +37,7 @@ proc
 		var/paralyzingBonus = max(0, Attacker.passive_handler.Get("Paralyzing"))
 		var/poisoningBonus = max(0, Attacker.passive_handler.Get("Poisoning"))
 		var/toxicBonus = max(0, Attacker.passive_handler.Get("Toxic"))
+		var/bloodlettingBonus = max(0, Attacker.passive_handler.Get("Bloodletting"))
 		attackElements = Attacker.getElementalOffense()
 		for(var/debuff in debuffVars)
 			if(Attacker.passive_handler.Get("[debuff]"))
@@ -211,6 +212,9 @@ proc
 						Defender.AddShatter((4*DebuffIntensity*glob.SHATTER_INTENSITY) + crushingBonus + shatteringBonus, Attacker)
 					if("Wind")
 						Defender.AddShock((4*DebuffIntensity*glob.SHOCK_INTENSITY) + shockingBonus + paralyzingBonus, Attacker)
+					if("Blade")
+						if(bloodlettingBonus > 0)
+							Defender.AddBleed(bloodlettingBonus, Attacker)
 		for(var/element in defenseElements)
 			switch(element)
 				if("Ultima")
@@ -386,6 +390,21 @@ mob
 					if(!src.Cooled)
 						OMsg(src, "<font color='[rgb(104, 153, 251)]'>[src]'s dispenser deploys a healing mist!!</font color>")
 					src.Cooled+=100
+		AddBleed(var/Value, var/mob/Attacker=null)
+			if(src.Stasis || src.AdminOverwatchActive)
+				return
+			if(src.HasDebuffResistance())
+				Value /= 1 + src.GetDebuffResistance()
+			Value = Value * (1 - (src.Bleed / glob.DEBUFF_STACK_RESISTANCE))
+			src.Bleed += Value
+			if(Value >= 1)
+				animate(src, color = "#cc0000")
+				animate(src, color = src.MobColor, time=5)
+			if(src.Bleed > 100)
+				src.Bleed = 100
+			if(src.Bleed < 0)
+				src.Bleed = 0
+
 		AddSlow(var/Value, var/mob/Attacker=null)
 			if(src.Stasis || src.AdminOverwatchActive)
 				return
@@ -681,6 +700,9 @@ mob
 				doDebuffDamage("Poison")
 			if(src.Burn)
 				doDebuffDamage("Burn")
+
+			if(src.Bleed)
+				doDebuffDamage("Bleed")
 
 			if(src.Frenzy)
 				doDebuffDamage("Frenzy")

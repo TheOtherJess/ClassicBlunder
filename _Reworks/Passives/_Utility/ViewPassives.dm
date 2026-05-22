@@ -73,6 +73,8 @@ var/list/PassiveInfo = list("Extend"="increases the range of armed autohits base
 "TechniqueMastery"= "reduces skill cds",
 "SoftStyle"= "increases damage based on target's fatigue",
 "HardStyle"= "increases damage based on target's wounds",
+"Sniper"= "increases normal attack damage by 1% per passive level per tile of distance to the target.",
+"Bloodletting"= "forces Bleed stacks onto targets struck with a Blade-element attack.",
 "EnergySteal"= "restores energy on hit",
 "Duelist"= "increase damage and lower damage taken against a Single Target, taking extra damage from enemies you don't have targeted.",
 "SweepingStrike"= "turns your Normal Attack, and Queue range from directly in front of you, to an arc around you.",

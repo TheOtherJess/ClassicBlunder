@@ -3,7 +3,7 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
-	var/list/Releases = list("Zangetsu")
+	var/list/Releases = list("Zangetsu", "Senbonzakura")
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -46,10 +46,17 @@ mob/tierUpSaga(Path)
 				switch(ShinigamiRelease)
 					if("Zangetsu")
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zangetsu)
+					if("Senbonzakura")
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura)
 				updateShinigamiAscended()
 
 			if(3)
 				src << "You have mastered your Shikai. Its drain fades..."
+				switch(ShinigamiRelease)
+					if("Senbonzakura")
+						if(!locate(/obj/Skills/SenbonzakuraPetalWall, src))
+							src.AddSkill(new/obj/Skills/SenbonzakuraPetalWall)
+							src << "Your control over your petals sharpens. You can now use <b>Petal Wall</b>."
 				updateShinigamiAscended()
 
 			if(4)
@@ -58,6 +65,12 @@ mob/tierUpSaga(Path)
 					if("Zangetsu")
 						src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Tensa_Zangetsu)
+					if("Senbonzakura")
+						src.BankaiPrefix = input(src, "Your Bankai takes shape. What suffix comes after your Zanpakutō's name?", "Bankai Suffix") as text
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi)
+						if(!locate(/obj/Skills/SenbonzakuraGoukei, src))
+							src.AddSkill(new/obj/Skills/SenbonzakuraGoukei)
+							src << "The petals converge at your will. You can now use <b>Goukei</b>."
 				updateShinigamiAscended()
 
 			if(5)
@@ -68,6 +81,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/Buffs/SpecialBuffs/Sword/Getsuga_Tenshou_Clad, src))
 							src.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/Sword/Getsuga_Tenshou_Clad)
 							src << "The black-clad Getsuga surges through your blade, you can now use <b>Getsuga Tenshou Clad</b>."
+					if("Senbonzakura")
+						if(!locate(/obj/Skills/SenbonzakuraSenkei, src))
+							src.AddSkill(new/obj/Skills/SenbonzakuraSenkei)
+							src << "Your petals can arrange themselves into swords of light. You can now use <b>Senkei</b>."
 				updateShinigamiAscended()
 
 			if(6)
@@ -77,6 +94,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/Buffs/SpecialBuffs/Sword/Final_Getsuga_Tenshou, src))
 							src.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/Sword/Final_Getsuga_Tenshou)
 						src << "The depths of your soul reveal the <b>Final Getsuga Tenshou</b>. Using it will cost you everything... but it may open a new path."
+					if("Senbonzakura")
+						if(!src.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken))
+							src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+							src << "The ultimate form of your blade awakens. You can now use <b>Shukei: Hakuteiken</b>."
 				updateShinigamiAscended()
 
 			if(7)
@@ -97,6 +118,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/Projectile/True_Getsuga_Tenshou, src))
 							src.AddSkill(new/obj/Skills/Projectile/True_Getsuga_Tenshou)
 						src << "Your sacrifice was not in vain. Your power returns - greater, and free. You can now use <b>Getsuga Jujisho</b> and <b>True Getsuga Tenshou</b>."
+					if("Senbonzakura")
+						if(!locate(/obj/Skills/SenbonzakuraIkkaSenjinka, src))
+							src.AddSkill(new/obj/Skills/SenbonzakuraIkkaSenjinka)
+							src << "Every one of your Senkei blades can answers your call at once. You can now use <b>Ikka Senjinka</b>."
 				updateShinigamiAscended()
 
 mob/proc/InShikai()

@@ -158,17 +158,17 @@
 		var/uz = user.z
 		// Inner ring
 		var/list/b_in = block(
-			locate(clamp(ux-4, 1, world.maxx), clamp(uy-4, 1, world.maxy), uz),
-			locate(clamp(ux+4, 1, world.maxx), clamp(uy+4, 1, world.maxy), uz)
+			locate(clamp(ux-6, 1, world.maxx), clamp(uy-6, 1, world.maxy), uz),
+			locate(clamp(ux+6, 1, world.maxx), clamp(uy+6, 1, world.maxy), uz)
 		)
 		var/list/b_in_fill = block(
-			locate(clamp(ux-3, 1, world.maxx), clamp(uy-3, 1, world.maxy), uz),
-			locate(clamp(ux+3, 1, world.maxx), clamp(uy+3, 1, world.maxy), uz)
+			locate(clamp(ux-5, 1, world.maxx), clamp(uy-5, 1, world.maxy), uz),
+			locate(clamp(ux+5, 1, world.maxx), clamp(uy+5, 1, world.maxy), uz)
 		)
 		// Outer ring
 		var/list/b_out = block(
-			locate(clamp(ux-5, 1, world.maxx), clamp(uy-5, 1, world.maxy), uz),
-			locate(clamp(ux+5, 1, world.maxx), clamp(uy+5, 1, world.maxy), uz)
+			locate(clamp(ux-7, 1, world.maxx), clamp(uy-7, 1, world.maxy), uz),
+			locate(clamp(ux+7, 1, world.maxx), clamp(uy+7, 1, world.maxy), uz)
 		)
 		for(var/turf/T in b_in)
 			if(T in b_in_fill) continue

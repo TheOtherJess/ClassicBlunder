@@ -7480,7 +7480,7 @@ NEW VARIABLES
 				if(!usr.BuffOn(src))
 					var/asc = usr.AscensionsAcquired
 					passives = list("PureDamage" = 5+asc, "PureReduction" = 5+asc, "GodKi" = 0.1+(asc/10), "DebuffResistance" = 3+asc, "Heavensent" = 1+asc, \
-					"Extend" = 1+asc, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3, "BleedHit" = 1, "FatigueLeak" = 1)
+					"Extend" = 1+asc, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3, "BleedHit" = 1.5, "FatigueLeak" = 1.5, "Unstoppable" = -1)
 				src.Trigger(usr)
 
 		Gods_Protection

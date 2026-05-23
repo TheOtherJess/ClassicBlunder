@@ -1499,7 +1499,6 @@ mob
 				mult = 0.5
 			if(mult > 1)
 				mult = 1
-			liveDebugMsg("the mult being returned is [mult]")
 			return mult
 
 		getTargetingMeCount()
@@ -1805,9 +1804,7 @@ mob
 			if(src.StyleRating > 0)
 				Mod += 0.1 * src.StyleRating * src.getStyleBonusMult()
 			// Demon Devil Trigger sins bonus
-			liveDebugMsg("str mod is \[[Mod]\] before DT Sin")
 			Mod += getDevilTriggerSinBonusMult()
-			liveDebugMsg("str mod is \[[Mod]\] after DT sin")
 			Mod += getMazokuSinBonusMult()
 			if(IsDarkDragonPlayer() && Frenzy > 0)
 				Mod += 0.5 * (min(Frenzy, glob.DEBUFF_STACK_MAX) / glob.DEBUFF_STACK_MAX)

@@ -357,4 +357,8 @@
 			src.Trigger(usr)
 			bankaiActivationSequence(usr)
 		else
+			var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken/hkt = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+			if(hkt && hkt.SlotlessOn)
+				usr << "You cannot end Bankai while Shukei: Hakuteiken is active."
+				return
 			src.Trigger(usr)

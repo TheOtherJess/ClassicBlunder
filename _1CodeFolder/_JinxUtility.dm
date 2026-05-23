@@ -283,7 +283,15 @@ mob
 			else
 				DEBUGMSG("this is the damage actually dealt: [val]")
 				var/final_damage = max(0,val)
-				defender.LoseHealth(final_damage)
+				defender.LoseHealth(final_damage);
+				if(defender.passive_handler.Get("LustFactor")) defender.applySinBonusFromTakenDamage(final_damage);
+				if(passive_handler.Get("LustFactor")) applySinBonusFromDealtDamage(final_damage);
+				if(passive_handler.Get("SlothFactor"))
+					DevilTriggerSlothBonus = 0
+					LastSlothTick = world.time
+				if(defender.passive_handler.Get("SlothFactor"))
+					defender.DevilTriggerSlothBonus = 0
+					defender.LastSlothTick = world.time
 
 			// Overwatch CombatLog hook — record the hit on both sides for admin review.
 			if(val > 0)
@@ -877,11 +885,6 @@ mob
 		LoseHealth(var/val)
 			src.Health-=val
 			src.MaxHealth()
-			// Apply Demon Devil Trigger Sadist/Masochist effects based on damage taken
-			applySinBonusFromTakenDamage(val)
-			// Any damage taken counts as "activity" and should reset Sloth stacking
-			DevilTriggerSlothBonus = 0
-			LastSlothTick = world.time
 			var/Absorb = passive_handler.Get("AbsorbingDamage")
 			if(passive_handler["Grit"])
 				AdjustGrit("add", val*glob.racials.GRITMULT)
@@ -1398,10 +1401,8 @@ mob
 			if(!isInDemonDevilTrigger()) return FALSE
 			var/MasteryValue=50
 			if(passive_handler.Get("Limited Rank-Up"))
-				if(Secret)
-					MasteryValue=25
-				else if(!Secret)
-					return TRUE
+				if(Secret) MasteryValue=25;
+				else return TRUE;
 			var/transformation/current = race.transformations[transActive]
 			return current.mastery >= MasteryValue
 
@@ -1463,7 +1464,8 @@ mob
 				for(var/obj/Money/m in src.contents)
 					money = m.Level
 				if(money > 0)
-					greedPart = max(0, money / glob.racials.GOLD_DRAGON_FORMULA) * passive_handler.Get("GreedFactor")
+					var/cap=glob.progress.DailyGrindCap*30*(AscensionsAcquired+1)
+					greedPart = max(0, money / max(glob.racials.GOLD_DRAGON_FORMULA, cap)) * passive_handler.Get("GreedFactor")
 
 			// Sadist / Masochist / GluttonyFactor (feast -> DevilTriggerSinDamageBonus)
 			if(DevilTriggerSinDamageBonus > 0)
@@ -1475,35 +1477,28 @@ mob
 
 			// PrideFactor (uncapped; other sin bonuses stay capped at 3 unless Limited Rank-Up)
 			if(passive_handler && passive_handler.Get("PrideFactor") && Target && istype(Target, /mob/Players))
-				var/healthDiff = Health - Target:Health
+				var/healthDiff = Health - Target.Health
 				if(healthDiff > 0)
 					var/steps = round(healthDiff / 10)
-					if(steps > 0)
-						pride_bonus = 0.25 * steps * passive_handler.Get("PrideFactor")
-						if(passive_handler.Get("Limited Rank-Up"))
-							pride_bonus *= 3
+					if(steps > 0) pride_bonus = 0.25 * steps * passive_handler.Get("PrideFactor")
 
-			//these aren't actually multipliers btw teehee, they are additive. They started out as multiplicative but I changed my mind after the fact
-			if(passive_handler && passive_handler.Get("Limited Rank-Up"))
-				mult = lustPart + greedPart + sinDmgPart + slothPart
+			mult = lustPart + greedPart + sinDmgPart + slothPart + pride_bonus
+			if(mult < 0) mult = 0
 			else
-				mult = lustPart + greedPart + sinDmgPart + slothPart
-				if(mult < 0)
-					mult = 0
-				if(mult > 1 && Secret)
-					mult = 1
-				if(mult > 2)
-					mult = 2
+				if(passive_handler.Get("Limited Rank-Up"))
+					mult *= 3
 
-			if(mult < 0)
-				mult = 0
-
-			mult += pride_bonus*(Health/100)
-
-			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 1.5*(Health/100))
-				mult = 1.5*(Health/100)
+			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.25*(Health/100))
+				mult = 0.25*(Health/100)
 			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
 				mult = 0
+			
+			if(mult < 0)
+				mult = 0
+			if(mult > 0.5 && Secret)
+				mult = 0.5
+			if(mult > 1)
+				mult = 1
 			return mult
 
 		getTargetingMeCount()
@@ -1514,7 +1509,7 @@ mob
 			return count
 
 		// adist/Masochist effects
-		applySinBonusFromDealtDamage(var/amount)
+		applySinBonusFromDealtDamage(amount)
 			if(amount <= 0) return
 			if(!demonDevilTriggerSinMastery()) return
 
@@ -1531,7 +1526,7 @@ mob
 			if(DevilTriggerSinDamageBonus < 0)
 				DevilTriggerSinDamageBonus = 0
 
-		applySinBonusFromTakenDamage(var/amount)
+		applySinBonusFromTakenDamage(amount)
 			if(amount <= 0) return
 			if(!demonDevilTriggerSinMastery()) return
 

@@ -150,10 +150,6 @@
 			StyleFor = 1.9
 			StyleStr = 1.75
 			StyleOff = 1.6
-			// Brutalize replaces Sadist here: Sadist's damage bonus only fires inside
-			// applySinBonusFromDealtDamage which is gated by demonDevilTriggerSinMastery() (DT + 50+ mastery),
-			// so non-Mazoku Dark mages saw nothing. Brutalize is a universal damage
-			// passive that fits Dark's offensive identity.
 			passives = list("KillerInstinct" = 0.1, "CriticalChance" = 20, "CriticalDamage" = 0.2, "LifeSteal" = 20, "Pressure" = 2, "Momentum" = 2, "Brutalize" = 2)
 		else if(tier >= 2)
 			StyleFor = 1.4

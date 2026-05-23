@@ -3476,7 +3476,7 @@ mob
 			spawn(600)
 				del(src)
 
-		CountStyles(var/Tier=0)
+		CountStyles(Tier=0)
 			var/Count=0
 			if(!Tier)
 				Log("Admin", "[ExtractInfo(src)] tried to count signatures without specifying a tier.")
@@ -3486,7 +3486,8 @@ mob
 					Count++
 					continue
 			return Count
-		CountSigs(var/Tier=0)
+#define ADVANCED_ELEMENTS list("Space", "Time", "Light", "Dark")
+		CountSigs(Tier=0)
 			var/Count=0
 			var/list/combo_check=list()
 			var/is_demon_celestial = (src.isRace(CELESTIAL) && src.CelestialAscension == "Demon")
@@ -3499,6 +3500,7 @@ mob
 				if(Tier == 2 && is_demon_celestial)
 					if(istype(s, /obj/Skills/Buffs/SlotlessBuffs/RoyalGuard))
 						continue
+
 				if(s.SignatureTechnique==Tier)
 					if("[s.type]" in combo_check)
 						continue
@@ -3509,6 +3511,9 @@ mob
 
 					Count++
 					continue
+			if(Tier==3)
+				for(var/x in accessedMagicTrees)
+					if(x in ADVANCED_ELEMENTS) Count++;
 			return Count
 
 		SagaAscend(var/mod, var/val)
@@ -3533,6 +3538,7 @@ mob
 				return 1
 			return 0
 		req_sigs(var/val, var/tier)
+
 			if(src.CountSigs(tier)<=val)
 				return 1
 			return 0

@@ -2807,7 +2807,6 @@ NEW VARIABLES
 					src.Trigger(usr)
 			Sky_Emperor_Walk//true phoenix
 				SignatureTechnique=3
-				Cooldown = -1
 				passives = list("MovementMastery" = 5,"TechniqueMastery" = 5, "Skimming" = 2, "SpiritFlow" = 2, "HybridStrike" = 1)
 				ForMult=1.5
 				StrMult=1.5
@@ -7115,7 +7114,6 @@ NEW VARIABLES
 				TextColor=rgb(22, 149, 255)
 				ActiveMessage="releases the restrictions on their Grimoire, tapping into a limitless font of mana!"
 				OffMessage="seals their Grimoire to prevent it from consuming them..."
-				Cooldown=-1
 				verb/Azure_Grimoire()
 					set category="Skills"
 					src.Trigger(usr)
@@ -7136,7 +7134,6 @@ NEW VARIABLES
 				TextColor=rgb(0, 233, 115)
 				ActiveMessage="releases the restrictions on their Grimoire, tapping into a perfect font of mana!"
 				OffMessage="seals their Grimoire to prevent it from consuming everything..."
-				Cooldown=-1
 				verb/Azure_Grimoire()
 					set category="Skills"
 					src.Trigger(usr)
@@ -7149,7 +7146,6 @@ NEW VARIABLES
 				DrainlessMana=1
 				MagicFocus=1
 				ManaStats=1
-				Cooldown=-1
 				GodKi=1
 				KenWave=1
 				KenWaveIcon='Azure Crest.dmi'
@@ -7462,23 +7458,41 @@ NEW VARIABLES
 				if(!usr.BuffOn(src))
 					var/PactBoostPow=0
 					var/PactBoostDef=0
+					StrMult=1
+					EndMult=1
+					SpdMult=1
+					ForMult=1
+					OffMult=1
+					DefMult=1
 					if(usr.EldritchPacted)
 						switch(usr.ReflectedPactType)
 							if("Devotion")
 								PactBoostPow=0.25
 								PactBoostDef=0.25
+								StrMult=1.25
+								EndMult=1.25
+								ForMult=1.25
+								SpdMult=1.25
 							if("Power")
 								PactBoostPow=0.5
 								PactBoostDef=0
+								StrMult=2
 							if("Knowledge")
 								PactBoostPow=0.35
 								PactBoostDef=0.15
+								ForMult=1.5
+								OffMult=1.25
+								DefMult=1.25
 							if("Ambition")
 								PactBoostPow=0.15
 								PactBoostDef=0.35
+								SpdMult=1.5
+								OffMult=1.25
+								DefMult=1.25
 							if("Survival")
 								PactBoostPow=0
 								PactBoostDef=0.5
+								EndMult=2
 					passives = list("Brutalize" = 1+(usr.AscensionsAcquired*(0.5+PactBoostDef)) , "PureDamage" = 1+(usr.AscensionsAcquired*(0.75+PactBoostPow)), \
 					"PureReduction" = 1+(usr.AscensionsAcquired*(0.75+PactBoostDef)), "Pursuer" = 2, "HellPower" = 0.1+(PactBoostPow/2), \
 					"Gum Gum" = 1, "Extend" = 1,"Unbreakable" = 0.25+PactBoostDef,"Undeterred" = 1)
@@ -7517,7 +7531,7 @@ NEW VARIABLES
 				if(!usr.BuffOn(src))
 					var/asc = usr.AscensionsAcquired
 					passives = list("PureDamage" = 5+asc, "PureReduction" = 5+asc, "GodKi" = 0.1+(asc/10), "DebuffResistance" = 3+asc, "Heavensent" = 1+asc, \
-					"Extend" = 1+asc, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3, "BleedHit" = 1, "FatigueLeak" = 1)
+					"Extend" = 1+asc, "Godspeed" = 4, "Skimming" = 1, "AutoAnger" = 1, "AngerMult" = 3, "BleedHit" = 1.5, "FatigueLeak" = 1.5, "Unstoppable" = -10)
 				src.Trigger(usr)
 
 		Gods_Protection
@@ -7896,7 +7910,6 @@ NEW VARIABLES
 				src.Trigger(usr)
 
 		Majin
-			SignatureTechnique=3
 			AutoAnger=1
 			AngerThreshold=2
 			IconLock='MajinAura.dmi'
@@ -8219,7 +8232,6 @@ NEW VARIABLES
 			SpecialSlot=0
 			Slotless=1
 			UBuffNeeded="Jagan Eye"
-			Cooldown=-1
 			NeedsHealth=25
 			passives = list("FatigueLeak" = 1, "SpiritSword" = 0.25, "Flow" = 1, "Instinct" =1)
 			FatigueLeak=1

@@ -217,31 +217,42 @@
 /obj/Skills/SenbonzakuraPetalWall
 	name = "Petal Wall"
 	Cooldown = 30
+	ManaCost = 10
+	var/wall_active = FALSE
 
 	verb/Petal_Wall()
 		set name = "Petal Wall"
 		set category = "Skills"
 		if(!usr.InShikai() && !usr.InBankai()) return
 		if(Using || cooldown_remaining) return
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken/hkt = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
+		if(hkt && hkt.SlotlessOn) return
+		var/obj/Skills/SenbonzakuraGoukei/gk = usr.FindSkill(/obj/Skills/SenbonzakuraGoukei)
+		if(gk && gk.goukei_active) return
+		var/obj/Skills/SenbonzakuraSenkei/sk = usr.FindSkill(/obj/Skills/SenbonzakuraSenkei)
+		if(sk && sk.senkei_active) return
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		src.Cooldown(1, null, usr)
+		if(src.ManaCost) usr.LoseMana(src.ManaCost)
 		// Find whichever petal buff is currently active
 		var/activeBuff = null
-		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura/sk = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura)
+		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura/shikai = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura)
 		var/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi/bk = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Kageyoshi)
-		if(sk && sk.SlotlessOn) activeBuff = sk
+		if(shikai && shikai.SlotlessOn) activeBuff = shikai
 		else if(bk && bk.SlotlessOn) activeBuff = bk
 		if(!activeBuff) return
 		activeBuff:setPetalsInactive(TRUE, 0)
-		var/facing = usr.dir
-		var/turf/front = get_step(usr, facing)
+		var/turf/front = get_step(usr, usr.dir)
 		if(!front) front = usr.loc
 		var/obj/Effects/PetalWall/wall = new(front)
 		wall.owner = usr
-		var/matrix/WM = matrix()
-		WM.Turn(180 - dir2angle(facing))
-		wall.transform = WM
+		wall.dir = usr.dir
+		src.wall_active = TRUE
 		spawn()
 			sleep(50)
+			src.wall_active = FALSE
 			if(!wall || !wall.loc) return
 			animate(wall, alpha=0, time=5)
 			var/wx = wall.loc.x

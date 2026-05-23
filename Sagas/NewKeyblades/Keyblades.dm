@@ -596,7 +596,7 @@ proc/
 				return KeybladePassives
 //medium
 			if("Oblivion")
-				KeybladePassives=list("PULock" = 1, "AbyssMod" = 1+(2*Boost),"EnergyGeneration" = 3+Boost, "Momentum" = 2,"SpiritFlow" =1+round(Boost/3))
+				KeybladePassives=list("PULock" = 1, "AbyssMod" = 1+Boost,"EnergyGeneration" = 3+Boost, "Momentum" = 2,"SpiritFlow" =1+round(Boost/2))
 				return KeybladePassives
 			if("Fenrir")
 				KeybladePassives=list("PULock" = 1, "Steady" = 3, "Brutalize" = Boost/1.5, "Extend" = 1, "Conductor" = -50, "DemonicDurability" = Boost, "AngerAdaptiveForce" = 0.2*Boost)

@@ -609,6 +609,8 @@ mob
 							OMsg(src, "<b><font size=+3> [src] erupts with tremendous power, having stolen enough life from the Narrative to temporarily match it!")
 							src.passive_handler.Increase("The Power of Stories", 1)
 					src.LifeStolen+=amtHeal/2
+					if(passive_handler.Get("TrueAbsorb") && src.LifeStolen>=25)
+						src.LifeStolen=25
 					if(src.LifeStolen>=95)
 						src.LifeStolen=95
 					DEBUGMSG("[amtHeal] was healed by life steal");
@@ -3636,10 +3638,10 @@ mob
 
 			if(src.req_pot(glob.progress.T2_SIGS[2]) && src.req_sigs(1, 2))
 				DevelopSignature(src, 2, "Signature")
-			
+
 			if(src.req_pot(glob.progress.T3_SIGS[1]) && src.req_sigs(0, 3))
 				DevelopSignature(src, 3, "Signature")
-			
+
 		YeetSignatures()
 			for(var/obj/Skills/s in src.Skills)
 				if(s.SignatureTechnique)

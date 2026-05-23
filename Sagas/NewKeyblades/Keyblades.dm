@@ -577,7 +577,7 @@ proc/
 				KeybladePassives=list("PULock" = 1, "CriticalChance" = 30+(Boost*5), "ThunderHerald" = 1, "CriticalDamage"= 0.15)
 				return KeybladePassives
 			if("Oathkeeper")
-				KeybladePassives=list("PULock" = 1, "ManaGeneration" = 2+Boost, "HolyMod" = 1+(2*Boost), "QuickCast" = 1,"ManaStats" = 1+Boost)
+				KeybladePassives=list("PULock" = 1, "ManaGeneration" = 2+Boost, "HolyMod" = 1+Boost, "QuickCast" = 1+Boost,"ManaStats" = 1+Boost)
 				return KeybladePassives
 			if("Way To Dawn")
 				KeybladePassives=list("PULock" = 1, "AbyssMod" = 3+Boost,"HolyMod"=3+Boost,"Controlled Darkness" = 1)

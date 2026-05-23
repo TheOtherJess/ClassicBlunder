@@ -2941,7 +2941,7 @@ obj
 								Size=0.5
 								WindUp=0.25
 								Rounds= max(1, round(magicLevel/5) + asc)
-								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)
+								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)/(Rounds/2)
 								ManaCost = 5
 								NoAttackLock=1
 								ActiveMessage="invokes a powerful: <font size=+1>THUNDER!</font size>"
@@ -2992,7 +2992,7 @@ obj
 									var/obj/Skills/Projectile/Thundara/th = usr.FindSkill(/obj/Skills/Projectile/Thundara)
 									th.adjust(usr)
 									usr.UseProjectile(th)
-									DamageMult=7
+									DamageMult=5
 									Rounds=2
 									NoAttackLock=1
 									ActiveMessage="invokes a powerful: <font size=+1>THUNDARA!</font size>"
@@ -3032,7 +3032,7 @@ obj
 						if(!altered)
 							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								Rounds = 20
-								DamageMult = 0.5
+								DamageMult = 0.375
 								Icon='VR Cloud.png'
 								IconX=-13
 								Size = 8
@@ -3044,7 +3044,7 @@ obj
 								ManaCost = 7.5
 								ActiveMessage="invokes a powerful: <font size=+1>THUNDAGA!</font size>"
 							else
-								DamageMult=2
+								DamageMult=1.5
 								Rounds=5
 								Icon=null
 								IconX=0

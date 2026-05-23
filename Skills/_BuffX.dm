@@ -3966,7 +3966,7 @@ NEW VARIABLES
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
 							passives = list("ManaLeak" = 2, "SwordAscensionSecond" = usr.SagaLevel, "TechniqueMastery" = 5, "Pursuer" = 1, "QuickCast" = 4, "Flicker" = 1, \
-								"DoubleStrike" = 3, "DualCast" = 1, "MovementMastery" = 5+usr.SagaLevel, "MovingCharge" = 1, "MasterfulCasting" = 2, "PUSpike" = 50, "DrainlessPUSpike" = 1)
+								"DoubleStrike" = 3, "DualCast" = 1, "MovingCharge" = 1, "MasterfulCasting" = 2)
 							passives += GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=2
 				src.Trigger(usr)
@@ -8517,7 +8517,7 @@ NEW VARIABLES
 						return
 					var/Choice=input(usr, "What keychain are you equipping?", "Attach Keychain") in Chains
 					var/KeySlot="Main"
-					if(locate(/obj/Skills/Buffs/SpecialBuffs/Valor_Form, usr))
+					if(locate(/obj/Skills/Buffs/SpecialBuffs/Valor_Form, usr)||locate(/obj/Skills/Buffs/SpecialBuffs/Master_Form, usr)||locate(/obj/Skills/Buffs/SlotlessBuffs/SyncBlade, usr))
 						KeySlot=alert(usr, "Which Keyblade are you setting this keychain to?", "Attach Keychain", "Main", "Sync")
 					if(KeySlot=="Main")
 						usr.KeychainAttached=Choice

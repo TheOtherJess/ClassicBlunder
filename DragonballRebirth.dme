@@ -832,6 +832,7 @@
 #include "Secrets\HeavenlyRestriction\toji.dm"
 #include "Secrets\HeavyStrike\_SecretHeavyStrikeUtility.dm"
 #include "Secrets\HeavyStrike\SecretHeavyStrike.dm"
+#include "Secrets\NameCurses\NameCurses.dm"
 #include "Secrets\Necromancy\_NecroDefines.dm"
 #include "Secrets\Nox\buffs.dm"
 #include "Secrets\Nox\crisis.dm"

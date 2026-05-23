@@ -11531,9 +11531,9 @@ NEW VARIABLES
 						endAdd = 0.075 * asc
 						passives = list("Wrathful Tenacity" = asc*0.2, "HolyMod" = asc/2, \
 							"LifeGeneration" = asc+1, "CallousedFeet" = asc+1, "HardenedFrame" = 1, "SoftStyle" = asc/2)
-						Trigger(mob/User, Override = FALSE)
-							if(!User.BuffOn(src))
-								adjust(User)
+					Trigger(mob/User, Override = FALSE)
+						if(!User.BuffOn(src))
+							adjust(User)
 							..()
 				Hoarders_Riches
 					// Gold Dragon Racial. Have money? Be OP.

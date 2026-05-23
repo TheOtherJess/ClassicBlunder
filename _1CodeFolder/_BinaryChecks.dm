@@ -2632,6 +2632,12 @@ mob
 			return 0
 		GetPhysPleroma()
 			return passive_handler.Get("PhysPleroma")
+		HasCallousedFeet()
+			if(passive_handler.Get("CallousedFeet"))
+				return 1
+			return 0
+		GetCallousedFeet()
+			return passive_handler.Get("CallousedFeet")
 		HasSpiritStrike()//For v.s. End
 			if(passive_handler.Get("SpiritStrike"))
 				return 1

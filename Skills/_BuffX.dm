@@ -1657,7 +1657,10 @@ NEW VARIABLES
 			KenWaveIcon='KenShockwaveGold.dmi'
 			ActiveMessage="lets loose a furious Saiyan roar!"
 			OffMessage="loses steam..."
-			passives = list("UnderDog" = 5, "Perseverance" = 2, "CallousedHands" = 0.15)
+			passives = list("UnderDog" = 5, "Persistence" = 2, "CallousedHands" = 0.15)
+			adjust(mob/p)
+				if(p.Potential>=glob.progress.T3_SIGS[1])
+					passives = list("UnderDog" = 10, "Persistence" = 4, "CallousedHands" = 0.3, "PureReduction" = 2, "PureDamage" = 1)
 			verb/Saiyan_Roar()
 				set category="Skills"
 				src.Trigger(usr)
@@ -1671,6 +1674,9 @@ NEW VARIABLES
 			passives = list("PhysPleroma" = 1, "Steady" = 1)
 			ActiveMessage="unleashes the pride of their warrior race, commanding strength absolute!"
 			OffMessage="contains their superiority."
+			adjust(mob/p)
+				if(p.Potential>=glob.progress.T3_SIGS[1])
+					passives = list("PhysPleroma" = 1, "Steady" = 2, "Brutalize" = 1, "PureDamage" = 2, "PureReduction" = 1)
 			verb/Royal_Lineage()
 				set category="Skills"
 				src.Trigger(usr)
@@ -1686,6 +1692,9 @@ NEW VARIABLES
 			ActiveMessage="grows eager to test the strength of their opponent!"
 			OffMessage="contains their excitement."
 			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2)
+			adjust(mob/p)
+				if(p.Potential>=glob.progress.T3_SIGS[1])
+					passives = list("MovementMastery" = 4, "TechniqueMastery" = 4, "EnergyGeneration" = 3, "Instinct" = 2, "Flow" = 2, "ZenkaiPower" = 0.5)
 			verb/Saiyan_Fervor()
 				set category="Skills"
 				src.Trigger(usr)
@@ -1704,7 +1713,10 @@ NEW VARIABLES
 			KenWaveIcon='KenShockwaveLegend.dmi'
 			ActiveMessage="grasps the sun in their hands, manifesting the unbreakable fist of the Fabled King!"
 			OffMessage="contains their excitement."
-			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2, "PhysPleroma" = 1, "Steady" = 1, "UnderDog" = 5, "Perseverance" = 2, "CallousedHands" = 0.15)
+			passives = list("MovementMastery" = 2, "TechniqueMastery" = 2, "PhysPleroma" = 1, "Steady" = 1, "UnderDog" = 5, "Persistence" = 2, "CallousedHands" = 0.15)
+			adjust(mob/p)
+				if(p.Potential>=glob.progress.T3_SIGS[1])
+					passives = list("MovementMastery" = 3, "TechniqueMastery" = 3, "PhysPleroma" = 1, "Steady" = 2, "UnderDog" = 8, "Persistence" = 3, "CallousedHands" = 0.2)
 			verb/The_Unbreakable_Fist()
 				set category="Skills"
 				src.Trigger(usr)
@@ -1721,6 +1733,9 @@ NEW VARIABLES
 			passives = list("CursedWounds" = 1, "BleedHit" = 0.25, "EnergyGeneration" = 3, "LifeSteal" = 30)
 			ActiveMessage="erupts with the violent Saiyan Power they keep within!"
 			OffMessage="contains their superiority."
+			adjust(mob/p)
+				if(p.Potential>=glob.progress.T3_SIGS[1])
+					passives = list("CursedWounds" = 1, "BleedHit" = 0.25, "EnergyGeneration" = 5, "LifeSteal" = 40, "HellPower" = 0.25, "Piercing" = 0.25, "Deicide" = 5, "EndlessNine" = 0.1)
 			verb/Saiyan_Carnage()
 				set category="Skills"
 				src.Trigger(usr)
@@ -3852,6 +3867,13 @@ NEW VARIABLES
 									usr.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/AntiForm)
 								usr.LimitCounter=0
 								return
+							if(usr.KeychainAttached=="Ultima Weapon")
+								src.SwordXSecond=-36
+								src.SwordYSecond=-36
+
+							if(usr.KeychainAttached=="Moogle O Glory"||usr.KeychainAttached=="Prismatic Dreams"||usr.KeychainAttached=="Ebony Slumber")
+								src.SwordXSecond=-64
+								src.SwordYSecond=-64
 							src.SwordClassSecond=GetKeychainClass(usr.SyncAttached)
 							src.SwordDamageSecond=GetKeychainDamage(usr.SyncAttached)
 							src.SwordAccuracySecond=GetKeychainAccuracy(usr.SyncAttached)
@@ -3955,6 +3977,13 @@ NEW VARIABLES
 				if(!usr.BuffOn(src))
 					if(usr.CheckActive("Keyblade"))
 						if(!src.Using)
+							if(usr.KeychainAttached=="Ultima Weapon")
+								src.SwordXSecond=-36
+								src.SwordYSecond=-36
+
+							if(usr.KeychainAttached=="Moogle O Glory"||usr.KeychainAttached=="Prismatic Dreams"||usr.KeychainAttached=="Ebony Slumber")
+								src.SwordXSecond=-64
+								src.SwordYSecond=-64
 							if(prob(7.5*usr.LimitCounter) && usr.SagaLevel < 6)
 								if(!usr.passive_handler.Get("Controlled Darkness")||usr.passive_handler.Get("Two Become One") && prob(50+(usr.LimitCounter*10)))
 									usr.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/AntiForm)
@@ -3966,8 +3995,8 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 2, "SwordAscensionSecond" = usr.SagaLevel, "TechniqueMastery" = 5, "Pursuer" = 1, "QuickCast" = 4, "Flicker" = 1, \
-								"DoubleStrike" = 3, "DualCast" = 1, "MovingCharge" = 1, "MasterfulCasting" = 2)
+							passives = list("ManaLeak" = 2, "SwordAscensionSecond" = usr.SagaLevel, "TechniqueMastery" = 5+usr.SagaLevel, "Pursuer" = 1, "QuickCast" = 4, "Flicker" = 1, \
+								"DoubleStrike" = 3, "DualCast" = 1, "MovingCharge" = 1, "MasterfulCasting" = 2,"PureDamage" = usr.SagaLevel*1.25, "PureReduction" = usr.SagaLevel*1.25)
 							passives += GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=2
 				src.Trigger(usr)
@@ -4012,6 +4041,13 @@ NEW VARIABLES
 				set category="Skills"
 				if(!usr.BuffOn(src))
 					if(usr.CheckActive("Keyblade"))
+						if(usr.KeychainAttached=="Ultima Weapon")
+							src.SwordXSecond=-36
+							src.SwordYSecond=-36
+
+						if(usr.KeychainAttached=="Moogle O Glory"||usr.KeychainAttached=="Prismatic Dreams"||usr.KeychainAttached=="Ebony Slumber")
+							src.SwordXSecond=-64
+							src.SwordYSecond=-64
 						if(!src.Using)
 							src.SwordClassSecond=GetKeychainClass(usr.SyncAttached)
 							src.SwordDamageSecond=GetKeychainDamage(usr.SyncAttached)
@@ -4019,7 +4055,8 @@ NEW VARIABLES
 							src.SwordDelaySecond=GetKeychainDelay(usr.SyncAttached)
 							src.SwordElementSecond=GetKeychainElement(usr.SyncAttached)
 							src.SwordIconSecond=GetKeychainIconReversed(usr.SyncAttached)
-							passives = list("ManaLeak" = 3, "SwordAscensionSecond" = 6, "TechniqueMastery" = 10, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1, "GodKi" = 0.25, "MasterfulCasting" = 5)
+							passives = list("ManaLeak" = 3, "SwordAscensionSecond" = 6, "TechniqueMastery" = 12, "Pursuer" = 1, "QuickCast" = 2, "Flicker" = 1, "DualCast" = 1, "DoubleStrike" = 3, "MovingCharge" = 1, "TripleStrike" = 1, "CalmAnger" = 1,\
+							"PureDamage" = usr.SagaLevel*1.25, "PureReduction" = usr.SagaLevel*1.25, "GodKi" = 0.25, "MasterfulCasting" = 5)
 							passives+=GetKeybladePassives(usr.SyncAttached)
 							usr.LimitCounter+=3
 				src.Trigger(usr)
@@ -4043,13 +4080,13 @@ NEW VARIABLES
 			Cooldown=60
 			adjust(mob/p)
 				if(p.passive_handler.Get("Controlled Darkness"))
-					passives = list("ManaLeak"= 1, "GodSpeed" = 1, "Pursuer" = 3, "Flicker" = 3, "Instinct" = 3, "TechniqueMastery" = 5, "QuickCast" = 2, "HolyMod" = 3, "AbyssMod" = 3, "SpiritPower" = 0.25)
+					passives = list("ManaLeak"= 1, "Godspeed" = 1, "Pursuer" = 3, "Flicker" = 3, "Instinct" = 3, "TechniqueMastery" = 5, "QuickCast" = 2, "HolyMod" = 3, "AbyssMod" = 3, "SpiritPower" = 0.25)
 					if(p.SagaLevel>=5)
 						ForMult=1.5
 						StrMult=1.5
 						SpdMult=1.75
 				else if(p.passive_handler.Get("Two Become One"))
-					passives = list("ManaLeak"= 1, "CursedWounds" = 1, "GodSpeed" = 2, "Pursuer" = 5, "Flicker" = 3, "Instinct" = 4, "Flow" = 4, "TechniqueMastery" = 7, "QuickCast" = 2, "BleedHit" = 0.5)
+					passives = list("ManaLeak"= 1, "CursedWounds" = 1, "Godspeed" = 2, "Pursuer" = 5, "Flicker" = 3, "Instinct" = 4, "Flow" = 4, "TechniqueMastery" = 7, "QuickCast" = 2, "BleedHit" = 0.5)
 					ForMult=1.5
 					StrMult=1.5
 					SpdMult=1.75
@@ -4058,12 +4095,12 @@ NEW VARIABLES
 						StrMult=1.75
 						SpdMult=2
 				else if(p.passive_handler.Get("Dreamless Sleep"))
-					passives = list("CursedWounds" = 1, "GodSpeed" = 2, "Pursuer" = 5, "Flicker" = 3, "Instinct" = 4, "Flow" = 4, "TechniqueMastery" = 7, "QuickCast" = 2)
+					passives = list("CursedWounds" = 1, "Godspeed" = 3, "Pursuer" = 5, "Flicker" = 3, "Instinct" = 4, "Flow" = 4, "TechniqueMastery" = 7, "QuickCast" = 2)
 					ForMult=1.5
 					StrMult=1.5
 					SpdMult=1.75
 				else
-					passives = list("ManaLeak"= 1, "CursedWounds" = 1, "GodSpeed" = 1, "Pursuer" = 3, "Flicker" = 3, "Instinct" = 3, "TechniqueMastery" = 5, "QuickCast" = 2)
+					passives = list("ManaLeak"= 1, "CursedWounds" = 1, "Godspeed" = 1, "Pursuer" = 3, "Flicker" = 3, "Instinct" = 3, "TechniqueMastery" = 5, "QuickCast" = 2)
 					ForMult=1.25
 					StrMult=1.25
 					SpdMult=1.5

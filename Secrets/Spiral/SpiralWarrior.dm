@@ -215,8 +215,8 @@ obj/Skills/AutoHit/Spiral
 		Slow=1
 		Divide=1
 		Knockback=30
-		WindUp = 0.5
-		WindupMessage="<b>GIGA DRILL...</b>"
+		WindUp = 1.25
+		WindupMessage="yells: <b>GIGA DRILL...</b>"
 		ActiveMessage="yells: <font size =+1><b>...MAXIMUM!!!</b></font size>"
 		HitSparkIcon='drill.dmi'
 		HitSparkX=-8
@@ -224,17 +224,19 @@ obj/Skills/AutoHit/Spiral
 		HitSparkTurns=1
 		HitSparkSize=1
 		HitSparkDispersion=1
+		Earthshaking=15
 		ComboMaster=1
 		Cooldown=60
 		FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact"
+		FollowUpDelay=2
 	Lagann_Impact
 		AlwaysAnnounceCooldown = 1
 		Area="Arc"
 		AdaptRate=1
-		DamageMult=2
+		DamageMult=5
 		Rush=20
 		ControlledRush=1
-		WindUp = 0.25
+		WindUp = 0.75
 		Rounds=1
 		Knockback=15
 		ComboMaster=1
@@ -252,7 +254,7 @@ obj/Skills/AutoHit/Spiral
 		TurfStrike=1
 		TurfShift='Dirt1.dmi'
 		TurfShiftDuration=3
-		WindupMessage="<b>LAGANN...</b>"
+		WindupMessage="yells: <b>LAGANN...</b>"
 		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
 /mob/proc/HandleSpiralUnlock(var/Stat, SL)
 	var/CA=AscensionsAcquired

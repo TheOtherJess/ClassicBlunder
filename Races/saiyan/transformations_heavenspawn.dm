@@ -41,31 +41,19 @@ transformation
 					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SaiyanPurity, user))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SaiyanPurity)
 						user << "You have unlocked a new Signature buff! (Saiyan Purity)"
+				speedadd = 0.6+(mastery/100)
+				enduranceadd = 0.6+(mastery/100)
+				offenseadd = 0.6+(mastery/100)
+				defenseadd = 0.6+(mastery/100)
+				strengthadd = 0.6+(mastery/100)
+				forceadd = 0.6+(mastery/100)
 			class_boons(mob/user) //pride stats as a baseline no matter what
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
 					class_passives = list("EnergyGeneration" = 3, "Instinct" = 2, "Flow" = 2)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
 					class_passives = list("PureDamage" = 1.5, "Flicker" = 2, "Pursuer" = 1)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
 					class_passives = list("PureReduction" = 1.5, "Flow" = 2, "EnergyGeneration" = 3)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
 					var/icon/x=new(user.Hair_Base)

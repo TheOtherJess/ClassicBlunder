@@ -1742,6 +1742,7 @@ NEW VARIABLES
 		SaiyanPurity
 			SignatureTechnique=3
 			Mastery=1
+			BuffName = "Saiyan Purity"
 			UnrestrictedBuff=1
 			StrMult=1.3
 			ForMult=1.3

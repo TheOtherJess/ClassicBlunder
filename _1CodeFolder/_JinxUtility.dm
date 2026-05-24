@@ -1494,7 +1494,7 @@ mob
 				mult = 0.25*(Health/100)
 			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
 				mult = 0
-			
+
 			if(mult < 0)
 				mult = 0
 			if(mult > 0.5 && Secret)
@@ -1756,7 +1756,7 @@ mob
 			if(Momentum)
 				Mod *= getMomentumMult();
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)
@@ -1952,7 +1952,7 @@ mob
 					else
 						Mod+=0.75*src.passive_handler.Get("BurningShot")
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)
@@ -2132,7 +2132,7 @@ mob
 				else if(Mod>=glob.BUFF_MASTER_HIGHTHRESHOLD)
 					Mod*=(1+(BM*glob.BUFF_MASTERY_HIGHMULT))
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)

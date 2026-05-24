@@ -554,6 +554,38 @@ update
 					p.passive_handler.Decrease("BuffMastery", 2)
 				if(p.AscensionsAcquired>=3)
 					p.passive_handler.Decrease("BuffMastery", 2)
+			if(p.isRace(BEASTKIN))
+				if(p.Class == "Feather Cowl")
+					if(p.AscensionsAcquired>=1)
+						p.passive_handler.Increase("PureReduction", 2);
+						p.passive_handler.Increase("PureDamage", 1);
+						p.passive_handler.Increase("Juggernaut", 1);
+						p.passive_handler.Decrease("BlockChance", 10);
+						p.passive_handler.Decrease("CriticalBlock", 0.1);
+						p.passive_handler.Decrease("CriticalChance", 5);
+						p.passive_handler.Decrease("CriticalDamage", 0.05);
+					if(p.AscensionsAcquired>=2)
+						p.passive_handler.Increase("PureReduction", 2);
+						p.passive_handler.Increase("PureDamage", 1);
+						p.passive_handler.Increase("Juggernaut", 1);
+						p.passive_handler.Decrease("BlockChance", 10);
+						p.passive_handler.Decrease("CriticalBlock", 0.1);
+						p.passive_handler.Decrease("CriticalChance", 5);
+						p.passive_handler.Decrease("CriticalDamage", 0.05);
+				if(p.Class == "Feather Knife")
+					if(p.AscensionsAcquired>=1)
+						p.passive_handler.Increase("PureDamage", 2);
+						p.passive_handler.Increase("PureReduction", 1);
+						p.passive_handler.Increase("BlurringStrikes", 1);
+						p.passive_handler.Decrease("CriticalChance", 10);
+						p.passive_handler.Decrease("CriticalDamage", 0.1);
+					if(p.AscensionsAcquired>=2)
+						p.passive_handler.Increase("PureDamage", 2);
+						p.passive_handler.Increase("PureReduction", 1);
+						p.passive_handler.Increase("BlurringStrikes", 1);
+						p.passive_handler.Decrease("CriticalChance", 10);
+						p.passive_handler.Decrease("CriticalDamage", 0.1);
+
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

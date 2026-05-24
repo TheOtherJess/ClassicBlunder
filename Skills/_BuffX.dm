@@ -11512,6 +11512,24 @@ NEW VARIABLES
 						if(!User.BuffOn(src))
 							adjust(User)
 						..()
+				Radiant_Aegis
+					NeedsHealth = 50
+					TooMuchHealth = 75
+					ActiveMessage = "adorns themselves with a shield of radiant light, you feel your ability to do harm diminished!"
+					OffMessage = "loses their shield of light..."
+					Cooldown = 120
+					adjust(mob/p)
+						if(altered) return
+						var/asc = p.AscensionsAcquired
+						ElementalOffense = "Light"
+						strAdd = 0.075 * asc
+						endAdd = 0.075 * asc
+						passives = list("Wrathful Tenacity" = asc*0.2, "HolyMod" = asc/2, \
+							"LifeGeneration" = asc+1, "CallousedFeet" = asc+1, "HardenedFrame" = 1, "SoftStyle" = asc/2)
+					Trigger(mob/User, Override = FALSE)
+						if(!User.BuffOn(src))
+							adjust(User)
+							..()
 				Hoarders_Riches
 					// Gold Dragon Racial. Have money? Be OP.
 					ActiveMessage = "gains the faint glitter of gold in their hues!"

@@ -337,12 +337,12 @@ obj/Skills
 			set name="Revert!"
 			set category="Utility"
 			if(usr.transActive&&!usr.HasNoRevert()&&!usr.isMazokuHuman())
-				for(var/obj/Skills/Buffs/B in src)
+				for(var/obj/Skills/Buffs/B in usr)
 					if(usr.BuffOn(B)&&B.Transform&&!B.AlwaysOn)
 						B.Trigger(src)
 						return
-				Revert()
-				src << "You revert from your transformed state."
+				usr.Revert()
+				usr. << "You revert from your transformed state."
 				return
 		verb/TogglePCTrans()
 			set name="Toggle PC Transformations"

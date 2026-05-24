@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 24
+	var/UPDATE_VERSION = 25
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -543,6 +543,17 @@ update
 					p.StrAscension += 0.5
 				if(p.AscensionsAcquired>=3)
 					p.StrAscension += 0.75
+	version25
+		version = 25;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(ELDRITCH))
+				if(p.AscensionsAcquired>=1)
+					p.passive_handler.Decrease("BuffMastery", 2)
+				if(p.AscensionsAcquired>=2)
+					p.passive_handler.Decrease("BuffMastery", 2)
+				if(p.AscensionsAcquired>=3)
+					p.passive_handler.Decrease("BuffMastery", 2)
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

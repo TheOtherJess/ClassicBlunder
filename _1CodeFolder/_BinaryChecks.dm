@@ -3186,7 +3186,7 @@ mob
 					return 1
 			return 0
 		UsingMasteredMartialStyle()
-			if(usingStyle("UnarmedStyle") && StyleBuff?.SignatureTechnique>=1||secretDatum.secretVariable["EldritchInstinct"])
+			if(usingStyle("UnarmedStyle") && StyleBuff?.SignatureTechnique>=1)
 				return 1
 			return 0
 		UsingMysticStyle()
@@ -3200,7 +3200,7 @@ mob
 			if(src.Saga=="Keyblade")
 				if(src.SagaLevel>=4)
 					return 1
-			if(usingStyle("MysticStyle") && StyleBuff?.SignatureTechnique>=1||secretDatum.secretVariable["EldritchInstinct"])
+			if(usingStyle("MysticStyle") && StyleBuff?.SignatureTechnique>=1)
 				return 1
 			if(src.isRace(DRAGON)&&src.AscensionsAcquired>=3)
 				return 1

@@ -9944,11 +9944,11 @@ NEW VARIABLES
 				adjust(mob/p)
 					if(!altered)
 						if(p.Secret == "Werewolf")
-							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier, "TechniqueMastery" = 1, "MovementMastery" = p.secretDatum.currentTier * 1.5)
+							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier, "TechniqueMastery" = 1, "MovementMastery" = p.secretDatum.currentTier * 1.25,"Skimming" = 2)
 							MovementMastery = p.secretDatum.currentTier * 1.5
 							Godspeed = p.secretDatum.currentTier
 							StrMult = 1 + (p.secretDatum.currentTier * 0.25)
-							EndMult = 1 + (p.secretDatum.currentTier * 0.25)
+							EndMult = 1
 							SpdMult = 1 + (p.secretDatum.currentTier * 0.25)
 							OffMult = 1 + (p.secretDatum.currentTier * 0.25)
 				Trigger(mob/p, Override = 0 )
@@ -9959,15 +9959,15 @@ NEW VARIABLES
 					TimerLimit=180
 					if(!altered)
 						if(p.Secret == "Werewolf")
-							passives = list("SpecialBuffLock" = 1,"Curse" = 1, "Godspeed" =  p.secretDatum.currentTier*2,\
-							 "Pursuer" = 2, "BlurringStrikes" = p.secretDatum.currentTier)
+							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier*2,\
+							 "Pursuer" = 2, "BlurringStrikes" = p.secretDatum.currentTier, "Skimming" = 2, p.secretDatum.currentTier * 1.5)
 							MovementMastery = p.secretDatum.currentTier * 2
 							Godspeed = p.secretDatum.currentTier * 2
 							StrMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							EndMult = 1.25 + (p.secretDatum.currentTier * 0.25)
+							EndMult = 1.25
 							SpdMult = 1.25 + (p.secretDatum.currentTier * 0.25)
 							OffMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							DefMult = 1.25 + (p.secretDatum.currentTier * 0.25)
+							DefMult = 0.75
 
 				HealthThreshold=0.1
 				RegenMult=2
@@ -9990,8 +9990,6 @@ NEW VARIABLES
 				IconTransform='FullMoon.dmi'
 				TransformX=-7
 				TransformY=-4
-				SpecialBuffLock=1
-				ActiveBuffLock=1
 				verb/Customize_Full_Moon()
 					set category = "Other"
 					IconTransform=input(usr, "What icon will your Full Moon Form use?", "Full Moon Form Icon") as icon|null
@@ -10046,9 +10044,9 @@ NEW VARIABLES
 							if(16 to 25)
 								secretLevel += 1
 							if(26 to 50)
-								secretLevel += 1
-							if(51 to 75)
 								secretLevel += 2
+							if(51 to 75)
+								secretLevel += 3
 							if(76 to 100)
 								secretLevel += 4
 						if(secretLevel>7)

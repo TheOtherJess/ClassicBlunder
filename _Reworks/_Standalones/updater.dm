@@ -585,6 +585,17 @@ update
 						p.passive_handler.Increase("BlurringStrikes", 1);
 						p.passive_handler.Decrease("CriticalChance", 10);
 						p.passive_handler.Decrease("CriticalDamage", 0.1);
+	version26
+		version = 26;
+		updateMob(mob/p)
+			. = ..()
+			if(p.isRace(ELDRITCH))
+				p.passive_handler.Increase("SpaceWalk", 1);
+				p.passive_handler.Increase("StaticWalk", 1);
+				p << "The Space Squids of old look upon you kindly."
+				p << "WHY THE FRIGGLE FRACK DID THEY TAKE SPACEWALK AND STATIC WALK OFF YOU?!"
+				p << "How can you space squid if you can't even go to space...!"
+				
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25

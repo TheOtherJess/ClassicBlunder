@@ -1161,7 +1161,8 @@ mob
 			if(diedFromSenjutsuOverload())
 				return
 			if(Secret == "Senjutsu" && SlotlessBuffs["Senjutsu Focus"])
-				ManaMax =  100 + (25 * (secretDatum.currentTier))
+				ManaMax = 100 * GetManaCapMult();
+				ManaMax += (25 * (secretDatum.currentTier))
 				ManaMax *= MANAOVERLOADMULT
 				// at current tier 5, mana max is 225
 

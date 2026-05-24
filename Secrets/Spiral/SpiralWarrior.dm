@@ -23,7 +23,18 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/Clobber
 			adjust(usr)
 			applyToTarget?:adjust(usr)
 		src.Trigger(usr)
-
+obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply
+	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
+	KenWave = 4
+	KenWaveIcon='SparkleGreen.dmi'
+	HitSpark='Spiral_Hitspark.dmi'
+	TimerLimit=30
+	ActiveMessage="<b>evolves just a bit more!!!</b>"
+	OffMessage="limits themselves once again."
+	TextColor="green"
+	MagicNeeded=0
+	Cooldown=60
+	passives = list("SpiralPowerUnlocked" = 1)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	KenWave = 4
@@ -208,7 +219,7 @@ obj/Skills/AutoHit/Spiral
 			usr.Activate(src)
 	Giga_Drill_Maximum
 		AdaptRate=1
-		DamageMult=5
+		DamageMult=18
 		Area="Circle"
 		Distance=8
 		TurfStrike=1
@@ -226,9 +237,8 @@ obj/Skills/AutoHit/Spiral
 		HitSparkDispersion=1
 		Earthshaking=15
 		ComboMaster=1
-		Cooldown=60
-		FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact2"
-		FollowUpDelay=2
+		Cooldown=180
+		BuffSelf = "/obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply"
 	Lagann_Impact
 		AlwaysAnnounceCooldown = 1
 		Area="Arc"
@@ -236,14 +246,14 @@ obj/Skills/AutoHit/Spiral
 		DamageMult=6
 		Rush=20
 		ControlledRush=1
-		WindUp = 0.75
+		WindUp = 0.5
 		Rounds=1
 		Knockback=15
 		ComboMaster=1
 		RoundMovement=0
 		NoAttackLock=1
 		NoLock=1
-		Cooldown=60
+		Cooldown=2
 		Size=2
 		Distance=2
 		Instinct=10
@@ -254,6 +264,7 @@ obj/Skills/AutoHit/Spiral
 		TurfStrike=1
 		TurfShift='Dirt1.dmi'
 		TurfShiftDuration=3
+		BuffSelf = "/obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply"
 		WindupMessage="yells: <b>LAGANN...</b>"
 		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
 	Lagann_Impact2
@@ -263,14 +274,13 @@ obj/Skills/AutoHit/Spiral
 		DamageMult=5
 		Rush=20
 		ControlledRush=1
-		WindUp = 1.5
+		WindUp = 0.5
 		Rounds=1
-		Knockback=15
 		ComboMaster=1
 		RoundMovement=0
 		NoAttackLock=1
 		NoLock=1
-		Cooldown=60
+		Cooldown=3
 		Size=2
 		Distance=2
 		Instinct=10
@@ -283,6 +293,8 @@ obj/Skills/AutoHit/Spiral
 		TurfShiftDuration=3
 		WindupMessage="yells: <b>LAGANN...</b>"
 		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
+		FollowUp="/obj/Skills/AutoHit/Spiral/Giga_Drill_Maximum"
+		FollowUpDelay=1
 /mob/proc/HandleSpiralUnlock(var/Stat, SL)
 	var/CA=AscensionsAcquired
 	var/TA=CA+SL

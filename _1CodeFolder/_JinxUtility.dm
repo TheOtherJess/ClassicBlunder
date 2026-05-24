@@ -3831,7 +3831,7 @@ proc
 	ProjectileDamage(Damage) // This is Power * Damage Mult
 		return Damage*glob.PROJ_DAMAGE_MULT
 	CounterDamage(Damage)
-		return clamp(Damage,0.25,5)
+		return clamp(Damage,0.25,2)
 
 var/list/general_magic_database = list()
 var/list/general_weaponry_database = list()

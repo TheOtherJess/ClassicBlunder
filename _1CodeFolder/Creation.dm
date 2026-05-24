@@ -14,7 +14,7 @@
 	/obj/Skills/Grab, /obj/Skills/Grapple/Toss, /obj/Skills/Dragon_Dash, /obj/Skills/Target_Clear, /obj/Skills/Target_Switch, \
 	/obj/Skills/Reverse_Dash, /obj/Skills/Aerial_Payback, /obj/Skills/Aerial_Recovery, \
 	/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Clash, /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Clash_Defensive, \
-	/obj/Skills/Buffs/Styles/Style_Selector)
+	/obj/Skills/Buffs/Styles/Style_Selector, /obj/Skills/Transformation)
 	for(var/S in missingSkills)
 		if(!locate(S, usr.contents))
 			usr.AddSkill(new S)

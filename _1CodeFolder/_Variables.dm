@@ -409,6 +409,7 @@ mob/var
 	PureRPMode=0
 	CutsceneWatch=0
 	ForceHeavyStrike=0
+	PCTransToggle=0 //0=on, 1=off
 	SpawnArea = "None" //different from Spawn for Reasons
 
 	CyberizeMod = 0

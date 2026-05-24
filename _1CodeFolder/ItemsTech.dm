@@ -3891,7 +3891,7 @@ obj/Items/Gear
 				src.Using=0
 		verb/Awaken_Power()//transformation
 			set category = "Hougyoku"
-			usr<<"soon"
+			usr<<"bother an admin. this has too many consideratons to automate"
 		Complete_Hougyoku
 			Partial=0
 			Complete=1

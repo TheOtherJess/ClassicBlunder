@@ -4978,22 +4978,21 @@ NEW VARIABLES
 			ActiveMessage="shifts into their spiritual body!"
 			OffMessage="becomes fully physical once more..."
 			ManaDrain = 0.1
-			passives = list("ManaLeak" = 2, "SpiritForm" = 1, "ManaStats" = 0.25, "TechniqueMastery" = -2, "MartialMagic" = 1, "ManaGeneration" = -2, "FatigueLeak" = 1, "Cryokenesis" = 1)
-			ManaThreshold = 40
+			passives = list("ManaLeak" = 0.25, "SpiritForm" = 1, "TechniqueMastery" = 0, "MartialMagic" = 1, "ManaGeneration" = -2, "FatigueLeak" = 0.1, "Cryokenesis" = 1)
+			ManaThreshold = 10
 			Cooldown=1
 			adjust(mob/p)
+				passives["ManaGeneration"] = 0;
 				passives["Cryokenesis"] = 1 + p.AscensionsAcquired
-				passives["ManaGeneration"] = min(0, (-2) + (p.AscensionsAcquired*0.5));
-				ManaThreshold = 40 - (5*p.AscensionsAcquired);
-				if(p.AscensionsAcquired>=6)//full mastery from two become one, but all in one asc
-					ManaDrain = 0;
-					passives["MovementMastery"] = 5;
-					passives["TechniqueMastery"] = 5;
-					passives["FatigueLeak"] = 0;
-					passives["ManaLeak"] = 0;
+				passives["MovementMastery"] = min(5, p.AscensionsAcquired);
+				passives["TechniqueMastery"] = min(5, p.AscensionsAcquired);
+				passives["FatigueLeak"] = max(0, 0.25 - (0.05*p.AscensionsAcquired));
+				passives["ManaLeak"] = max(0.25 - (0.05*p.AscensionsAcquired));
+				if(p.AscensionsAcquired>5) ManaDrain = 0;
 			verb/Spirit_Form()
 				set category="Skills"
 				if(!usr.BuffOn(src))
+					adjust(usr);
 					if(usr.Form1Base)
 						src.IconReplace=1
 						src.icon=usr.Form1Base

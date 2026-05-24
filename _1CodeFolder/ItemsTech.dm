@@ -3886,12 +3886,17 @@ obj/Items/Gear
 				return
 			for(var/a in selector.race.ascensions)
 				var/ascension/asc = a
-				if(asc.checkAscensionUnlock(src,selector.Potential+10)) continue
-				asc.onAscension(selector)
+				if(asc.checkAscensionUnlock(src,selector.Potential+10))
+					asc.onAscension(selector)
 				src.Using=0
 		verb/Awaken_Power()//transformation
 			set category = "Hougyoku"
 			usr<<"soon"
+		Complete_Hougyoku
+			Partial=0
+			Complete=1
+			Techniques=list("/obj/Skills/AutoHit/Fragor", "/obj/Skills/AutoHit/Ultra_Fragor")
+			passives = list("True Evolution" = 1)
 	Dark_Factor_Fragment
 		TechType="CyberEngineering"
 		SubType="Blasphemy"

@@ -1147,8 +1147,7 @@ mob
 			return 0
 		GetUnbreakable() //0.1=ignore 10% of stat taxes
 			var/Return=0
-			if(passive_handler.Get("Unbreakable"))
-				Return +=passive_handler.Get("Unbreakable")
+			Return +=passive_handler.Get("Unbreakable")
 			if(Saga == "Eight Gates"&&GatesActive>SagaLevel)
 				Return = 0.375*(GatesActive-SagaLevel)
 			return Return

@@ -50,17 +50,17 @@ Or was it Infi, with the brand of the ring, endlessly energetic?"};
 							endurance = -0.1
 							anger = 1
 						if("Feather Cowl")
-							passives["BlockChance"] = 25
-							passives["CriticalBlock"] = 0.25
-							passives["CriticalChance"] = 10
-							passives["CriticalDamage"] = 0.1
+							passives["PureReduction"] = 2;
+							passives["PureDamage"] = 1;
+							passives["Juggernaut"] = 1;
 							speed = 1
 							offense = 1
 						if("Feather Knife")
-							passives["CriticalChance"] = 25
-							passives["CriticalDamage"] = 0.25
+							passives["PureDamage"] = 2;
+							passives["PureReduction"] = 1;
 							passives["Musoken"] = 1;
 							passives["AttackSpeed"] = 1;
+							passives["BlurringStrikes"] = 1;
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5
@@ -141,17 +141,17 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							endurance = -0.25
 							anger = 1
 						if("Feather Cowl")
-							owner.passive_handler.Increase("BlockChance", 10);
-							owner.passive_handler.Increase("CriticalBlock", 0.1);
-							owner.passive_handler.Increase("CriticalChance", 5);
-							owner.passive_handler.Increase("CriticalDamage", 0.05);
+							owner.passive_handler.Increase("PureReduction", 2);
+							owner.passive_handler.Increase("PureDamage", 1);
+							owner.passive_handler.Increase("Juggernaut", 1);
 							speed = 1
 							offense = 1
 						if("Feather Knife")
-							owner.passive_handler.Increase("CriticalChance", 10)
-							owner.passive_handler.Increase("CriticalDamage", 0.1)
+							owner.passive_handler.Increase("PureReduction", 1)
+							owner.passive_handler.Increase("PureDamage", 2)
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
+							owner.passive_handler.Increase("BlurringStrikes", 1);
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5
@@ -234,6 +234,7 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							owner.passive_handler.Increase("CriticalDamage", 0.1)
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
+							owner.passive_handler.Increase("BlurringStrikes", 1);
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5
@@ -304,17 +305,17 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							offense = 0.25
 							anger = 1.5
 						if("Feather Cowl")
-							owner.passive_handler.Increase("BlockChance", 10);
-							owner.passive_handler.Increase("CriticalBlock", 0.1);
-							owner.passive_handler.Increase("CriticalChance", 5);
-							owner.passive_handler.Increase("CriticalDamage", 0.05);
+							owner.passive_handler.Increase("PureReduction", 2)
+							owner.passive_handler.Increase("PureDamage", 1)
+							owner.passive_handler.Increase("Juggernaut", 1);
 							speed = 1
 							defense = 1
 						if("Feather Knife")
-							owner.passive_handler.Increase("CriticalChance", 10)
-							owner.passive_handler.Increase("CriticalDamage", 0.1)
+							owner.passive_handler.Increase("PureReduction", 1)
+							owner.passive_handler.Increase("PureDamage", 2)
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
+							owner.passive_handler.Increase("BlurringStrikes", 1);
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5
@@ -386,6 +387,7 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 						if("Feather Cowl")
 							owner.passive_handler.Increase("PureReduction", 2);
 							owner.passive_handler.Increase("PureDamage", 1);
+							owner.passive_handler.Increase("Juggernaut", 1);
 							speed = 1
 							offense = 1
 						if("Feather Knife")
@@ -393,6 +395,7 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
 							owner.passive_handler.Increase("PureDamage", 1);
+							owner.passive_handler.Increase("BlurringStrikes", 1);
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5
@@ -466,11 +469,13 @@ Today, another God of the Rifts is born."}
 						if("Feather Cowl")
 							owner.passive_handler.Increase("PureReduction", 2);
 							owner.passive_handler.Increase("PureDamage", 1);
+							owner.passive_handler.Increase("Juggernaut", 1);
 							speed = 1
 							defense = 1
 						if("Feather Knife")
 							owner.passive_handler.Increase("PureReduction", 1);
 							owner.passive_handler.Increase("PureDamage", 2);
+							owner.passive_handler.Increase("BlurringStrikes", 1);
 							strength = 0.5
 							speed = 0.5
 							endurance = 0.5

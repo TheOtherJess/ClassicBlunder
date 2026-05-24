@@ -11,6 +11,7 @@
 /mob/var/AbsorbingDamage = 0
 /mob/var/transGod = 0
 /mob/var/tmp/DevilTriggerSinDamageBonus = 0
+/mob/var/tmp/WarmingUpBonus = 0
 /mob/var/tmp/DevilTriggerSlothBonus = 0
 /mob/var/tmp/DevilTriggerEnvyMirrorPending = 0
 /mob/var/tmp/LastSlothTick = 0
@@ -286,6 +287,8 @@ mob
 				defender.LoseHealth(final_damage);
 				if(defender.passive_handler.Get("LustFactor")) defender.applySinBonusFromTakenDamage(final_damage);
 				if(passive_handler.Get("LustFactor")) applySinBonusFromDealtDamage(final_damage);
+				if(passive_handler.Get("WarmingUp")) applyWarmingUpFromDealtDamage(final_damage)
+				if(defender.passive_handler.Get("WarmingUp")) defender.applyWarmingUpFromTakenDamage(final_damage)
 				if(passive_handler.Get("SlothFactor"))
 					DevilTriggerSlothBonus = 0
 					LastSlothTick = world.time
@@ -1546,6 +1549,16 @@ mob
 			if(DevilTriggerSinDamageBonus < 0)
 				DevilTriggerSinDamageBonus = 0
 
+		applyWarmingUpFromDealtDamage(amount)
+			if(amount <= 0) return
+			if(!passive_handler || !passive_handler.Get("WarmingUp")) return
+			WarmingUpBonus = min(WarmingUpBonus + amount * 0.01, 4)
+
+		applyWarmingUpFromTakenDamage(amount)
+			if(amount <= 0) return
+			if(!passive_handler || !passive_handler.Get("WarmingUp")) return
+			WarmingUpBonus = min(WarmingUpBonus + amount * 0.01, 4)
+
 		// Sloth movement
 		resetSlothTracking()
 			DevilTriggerSlothBonus = 0
@@ -1687,6 +1700,7 @@ mob
 				Str=StrReplace
 			//when you want to ignore all of the above for some reason
 			Str+=StrAdded
+			if(passive_handler.Get("WarmingUp")) Str += WarmingUpBonus
 			Str+=src.GetEquippedWeaponStatAdd("Str")
 			if(src.HasManaStats())
 				Str += getManaStatsBoon()
@@ -1880,6 +1894,7 @@ mob
 			if(src.ForReplace)
 				For=ForReplace
 			For+=ForAdded
+			if(passive_handler.Get("WarmingUp")) For += WarmingUpBonus
 			For+=src.GetEquippedWeaponStatAdd("For")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold>0)
@@ -2086,6 +2101,7 @@ mob
 			if(CheckSlotless("The Grit") && (Anger||HasCalmAnger()))
 				End += End * (glob.DEMONIC_DURA_BASE)
 			End+=EndAdded
+			if(passive_handler.Get("WarmingUp")) End += WarmingUpBonus
 			End+=src.GetEquippedWeaponStatAdd("End")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold<0)
@@ -2248,6 +2264,7 @@ mob
 			if(passive_handler.Get("Piloting")&&findMecha())
 				Spd = getMechStat(findMecha(), Spd)
 			Spd+=SpdAdded
+			if(passive_handler.Get("WarmingUp")) Spd += WarmingUpBonus
 			Spd+=src.GetEquippedWeaponStatAdd("Spd")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold<0)
@@ -2394,6 +2411,7 @@ mob
 			if(passive_handler.Get("Piloting")&&findMecha())
 				Off = getMechStat(findMecha(), Off)
 			Off+=OffAdded
+			if(passive_handler.Get("WarmingUp")) Off += WarmingUpBonus
 			Off+=src.GetEquippedWeaponStatAdd("Off")
 			if(src.HasManaStats())
 				Off += getManaStatsBoon()
@@ -2521,6 +2539,7 @@ mob
 
 
 			Def+=DefAdded
+			if(passive_handler.Get("WarmingUp")) Def += WarmingUpBonus
 			Def+=src.GetEquippedWeaponStatAdd("Def")
 			if(src.HasManaStats())
 				Def += getManaStatsBoon()

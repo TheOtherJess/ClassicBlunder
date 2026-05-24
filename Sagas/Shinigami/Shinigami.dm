@@ -3,7 +3,7 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
-	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki")
+	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru")
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -52,6 +52,8 @@ mob/tierUpSaga(Path)
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Shikai/SodenoShirayuki)
 						src.AddSkill(new/obj/Skills/AutoHit/Tsukishiro)
 						src.AddSkill(new/obj/Skills/AutoHit/Hakuren)
+					if("Hozukimaru")
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Hozukimaru)
 				updateShinigamiAscended()
 
 			if(3)
@@ -81,6 +83,9 @@ mob/tierUpSaga(Path)
 					if("Shirayuki")
 						src.BankaiPrefix = input(src, "Your Bankai takes shape. What is your Zanpakutō's true name?", "Bankai Prefix") as text
 						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Bankai/HakkanoTogame)
+					if("Hozukimaru")
+						src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
+						src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Ryumon_Hozukimaru)
 				updateShinigamiAscended()
 
 			if(5)

@@ -111,6 +111,9 @@ mob/var
 	BankaiIcon
 	BankaiIconX = 0
 	BankaiIconY = 0
+	BankaiShihakushoIcon
+	BankaiShihakushoIconX = 0
+	BankaiShihakushoIconY = 0
 	InShinigamiForm = FALSE
 	UsedFinalGetsuga = FALSE
 

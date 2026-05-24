@@ -109,6 +109,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 		if(wasOn && !src.SlotlessOn)
 			var/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form/sf = user.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form)
 			if(sf) sf.revertZanpakutoIcon(user)
+			if(sf) sf.revertShihakushoIcon(user)
 
 
 	verb/Bankai()
@@ -137,6 +138,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 			src.Trigger(usr)
 			var/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form/sf = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form)
 			if(sf) sf.applyBankaiIcon(usr)
+			if(sf) sf.applyBankaiShihakushoIcon(usr)
 			// Visual activation sequence
 			var/mob/M = usr
 			spawn()

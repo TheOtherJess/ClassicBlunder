@@ -577,8 +577,8 @@ update
 						p.passive_handler.Increase("PureDamage", 2);
 						p.passive_handler.Increase("PureReduction", 1);
 						p.passive_handler.Increase("BlurringStrikes", 1);
-						p.passive_handler.Decrease("CriticalChance", 10);
-						p.passive_handler.Decrease("CriticalDamage", 0.1);
+						p.passive_handler.Decrease("CriticalChance", 25);
+						p.passive_handler.Decrease("CriticalDamage", 0.25);
 					if(p.AscensionsAcquired>=2)
 						p.passive_handler.Increase("PureDamage", 2);
 						p.passive_handler.Increase("PureReduction", 1);

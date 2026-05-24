@@ -4817,6 +4817,33 @@ obj
 						DamageMult = DamageMult/Blasts
 						Cooldown = 60 - ( 5 * usr.AscensionsAcquired)
 					usr.UseProjectile(src)
+			Consuming_Light
+				StrRate=0.5
+				EndRate=1.5
+				ForRate=0
+				Distance=20
+				DamageMult=2.5
+				Blasts=10
+				Stream=1
+				Radius=1
+				MultiHit=2
+				Knockback=1
+				Striking=1
+				Cooldown=160
+				Silencing=5
+				Delay=1
+				IconLock='AvalonLight.dmi'
+				Variation=24
+				verb/Consuming_Light()
+					set category="Skills"
+					if(!altered)
+						Blasts = 5 + (usr.AscensionsAcquired)
+						DamageMult = 2.0 + (usr.AscensionsAcquired * 1.5)
+						Radius = clamp(usr.AscensionsAcquired, 1, 5)
+						Silencing = 2 + clamp(usr.AscensionsAcquired*2, 0.5, 2.5)
+						DamageMult = DamageMult/Blasts
+						Cooldown = 60 - ( 5 * usr.AscensionsAcquired)
+					usr.UseProjectile(src)
 
 //Moonlight Greatsword
 				Moonlight_Wave

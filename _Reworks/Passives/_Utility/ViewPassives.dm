@@ -41,6 +41,7 @@ var/list/PassiveInfo = list("Extend"="increases the range of armed autohits base
 "Siphon"= "restores energy (and reduces the damage) when hit by a Projectile, spiritsword/spirithand, hybridstrike, spiritstrike",
 "ManaStats"= "increases your Stats based on your Mana.",
 "SpiritFlow"= "increases autohit damage based on your force",
+"CallousedFeet"= "increases autohit damage based on your endurance",
 "ManaGeneration"= "increases mana regen, also allows you regain mana on being hit",
 "DualCast"= "spells hit again if you have the mana necessary to cast it again",
 "Juggernaut"= "increased knockbacks/launch resistance",

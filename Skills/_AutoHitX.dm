@@ -6561,6 +6561,9 @@ obj
 				#if DEBUG_AUTOHIT
 				Owner.log2text("atk - Auto Hit", atk, "damageDebugs.txt", "[Owner.ckey]/[Owner.name]")
 				#endif
+				if(Owner.HasCallousedFeet())
+					var/ef = Owner.GetCallousedFeet() / glob.SPIRIT_FLOW_DIVISOR
+					atk += Owner.GetEnd(ef)
 				var/dmgRoll = Owner.GetDamageMod()
 				DEBUGMSG("dmgRoll is: [dmgRoll]")
 				#if DEBUG_AUTOHIT

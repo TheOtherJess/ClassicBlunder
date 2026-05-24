@@ -223,13 +223,15 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							endurance = -0.25
 							anger = 1
 						if("Feather Cowl")
-							owner.passive_handler.Increase("PureReduction", 2);
-							owner.passive_handler.Increase("PureDamage", 1);
+							owner.passive_handler.Increase("BlockChance", 10);
+							owner.passive_handler.Increase("CriticalBlock", 0.1);
+							owner.passive_handler.Increase("CriticalChance", 5);
+							owner.passive_handler.Increase("CriticalDamage", 0.05);
 							speed = 1
 							strength = 1
 						if("Feather Knife")
-							owner.passive_handler.Increase("PureReduction", 1);
-							owner.passive_handler.Increase("PureDamage", 2);
+							owner.passive_handler.Increase("CriticalChance", 10)
+							owner.passive_handler.Increase("CriticalDamage", 0.1)
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
 							strength = 0.5

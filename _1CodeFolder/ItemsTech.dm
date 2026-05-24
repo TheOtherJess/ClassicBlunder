@@ -3875,6 +3875,14 @@ obj/Items/Gear
 		verb/Awaken_Dreams() //saga
 			set category = "Hougyoku"
 			usr<<"soon"
+			return
+			var/list/who=list("Cancel")
+			for(var/mob/Players/M in view(3, usr))
+				who.Add(M)
+			var/mob/Players/selector=input("Who do you want to unlock the next Saga tier of?","Awaken Potential")in who||null
+			if(selector=="Cancel")
+				src.Using=0
+				return
 		verb/Awaken_Potential() //ascension
 			set category = "Hougyoku"
 			var/list/who=list("Cancel")

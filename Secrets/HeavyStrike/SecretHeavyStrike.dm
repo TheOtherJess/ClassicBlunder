@@ -293,10 +293,9 @@
         HitMessage="smashes into the wall standing in their way!";
         adjust(mob/p)
             if(p.passive_handler.Get("SpiralPowerUnlocked")>=3)
-                KBMult=0.1
-                KBAdd=0
-                FollowUpDelay=0
-                FollowUp="/obj/Skills/AutoHit/Spiral/Giga_Drill_Maximum"
+                KBMult=3
+                KBAdd=25
+                FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact2"
             else
                 KBMult=3
                 KBAdd=25

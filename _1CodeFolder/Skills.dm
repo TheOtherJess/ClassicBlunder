@@ -339,10 +339,10 @@ obj/Skills
 			if(usr.transActive&&!usr.HasNoRevert()&&!usr.isMazokuHuman())
 				for(var/obj/Skills/Buffs/B in usr)
 					if(usr.BuffOn(B)&&B.Transform&&!B.AlwaysOn)
-						B.Trigger(src)
+						B.Trigger(usr)
 						return
 				usr.Revert()
-				usr. << "You revert from your transformed state."
+				usr << "You revert from your transformed state."
 				return
 		verb/TogglePCTrans()
 			set name="Toggle PC Transformations"

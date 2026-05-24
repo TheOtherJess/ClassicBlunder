@@ -336,9 +336,9 @@ obj/Skills
 		verb/Revert()
 			set name="Revert!"
 			set category="Utility"
-			if(transActive&&!HasNoRevert()&&!isMazokuHuman())
+			if(usr.transActive&&!usr.HasNoRevert()&&!usr.isMazokuHuman())
 				for(var/obj/Skills/Buffs/B in src)
-					if(BuffOn(B)&&B.Transform&&!B.AlwaysOn)
+					if(usr.BuffOn(B)&&B.Transform&&!B.AlwaysOn)
 						B.Trigger(src)
 						return
 				Revert()
@@ -347,12 +347,12 @@ obj/Skills
 		verb/TogglePCTrans()
 			set name="Toggle PC Transformations"
 			set category="Utility"
-			if(src.PCTransToggle)
-				src.PCTransToggle=0
+			if(usr.PCTransToggle)
+				usr.PCTransToggle=0
 				usr<< "You will now transform through use of Power Control."
 				return
-			if(!src.PCTransToggle)
-				src.PCTransToggle=1
+			if(!usr.PCTransToggle)
+				usr.PCTransToggle=1
 				usr<< "You will no longer transform through use of Power Control."
 				return
 	Reverse_Dash

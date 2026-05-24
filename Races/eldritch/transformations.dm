@@ -11,7 +11,7 @@ transformation
 			transformation_message = "Reality begins to fray around usrName. Comprehension eludes you."
 			detrans_message = "usrName becomes fully real once more..."
 			mastery_boons(mob/user)
-				passives = list("Unreality" = 0.9, "Full Manifestation" = 1, "PureDamage"=3, "PureReduction"=3,"DebuffResistance"=0.1)
+				passives = list("Unreality" = 0.1, "Half Manifestation" = 1, "PureDamage"=3, "PureReduction"=3,"DebuffResistance"=0.1)
 				enduranceadd = 0.05*user.AscensionsAcquired
 				offenseadd = 0.05*user.AscensionsAcquired
 				defenseadd = 0.05*user.AscensionsAcquired

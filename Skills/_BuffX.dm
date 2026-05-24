@@ -1735,13 +1735,14 @@ NEW VARIABLES
 			OffMessage="contains their superiority."
 			adjust(mob/p)
 				if(p.Potential>=glob.progress.T3_SIGS[1])
-					passives = list("CursedWounds" = 1, "BleedHit" = 0.25, "EnergyGeneration" = 5, "LifeSteal" = 40, "HellPower" = 0.25, "Piercing" = 0.25, "Deicide" = 5, "EndlessNine" = 0.1)
+					passives = list("CursedWounds" = 1, "BleedHit" = 0.25, "EnergyGeneration" = 5, "LifeSteal" = 40, "HellPower" = 0.25, "Piercing" = 0.25, "Deicide" = 5, "EndlessNine" = 0.15)
 			verb/Saiyan_Carnage()
 				set category="Skills"
 				src.Trigger(usr)
 		SaiyanPurity
 			SignatureTechnique=3
 			Mastery=1
+			BuffName = "Saiyan Purity"
 			UnrestrictedBuff=1
 			StrMult=1.3
 			ForMult=1.3
@@ -1784,7 +1785,7 @@ NEW VARIABLES
 			SpdMult=1.3
 			MovementMastery=8
 			Intimidation=2
-			passives = list("MovementMastery" = 8, "PureDamage" = 2, "PureReduction" = 2, "Flicker" = 2)
+			passives = list("MovementMastery" = 3, "PureDamage" = 2, "PureReduction" = 2, "Flicker" = 2)
 			PUSpeedModifier=2
 			PureDamage=2
 			PureReduction=2
@@ -1798,11 +1799,8 @@ NEW VARIABLES
 			ActiveMessage="prepares to display immense, mastered power!"
 			OffMessage="releases their perfected form..."
 			adjust(mob/p)
-				if(src.Mastery<1)
-					src.Mastery=1
-				passives = list("MovementMastery" = 3+round(p.Potential/10), "PureDamage" = 2, "PureReduction" = 2, "Flicker" = 2)
-				if(src.Mastery==2) //mastery just lets you use it in higher forms
-					passives = list("MovementMastery" = 3+round(p.Potential/10), "PureDamage" = 2, "PureReduction" = 2, "Flicker" = 2)
+				var/asc=p.AscensionsAcquired
+				passives = list("MovementMastery" = 3*asc, "PureDamage" = 2*asc, "PureReduction" = 2*asc, "Flicker" = 1*asc, "SaiyanPower1"=0.2*asc,"KiControlMastery" = 0.5*asc, "ZenkaiPower" = 0.2*asc)
 			verb/Super_Saiyan_Perfected()
 				set category="Skills"
 				if(usr.passive_handler.Get("GodlyCalm")||usr.passive_handler.Get("InBlue"))

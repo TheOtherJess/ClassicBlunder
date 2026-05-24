@@ -214,7 +214,7 @@ ascension
 							force=0.25 * SMod
 							offense=0.5 * SMod
 							speed=0.5 * SMod
-							passives = list("SlayerMod" = 0.5, "CriticalChance" = 10, "Instinct" = 1)
+							passives = list("SlayerMod" = 0.5, "Instinct" = 2, "PureDamage" = 1)
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
 			onAscension(mob/owner)
@@ -264,7 +264,7 @@ ascension
 							force=0.25 * SMod
 							offense=0.5 * SMod
 							speed=0.5 * SMod
-							passives = list("SlayerMod" = 0.5, "CriticalChance" = 10, "Instinct" = 1, "Deicide" = 5)
+							passives = list("SlayerMod" = 0.5,  "Instinct" = 2, "PureDamage" = 1, "Deicide" = 5)
 		six
 			unlock_potential = ASCENSION_SIX_POTENTIAL
 			onAscension(mob/owner)
@@ -309,4 +309,4 @@ ascension
 							force=0.25 * SMod
 							offense=0.5 * SMod
 							speed=0.5 * SMod
-							passives = list("SlayerMod" = 0.5, "CriticalChance" = 10, "Instinct" = 1, "Deicide" = 5)
+							passives = list("SlayerMod" = 0.5,  "Instinct" = 2, "PureDamage" = 1, "Deicide" = 5)

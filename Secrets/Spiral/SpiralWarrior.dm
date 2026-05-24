@@ -208,7 +208,7 @@ obj/Skills/AutoHit/Spiral
 			usr.Activate(src)
 	Giga_Drill_Maximum
 		AdaptRate=1
-		DamageMult=18
+		DamageMult=5
 		Area="Circle"
 		Distance=8
 		TurfStrike=1
@@ -227,16 +227,43 @@ obj/Skills/AutoHit/Spiral
 		Earthshaking=15
 		ComboMaster=1
 		Cooldown=60
-		FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact"
+		FollowUp="/obj/Skills/AutoHit/Spiral/Lagann_Impact2"
 		FollowUpDelay=2
 	Lagann_Impact
+		AlwaysAnnounceCooldown = 1
+		Area="Arc"
+		AdaptRate=1
+		DamageMult=6
+		Rush=20
+		ControlledRush=1
+		WindUp = 0.75
+		Rounds=1
+		Knockback=15
+		ComboMaster=1
+		RoundMovement=0
+		NoAttackLock=1
+		NoLock=1
+		Cooldown=60
+		Size=2
+		Distance=2
+		Instinct=10
+		ComboMaster=1
+		ShockIcon='KenShockwave.dmi'
+		Shockwave=5
+		Shockwaves=1
+		TurfStrike=1
+		TurfShift='Dirt1.dmi'
+		TurfShiftDuration=3
+		WindupMessage="yells: <b>LAGANN...</b>"
+		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
+	Lagann_Impact2
 		AlwaysAnnounceCooldown = 1
 		Area="Arc"
 		AdaptRate=1
 		DamageMult=5
 		Rush=20
 		ControlledRush=1
-		WindUp = 0.75
+		WindUp = 1.5
 		Rounds=1
 		Knockback=15
 		ComboMaster=1

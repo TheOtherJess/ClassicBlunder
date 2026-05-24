@@ -6,6 +6,10 @@
 /mob/proc/getCritAndBlock(mob/defender, damage)
 	var/critChance = passive_handler.Get("CriticalChance")
 	var/critDMG = passive_handler.Get("CriticalDamage")
+	if(critDMG>0.2)
+		critDMG=0.2
+	if(critChance>40)
+		critChance=40
 	var/denkoCharge = DenkoSekkaCharged
 	if(denkoCharge)
 		critChance += denkoCharge * glob.DENKO_SEKKA_CRIT_CHANCE_PER_LEVEL
@@ -17,6 +21,10 @@
 	if(defender)
 		blockChance = defender.passive_handler.Get("BlockChance")
 		critBlock = defender.passive_handler.Get("CriticalBlock")
+		if(blockChance>40)
+			blockChance=40
+		if(critBlock>0.2)
+			critBlock=0.2
 	var/martialStyle = usingStyle("UnarmedStyle")
 	var/defenderMartialStyle = defender.usingStyle("UnarmedStyle")
 	if(martialStyle)

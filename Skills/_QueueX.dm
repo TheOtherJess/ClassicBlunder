@@ -1499,7 +1499,7 @@ mob
 					src.Oxygen=0
 			if(Q.Copyable)
 				spawn() for(var/mob/m in view(40, src))
-					if(m.passive_handler.Get("The Almighty"))
+					if(m.CheckSpecial("A - The Almighty"))
 						var/insightLevel = m.AscensionsAcquired+25 || 1
 						var/techTier = Q.Copyable
 						if(insightLevel < techTier)

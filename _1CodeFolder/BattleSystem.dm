@@ -134,7 +134,7 @@ mob/proc/Unconscious(mob/P,var/text)
 	var/CalamityOdds=src.passive_handler.Get("The Clock Is Ticking")*(src.Potential/55)
 	if(CalamityOdds<0)
 		CalamityOdds=0
-	if(src.Potential<=60)
+	if(src.Potential<50)
 		CalamityOdds=0
 	if((src.oozaru_type=="Demonic" && src.TotalInjury>=40&&prob(HellspawnOdds)&&src.transUnlocked<1&&!src.HellspawnBerserk&&!src.HellspawnBerserking)||(src.ForcedHellspawn&&!src.HellspawnBerserk&&!src.HellspawnBerserking))
 		src.RPModeSwitch()
@@ -167,9 +167,9 @@ mob/proc/Unconscious(mob/P,var/text)
 		src.Health=100
 		src.TotalInjury=0
 		world<<"<font color=red><b>Here, on this one fateful day...</b></font>"
+		src.race.transformations[1].transform(src, TRUE)
 		sleep(30)
 		world<<"<font color=red><b>...The Calamity...</b></font>"
-		src.transActive = 1
 		src.race.transformations[2].transform(src, TRUE)
 		src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Autonomous/HellbornFury/Stage_Five)
 		sleep(30)
@@ -472,7 +472,7 @@ mob/proc/Death(mob/P,var/text,var/SuperDead=0, var/NoRemains=0, var/Zombie, extr
 		return
 	if(isRace(MAJIN) && majinAbsorb && majinAbsorb.absorbed && majinAbsorb.absorbed.len)
 		majinAbsorb.releaseAll(src, "majin_died")
-	BreakViewers() //STOP LOOKING AT ME THE SHAME OF DEATH TOO MUCH
+//	BreakViewers() //STOP LOOKING AT ME THE SHAME OF DEATH TOO MUCH
 	if(src.passive_handler.Get("The Legend of REBIRTH"))
 		src.OMessage(20,"[src] was just killed by [text]!","<font color=red>[src] was just killed by [text]!")
 		sleep(20)

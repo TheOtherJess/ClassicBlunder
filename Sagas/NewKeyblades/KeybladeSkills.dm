@@ -395,11 +395,11 @@ obj
 							passives = list()
 							src.SwordXSecond=-32
 							src.SwordYSecond=-32
-							if(usr.KeychainAttached=="Ultima Weapon")
+							if(usr.SyncAttached=="Ultima Weapon")
 								src.SwordXSecond=-36
 								src.SwordYSecond=-36
 
-							if(usr.KeychainAttached=="Moogle O Glory"||usr.KeychainAttached=="Prismatic Dreams"||usr.KeychainAttached=="Ebony Slumber")
+							if(usr.SyncAttached=="Moogle O Glory"||usr.SyncAttached=="Prismatic Dreams"||usr.SyncAttached=="Ebony Slumber")
 								src.SwordXSecond=-64
 								src.SwordYSecond=-64
 							if(usr.CheckActive("Keyblade"))

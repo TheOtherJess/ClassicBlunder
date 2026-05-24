@@ -15,7 +15,7 @@ ascension
 			speed = 0.25;
 			anger = 0.2;
 			on_ascension_message = "Your dreams are twisted by chaos... but what do you dream of?"
-			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BuffMastery"=2, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
+			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
 			onAscension(mob/owner)
 				switch(owner.Secret)
 					if("Eldritch (Shrouded)")
@@ -27,7 +27,7 @@ ascension
 						passives["QuickCast"] = 1;
 						passives["Soulfire"] = 0.25;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(2, owner)
 				..()
@@ -38,7 +38,7 @@ ascension
 			offense = 0.25;
 			speed = 0.25;
 			anger = 0.2;
-			passives = list("Null"=1, "DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BuffMastery"=2, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
+			passives = list("Null"=1, "DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
 			on_ascension_message = "You catch a distant glimpse of ᛉᛜꓦᚱᛢᛊᚳᚪ ᛫᛫᛫"
 			onAscension(mob/owner)
 				switch(owner.Secret)
@@ -51,7 +51,7 @@ ascension
 						passives["QuickCast"] = 1;
 						passives["Soulfire"] = 0.25;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(3, owner)
 				..()
@@ -65,7 +65,7 @@ ascension
 			defense = 0.25;
 			speed = 0.25;
 			anger = 0.2;
-			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BuffMastery"=2, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
+			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
 			on_ascension_message = "Your fantasies are bleeding entropy... But what fantasy do you chase?"
 			onAscension(mob/owner)
 				switch(owner.Secret)
@@ -78,7 +78,7 @@ ascension
 						passives["QuickCast"] = 1;
 						passives["Soulfire"] = 0.5;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(4, owner)
 				..()
@@ -91,7 +91,7 @@ ascension
 			defense = 0.5
 			speed = 0.5
 			anger = 0.2;
-			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BuffMastery"=2, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
+			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
 			on_ascension_message = "Your illusory ᛢᛊᚳᚪ is beginning to ᚪᚱᚣᛉ at the ᛊᚧᛩᛊᛢ.\nYou can't keep manifesting like this ᚪᛜᚱᛊꓦᛊᚱ...Can ᛉᛜꓦ?"
 			onAscension(mob/owner)
 				switch(owner.Secret)
@@ -104,7 +104,7 @@ ascension
 						passives["QuickCast"] = 1;
 						passives["Soulfire"] = 0.5;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(5, owner)
 				..()
@@ -118,7 +118,7 @@ ascension
 			speed = 0.25
 			anger = 0.2;
 			choices = list("Hunter" = /ascension/sub_ascension/eldritch/hunter, "Eternal" = /ascension/sub_ascension/eldritch/eternal, "Writhing" = /ascension/sub_ascension/eldritch/writhing)
-			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BuffMastery"=2, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
+			passives = list("DebuffResistance"=0.2, "PureDamage"=1, "PureReduction"=1, "BlockChance"=5, "CriticalChance"=5, "CriticalBlock"=0.1, "CriticalDamage"=0.1);
 			on_ascension_message = "ꐞꉻ꒦ ꋬꋪꏂ."
 			onAscension(mob/owner)
 				switch(owner.Secret)
@@ -131,11 +131,11 @@ ascension
 						passives["QuickCast"] = 1;
 						passives["Soulfire"] = 1;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(6, owner)
 				..()
-		six 
+		six
 			unlock_potential = ASCENSION_SIX_POTENTIAL
 			strength = 0.5
 			endurance = 0.5
@@ -143,7 +143,7 @@ ascension
 			offense = 0.5
 			defense = 0.5
 			speed = 0.5
-			passives = list("DebuffReversal" = 1, "PureDamage"=5, "BlockChance"=25, "CriticalBlock"=0.25, "BuffMastery"=5, "Duelist"=2, "Brutalize"=2, "CheapShot"=2, "Unnerve"=2, "Pressure" = 2, "Deflection" = 2, "Extend" = 2, "Gum Gum" = 2, "GiantSwings"=2)
+			passives = list("DebuffReversal" = 1, "PureDamage"=5, "BlockChance"=25, "CriticalBlock"=0.25, "Duelist"=2, "CheapShot"=2, "Unnerve"=2, "Pressure" = 2, "Deflection" = 2, "Extend" = 2, "Gum Gum" = 2, "GiantSwings"=2)
 			on_ascension_message = {"ꐞꉻ꒦ ꋬꋪꏂ ꓄ꃬꏂ ꉣꋪꉻꍗ꒒ꏂꂵ.
 ꐞꉻ꒦ ꋬꋪꏂ ꓄ꃬꏂ ꒐ꑄꑄ꒦ꏂ.
 ꐞꉻ꒦ ꋬꋪꏂ ꄟꋪꏂꏂ.
@@ -156,7 +156,7 @@ ascension
 					if("Eldritch (Reflected)")
 						passives["Soulfire"] = 1.5;
 				..()
-				
+
 			postAscension(mob/owner)
 				owner.secretDatum.tierUp(7, owner)
 				..()

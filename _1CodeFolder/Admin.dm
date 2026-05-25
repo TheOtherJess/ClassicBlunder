@@ -556,7 +556,7 @@ mob/Admin3/verb
 		if(AdminContentsView) usr << "You will now view the contents of any mob you have selected."
 		else usr << "You will no longer view the contents of any mob you have selected."
 
-	Potential_Boost(var/mob/m in players, var/val as num|null)
+	Potential_Boost(mob/m in players, val as num)
 		set category="Admin"
 		if(val&&m)
 			m.Potential+=val

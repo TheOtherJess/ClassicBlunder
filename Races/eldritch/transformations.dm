@@ -1,7 +1,7 @@
 transformation
 	eldritch
 		partial_manifestation
-			passives = list("Unreality" = 0.1, "Half Manifestation" = 1, "PureDamage"=2, "PureReduction"=2,"DebuffResistance"=0.1, "BuffMastery"=3)
+			passives = list("Unreality" = 0.1, "Half Manifestation" = 1, "PureDamage"=2, "PureReduction"=2,"DebuffResistance"=0.1)
 			form_icon_1_icon = 'tentacles_overlay.dmi'
 			form_icon_1_x = -32
 			form_icon_1_y = -32
@@ -11,11 +11,12 @@ transformation
 			transformation_message = "Reality begins to fray around usrName. Comprehension eludes you."
 			detrans_message = "usrName becomes fully real once more..."
 			mastery_boons(mob/user)
-				enduranceadd = 0.15*user.AscensionsAcquired
-				offenseadd = 0.15*user.AscensionsAcquired
-				defenseadd = 0.15*user.AscensionsAcquired
-				strengthadd = 0.15*user.AscensionsAcquired
-				forceadd = 0.15*user.AscensionsAcquired
+				passives = list("Unreality" = 0.1, "Half Manifestation" = 1, "PureDamage"=2, "PureReduction"=2,"DebuffResistance"=0.1)
+				enduranceadd = 0.05*user.AscensionsAcquired
+				offenseadd = 0.05*user.AscensionsAcquired
+				defenseadd = 0.05*user.AscensionsAcquired
+				strengthadd = 0.05*user.AscensionsAcquired
+				forceadd = 0.05*user.AscensionsAcquired
 			transform_animation(mob/user)
 				LightningStrike2(user)
 				DarknessFlash(user, SetTime=5)
@@ -32,15 +33,16 @@ transformation
 					user.overlays -= image('AntiEyes.dmi');
 
 		full_manifestation
-			passives = list("Unreality" = 0.9, "Full Manifestation" = 1, "PureDamage"=3, "PureReduction"=3,"DebuffResistance"=0.1, "BuffMastery"=3)
+			passives = list("Unreality" = 0.9, "Full Manifestation" = 1, "PureDamage"=3, "PureReduction"=3,"DebuffResistance"=0.1)
 			transformation_message = "usrName reveals itself to the detriment of all!"
 			detrans_message = "usrName bottles up the unreality... halfway a person..."
 			mastery_boons(mob/user)
-				enduranceadd = 0.25*user.AscensionsAcquired
-				offenseadd = 0.25*user.AscensionsAcquired
-				defenseadd = 0.25*user.AscensionsAcquired
-				strengthadd = 0.25*user.AscensionsAcquired
-				forceadd = 0.25*user.AscensionsAcquired
+				passives = list("Unreality" = 0.9, "Full Manifestation" = 1, "PureDamage"=3, "PureReduction"=3,"DebuffResistance"=0.1)
+				enduranceadd = 0.1*user.AscensionsAcquired
+				offenseadd = 0.1*user.AscensionsAcquired
+				defenseadd = 0.1*user.AscensionsAcquired
+				strengthadd = 0.1*user.AscensionsAcquired
+				forceadd = 0.1*user.AscensionsAcquired
 			transform_animation(mob/user)
 				if(user.hasSecret("Eldritch (Shrouded)"))
 					user.MobColor=null;
@@ -57,7 +59,7 @@ transformation
 					var/image/eyes = image('AntiEyes.dmi');
 					eyes.appearance_flags+=70
 					user.overlays -= eyes;
-				
+
 
 /mob/proc/HandleManifestation(Stat)
 	var/CA=AscensionsAcquired

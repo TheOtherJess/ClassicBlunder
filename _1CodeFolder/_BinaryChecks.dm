@@ -1147,8 +1147,7 @@ mob
 			return 0
 		GetUnbreakable() //0.1=ignore 10% of stat taxes
 			var/Return=0
-			if(passive_handler.Get("Unbreakable"))
-				Return +=passive_handler.Get("Unbreakable")
+			Return +=passive_handler.Get("Unbreakable")
 			if(Saga == "Eight Gates"&&GatesActive>SagaLevel)
 				Return = 0.375*(GatesActive-SagaLevel)
 			return Return
@@ -2632,6 +2631,12 @@ mob
 			return 0
 		GetPhysPleroma()
 			return passive_handler.Get("PhysPleroma")
+		HasCallousedFeet()
+			if(passive_handler.Get("CallousedFeet"))
+				return 1
+			return 0
+		GetCallousedFeet()
+			return passive_handler.Get("CallousedFeet")
 		HasSpiritStrike()//For v.s. End
 			if(passive_handler.Get("SpiritStrike"))
 				return 1
@@ -3186,7 +3191,7 @@ mob
 					return 1
 			return 0
 		UsingMasteredMartialStyle()
-			if(usingStyle("UnarmedStyle") && StyleBuff?.SignatureTechnique>=1||secretDatum.secretVariable["EldritchInstinct"])
+			if(usingStyle("UnarmedStyle") && StyleBuff?.SignatureTechnique>=1)
 				return 1
 			return 0
 		UsingMysticStyle()
@@ -3200,7 +3205,7 @@ mob
 			if(src.Saga=="Keyblade")
 				if(src.SagaLevel>=4)
 					return 1
-			if(usingStyle("MysticStyle") && StyleBuff?.SignatureTechnique>=1||secretDatum.secretVariable["EldritchInstinct"])
+			if(usingStyle("MysticStyle") && StyleBuff?.SignatureTechnique>=1)
 				return 1
 			if(src.isRace(DRAGON)&&src.AscensionsAcquired>=3)
 				return 1

@@ -11,6 +11,7 @@
 /mob/var/AbsorbingDamage = 0
 /mob/var/transGod = 0
 /mob/var/tmp/DevilTriggerSinDamageBonus = 0
+/mob/var/tmp/WarmingUpBonus = 0
 /mob/var/tmp/DevilTriggerSlothBonus = 0
 /mob/var/tmp/DevilTriggerEnvyMirrorPending = 0
 /mob/var/tmp/LastSlothTick = 0
@@ -283,7 +284,17 @@ mob
 			else
 				DEBUGMSG("this is the damage actually dealt: [val]")
 				var/final_damage = max(0,val)
-				defender.LoseHealth(final_damage)
+				defender.LoseHealth(final_damage);
+				if(defender.passive_handler.Get("LustFactor")) defender.applySinBonusFromTakenDamage(final_damage);
+				if(passive_handler.Get("LustFactor")) applySinBonusFromDealtDamage(final_damage);
+				if(passive_handler.Get("WarmingUp")) applyWarmingUpFromDealtDamage(final_damage)
+				if(defender.passive_handler.Get("WarmingUp")) defender.applyWarmingUpFromTakenDamage(final_damage)
+				if(passive_handler.Get("SlothFactor"))
+					DevilTriggerSlothBonus = 0
+					LastSlothTick = world.time
+				if(defender.passive_handler.Get("SlothFactor"))
+					defender.DevilTriggerSlothBonus = 0
+					defender.LastSlothTick = world.time
 
 			// Overwatch CombatLog hook — record the hit on both sides for admin review.
 			if(val > 0)
@@ -609,6 +620,8 @@ mob
 							OMsg(src, "<b><font size=+3> [src] erupts with tremendous power, having stolen enough life from the Narrative to temporarily match it!")
 							src.passive_handler.Increase("The Power of Stories", 1)
 					src.LifeStolen+=amtHeal/2
+					if(passive_handler.Get("TrueAbsorb") && src.LifeStolen>=25)
+						src.LifeStolen=25
 					if(src.LifeStolen>=95)
 						src.LifeStolen=95
 					DEBUGMSG("[amtHeal] was healed by life steal");
@@ -877,11 +890,6 @@ mob
 		LoseHealth(var/val)
 			src.Health-=val
 			src.MaxHealth()
-			// Apply Demon Devil Trigger Sadist/Masochist effects based on damage taken
-			applySinBonusFromTakenDamage(val)
-			// Any damage taken counts as "activity" and should reset Sloth stacking
-			DevilTriggerSlothBonus = 0
-			LastSlothTick = world.time
 			var/Absorb = passive_handler.Get("AbsorbingDamage")
 			if(passive_handler["Grit"])
 				AdjustGrit("add", val*glob.racials.GRITMULT)
@@ -1156,7 +1164,8 @@ mob
 			if(diedFromSenjutsuOverload())
 				return
 			if(Secret == "Senjutsu" && SlotlessBuffs["Senjutsu Focus"])
-				ManaMax =  100 + (25 * (secretDatum.currentTier))
+				ManaMax = 100 * GetManaCapMult();
+				ManaMax += (25 * (secretDatum.currentTier))
 				ManaMax *= MANAOVERLOADMULT
 				// at current tier 5, mana max is 225
 
@@ -1398,10 +1407,8 @@ mob
 			if(!isInDemonDevilTrigger()) return FALSE
 			var/MasteryValue=50
 			if(passive_handler.Get("Limited Rank-Up"))
-				if(Secret)
-					MasteryValue=25
-				else if(!Secret)
-					return TRUE
+				if(Secret) MasteryValue=25;
+				else return TRUE;
 			var/transformation/current = race.transformations[transActive]
 			return current.mastery >= MasteryValue
 
@@ -1463,7 +1470,8 @@ mob
 				for(var/obj/Money/m in src.contents)
 					money = m.Level
 				if(money > 0)
-					greedPart = max(0, money / glob.racials.GOLD_DRAGON_FORMULA) * passive_handler.Get("GreedFactor")
+					var/cap=glob.progress.DailyGrindCap*30*(AscensionsAcquired+1)
+					greedPart = max(0, money / max(glob.racials.GOLD_DRAGON_FORMULA, cap)) * passive_handler.Get("GreedFactor")
 
 			// Sadist / Masochist / GluttonyFactor (feast -> DevilTriggerSinDamageBonus)
 			if(DevilTriggerSinDamageBonus > 0)
@@ -1475,35 +1483,28 @@ mob
 
 			// PrideFactor (uncapped; other sin bonuses stay capped at 3 unless Limited Rank-Up)
 			if(passive_handler && passive_handler.Get("PrideFactor") && Target && istype(Target, /mob/Players))
-				var/healthDiff = Health - Target:Health
+				var/healthDiff = Health - Target.Health
 				if(healthDiff > 0)
 					var/steps = round(healthDiff / 10)
-					if(steps > 0)
-						pride_bonus = 0.25 * steps * passive_handler.Get("PrideFactor")
-						if(passive_handler.Get("Limited Rank-Up"))
-							pride_bonus *= 3
+					if(steps > 0) pride_bonus = 0.25 * steps * passive_handler.Get("PrideFactor")
 
-			//these aren't actually multipliers btw teehee, they are additive. They started out as multiplicative but I changed my mind after the fact
-			if(passive_handler && passive_handler.Get("Limited Rank-Up"))
-				mult = lustPart + greedPart + sinDmgPart + slothPart
+			mult = lustPart + greedPart + sinDmgPart + slothPart + pride_bonus
+			if(mult < 0) mult = 0
 			else
-				mult = lustPart + greedPart + sinDmgPart + slothPart
-				if(mult < 0)
-					mult = 0
-				if(mult > 1 && Secret)
-					mult = 1
-				if(mult > 2)
-					mult = 2
+				if(passive_handler.Get("Limited Rank-Up"))
+					mult *= 3
+
+			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.25*(Health/100))
+				mult = 0.25*(Health/100)
+			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
+				mult = 0
 
 			if(mult < 0)
 				mult = 0
-
-			mult += pride_bonus*(Health/100)
-
-			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 1.5*(Health/100))
-				mult = 1.5*(Health/100)
-			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
-				mult = 0
+			if(mult > 0.5 && Secret)
+				mult = 0.5
+			if(mult > 1)
+				mult = 1
 			return mult
 
 		getTargetingMeCount()
@@ -1514,7 +1515,7 @@ mob
 			return count
 
 		// adist/Masochist effects
-		applySinBonusFromDealtDamage(var/amount)
+		applySinBonusFromDealtDamage(amount)
 			if(amount <= 0) return
 			if(!demonDevilTriggerSinMastery()) return
 
@@ -1531,7 +1532,7 @@ mob
 			if(DevilTriggerSinDamageBonus < 0)
 				DevilTriggerSinDamageBonus = 0
 
-		applySinBonusFromTakenDamage(var/amount)
+		applySinBonusFromTakenDamage(amount)
 			if(amount <= 0) return
 			if(!demonDevilTriggerSinMastery()) return
 
@@ -1547,6 +1548,16 @@ mob
 
 			if(DevilTriggerSinDamageBonus < 0)
 				DevilTriggerSinDamageBonus = 0
+
+		applyWarmingUpFromDealtDamage(amount)
+			if(amount <= 0) return
+			if(!passive_handler || !passive_handler.Get("WarmingUp")) return
+			WarmingUpBonus = min(WarmingUpBonus + amount * 0.01, 4)
+
+		applyWarmingUpFromTakenDamage(amount)
+			if(amount <= 0) return
+			if(!passive_handler || !passive_handler.Get("WarmingUp")) return
+			WarmingUpBonus = min(WarmingUpBonus + amount * 0.01, 4)
 
 		// Sloth movement
 		resetSlothTracking()
@@ -1689,6 +1700,7 @@ mob
 				Str=StrReplace
 			//when you want to ignore all of the above for some reason
 			Str+=StrAdded
+			if(passive_handler.Get("WarmingUp")) Str += WarmingUpBonus
 			Str+=src.GetEquippedWeaponStatAdd("Str")
 			if(src.HasManaStats())
 				Str += getManaStatsBoon()
@@ -1759,7 +1771,7 @@ mob
 			if(Momentum)
 				Mod *= getMomentumMult();
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)
@@ -1882,6 +1894,7 @@ mob
 			if(src.ForReplace)
 				For=ForReplace
 			For+=ForAdded
+			if(passive_handler.Get("WarmingUp")) For += WarmingUpBonus
 			For+=src.GetEquippedWeaponStatAdd("For")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold>0)
@@ -1955,7 +1968,7 @@ mob
 					else
 						Mod+=0.75*src.passive_handler.Get("BurningShot")
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)
@@ -2088,6 +2101,7 @@ mob
 			if(CheckSlotless("The Grit") && (Anger||HasCalmAnger()))
 				End += End * (glob.DEMONIC_DURA_BASE)
 			End+=EndAdded
+			if(passive_handler.Get("WarmingUp")) End += WarmingUpBonus
 			End+=src.GetEquippedWeaponStatAdd("End")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold<0)
@@ -2135,7 +2149,7 @@ mob
 				else if(Mod>=glob.BUFF_MASTER_HIGHTHRESHOLD)
 					Mod*=(1+(BM*glob.BUFF_MASTERY_HIGHMULT))
 
-			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")) //okay take two
+			if(src.CheckSlotless("Genesic Brave")||src.CheckSpecial("King of Braves")||src.CheckSpecial("Saiyan Purity")) //okay take two
 				if(glob.KOB_GETS_STATS_LOW_LIFE)
 					var/threshold = 25 * (1 - src.HealthCut)
 					if(src.Health <= threshold)
@@ -2250,6 +2264,7 @@ mob
 			if(passive_handler.Get("Piloting")&&findMecha())
 				Spd = getMechStat(findMecha(), Spd)
 			Spd+=SpdAdded
+			if(passive_handler.Get("WarmingUp")) Spd += WarmingUpBonus
 			Spd+=src.GetEquippedWeaponStatAdd("Spd")
 			if(UsingHotnCold())
 				if(StyleBuff?:hotCold<0)
@@ -2396,6 +2411,7 @@ mob
 			if(passive_handler.Get("Piloting")&&findMecha())
 				Off = getMechStat(findMecha(), Off)
 			Off+=OffAdded
+			if(passive_handler.Get("WarmingUp")) Off += WarmingUpBonus
 			Off+=src.GetEquippedWeaponStatAdd("Off")
 			if(src.HasManaStats())
 				Off += getManaStatsBoon()
@@ -2523,6 +2539,7 @@ mob
 
 
 			Def+=DefAdded
+			if(passive_handler.Get("WarmingUp")) Def += WarmingUpBonus
 			Def+=src.GetEquippedWeaponStatAdd("Def")
 			if(src.HasManaStats())
 				Def += getManaStatsBoon()
@@ -3479,7 +3496,7 @@ mob
 			spawn(600)
 				del(src)
 
-		CountStyles(var/Tier=0)
+		CountStyles(Tier=0)
 			var/Count=0
 			if(!Tier)
 				Log("Admin", "[ExtractInfo(src)] tried to count signatures without specifying a tier.")
@@ -3489,7 +3506,8 @@ mob
 					Count++
 					continue
 			return Count
-		CountSigs(var/Tier=0)
+#define ADVANCED_ELEMENTS list("Space", "Time", "Light", "Dark")
+		CountSigs(Tier=0)
 			var/Count=0
 			var/list/combo_check=list()
 			var/is_demon_celestial = (src.isRace(CELESTIAL) && src.CelestialAscension == "Demon")
@@ -3502,6 +3520,7 @@ mob
 				if(Tier == 2 && is_demon_celestial)
 					if(istype(s, /obj/Skills/Buffs/SlotlessBuffs/RoyalGuard))
 						continue
+
 				if(s.SignatureTechnique==Tier)
 					if("[s.type]" in combo_check)
 						continue
@@ -3512,6 +3531,9 @@ mob
 
 					Count++
 					continue
+			if(Tier==3)
+				for(var/x in accessedMagicTrees)
+					if(x in ADVANCED_ELEMENTS) Count++;
 			return Count
 
 		SagaAscend(var/mod, var/val)
@@ -3536,6 +3558,7 @@ mob
 				return 1
 			return 0
 		req_sigs(var/val, var/tier)
+
 			if(src.CountSigs(tier)<=val)
 				return 1
 			return 0
@@ -3636,10 +3659,10 @@ mob
 
 			if(src.req_pot(glob.progress.T2_SIGS[2]) && src.req_sigs(1, 2))
 				DevelopSignature(src, 2, "Signature")
-			
+
 			if(src.req_pot(glob.progress.T3_SIGS[1]) && src.req_sigs(0, 3))
 				DevelopSignature(src, 3, "Signature")
-			
+
 		YeetSignatures()
 			for(var/obj/Skills/s in src.Skills)
 				if(s.SignatureTechnique)
@@ -3828,7 +3851,7 @@ proc
 	ProjectileDamage(Damage) // This is Power * Damage Mult
 		return Damage*glob.PROJ_DAMAGE_MULT
 	CounterDamage(Damage)
-		return clamp(Damage,0.25,5)
+		return clamp(Damage,0.25,2)
 
 var/list/general_magic_database = list()
 var/list/general_weaponry_database = list()

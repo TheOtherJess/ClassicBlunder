@@ -182,7 +182,7 @@ transformation
 				if(mastery >= 100)
 					passives = list("Instinct" = 2, "Flow" = 2, "Flicker" = 1, "Pursuer" = 2, "PureDamage" = 3, "PureReduction" = 3, "SaiyanPower2"=0.75)
 				if(user.Potential>=55&&user.transUnlocked<3)
-					if(user.isRace(SAIYAN)||user.isRace(HALFSAIYAN)&&user.Class=="Justice"&&(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive))
+					if(user.isRace(SAIYAN)||user.isRace(HALFSAIYAN)&&user.Class=="Justice"&&(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/dominating))
 						user.transUnlocked=3
 						user<<"<b>Through your staggering mastery over Super Saiyan Two, you have naturally unlocked Super Saiyan Three!</b>"
 				if(user.Potential>=60&& user.Class == "Compassion")
@@ -253,6 +253,47 @@ transformation
 			defenseadd = 0.5
 			strengthadd = 0.5
 			forceadd = 0.5
+			class_boons(mob/user)
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
+					class_passives = list("EnergyGeneration" = 3, "Instinct" = 3, "Flow" = 3)
+					speedadd = 0.65
+					enduranceadd = 0.5
+					offenseadd = 0.65
+					defenseadd = 0.65
+					strengthadd = 0.5
+					forceadd = 0.5
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
+					class_passives = list("PureDamage" = 3, "Flicker" = 2, "Instinct" = 3)
+					speedadd = 0.5
+					enduranceadd = 0.5
+					offenseadd = 0.75
+					defenseadd = 0.5
+					strengthadd = 0.65
+					forceadd = 0.65
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
+					class_passives = list("PureReduction" = 3, "Flow" = 3, "EnergyGeneration" = 3)
+					speedadd = 0.5
+					enduranceadd = 0.75
+					offenseadd = 0.5
+					defenseadd = 0.65
+					strengthadd = 0.5
+					forceadd = 0.5
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/adaptive)
+					class_passives = list("PureReduction" = 1, "KiControlMastery" = 1, "Instinct" = 1, "Flow" = 1)
+					speedadd = 0.5
+					enduranceadd = 0.5
+					offenseadd = 0.5
+					defenseadd = 0.5
+					strengthadd = 0.5
+					forceadd = 0.5
+				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/dominating)
+					class_passives = list("PureDamage" = 2, "Flicker" = 2, "Pursuer" = 1, "PureReduction" = 2)
+					speedadd = 0.5
+					enduranceadd = 0.5
+					offenseadd = 0.5
+					defenseadd = 0.5
+					strengthadd = 0.65
+					forceadd = 0.65
 
 			adjust_transformation_visuals(mob/user)
 				..()

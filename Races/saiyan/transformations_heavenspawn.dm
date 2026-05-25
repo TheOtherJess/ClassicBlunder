@@ -9,7 +9,7 @@ transformation
 			form_glow_x = -32
 			form_glow_y = -32
 			unlock_potential = 45
-			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2,  "PureDamage" = 1, "PureReduction" = -4,  "HolyMod" = 1, "SaiyanPower"=1, "SaiyanPower1"=0.5)
+			passives = list("CalmAnger"=1, "Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2,  "PureDamage" = 1, "PureReduction" = -4,  "HolyMod" = 1, "SaiyanPower"=1, "SaiyanPower1"=0.5)
 			speedadd = 0.6
 			enduranceadd = 0.6
 			offenseadd = 0.6
@@ -26,7 +26,7 @@ transformation
 				if(user.Potential>=43&&mastery<100)
 					mastery=100
 				var/MasteryBoost=round(mastery/25, 1)
-				passives = list("Instinct" = 1+(MasteryBoost/4), "Flow" = 1+(MasteryBoost/4), "Flicker" = 1+(MasteryBoost/4), "Pursuer" = 2,  "PureDamage" = 3+(MasteryBoost/2), "PureReduction" = -2+MasteryBoost,  "HolyMod" = 1+MasteryBoost, "SaiyanPower"=1, "SaiyanPower1"=0.8)
+				passives = list("CalmAnger"=1, "Instinct" = 1+(MasteryBoost/4), "Flow" = 1+(MasteryBoost/4), "Flicker" = 1+(MasteryBoost/4), "Pursuer" = 2,  "PureDamage" = 3+(MasteryBoost/2), "PureReduction" = -2+MasteryBoost,  "HolyMod" = 1+MasteryBoost, "SaiyanPower"=1, "SaiyanPower1"=0.8)
 				if(user.Potential>=27)
 					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2, user)&&user.isRace(SAIYAN))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade2)
@@ -36,36 +36,27 @@ transformation
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SuperSaiyanGrade3)
 						user << "You can strain past the limits of your Super Saiyan form! Grade 3 Unlocked!"
 				if(mastery >= 100)
-					passives = list("Instinct" = 1+(MasteryBoost/2), "Flow" = 1+(MasteryBoost/2), "Flicker" = 1+(MasteryBoost/2), "Pursuer" = 2,  "PureDamage" = 3+(MasteryBoost/2), "PureReduction" = -2+MasteryBoost, "HolyMod" = 1+MasteryBoost, "SaiyanPower"=1, "SaiyanPower1"=1.75)
+					passives = list("CalmAnger"=1, "Instinct" = 1+(MasteryBoost/2), "Flow" = 1+(MasteryBoost/2), "Flicker" = 1+(MasteryBoost/2), "Pursuer" = 2,  "PureDamage" = 3+(MasteryBoost/2), "PureReduction" = -2+MasteryBoost, "HolyMod" = 1+MasteryBoost, "SaiyanPower"=1, "SaiyanPower1"=1.75)
 				if(user.Potential>=35)
 					if(!locate(/obj/Skills/Buffs/SpecialBuffs/SaiyanPurity, user))
 						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/SaiyanPurity)
 						user << "You have unlocked a new Signature buff! (Saiyan Purity)"
+					if(!locate(/obj/Skills/Buffs/SpecialBuffs/Sickle_of_Sorrow, user))
+						user.AddSkill(new/obj/Skills/Buffs/SpecialBuffs/Sickle_of_Sorrow)
+						user << "You can manifest your rage and sorrow into a powerful weapon! (Sickle of Sorrow)"
+				speedadd = 0.6+(mastery/100)
+				enduranceadd = 0.6+(mastery/100)
+				offenseadd = 0.6+(mastery/100)
+				defenseadd = 0.6+(mastery/100)
+				strengthadd = 0.6+(mastery/100)
+				forceadd = 0.6+(mastery/100)
 			class_boons(mob/user) //pride stats as a baseline no matter what
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
 					class_passives = list("EnergyGeneration" = 3, "Instinct" = 2, "Flow" = 2)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/pride)
 					class_passives = list("PureDamage" = 1.5, "Flicker" = 2, "Pursuer" = 1)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/honor)
 					class_passives = list("PureReduction" = 1.5, "Flow" = 2, "EnergyGeneration" = 3)
-					speedadd = 0.3
-					enduranceadd = 0.1
-					offenseadd = 0.45
-					defenseadd = 0.15
-					strengthadd = 0.4
-					forceadd = 0.4
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
 					var/icon/x=new(user.Hair_Base)
@@ -129,7 +120,7 @@ transformation
 			defenseadd = 3.5
 			strengthadd = 4.5
 			forceadd = 3.5
-			passives = list("GodKi" = 0.2, "SweepingStrike" = 1, "Brutalize" = 3, "PureDamage" = 9, "EnergyGeneration" = 5, "AllOutAttack" = 1, "SaiyanPower4"=1.5, "TrueZenkai" = 1, "HolyMod" = 5)
+			passives = list("Purity" = 1, "BeyondPurity" = 1, "GodKi" = 0.2, "SweepingStrike" = 1, "Brutalize" = 3, "PureDamage" = 9, "EnergyGeneration" = 5, "AllOutAttack" = 1, "SaiyanPower4"=1.5, "TrueZenkai" = 1, "HolyMod" = 5)
 			adjust_transformation_visuals(mob/user)
 				if(!form_hair_icon&&user.Hair_Base)
 					var/icon/x=new(user.Hair_Base)

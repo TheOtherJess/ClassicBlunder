@@ -325,7 +325,36 @@ obj/Skills
 						usr.SkillX("Aerial Payback",x)
 			else
 				usr.SkillX("DragonDash",src)
-
+	Transformation
+		Cooldown=1
+		desc="Transform!"
+		verb/Transform()
+			set name="Transform!"
+			set category="Utility"
+			if(usr.StandardTransformRequirements())
+				usr.Transform()
+		verb/Revert()
+			set name="Revert!"
+			set category="Utility"
+			if(usr.transActive&&!usr.HasNoRevert()&&!usr.isMazokuHuman())
+				for(var/obj/Skills/Buffs/B in usr)
+					if(usr.BuffOn(B)&&B.Transform&&!B.AlwaysOn)
+						B.Trigger(usr)
+						return
+				usr.Revert()
+				usr << "You revert from your transformed state."
+				return
+		verb/TogglePCTrans()
+			set name="Toggle PC Transformations"
+			set category="Utility"
+			if(usr.PCTransToggle)
+				usr.PCTransToggle=0
+				usr<< "You will now transform through use of Power Control."
+				return
+			if(!usr.PCTransToggle)
+				usr.PCTransToggle=1
+				usr<< "You will no longer transform through use of Power Control."
+				return
 	Reverse_Dash
 		Cooldown=30
 		CooldownStatic=1

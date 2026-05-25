@@ -111,6 +111,9 @@ mob/var
 	BankaiIcon
 	BankaiIconX = 0
 	BankaiIconY = 0
+	BankaiShihakushoIcon
+	BankaiShihakushoIconX = 0
+	BankaiShihakushoIconY = 0
 	InShinigamiForm = FALSE
 	UsedFinalGetsuga = FALSE
 
@@ -1649,6 +1652,7 @@ mob
 							src << "You have unlocked the Prismatic Dreams keychain, granting you perfect control over your own darkness!"
 						else
 							src.Keychains.Add("Ebony Slumber")
+							src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/SyncBlade)
 							src << "You have unlocked the Ebony Slumber keychain, granting you perfect control over your own darkness!"
 /*						var/Choice
 						var/Confirm

@@ -2941,7 +2941,7 @@ obj
 								Size=0.5
 								WindUp=0.25
 								Rounds= max(1, round(magicLevel/5) + asc)
-								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)
+								DamageMult = clamp(magicLevel/3 + asc * 2, 4, 12)/(Rounds/2)
 								ManaCost = 5
 								NoAttackLock=1
 								ActiveMessage="invokes a powerful: <font size=+1>THUNDER!</font size>"
@@ -2992,7 +2992,7 @@ obj
 									var/obj/Skills/Projectile/Thundara/th = usr.FindSkill(/obj/Skills/Projectile/Thundara)
 									th.adjust(usr)
 									usr.UseProjectile(th)
-									DamageMult=7
+									DamageMult=5
 									Rounds=2
 									NoAttackLock=1
 									ActiveMessage="invokes a powerful: <font size=+1>THUNDARA!</font size>"
@@ -3032,7 +3032,7 @@ obj
 						if(!altered)
 							if(p.isInnovative(FAE, "Any") && !isInnovationDisable(p) || p.KeybladeType=="Staff" && !isInnovationDisable(p))
 								Rounds = 20
-								DamageMult = 0.5
+								DamageMult = 0.375
 								Icon='VR Cloud.png'
 								IconX=-13
 								Size = 8
@@ -3044,7 +3044,7 @@ obj
 								ManaCost = 7.5
 								ActiveMessage="invokes a powerful: <font size=+1>THUNDAGA!</font size>"
 							else
-								DamageMult=2
+								DamageMult=1.5
 								Rounds=5
 								Icon=null
 								IconX=0
@@ -5390,7 +5390,7 @@ mob
 			if(Z.Copyable)
 				var/copy = Z.Copyable
 				spawn() for(var/mob/m in view(40, src))
-					if(m.passive_handler.Get("The Almighty"))
+					if(m.CheckSpecial("A - The Almighty"))
 						var/insightLevel = m.AscensionsAcquired+25 || 1
 						var/techTier = Z.Copyable
 						if(insightLevel < techTier)
@@ -6561,6 +6561,9 @@ obj
 				#if DEBUG_AUTOHIT
 				Owner.log2text("atk - Auto Hit", atk, "damageDebugs.txt", "[Owner.ckey]/[Owner.name]")
 				#endif
+				if(Owner.HasCallousedFeet())
+					var/ef = Owner.GetCallousedFeet() / glob.SPIRIT_FLOW_DIVISOR
+					atk += Owner.GetEnd(ef)
 				var/dmgRoll = Owner.GetDamageMod()
 				DEBUGMSG("dmgRoll is: [dmgRoll]")
 				#if DEBUG_AUTOHIT

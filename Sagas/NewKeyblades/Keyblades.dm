@@ -577,7 +577,7 @@ proc/
 				KeybladePassives=list("PULock" = 1, "CriticalChance" = 30+(Boost*5), "ThunderHerald" = 1, "CriticalDamage"= 0.15)
 				return KeybladePassives
 			if("Oathkeeper")
-				KeybladePassives=list("PULock" = 1, "ManaGeneration" = 2+Boost, "HolyMod" = 1+(2*Boost), "QuickCast" = 1,"ManaStats" = 1+Boost)
+				KeybladePassives=list("PULock" = 1, "ManaGeneration" = 2+Boost, "HolyMod" = 1+Boost, "QuickCast" = 1+Boost,"ManaStats" = 1+Boost)
 				return KeybladePassives
 			if("Way To Dawn")
 				KeybladePassives=list("PULock" = 1, "AbyssMod" = 3+Boost,"HolyMod"=3+Boost,"Controlled Darkness" = 1)
@@ -596,7 +596,7 @@ proc/
 				return KeybladePassives
 //medium
 			if("Oblivion")
-				KeybladePassives=list("PULock" = 1, "AbyssMod" = 1+(2*Boost),"EnergyGeneration" = 3+Boost, "Momentum" = 2,"SpiritFlow" =1+round(Boost/3))
+				KeybladePassives=list("PULock" = 1, "AbyssMod" = 1+Boost,"EnergyGeneration" = 3+Boost, "Momentum" = 2,"SpiritFlow" =1+round(Boost/2))
 				return KeybladePassives
 			if("Fenrir")
 				KeybladePassives=list("PULock" = 1, "Steady" = 3, "Brutalize" = Boost/1.5, "Extend" = 1, "Conductor" = -50, "DemonicDurability" = Boost, "AngerAdaptiveForce" = 0.2*Boost)

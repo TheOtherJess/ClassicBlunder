@@ -50,11 +50,13 @@
 		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/True_Form/Demon"
 		FollowUp="/obj/Skills/AutoHit/Minor_Reality_Corruption"
 		HitMessage = "sells their soul for a brief boost to power!"
-		Atomic_Dismantling
+	Atomic_Dismantling
 		FollowUp="/obj/Skills/AutoHit/Atomic_Dismantling"
 		BuffAffected="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Dismantled"
 		BuffSelf="/obj/Skills/Buffs/SlotlessBuffs/Autonomous/QueueBuff/Finisher/Magnetism"
 		HitMessage = "takes apart their foe's defense atomically!"
+		DamageMult=1
+		Stunner=3
 
 	Jumbled_Line_Up //Acrobat
 		Combo=10

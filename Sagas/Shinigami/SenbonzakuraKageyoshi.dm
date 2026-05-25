@@ -37,6 +37,7 @@
 			if(hk && hk.SlotlessOn) hk.Trigger(user, Override=1)
 			var/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form/sf = user.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form)
 			if(sf) sf.revertZanpakutoIcon(user)
+			if(sf) sf.revertShihakushoIcon(user)
 
 	proc/spawnPetals(mob/user)
 		if(!user || !user.loc) return

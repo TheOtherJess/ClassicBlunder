@@ -386,8 +386,6 @@ obj
 					SwordAscension=2
 					SwordName="Keyblade"
 					PULock=1
-					SwordX=-32
-					SwordY=-32
 					swordHasHistory=1
 					passives = list("MagicSword" = 1)
 					Cooldown=30
@@ -395,6 +393,15 @@ obj
 						set category="Skills"
 						if(!usr.BuffOn(src))
 							passives = list()
+							src.SwordXSecond=-32
+							src.SwordYSecond=-32
+							if(usr.SyncAttached=="Ultima Weapon")
+								src.SwordXSecond=-36
+								src.SwordYSecond=-36
+
+							if(usr.SyncAttached=="Moogle O Glory"||usr.SyncAttached=="Prismatic Dreams"||usr.SyncAttached=="Ebony Slumber")
+								src.SwordXSecond=-64
+								src.SwordYSecond=-64
 							if(usr.CheckActive("Keyblade"))
 								if(!src.Using)
 									src.SwordClassSecond=GetKeychainClass(usr.SyncAttached)

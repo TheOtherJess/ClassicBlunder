@@ -103,3 +103,5 @@
 		StrMult=1.5
 		IconLock='SweatDrop.dmi'
 		IconApart=1
+	Magnetism
+		passives = list("BetterAim" = 3, , "Scorching" = 8, "Shattering" = 8, "Shocking" = 8, "Freezing" = 8)

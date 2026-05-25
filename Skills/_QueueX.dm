@@ -1499,7 +1499,7 @@ mob
 					src.Oxygen=0
 			if(Q.Copyable)
 				spawn() for(var/mob/m in view(40, src))
-					if(m.passive_handler.Get("The Almighty"))
+					if(m.CheckSpecial("A - The Almighty"))
 						var/insightLevel = m.AscensionsAcquired+25 || 1
 						var/techTier = Q.Copyable
 						if(insightLevel < techTier)
@@ -1542,7 +1542,7 @@ mob
 			if(Q.Counter)
 				KenShockwave(src,icon='KenShockwaveBloodlust.dmi',Size=0.4, Blend=2, Time=2)
 			if(!Q.Combo && src.HasCounterMaster() && CounterMasterTimer <= 0)
-				Q.CounterTemp = 0.25 * src.GetCounterMaster()
+				Q.CounterTemp = 0.1 * src.GetCounterMaster()
 				KenShockwave(src,icon='KenShockwaveBloodlust.dmi',Size=0.3, Blend=2, Time=2)
 				CounterMasterTimer = max(1, 25 - (src.HasCounterMaster()*5))
 			src.AttackQueue=Q

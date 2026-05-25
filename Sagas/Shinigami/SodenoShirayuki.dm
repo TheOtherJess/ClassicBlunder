@@ -25,7 +25,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 		passives = list(
 			"PureDamage"     = 1 + SL, //I feel all Shikai should get this.
 			"ChillResist"    = 1 * SL, // This should make it so that Chill hurts you less.
-			"Chilling"       = 2 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
+			"Freezing"       = 2 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
 			"SpiritSword"    = 0.25 * SL, //Rukia always comes off as a proper hybrid as a Shinigami should be, so give users of her release soem Spirit Sword.
 			"CriticalChance" = 5 * SL,
 			"CriticalDamage" = 0.05 * SL,
@@ -86,7 +86,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 		passives = list(
 			"PureDamage"     = 1.5 * SL, //Made this a multiplier instead of an additive, Because Rukia's bankai is INCREDIBLY strong in what it does.
 			"ChillResist"    = 2 * SL, // This should make it so that Chill hurts you less.
-			"Chilling"       = 4 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
+			"Freezing"       = 4 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
 			"SpiritSword"    = 0.5 * SL, //Rukia always comes off as a proper hybrid as a Shinigami should be, so give users of her release soem Spirit Sword.
 			"CriticalChance" = 1 * SL,
 			"CriticalDamage" = 0.1 * SL,
@@ -238,12 +238,12 @@ obj/Skills/AutoHit
 		Area="Around Target"
 		FlickAttack=1
 		Distance=5
-		Chilling=5
+		Freezing=5
 		Slow=1
 		DistanceAround=4
 		ComboMaster = 1
 		ActiveMessage="Some no mai, Tsukishiro!"
-		HitSparkIcon='BLANK.dmi'
+		HitSparkIcon='SnowBurst.dmi'
 		HitSparkX=0
 		HitSparkY=0
 		Cooldown=120
@@ -271,12 +271,12 @@ obj/Skills/AutoHit
 		Area="Wave"
 		FlickAttack=1
 		Distance=10
-		Chilling=20
+		Freezing=20
 		Stunner=5
 		ComboMaster = 1
 		WindUp = 2
 		ActiveMessage="Tsugi no mai, Hakuren!"
-		HitSparkIcon='Air Render.dmi'
+		HitSparkIcon='SnowRing.dmi'
 		HitSparkX=0
 		HitSparkY=0
 		Cooldown=120
@@ -286,7 +286,7 @@ obj/Skills/AutoHit
 		TurfShiftDuration=3
 		adjust(mob/p)
 			DamageMult = 10 + (0.75 * p.SagaLevel)
-			Chilling = 20 + (5 * p.SagaLevel)
+			Freezing = 20 + (5 * p.SagaLevel)
 			WindUp = 2 - (0.25 * p.SagaLevel)
 			if(p.SagaLevel > 3)
 				Area="Wide Wave"
@@ -297,6 +297,43 @@ obj/Skills/AutoHit
 				return
 			else
 				usr.Activate(src)
+	Hakusen // Given at T4, Bankai Exclusive
+		ElementalClass="Water"
+		name="Hakusen"
+		ForOffense=1
+		StrOffense=0
+		Area="Circle"
+		TurfReplace='SnowFloor.dmi'
+		Distance=12
+		WindUp=2
+		ComboMaster=1
+		Guardbreak=1
+		DamageMult=10
+		SpecialAttack=1
+		Freezing=100
+		HitSparkIcon='SnowBurst.dmi'
+		HitSparkX=-32
+		HitSparkY=-32
+		HitSparkTurns=1
+		HitSparkSize=6
+		TurfStrike=1
+		WindupMessage="Daishi no mai, Hakusen..."
+		ActiveMessage="drops their surroundings to Absolute Zero!"
+		Slow=1
+		NoLock=1
+		Deluge=3000
+		Cooldown=-1
+		adjust(mob/p)
+			DamageMult = 10 + (1.5 * p.SagaLevel)
+			Distance = 12 + (2 * p.SagaLevel)
+		verb/hakusen()
+			set category="Skills"
+			if(!usr.CheckSlotless("Hakka-no-Togame"))
+				usr << "You can only use this technique in Bankai!"
+				return
+			else
+				usr.Activate(src)
+
 
 obj/Skills/Buffs/ActiveBuffs
 	Shirafune // Unlocks at T3
@@ -309,12 +346,12 @@ obj/Skills/Buffs/ActiveBuffs
 		ManaDrain=0.01
 		ForMult=1.1
 		StrMult=1.1
-		passives=list("Extend" = 1, "SweepingStrike" = 1, "Chilling" = 3, "ManaLeak" = 2)
+		passives=list("Extend" = 1, "SweepingStrike" = 1, "Freezing" = 3, "ManaLeak" = 2)
 		ActiveMessage="San no mai, Shirafune!"
 		OffMessage="lets their ice melt..."
 		adjust(mob/p)
 			if(!altered)
-				passives=list("Extend" = 1 + (p.SagaLevel/2), "SweepingStrike" = 1 + (p.SagaLevel/2), "Chilling" = 3 * p.SagaLevel, "ManaLeak" = 2)
+				passives=list("Extend" = 1 + (p.SagaLevel/2), "SweepingStrike" = 1 + (p.SagaLevel/2), "Freezing" = 3 * p.SagaLevel, "ManaLeak" = 2)
 
 		verb/Shirafune()
 			set category="Skills"

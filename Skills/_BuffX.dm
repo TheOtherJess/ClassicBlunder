@@ -2179,7 +2179,7 @@ NEW VARIABLES
 			DefMult=0.8
 			passives = list("SlayerMod" = 3, "LifeSteal" = 10, "FavoredPrey" = "Depths", "MovementMastery" = 3, "TechniqueMastery" = 3, "Deicide"= 5)
 			ManaGlowSize=3
-			ManaGlow="C03434"
+			ManaGlow="#C03434"
 			TextColor=rgb(192, 52, 52)
 			ActiveMessage="manifests a demonic symbol on their chest, striking terror into the hearts of the wicked..."
 			OffMessage="discards the mark of the Slayer, returning to normal."
@@ -2928,7 +2928,6 @@ NEW VARIABLES
 				SagaSignature=1
 				TimerLimit=30
 				Cooldown=30
-				ManaCost=10
 				passives = list("Heavy Strike" = "GetsugaClad", "CriticalChance" = 25, "CriticalDamage" = 0.25, "Brutalize" = 2, "SwordAscension" = 1, "SpiritSword" = 0.5, "HybridStrike" = 1, "SpiritFlow" = 4)
 				StrMult=1.3
 				OffMult=1.3

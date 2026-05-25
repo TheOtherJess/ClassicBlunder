@@ -40,9 +40,12 @@
             usr << "You have no Flask Charges left!"
             return
         if(!usr.CheckSlotless("Flask Charge")) // If no buff, 
-            if(!usr.reduceCharge()) return // mob proc that reduces charges
             for(var/typesFromTechniques in src.Techniques) // We want to go fishing
                 var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques); // then we assign our fish to a var
+                if(usedFlask.Using)
+                    usr << "You cannot imbibe more right now!"
+                    return // FUCK YOU FUCK YOU FUCK YOU 
+                if(!usr.reduceCharge()) return // mob proc that reduces charges
                 usedFlask.adjust(usr); // We can now pass adjust and trigger procs as if we were in the buff (kind of)
                 usedFlask.Trigger(usr);
 
@@ -60,7 +63,6 @@
     MagicNeeded=1
     ActiveMessage="imbibes a concoction from their Flask!"
     TextColor=rgb(149, 255, 0)
-    AlwaysOn=1
     CooldownStatic = 1 // No, you will not use technique mastery.
     Cooldown = 0 // THIS IS HANDLED IN ADJUST FUCK MY CHUD LIFE
     TimerLimit = 60

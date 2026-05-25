@@ -784,6 +784,7 @@
 #include "Sagas\Shinigami\Shihakusho.dm"
 #include "Sagas\Shinigami\Shinigami.dm"
 #include "Sagas\Shinigami\ShinigamiForm.dm"
+#include "Sagas\Shinigami\Shinso.dm"
 #include "Sagas\Shinigami\SodenoShirayuki.dm"
 #include "Sagas\Shinigami\Zangetsu.dm"
 #include "Sagas\Shinigami\Zanpakuto.dm"

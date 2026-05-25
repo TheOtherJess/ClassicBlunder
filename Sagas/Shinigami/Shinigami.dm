@@ -3,7 +3,7 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
-	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi")
+	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi", "Shinso")
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -64,6 +64,8 @@ mob/tierUpSaga(Path)
 								src.AddSkill(new/obj/Skills/AutoHit/Hakuren)
 							if("Hozukimaru")
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Hozukimaru)
+							if("Shinso")
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shinso)
 				updateShinigamiAscended()
 
 			if(3)
@@ -113,6 +115,9 @@ mob/tierUpSaga(Path)
 							if("Hozukimaru")
 								src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Ryumon_Hozukimaru)
+							if("Shinso")
+								src.BankaiPrefix = input(src, "Your Bankai's true name reveals itself. What is it?", "Bankai True Name") as text
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Kamishini_no_Yari)
 				updateShinigamiAscended()
 
 			if(5)
@@ -130,6 +135,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/SenbonzakuraSenkei, src))
 							src.AddSkill(new/obj/Skills/SenbonzakuraSenkei)
 							src << "Your petals can arrange themselves into swords of light. You can now use <b>Senkei</b>."
+					if("Shinso")
+						if(!locate(/obj/Skills/Butou, src))
+							src.AddSkill(new/obj/Skills/Butou)
+							src << "The accuracy of your blade's reach grows. You can now use <b>Butou</b>."
 				updateShinigamiAscended()
 
 			if(6)
@@ -149,6 +158,10 @@ mob/tierUpSaga(Path)
 								if(!src.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken))
 									src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Senbonzakura_Hakuteiken)
 									src << "The ultimate form of your blade awakens. You can now use <b>Shukei: Hakuteiken</b>."
+							if("Shinso")
+								if(!locate(/obj/Skills/Butou_Renjin, src))
+									src.AddSkill(new/obj/Skills/Butou_Renjin)
+									src << "Your thrusts compound into a relentless barrage. You can now use <b>Butou: Renjin</b>."
 				updateShinigamiAscended()
 
 			if(7)
@@ -175,6 +188,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/SenbonzakuraIkkaSenjinka, src))
 							src.AddSkill(new/obj/Skills/SenbonzakuraIkkaSenjinka)
 							src << "Every one of your Senkei blades can answers your call at once. You can now use <b>Ikka Senjinka</b>."
+					if("Shinso")
+						if(!locate(/obj/Skills/Korose, src))
+							src.AddSkill(new/obj/Skills/Korose)
+							src << "Your blade now carries a deadly poison. You can now use <b>Korose</b>."
 				updateShinigamiAscended()
 
 mob/proc/InShikai()

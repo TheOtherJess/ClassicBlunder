@@ -810,6 +810,7 @@ mob/proc/Death(mob/P,var/text,var/SuperDead=0, var/NoRemains=0, var/Zombie, extr
 		src.Dead=1
 		src.Conscious()
 		src.Poison=0
+		src.SilentPoisonAmount=0
 		src.Burn=0
 		src.Bleed=0
 		src.Slow=0
@@ -1094,6 +1095,7 @@ mob/proc/Leave_Body(var/SuperDead=0, var/Zombie, var/ForceVoid=0)
 	src.Burn=0
 	src.Bleed=0
 	src.Poison=0
+	src.SilentPoisonAmount=0
 	src.Slow=0
 	src.Shatter=0
 	src.Shock=0
@@ -1308,6 +1310,7 @@ proc/getBackSide(mob/offender, mob/defender, diags = FALSE)
 				Target.Energy=Target.EnergyMax
 				Target.Burn=0
 				Target.Poison=0
+				Target.SilentPoisonAmount=0
 				Target.Slow=0
 				Target.Shock=0
 				Target.Shatter=0
@@ -1344,6 +1347,7 @@ The average damage was [average] over [looplength] times.
 			Target.Energy=Target.EnergyMax
 			Target.Burn=0
 			Target.Poison=0
+			Target.SilentPoisonAmount=0
 			Target.Slow=0
 			Target.Shock=0
 			Target.Shatter=0

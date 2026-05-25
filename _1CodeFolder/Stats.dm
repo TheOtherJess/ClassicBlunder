@@ -479,6 +479,8 @@ mob/Players/Stat()
 		stat("Energy: ","<font color=#FF0000>Because I do not believe you <i>do.</i></font color>")
 	else
 		stat("Energy: ","[(Target.Energy/Target.EnergyMax)*100]%")
+	if(usr.passive_handler.Get("SilentPoison") && usr.Target && usr.Target.Poison > 0)
+		stat("Poison:","[round(usr.Target.Poison, 0.1)]")
 	stat("Origin:","[SpawnDisplay]");
 
 
@@ -1272,9 +1274,10 @@ mob/proc/Update_Stat_Labels()
 				src<<output("Power: [round((100/EnergyMax)*100)*round(src.GetPowerUpRatioVisble(), 0.01)*src.KaiokenBP]%","BarPower")
 		if(src.passive_handler.Get("Red Hot Rage"))
 			src<<output("Fury: [(src.AngerMax+src.AngerAdd)*100]% (+)","BarPower")
-		if(src.Poison>0)
+		var/visiblePoison = max(0, src.Poison - src.SilentPoisonAmount)
+		if(visiblePoison > 0)
 			winshow(src, "BarPoison",1)
-			src<<output("POI: [round(Poison, 1)]","BarPoison")
+			src<<output("POI: [round(visiblePoison, 1)]","BarPoison")
 		else
 			winshow(src, "BarPoison",0)
 		if(src.Burn>0)

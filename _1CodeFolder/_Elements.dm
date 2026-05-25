@@ -549,6 +549,10 @@ mob
 			Value = Value*(1-(src.Poison/glob.DEBUFF_STACK_RESISTANCE))
 			src.Poison+=Value
 
+			// Track stacks from Silent Poison sources separately
+			if(Attacker && Attacker.passive_handler.Get("SilentPoison"))
+				src.SilentPoisonAmount += Value
+
 			if(Value >=1)
 				animate(src, color = "#ff1cff")
 				animate(src, color = src.MobColor, time=5)
@@ -562,8 +566,11 @@ mob
 				AddCrippling(Value/3)
 			if(src.Poison>100)
 				src.Poison=100
+			if(src.SilentPoisonAmount > src.Poison)
+				src.SilentPoisonAmount = src.Poison
 			if(src.Poison<0)
 				src.Poison=0
+				src.SilentPoisonAmount=0
 			for(var/obj/Items/Gear/Automated_Aid_Dispenser/AD in src)
 				if(AD.suffix&&AD.Uses)
 					AD.Uses--

@@ -1787,7 +1787,7 @@ NEW VARIABLES
 			verb/Saiyan_Purity()
 				set category="Skills"
 				src.Trigger(usr)
-		Sickle_of_Sorrow//scaling dimensionsword that also summon clones
+		Sickle_of_Sorrow//scaling dimensionsword sidegrade that also summon clones
 			MakesSword=3
 			SpecialSlot=0
 			Slotless=1
@@ -1797,18 +1797,18 @@ NEW VARIABLES
 			BladeFisting = 1
 			SwordName="Sickle of Sorrow"
 			SwordIcon='Sorrowful Sickle.dmi'
-			passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 2, "SwordAscension" = 3, "SwordAscensionSecond" = 3, "SwordAscensionThird" = 3, "MonkeyKing" = 1)
+			passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 1, "SwordAscension" = 3, "SwordAscensionSecond" = 3, "SwordAscensionThird" = 3, "MonkeyKing" = 1)
 			ActiveMessage="draws spirit energy into their hand to form a spacetime-rending blade!"
 			OffMessage="dispels their Sickle of Sorrow!"
 			adjust(mob/p)
 				var/asc=p.AscensionsAcquired
 				switch(asc)
 					if(4)
-						passives = list("BladeFisting" = 1, "SpiritSword" = 1, "BulletKill" = 1, "Extend" = 2, "SwordAscension" = 4, "SwordAscensionSecond" = 4, "SwordAscensionThird" = 4, "MonkeyKing" = 2)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 1, "SwordAscension" = 4, "SwordAscensionSecond" = 4, "SwordAscensionThird" = 4, "MonkeyKing" = 1)
 					if(5)
-						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "BulletKill" = 1, "PridefulRage" = 1, "Extend" = 3, "SwordAscension" = 5, "SwordAscensionSecond" = 5, "SwordAscensionThird" = 5, "MonkeyKing" = 3)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "Extend" = 1, "SwordAscension" = 5, "SwordAscensionSecond" = 5, "SwordAscensionThird" = 5, "MonkeyKing" = 2)
 					if(6)
-						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "BulletKill" = 1, "PridefulRage" = 1, "Extend" = 3, "SwordAscension" = 6, "SwordAscensionSecond" = 6, "SwordAscensionThird" = 6, "MonkeyKing" = 3)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "Extend" = 1, "SwordAscension" = 6, "SwordAscensionSecond" = 6, "SwordAscensionThird" = 6, "MonkeyKing" = 2)
 			verb/Transfigure_Sickle_of_Sorrow()
 				set category="Utility"
 				var/Choice

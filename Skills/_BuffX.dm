@@ -1791,10 +1791,12 @@ NEW VARIABLES
 			MakesSword=3
 			SpecialSlot=0
 			Slotless=1
+			SwordX=-16
+			SwordY=-16
 			FlashDraw=1
 			BladeFisting = 1
 			SwordName="Sickle of Sorrow"
-			SwordIcon='Aether Blade.dmi'
+			SwordIcon='Sorrowful Sickle.dmi'
 			passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 2, "SwordAscension" = 3, "SwordAscensionSecond" = 3, "SwordAscensionThird" = 3, "MonkeyKing" = 1)
 			ActiveMessage="draws spirit energy into their hand to form a spacetime-rending blade!"
 			OffMessage="dispels their Sickle of Sorrow!"

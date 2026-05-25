@@ -40,9 +40,15 @@
 			if(defender.Saga && defender.SagaLevel)
 				blockChance += 5 + (2.5 * defender.SagaLevel)
 				critBlock += 0.1 + (0.05 * defender.SagaLevel)
-	var/didCrit = prob(critChance)
+	var/leapSweet = LeapAttackSweetSpotActive
+	if(leapSweet)
+		LeapAttackSweetSpotActive = FALSE
+
+	var/didCrit = leapSweet || prob(critChance)
 	if(didCrit && denkoCharge)
 		critDMG += denkoCharge * glob.DENKO_SEKKA_CRIT_DAMAGE_PER_LEVEL
+	if(didCrit && leapSweet)
+		critDMG += 1
 	if(didCrit)
 		if(!AttackQueue)
 			if(passive_handler["ThunderHerald"])

@@ -776,6 +776,7 @@
 #include "Sagas\Rinnegan\rinneganBuff.dm"
 #include "Sagas\Rinnegan\rinneganSkills.dm"
 #include "Sagas\Shinigami\Hozukimaru.dm"
+#include "Sagas\Shinigami\Nozarashi.dm"
 #include "Sagas\Shinigami\Petals.dm"
 #include "Sagas\Shinigami\Senbonzakura.dm"
 #include "Sagas\Shinigami\SenbonzakuraKageyoshi.dm"

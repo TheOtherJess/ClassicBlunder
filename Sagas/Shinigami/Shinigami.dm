@@ -109,6 +109,7 @@ mob/tierUpSaga(Path)
 							if("Shirayuki")
 								src.BankaiPrefix = input(src, "Your Bankai takes shape. What is your Zanpakutō's true name?", "Bankai Prefix") as text
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Zanpakuto/Bankai/HakkanoTogame)
+								src.AddSkill(new/obj/Skills/AutoHit/Hakusen)
 							if("Hozukimaru")
 								src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Ryumon_Hozukimaru)

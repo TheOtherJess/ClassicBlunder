@@ -176,6 +176,7 @@ scaling with potential as well
 				del ssj
 			p.race.transformations += new /transformation/saiyan/heavenborn_super_saiyan()
 			p.race.transformations += new /transformation/saiyan/super_saiyan_rose()
+			p.Secret="Heavenborn"
 		if("Legendary")
 			p << "You have become a Legendary Super Saiyan."
 			p.AddSkill(new/obj/Skills/Buffs/NuStyle/Legendary/Legendary_Stance)

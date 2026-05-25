@@ -103,8 +103,8 @@
 /obj/Skills/Buffs/SlotlessBuffs/Magic/AngelMagic/Revelation
 	name = "Revelation"
 	SpellElement = "Light"
-	Cooldown = 60
-	TimerLimit = 60
+	Cooldown = 120
+	TimerLimit = 75
 	OffMult = 1.2
 	DefMult = 1.2
 	passives = list("NoWhiff" = 1)
@@ -117,8 +117,8 @@
 
 /obj/Skills/Buffs/SlotlessBuffs/Magic/AngelMagic/Zeal
 	name = "Zeal"
-	Cooldown = 60
-	TimerLimit = 60
+	Cooldown = 120
+	TimerLimit = 75
 	StrMult = 1.2
 	ForMult = 1.2
 	passives = list("HybridStrike" = 1, "SpiritSword" = 1, "SpiritHand" = 4)
@@ -131,8 +131,8 @@
 
 /obj/Skills/Buffs/SlotlessBuffs/Magic/AngelMagic/Aegis
 	name = "Aegis"
-	Cooldown = 60
-	TimerLimit = 60
+	Cooldown = 120
+	TimerLimit = 75
 	EndMult = 1.25
 	passives = list("PureReduction" = 3)
 	ActiveMessage = "shields themselves with divine aegis!"

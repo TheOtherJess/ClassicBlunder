@@ -595,6 +595,33 @@ update
 				p << "The Space Squids of old look upon you kindly."
 				p << "WHY THE FRIGGLE FRACK DID THEY TAKE SPACEWALK AND STATIC WALK OFF YOU?!"
 				p << "How can you space squid if you can't even go to space...!"
+			if(p.isRace(BEASTKIN))
+				if(p.Class == "Feather Cowl")
+					if(p.AscensionsAcquired>=1)
+						p.passive_handler.Decrease("PureReduction", 2);
+						p.passive_handler.Decrease("PureDamage", 1);
+						p.passive_handler.Increase("PureReduction", 0.25);
+						p.passive_handler.Increase("PureDamage", 0.125);
+					if(p.AscensionsAcquired>=2)
+						p.passive_handler.Decrease("PureReduction", 2);
+						p.passive_handler.Decrease("PureDamage", 1);
+						p.passive_handler.Increase("PureReduction", 0.25);
+						p.passive_handler.Increase("PureDamage", 0.125);
+					p << "Your pure damage and pure reduction have been reduced."
+					p << "bird down..."
+				if(p.Class == "Feather Knife")
+					if(p.AscensionsAcquired>=1)
+						p.passive_handler.Decrease("PureReduction", 1);
+						p.passive_handler.Decrease("PureDamage", 2);
+						p.passive_handler.Increase("PureReduction", 0.125);
+						p.passive_handler.Increase("PureDamage", 0.25);
+					if(p.AscensionsAcquired>=2)
+						p.passive_handler.Decrease("PureReduction", 1);
+						p.passive_handler.Decrease("PureDamage", 2);
+						p.passive_handler.Increase("PureReduction", 0.125);
+						p.passive_handler.Increase("PureDamage", 0.25);
+					p << "Your pure damage and pure reduction have been reduced."
+					p << "bird down..."
 				
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )

@@ -145,6 +145,9 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 		if(!usr.Target || usr.Target == usr)
 			usr << "You need a target to use Leap Attack."
 			return
+		if(get_dist(usr, usr.Target) > 15)
+			usr << "Your target is too far away to leap to."
+			return
 		usr.BeginHeldSkill(src)
 
 	OnHeldRelease(mob/p, benefit, sweet_spot_hit)

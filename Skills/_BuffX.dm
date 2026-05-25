@@ -1750,7 +1750,7 @@ NEW VARIABLES
 			KenWave=5
 			KenWaveSize=0.5
 			KenWaveIcon='KenShockwaveDivine.dmi'
-			passives = list("GodKi" = 0.1, "EnergyGeneration" = 3, "SlayerMod" = 1.5, "FavoredPrey" = "Mortal")
+			passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.25, "GodKi" = 0.1, "EnergyGeneration" = 3, "SlayerMod" = 1.5, "FavoredPrey" = "Mortal")
 			ActiveMessage="manifests the superiority of their birthright!"
 			OffMessage="lets their contempt for mortal life regress."
 			adjust(mob/p)
@@ -1758,21 +1758,107 @@ NEW VARIABLES
 				if(rose)
 					if(rose.mastery >= 25)
 						ActiveMessage="anger at their Lessers manifests into sparks of godhood!"
-						passives = list("GodKi" = 0.2, "EnergyGeneration" = 3, "SlayerMod" = 2, "FavoredPrey" = "Mortal", "Heavensent" = 1)
+						passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.35, "GodKi" = 0.2, "EnergyGeneration" = 3, "SlayerMod" = 2, "FavoredPrey" = "Mortal", "Heavensent" = 1)
 						AngerMult=1.1
+						StrMult=1.4
+						ForMult=1.4
+						OffMult=1.35
 					if(rose.mastery >= 50)
 						ActiveMessage="manifests true animosity towards mortalss!"
-						passives = list("GodKi" = 0.3, "EnergyGeneration" = 4, "SlayerMod" = 3, "FavoredPrey" = "Mortal", "Heavensent" = 2)
+						passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.50, "GodKi" = 0.3, "EnergyGeneration" = 4, "SlayerMod" = 3, "FavoredPrey" = "Mortal", "Heavensent" = 2)
 						AngerMult=1.3
+						StrMult=1.5
+						ForMult=1.5
+						OffMult=1.45
 					if(rose.mastery >= 75)
 						ActiveMessage="'s animosity manifests them as close to perfection as they can get!"
-						passives = list("GodKi" = 0.4, "EnergyGeneration" = 5, "SlayerMod" = 4, "FavoredPrey" = "Mortal", "Heavensent" = 3)
+						passives = list("WrathfulTenacity" = 0.3, "HellRisen" = 0.75, "GodKi" = 0.4, "EnergyGeneration" = 5, "SlayerMod" = 4, "FavoredPrey" = "Mortal", "Heavensent" = 3)
 						AngerMult=1.4
+						StrMult=1.6
+						ForMult=1.6
+						OffMult=1.55
 					if(rose.mastery >= 100)
 						ActiveMessage="becomes the perfect image of Godhood!"
-						passives = list("GodKi" = 0.5, "EnergyGeneration" = 5, "SlayerMod" = 5, "FavoredPrey" = "All", "Purity" = 1, "BeyondPurity" = 1, "Heavensent" = 4)
+						passives = list("WrathfulTenacity" = 0.3, "HellRisen" = 1, "GodKi" = 0.5, "EnergyGeneration" = 5, "SlayerMod" = 5, "FavoredPrey" = "All", "Heavensent" = 4)
 						AngerMult=1.5
+						StrMult=1.7
+						ForMult=1.7
+						OffMult=1.65
 			verb/Saiyan_Purity()
+				set category="Skills"
+				src.Trigger(usr)
+		Sickle_of_Sorrow//scaling dimensionsword that also summon clones
+			MakesSword=3
+			SpecialSlot=0
+			Slotless=1
+			FlashDraw=1
+			BladeFisting = 1
+			SwordName="Sickle of Sorrow"
+			SwordIcon='Aether Blade.dmi'
+			passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 2, "SwordAscension" = 3, "SwordAscensionSecond" = 3, "SwordAscensionThird" = 3, "MonkeyKing" = 1)
+			ActiveMessage="draws spirit energy into their hand to form a spacetime-rending blade!"
+			OffMessage="dispels their Sickle of Sorrow!"
+			adjust(mob/p)
+				var/asc=p.AscensionsAcquired
+				switch(asc)
+					if(4)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 1, "BulletKill" = 1, "Extend" = 2, "SwordAscension" = 4, "SwordAscensionSecond" = 4, "SwordAscensionThird" = 4, "MonkeyKing" = 2)
+					if(5)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "BulletKill" = 1, "PridefulRage" = 1, "Extend" = 3, "SwordAscension" = 5, "SwordAscensionSecond" = 5, "SwordAscensionThird" = 5, "MonkeyKing" = 3)
+					if(6)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "BulletKill" = 1, "PridefulRage" = 1, "Extend" = 3, "SwordAscension" = 6, "SwordAscensionSecond" = 6, "SwordAscensionThird" = 6, "MonkeyKing" = 3)
+			verb/Transfigure_Sickle_of_Sorrow()
+				set category="Utility"
+				var/Choice
+				if(!usr.BuffOn(src))
+					var/modify_sword_num = 1
+					if((locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Nito_Ichi_Style) in src) || (locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Santoryu) in src))
+						var/list/options = list("Primary","Secondary")
+						if((locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Santoryu) in src)) options += "Tertiary"
+						switch(input("Which sword would you like to modify?") in options)
+							if("Secondary") modify_sword_num=2
+							if("Tertiary") modify_sword_num=3
+					var/Lock=alert(usr, "Do you wish to alter the icon used?", "Weapon Icon", "No", "Yes")
+					if(Lock=="Yes")
+						switch(modify_sword_num)
+							if(1)
+								src.SwordIcon=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordX=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordY=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+							if(2)
+								src.SwordIconSecond=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordXSecond=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordYSecond=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+							if(3)
+								src.SwordIconThird=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordXThird=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordYThird=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+					Choice=input(usr, "What class of blade do you want your Sickle to be?", "Transfigure Sickle of Sorrow") in list("Blunt", "Saber", "Longsword", "Greatsword")
+					switch(Choice)
+						if("Blunt")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Wooden"
+								if(2) src.SwordClassSecond="Wooden"
+								if(3) src.SwordClassThird="Wooden"
+						if("Saber")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Light"
+								if(2) src.SwordClassSecond="Light"
+								if(3) src.SwordClassThird="Light"
+						if("Longsword")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Medium"
+								if(2) src.SwordClassSecond="Medium"
+								if(3) src.SwordClassThird="Medium"
+						if("Greatsword")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Heavy"
+								if(2) src.SwordClassSecond="Heavy"
+								if(3) src.SwordClassThird="Heavy"
+					usr << "Sickle class set as [Choice]!"
+				else
+					usr << "You can't set this while using Sickle."
+			verb/Sickle_of_Sorrow()
 				set category="Skills"
 				src.Trigger(usr)
 		SuperSaiyanPerfected

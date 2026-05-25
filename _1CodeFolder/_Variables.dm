@@ -517,6 +517,7 @@ mob/var
 	ElementalOffense
 	ElementalDefense
 	Poison=0
+	SilentPoisonAmount=0
 	BlindingVenom = 0
 	Burn=0
 	Frenzy=0

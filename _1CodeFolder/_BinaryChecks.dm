@@ -2086,18 +2086,7 @@ mob
 					Total+=src.Target.GetGodKi()/4
 				else if(src.Target&&!src.Target.CheckSlotless("Saiyan Soul")&&src.Target.HasGodKi()&&!src.Target.passive_handler.Get("CreateTheHeavens")&&!src.Target.passive_handler.Get("Hidden Potential")&&!src.Target.passive_handler.Get("Orange Namekian"))
 					Total+=src.Target.GetGodKi()/3*/
-			if(HasGodKiCopy())
-				if(src.Target)
-					if(src.Target.HasGodKi()&&!src.Target.HasGodKiCopy()&&!src.Target.passive_handler.Get("To Govern Strength"))
-						if(Target.GetGodKi() > Total)
-							Total=Target.GetGodKi()*src.GodKiCopyValue()
-						else
-							if(src.passive_handler.Get("AbsoluteDespair"))
-								Total+=0.1
-							else
-								Total+=(Potential/100)*src.GodKiCopyValue()
-					else
-						Total+=(Potential/100)*src.GodKiCopyValue()
+
 			if(passive_handler.Get("GodCloth"))
 				if(src.Target&&(Health+VaizardHealth)<(Target.Health+Target.VaizardHealth))
 					Total*=clamp((Target.Health+Target.VaizardHealth)/(Health+VaizardHealth),1, 3)
@@ -2121,6 +2110,18 @@ mob
 						Total=glob.T4_STYLES_GODKI_VALUE*1.2+OSGK
 			if(Total>=glob.GOD_KI_CAP && !passive_handler.Get("God"))
 				Total=glob.GOD_KI_CAP
+			if(HasGodKiCopy())
+				if(src.Target)
+					if(src.Target.HasGodKi()&&!src.Target.HasGodKiCopy()&&!src.Target.passive_handler.Get("To Govern Strength"))
+						if(Target.GetGodKi() > Total)
+							Total=Target.GetGodKi()*src.GodKiCopyValue()
+						else
+							if(src.passive_handler.Get("AbsoluteDespair"))
+								Total+=0.1
+							else
+								Total+=(Potential/100)*src.GodKiCopyValue()
+					else
+						Total+=(Potential/100)*src.GodKiCopyValue()
 			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)
 				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
 					if(Total<=glob.T3_STYLES_GODKI_VALUE)

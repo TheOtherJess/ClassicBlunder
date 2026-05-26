@@ -622,7 +622,6 @@ update
 						p.passive_handler.Increase("PureDamage", 0.25);
 					p << "Your pure damage and pure reduction have been reduced."
 					p << "bird down..."
-				
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25

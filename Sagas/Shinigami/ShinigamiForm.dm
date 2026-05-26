@@ -11,7 +11,7 @@
 			"ManaGeneration" = 2 * SL,
 			"SpiritSword"    = 0.5 * SL,
 			"SpiritFlow"     = 1 * SL,
-			"SpiritPower"    = 0.15 * SL,
+			"SpiritPower"    = 0.25 * SL,
 			"HolyMod"        = 2,
 			"EvilResist"     = 2
 		)
@@ -123,7 +123,7 @@
 
 	verb/Change_Shikai_Appearance()
 		set name = "Change Shikai Appearance"
-		set category = "Skills"
+		set category = "Shinigami"
 		var/icon/newIcon = input(usr, "Set Zanpakutō Shikai icon to what?") as icon|null
 		if(isnull(newIcon)) return
 		var/newX = input(usr, "Pixel X offset?") as num
@@ -136,7 +136,7 @@
 
 	verb/Change_Bankai_Appearance()
 		set name = "Change Bankai Appearance"
-		set category = "Skills"
+		set category = "Shinigami"
 		var/icon/newIcon = input(usr, "Set Zanpakutō Bankai icon to what?") as icon|null
 		if(isnull(newIcon)) return
 		var/newX = input(usr, "Pixel X offset?") as num
@@ -149,7 +149,7 @@
 
 	verb/Change_Bankai_Shihakusho_Appearance()
 		set name = "Change Bankai Shihakusho Appearance"
-		set category = "Skills"
+		set category = "Shinigami"
 		var/icon/newIcon = input(usr, "Set Shihakushō Bankai icon to what?") as icon|null
 		if(isnull(newIcon)) return
 		var/newX = input(usr, "Pixel X offset?") as num

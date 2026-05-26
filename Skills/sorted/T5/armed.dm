@@ -7,6 +7,7 @@
 		StrOffense=1
 		DamageMult=2.5
 		ControlledRush=1
+		Rush=10
 		LifeSteal=50
 		WindUp=1
 		WindupIcon='StormArmor.dmi'

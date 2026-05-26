@@ -303,7 +303,8 @@ obj/Skills/AutoHit
 		ForOffense=1
 		StrOffense=0
 		Area="Circle"
-		TurfReplace='SnowFloor.dmi'
+		TurfShift='SnowFloor.dmi'
+		TurfShiftDuration=60
 		Distance=12
 		WindUp=2
 		ComboMaster=1
@@ -321,7 +322,6 @@ obj/Skills/AutoHit
 		ActiveMessage="drops their surroundings to Absolute Zero!"
 		Slow=1
 		NoLock=1
-		Deluge=3000
 		Cooldown=-1
 		adjust(mob/p)
 			DamageMult = 10 + (1.5 * p.SagaLevel)

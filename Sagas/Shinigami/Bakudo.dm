@@ -282,43 +282,60 @@ proc/hitApplyShitotsuSansen(mob/target, obj/Skills/Projectile/_Projectile/proj)
 		set name = "Tenteikura"
 		set category = "Skills"
 		var/mob/User = usr
+		var/has_spirit_power = User.passive_handler.Get("SpiritPower")
 		var/mode = input(User, "How would you like to use Tenteikura?", "Tenteikura") as null|anything in list("Direct", "Broadcast")
 		if(!mode) return
 		if(mode == "Direct")
-			// One-on-one
 			var/list/who = list()
 			for(var/mob/Players/M in players)
 				if(M == User) continue
-				if(!M.EnergySignature) continue
-				if(!(M.EnergySignature in User.EnergySignaturesKnown)) continue
+				if(!has_spirit_power)
+					if(!M.EnergySignature) continue
+					if(!(M.EnergySignature in User.EnergySignaturesKnown)) continue
 				who += M
 			if(!who.len)
 				User << "You have no known energy signatures to contact directly."
 				return
 			var/mob/Players/selector = input(User, "Choose a recipient:", "Tenteikura Direct") as null|anything in who
 			if(!selector) return
-			User.TwoWayTelepath(selector)
+			var/msg = input(User, "What do you want to say to [selector]?", "Tenteikura Direct") as text|null
+			if(!msg || !length(msg)) return
+			Log(selector.ChatLog(),"(Tenteikura from [User] to [selector]): [msg]")
+			Log(User.ChatLog(),"(Tenteikura from [User] to [selector]): [msg]")
+			Log("Telepath","(Tenteikura from [User] to [selector]): [msg]")
+			User << output("<font color=#9999ff><b>(Tenteikura)</b></font>- To  <a href=?src=\ref[selector];action=MasterControl;do=TPM>[selector]</a href> :[msg]", "output")
+			User << output("<font color=#9999ff><b>(Tenteikura)</b></font>- To  <a href=?src=\ref[selector];action=MasterControl;do=TPM>[selector]</a href> :[msg]", "icchat")
+			if(selector.HearThoughts)
+				selector << output("<font color=#9999ff><b>(Tenteikura)</b></font>- From  <a href=?src=\ref[User];action=MasterControl;do=TPM>[User]</a href> :[msg]", "output")
+				selector << output("<font color=#9999ff><b>(Tenteikura)</b></font>- From  <a href=?src=\ref[User];action=MasterControl;do=TPM>[User]</a href> :[msg]", "icchat")
 		else
-			// Broadcast
-			var/list/targets = list()
+			var/list/plane_targets = list()
+			plane_targets += User
 			for(var/mob/Players/M in players)
 				if(M == User) continue
-				if(M.z != User.z) continue
 				if(M.AdminInviso) continue
-				if(!M.EnergySignature) continue
-				if(!(M.EnergySignature in User.EnergySignaturesKnown)) continue
-				targets += M
-			if(!targets.len)
-				User << "There are no known energy signatures on this plane to broadcast to."
-				return
-			var/msg = input(User, "Transmit a message to all known presences on this plane:", "Tenteikura Broadcast") as text|null
+				if(!has_spirit_power)
+					if(!M.EnergySignature) continue
+					if(!(M.EnergySignature in User.EnergySignaturesKnown)) continue
+				plane_targets += M
+			var/mob/Players/anchor = input(User, "Select a target to broadcast to their plane (select yourself for your own plane):", "Tenteikura Broadcast") as null|anything in plane_targets
+			if(!anchor) return
+			var/msg = input(User, "Transmit a message to all presences on that plane:", "Tenteikura Broadcast") as text|null
 			if(!msg || !length(msg)) return
 			OMsg(User, "<b>[User] broadcasts telepathically with Bakudō #77: Tenteikura!</b>")
-			for(var/mob/M in targets)
-				M << output("<font color=#9999ff><b>(Tenteikura)</b></font> [User]: [msg]", "output")
-				M << output("<font color=#9999ff><b>(Tenteikura)</b></font> [User]: [msg]", "icchat")
-			User << output("<font color=#9999ff><b>(Tenteikura — sent)</b></font>: [msg]", "output")
-			User << output("<font color=#9999ff><b>(Tenteikura — sent)</b></font>: [msg]", "icchat")
+			for(var/mob/Players/M in players)
+				if(M == User) continue
+				if(M.z != anchor.z) continue
+				if(M.AdminInviso) continue
+				if(!has_spirit_power)
+					if(!M.EnergySignature) continue
+					if(!(M.EnergySignature in User.EnergySignaturesKnown)) continue
+				// Receivers must have SpiritPower or know the sender's signature to perceive the broadcast
+				if(!M.passive_handler.Get("SpiritPower") && !(User.EnergySignature in M.EnergySignaturesKnown)) continue
+				M << output("<font color=#9999ff><b>(Tenteikura)</b></font>- From  <a href=?src=\ref[User];action=MasterControl;do=TPM>[User]</a href> :[msg]", "output")
+				M << output("<font color=#9999ff><b>(Tenteikura)</b></font>- From  <a href=?src=\ref[User];action=MasterControl;do=TPM>[User]</a href> :[msg]", "icchat")
+			User << output("<font color=#9999ff><b>(Tenteikura)</b></font>: [msg]", "output")
+			User << output("<font color=#9999ff><b>(Tenteikura)</b></font>: [msg]", "icchat")
 
 // TIER 5
 

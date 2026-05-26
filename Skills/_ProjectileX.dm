@@ -5666,6 +5666,7 @@ obj
 					src.Scorching=Z.Scorching
 					src.CriticalChance=Z.CriticalChance
 					src.Combustion=Z.Combustion
+					src.Disarm=Z.Disarm
 					src.Chilling=Z.Chilling
 					src.Freezing=Z.Freezing
 					src.Crushing=Z.Crushing
@@ -5693,6 +5694,7 @@ obj
 					src.Destructive=Z.Destructive
 					src.FollowUp=Z.FollowUp
 					src.FollowUpDelay=Z.FollowUpDelay
+					src.OnMobHit=Z.OnMobHit
 					src.WarpUser=Z.WarpUser
 					src.WarpUserBehind=Z.WarpUserBehind
 					src.WarpUserFlashChange=Z.WarpUserFlashChange
@@ -6412,6 +6414,16 @@ obj
 								if(src.CriticalChance)
 									src.Owner.passive_handler.Decrease("CriticalChance", src.CriticalChance)
 									src.Owner.passive_handler.Decrease("CriticalDamage", _skillCritDmgB)
+								if(src.Combustion && m && !_beamAbsorb)
+									var/combThresh = src.Owner.passive_handler["Combustion"]
+									if(combThresh <= 80)
+										if(m.Burn >= combThresh)
+											m.implodeDebuff(combThresh, "Burn")
+									else
+										if(m.Burn >= 80)
+											m.implodeDebuff(combThresh, "Burn")
+								if(src.Disarm && m && !_beamAbsorb)
+									src.Owner.DisarmTarget(m)
 								if(src.Combustion)
 									src.Owner.passive_handler.Decrease("Combustion", src.Combustion)
 								if(src.InstantDamageChance && m && !m.KO)
@@ -6476,6 +6488,16 @@ obj
 									if(src.CriticalChance)
 										src.Owner.passive_handler.Decrease("CriticalChance", src.CriticalChance)
 										src.Owner.passive_handler.Decrease("CriticalDamage", _skillCritDmgS)
+									if(src.Combustion && m && !_stdAbsorb)
+										var/combThresh = src.Owner.passive_handler["Combustion"]
+										if(combThresh <= 80)
+											if(m.Burn >= combThresh)
+												m.implodeDebuff(combThresh, "Burn")
+										else
+											if(m.Burn >= 80)
+												m.implodeDebuff(combThresh, "Burn")
+									if(src.Disarm && m && !_stdAbsorb)
+										src.Owner.DisarmTarget(m)
 									if(src.Combustion)
 										src.Owner.passive_handler.Decrease("Combustion", src.Combustion)
 									if(CorruptionGain)
@@ -6525,6 +6547,8 @@ obj
 						SkipDamage
 						if(Snaring)
 							m.applySnare(Snaring, 'root.dmi')
+						if(src.OnMobHit)
+							call(text2path(src.OnMobHit))(m, src)
 						if(src.Stunner)
 							if(src.IgnoreStun)
 								a:StunImmune=0

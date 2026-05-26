@@ -11,7 +11,7 @@
 			"ManaGeneration" = 2 * SL,
 			"SpiritSword"    = 0.5 * SL,
 			"SpiritFlow"     = 1 * SL,
-			"SpiritPower"    = 0.15 * SL,
+			"SpiritPower"    = 0.25 * SL,
 			"HolyMod"        = 2,
 			"EvilResist"     = 2
 		)

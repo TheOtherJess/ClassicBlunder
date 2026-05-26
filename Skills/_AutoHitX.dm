@@ -5958,6 +5958,7 @@ obj
 			CorruptionGain
 			Snaring
 			SnaringOverlay
+			Disarm=0
 			Cleansing = 0
 			ManaDrain
 			FoxFire
@@ -6352,6 +6353,8 @@ obj
 				src.Combustion = Z.Combustion
 			if(Z.IceAge)
 				src.IceAge = Z.IceAge
+			if(Z.Disarm)
+				src.Disarm = Z.Disarm
 			if(Z.Toxic)
 				src.Toxic+=Z.Toxic
 			if(Z.Crippling)
@@ -6988,10 +6991,24 @@ obj
 					if(src.CriticalChance)
 						src.Owner.passive_handler.Decrease("CriticalChance", src.CriticalChance)
 						src.Owner.passive_handler.Decrease("CriticalDamage", _skillCritDmg)
+					if(src.Combustion && m)
+						var/combThresh = src.Owner.passive_handler["Combustion"]
+						if(combThresh <= 80)
+							if(m.Burn >= combThresh)
+								m.implodeDebuff(combThresh, "Burn")
+						else
+							if(m.Burn >= 80)
+								m.implodeDebuff(combThresh, "Burn")
+					if(src.IceAge && m)
+						var/iceThresh = src.Owner.passive_handler["IceAge"]
+						if(m.Slow >= iceThresh)
+							m.implodeDebuff(iceThresh, "Chill")
 					if(src.Combustion)
 						src.Owner.passive_handler.Decrease("Combustion", src.Combustion)
 					if(src.IceAge)
 						src.Owner.passive_handler.Decrease("IceAge", src.IceAge)
+					if(src.Disarm && m)
+						src.Owner.DisarmTarget(m)
 				DEBUGMSG("FINAL TOTAL DAMAGE DEALT! [damageDealt]")
 				if(!damageDealt)
 					damageDealt = 0

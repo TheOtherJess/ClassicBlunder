@@ -39,6 +39,7 @@
 			if(i.IsShihakusho && i.suffix)
 				i.UnEquip(p)
 		revertZanpakutoIcon(p)
+		revertShihakushoIcon(p)
 		p.InShinigamiForm = FALSE
 
 	proc/applyShikaiIcon(mob/user)
@@ -73,6 +74,27 @@
 				user.AppearanceOn()
 				break
 
+	proc/applyBankaiShihakushoIcon(mob/user)
+		if(!user.BankaiShihakushoIcon) return
+		for(var/obj/Items/i in user)
+			if(i.IsShihakusho && i.suffix)
+				user.AppearanceOff()
+				i.icon = user.BankaiShihakushoIcon
+				i.pixel_x = user.BankaiShihakushoIconX
+				i.pixel_y = user.BankaiShihakushoIconY
+				user.AppearanceOn()
+				break
+
+	proc/revertShihakushoIcon(mob/user)
+		for(var/obj/Items/i in user)
+			if(i.IsShihakusho && i.suffix)
+				user.AppearanceOff()
+				i.icon = 'Icons/Armor/Shinigami Vest.dmi'
+				i.pixel_x = 0
+				i.pixel_y = 0
+				user.AppearanceOn()
+				break
+
 	verb/Shinigami_Form()
 		set name = "Shinigami Form"
 		set category = "Skills"
@@ -101,7 +123,7 @@
 
 	verb/Change_Shikai_Appearance()
 		set name = "Change Shikai Appearance"
-		set category = "Skills"
+		set category = "Shinigami"
 		var/icon/newIcon = input(usr, "Set Zanpakutō Shikai icon to what?") as icon|null
 		if(isnull(newIcon)) return
 		var/newX = input(usr, "Pixel X offset?") as num
@@ -114,7 +136,7 @@
 
 	verb/Change_Bankai_Appearance()
 		set name = "Change Bankai Appearance"
-		set category = "Skills"
+		set category = "Shinigami"
 		var/icon/newIcon = input(usr, "Set Zanpakutō Bankai icon to what?") as icon|null
 		if(isnull(newIcon)) return
 		var/newX = input(usr, "Pixel X offset?") as num
@@ -124,6 +146,19 @@
 		usr.BankaiIconY = newY
 		if(usr.InBankai())
 			applyBankaiIcon(usr)
+
+	verb/Change_Bankai_Shihakusho_Appearance()
+		set name = "Change Bankai Shihakusho Appearance"
+		set category = "Shinigami"
+		var/icon/newIcon = input(usr, "Set Shihakushō Bankai icon to what?") as icon|null
+		if(isnull(newIcon)) return
+		var/newX = input(usr, "Pixel X offset?") as num
+		var/newY = input(usr, "Pixel Y offset?") as num
+		usr.BankaiShihakushoIcon = newIcon
+		usr.BankaiShihakushoIconX = newX
+		usr.BankaiShihakushoIconY = newY
+		if(usr.InBankai())
+			applyBankaiShihakushoIcon(usr)
 
 /obj/Skills/Buffs/NuStyle/SwordStyle
 	Zanjutsu

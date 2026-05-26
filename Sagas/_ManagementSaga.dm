@@ -111,8 +111,18 @@ mob/var
 	BankaiIcon
 	BankaiIconX = 0
 	BankaiIconY = 0
+	BankaiShihakushoIcon
+	BankaiShihakushoIconX = 0
+	BankaiShihakushoIconY = 0
 	InShinigamiForm = FALSE
 	UsedFinalGetsuga = FALSE
+
+	// Kido pick tracking, shared across all four trees (Hado, Bakudo, Hoho, Hakuda)
+	KidoSL1Picks = 0   // max 2; tier cap <=1
+	KidoSL3Picks = 0   // max 2; tier cap <=2
+	KidoSL5Picks = 0   // max 1; tier cap <=3
+	KidoSL6Picks = 0   // max 1; tier cap <=4
+	KidoSL7Picks = 0   // max 1; tier cap <=5
 
 
 mob/Admin3/verb

@@ -32,7 +32,7 @@ obj/Skills/Buffs/NuStyle/NobodyLegendary
 			set hidden=1
 			adjust(usr)
 			src.Trigger(usr)
-	Heir_of_Grief
+	Heir_of_Grief // well this got way more accurate :(
 		SignatureTechnique=3
 		NeedsSword = 1
 		Copyable=0

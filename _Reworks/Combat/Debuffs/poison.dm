@@ -31,6 +31,11 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 	var/nerf = glob.vars["[typeOfDebuff]Nerf"]
 	var/base = glob.vars["max[typeOfDebuff]Damage"]
 	var/debuff = src.vars["[typeOfDebuff]"]
+	// For Poison, silent stacks don't deal tick damage
+	if(typeOfDebuff == "Poison" && src.SilentPoisonAmount > 0 && src.Poison > 0)
+		debuff = max(0, debuff - src.SilentPoisonAmount)
+		if(debuff <= 0)
+			return 0
 	var/damage = (base * (debuff/stackDivisor)) * nerf
 	switch(typeOfDebuff)
 		if("Burn")
@@ -115,7 +120,12 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 			if(Antivenomed)
 				base = 1.25
 			if(Poison>0)
-				Poison -= base * ((1 + (GetDebuffResistance() / 4)+boon))
+				var/reduction = base * (1 + (GetDebuffResistance() / 4) + boon)
+				// Reduce silent stacks proportionally
+				if(src.SilentPoisonAmount > 0)
+					var/silentFrac = min(1.0, src.SilentPoisonAmount / Poison)
+					src.SilentPoisonAmount = max(0, src.SilentPoisonAmount - (reduction * silentFrac))
+				Poison -= reduction
 				if(BlindingVenom && client)
 					if(!client.client_plane_master) // 3 checks lol ! maybe move this to new noob!
 						client.client_plane_master = new()
@@ -123,6 +133,7 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 					client.client_plane_master.filters = filter(type="blur", size=BlindingVenom*(Poison/150))
 			if(Poison<=0)
 				Poison = 0
+				src.SilentPoisonAmount = 0
 				if(BlindingVenom)
 					BlindingVenom=0
 					if(client.client_plane_master)

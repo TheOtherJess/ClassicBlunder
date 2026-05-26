@@ -34,7 +34,8 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply
 	TextColor="green"
 	MagicNeeded=0
 	Cooldown=60
-	passives = list("SpiralPowerUnlocked" = 1)
+	adjust(mob/p)
+		p.passive_handler.Increase("SpiralPowerUnlocked", 1)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	KenWave = 4
@@ -47,7 +48,8 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	OffMessage="limits themselves once again."
 	TextColor="green"
 	MagicNeeded=0
-	passives = list("SpiralPowerUnlocked" = 1)
+	adjust(mob/p)
+		p.passive_handler.Increase("SpiralPowerUnlocked", 1)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/ImposedEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	BuffName="Desperate Evolution"
@@ -180,7 +182,7 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/Impose_Evolution
 		set name="Force Evolution"
 		var/mob/User = usr
 		if(!User.party || !User.party.members || User.party.members.len == 0)
-			User << "You need to be in a party to apply Inspired Evolution."
+			User << "You need to be in a party to apply Imposed Evolution."
 			return
 		if(src.cooldown_remaining > 0)
 			User << "[src] is on cooldown."
@@ -271,7 +273,7 @@ obj/Skills/AutoHit/Spiral
 		AlwaysAnnounceCooldown = 1
 		Area="Arc"
 		AdaptRate=1
-		DamageMult=5
+		DamageMult=6
 		Rush=20
 		ControlledRush=1
 		WindUp = 0.5

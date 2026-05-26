@@ -1,7 +1,7 @@
 // TIER 1
 
 /obj/Skills/Projectile/Hado/Sho
-	name = "Hadō #1: Shō"
+	name = "Sho"
 	DamageMult = 5
 	Knockback = 5
 	Homing = 0
@@ -11,12 +11,12 @@
 	Cooldown = 15
 
 	verb/Sho()
-		set name = "Hadō #1: Shō"
+		set name = "Sho"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
 /obj/Skills/Projectile/Hado/Byakurai
-	name = "Hadō #4: Byakurai"
+	name = "Byakurai"
 	ChargeRate = 0.5
 	BeamTime = 10
 	DamageMult = 10
@@ -28,7 +28,7 @@
 	Cooldown = 30
 
 	verb/Byakurai()
-		set name = "Hadō #4: Byakurai"
+		set name = "Byakurai"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
@@ -44,14 +44,14 @@
 	OffMessage = "releases the conducted lightning."
 
 	verb/Tsuzuri_Raiden()
-		set name = "Hadō #11: Tsuzuri Raiden"
+		set name = "Tsuzuri Raiden"
 		set category = "Skills"
 		src.Trigger(usr)
 
 // TIER 2
 
 /obj/Skills/Projectile/Hado/Shakkahou
-	name = "Hadō #31: Shakkahō"
+	name = "Shakkahou"
 	HeldSkill = TRUE
 	InfiniteHold = TRUE
 	FireRate = 5
@@ -74,6 +74,7 @@
 
 	OnHeldTick(mob/p)
 		ChantNumber++
+		if(ChantNumber > 7) return
 		if(ChantNumber == 1)
 			src.ActiveMessage = "chants: <b>Ye lord!</b>"
 			src.DamageMult = 8
@@ -103,12 +104,15 @@
 		p.UseProjectile(src)
 
 	verb/Shakkahou()
-		set name = "Hadō #31: Shakkahō"
+		set name = "Shakkahou"
 		set category = "Skills"
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		usr.BeginHeldSkill(src)
 
 /obj/Skills/Projectile/Hado/Oukasen
-	name = "Hadō #32: Ōkasen"
+	name = "Oukasen"
 	ChargeRate = 1
 	BeamTime = 15
 	DamageMult = 15
@@ -118,15 +122,16 @@
 	Cooldown = 45
 	ActiveMessage = "releases a burst of golden energy with Hadō #32: Ōkasen!"
 	verb/Oukasen()
-		set name = "Hadō #32: Ōkasen"
+		set name = "Oukasen"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
 /obj/Skills/Projectile/Hado/Soukatsui
-	name = "Hadō #33: Sōkatsui"
+	name = "Soukatsui"
 	HeldSkill = TRUE
 	InfiniteHold = TRUE
 	FireRate = 5
+	Homing = 0
 	ManaCost = 10
 	Cooldown = 45
 	DamageMult = 5
@@ -143,6 +148,7 @@
 
 	OnHeldTick(mob/p)
 		ChantNumber++
+		if(ChantNumber > 7) return
 		if(ChantNumber == 1)
 			src.ActiveMessage = "chants: <b>Ye lord!</b>"
 			src.DamageMult = 7
@@ -181,14 +187,17 @@
 		p.UseProjectile(src)
 
 	verb/Soukatsui()
-		set name = "Hadō #33: Sōkatsui"
+		set name = "Soukatsui"
 		set category = "Skills"
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		usr.BeginHeldSkill(src)
 
-// ---- TIER 3 ------------------------------------------------
+// TIER 3
 
 /obj/Skills/Projectile/Hado/Haien
-	name = "Hadō #54: Haien"
+	name = "Haien"
 	Homing = 1
 	DamageMult = 20
 	Scorching = 20
@@ -199,12 +208,12 @@
 	Cooldown = 60
 	ActiveMessage = "hurls a violet blast of flames with Hadō #54: Haien!"
 	verb/Haien()
-		set name = "Hadō #54: Haien"
+		set name = "Haien"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
 /obj/Skills/Projectile/Hado/Tenran
-	name = "Hadō #58: Tenran"
+	name = "Tenran"
 	ChargeRate = 1
 	BeamTime = 15
 	DamageMult = 25
@@ -214,28 +223,28 @@
 	Cooldown = 60
 	ActiveMessage = "calls forth a fierce tempest with Hadō #58: Tenran!"
 	verb/Tenran()
-		set name = "Hadō #58: Tenran"
+		set name = "Tenran"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
-// ---- TIER 4 ------------------------------------------------
+// TIER 4
 
 /obj/Skills/AutoHit/Hado/Raikouhou
-	name = "Hadō #63: Raikōhō"
+	name = "Raikouhou"
 	HeldSkill = TRUE
 	InfiniteHold = TRUE
 	FireRate = 5
 	Area = "Target"
 	Distance = 20
 	DamageMult = 30
+	ForOffense = 1
 	Bolt = 4
-	BoltOffset = 2
+	BoltOffset = 0
 	Paralyzing = 10
 	ElementalClass = "Wind"
 	HitSparkIcon = 'BLANK.dmi'
 	HitSparkX = 0
 	HitSparkY = 0
-	WindUp = 1
 	ManaCost = 30
 	Cooldown = 90
 	ActiveMessage = "calls down a bolt of lightning with Hadō #63: Raikōhō!"
@@ -247,6 +256,7 @@
 
 	OnHeldTick(mob/p)
 		ChantNumber++
+		if(ChantNumber > 6) return
 		if(ChantNumber == 1)
 			src.ActiveMessage = "chants: <b>Sprinkled on the bones of the beast!</b>"
 			src.DamageMult = 36
@@ -273,17 +283,39 @@
 			src.Paralyzing = 50
 		OMsg(p, "<b>[p] [src.ActiveMessage]</b>")
 
-	OnHeldRelease(mob/p, benefit, sweet_spot_hit)
-		ChantNumber = 0
+	proc/RaikouhouJump(mob/p)
+		var/saved_pz = p.pixel_z
+		var/old_am = p.animate_movement
+		p.animate_movement = 0
+
+		// Smooth ascent to peak
+		animate(p, pixel_z = saved_pz + 96, time = 8, easing = QUAD_EASING|EASE_OUT)
+		sleep(8)
+
+		// Fire at the apex
 		p.Activate(src)
 
+		// Quick descent
+		animate(p, pixel_z = saved_pz, time = 4, easing = QUAD_EASING|EASE_IN)
+		sleep(4)
+
+		p.pixel_z = saved_pz
+		spawn(1) p.animate_movement = old_am
+
+	OnHeldRelease(mob/p, benefit, sweet_spot_hit)
+		ChantNumber = 0
+		RaikouhouJump(p)
+
 	verb/Raikouhou()
-		set name = "Hadō #63: Raikōhō"
+		set name = "Raikouhou"
 		set category = "Skills"
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		usr.BeginHeldSkill(src)
 
 /obj/Skills/Projectile/Hado/Souren_Soukatsui
-	name = "Hadō #73: Sōren Sōkatsui"
+	name = "Souren Soukatsui"
 	HeldSkill = TRUE
 	InfiniteHold = TRUE
 	FireRate = 5
@@ -304,6 +336,7 @@
 
 	OnHeldTick(mob/p)
 		ChantNumber++
+		if(ChantNumber > 7) return
 		if(ChantNumber == 1)
 			src.ActiveMessage = "chants: <b>Ye lord!</b>"
 			src.DamageMult = 34
@@ -335,7 +368,7 @@
 			src.Radius = 6
 			src.Combustion = 80
 		if(ChantNumber == 7)
-			src.ActiveMessage = "chants: Sōren Sōkatsui!</b>"
+			src.ActiveMessage = "chants: <b>Sōren Sōkatsui!</b>"
 			src.Radius = 7
 			src.Combustion = 100
 		src.IconSize = 1 + (0.25 * ChantNumber)
@@ -347,18 +380,21 @@
 		p.UseProjectile(src)
 
 	verb/Souren_Soukatsui()
-		set name = "Hadō #73: Sōren Sōkatsui"
+		set name = "Souren Soukatsui"
 		set category = "Skills"
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		usr.BeginHeldSkill(src)
 
 /obj/Skills/AutoHit/Hado/Zangerin
-	name = "Hadō #78: Zangerin"
+	name = "Zangerin"
 	StrOffense = 2
 	ManaCost = 30
 	Cooldown = 75
 
 	verb/Zangerin()
-		set name = "Hadō #78: Zangerin"
+		set name = "Zangerin"
 		set category = "Skills"
 		var/mob/User = usr
 		if(src.cooldown_remaining > 0)
@@ -465,10 +501,10 @@
 		if(FinalDmg <= 0) return
 		target.LoseHealth(FinalDmg)
 
-// ---- TIER 5 ------------------------------------------------
+// TIER 5
 
 /obj/Skills/Projectile/Hado/Hiryu
-	name = "Hadō #88: Hiryū Gekizoku Shinten Raihō"
+	name = "Hiryu Gekizoku Shinten Raihou"
 	ChargeRate = 1
 	BeamTime = 20
 	DamageMult = 40
@@ -478,12 +514,12 @@
 	Cooldown = 120
 
 	verb/Hiryu()
-		set name = "Hadō #88: Hiryū Gekizoku Shinten Raihō"
+		set name = "Hiryu Gekizoku Shinten Raihou"
 		set category = "Skills"
 		usr.UseProjectile(src)
 
 /obj/Skills/Projectile/Hado/Senju_Kouten_Taihou
-	name = "Hadō #91: Senju Kōten Taihō"
+	name = "Senju Kouten Taihou"
 	HeldSkill = TRUE
 	InfiniteHold = TRUE
 	FireRate = 5
@@ -495,6 +531,9 @@
 	Explode = 1
 	Hover = 7
 	Speed = 0.25
+	ZoneAttack = 1
+	ZoneAttackX=3
+	ZoneAttackY=3
 	Distance = 20
 	IconLock = 'NebulaStorm.dmi'
 	ActiveMessage = "summons forth ten blasts of light with Hadō #91: Senju Kōten Taihō!"
@@ -506,6 +545,7 @@
 
 	OnHeldTick(mob/p)
 		ChantNumber++
+		if(ChantNumber > 8) return
 		if(ChantNumber == 1)
 			src.ActiveMessage = "chants: <b>Limit of the thousands hands, respectful hands, unable to touch the darkness.</b>"
 			src.DamageMult = 7.5
@@ -538,12 +578,15 @@
 		p.UseProjectile(src)
 
 	verb/Senju_Kouten_Taihou()
-		set name = "Hadō #91: Senju Kōten Taihō"
+		set name = "Senju Kouten Taihou"
 		set category = "Skills"
+		if(src.ManaCost && usr.ManaAmount < src.ManaCost)
+			usr << "You don't have enough mana to use [src.name]."
+			return
 		usr.BeginHeldSkill(src)
 
 /obj/Skills/AutoHit/Hado/Itto_Kaso
-	name = "Hadō #96: Ittō Kasō"
+	name = "Itto Kaso"
 	WoundCost = 25
 	Cooldown = -1
 	DamageMult = 75
@@ -571,7 +614,7 @@
 	PreQuake = 1
 
 	verb/Itto_Kaso()
-		set name = "Hadō #96: Ittō Kasō"
+		set name = "Itto Kaso"
 		set category = "Skills"
 		var/mob/User = usr
 		if(src.Using)

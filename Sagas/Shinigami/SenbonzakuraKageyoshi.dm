@@ -96,7 +96,10 @@
 			row_cy += user.y
 		spawn()
 			var/idle_ticks = 0
-			while(src.SlotlessOn && user && user.client && user.loc && petals.len == 24)
+			while(src.SlotlessOn && user && user.loc && petals.len == 24)
+				if(!user.client)
+					deletePetals(user)
+					return
 				var/dragging = user.client.senbonzakura_dragging
 
 				if(dragging)
@@ -252,6 +255,12 @@
 			if(!p) continue
 			p.inactive = inactive_state
 			animate(p, alpha=alpha_val, time=3)
+
+	Del()
+		for(var/obj/Effects/Senbonzakura_Petal/p in petals)
+			if(p) del p
+		petals = list()
+		..()
 
 	proc/bankaiActivationSequence(mob/user)
 		spawn()

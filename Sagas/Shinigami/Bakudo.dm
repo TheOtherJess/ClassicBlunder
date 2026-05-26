@@ -95,6 +95,8 @@ proc/hitApplyShitotsuSansen(mob/target, obj/Skills/Projectile/_Projectile/proj)
 
 /obj/Skills/Buffs/ActiveBuffs/Bakudo/Seki
 	name = "Seki"
+	ActiveSlot = 0
+	Slotless = 1
 	TimerLimit = 15
 	Cooldown = 30
 	ManaCost = 5
@@ -131,6 +133,8 @@ proc/hitApplyShitotsuSansen(mob/target, obj/Skills/Projectile/_Projectile/proj)
 
 /obj/Skills/Buffs/ActiveBuffs/Bakudo/Enkousen
 	name = "Enkousen"
+	ActiveSlot = 0
+	Slotless = 1
 	TimerLimit = 15
 	Cooldown = 45
 	ManaCost = 10

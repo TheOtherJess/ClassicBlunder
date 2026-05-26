@@ -81,13 +81,13 @@ mob
 			for(var/mob/E as anything in hearers)
 				if(!E.client) continue
 				if(!E.Admin && E.Mapper && E.invisibility) continue
-				E.client.outputToChat("[E.Controlz(src)][formattedMessage]", IC_OUTPUT)
+				E.client.outputToChat("[E.Controlz(src)][formattedMessage]<center></center>", IC_OUTPUT)
 
 				Log(E.ChatLog(),"<font color=red>*[name]([key]) [html_decode(formattedMessage)]*")
 				Log(E.sanitizedChatLog(),"<font color=red>*[name] [html_decode(formattedMessage)]*")
 				if(E.BeingObserved.len>0)
 					for(var/mob/m in E.BeingObserved)
-						m.client.outputToChat("[OBSERVE_HEADER][m.Controlz(src)][formattedMessage]", IC_OUTPUT)
+						m.client.outputToChat("[OBSERVE_HEADER][m.Controlz(src)][formattedMessage]<center></center>", IC_OUTPUT+"<center></center>")
 
 			Say_Spark()
 			CheckAFK()

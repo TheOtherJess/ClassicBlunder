@@ -2,6 +2,7 @@
 
 /obj/Skills/Projectile/Magic/AngelMagic
 	MagicNeeded = 0
+	CooldownStatic=1
 
 /obj/Skills/Projectile/Magic/AngelMagic/Radiant_Lance
 	name = "Radiant Lance"

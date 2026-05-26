@@ -9963,7 +9963,7 @@ NEW VARIABLES
 							MovementMastery = p.secretDatum.currentTier * 2
 							Godspeed = p.secretDatum.currentTier * 2
 							StrMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							EndMult = 1.25
+							EndMult = 0.75
 							SpdMult = 1.25 + (p.secretDatum.currentTier * 0.25)
 							OffMult = 1.25 + (p.secretDatum.currentTier * 0.25)
 							DefMult = 0.75

@@ -18,7 +18,7 @@
 	BlackAnt
 		ActiveMessage="becomes as insignificant as a black ant."
 		OffMessage="regains their name!"
-		passives = list("NameCurse" = "BlackAnt")
+		passives = list("NameCurse" = "Black Ant")
 		NameFake="Black Ant"
 		SlowAffected = 1
 		TimerLimit = 30

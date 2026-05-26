@@ -56,8 +56,8 @@ Or was it Infi, with the brand of the ring, endlessly energetic?"};
 							speed = 1
 							offense = 1
 						if("Feather Knife")
-							passives["PureDamage"] = 2;
-							passives["PureReduction"] = 1;
+							passives["PureDamage"] = 0.5;
+							passives["PureReduction"] = 0.25;
 							passives["Musoken"] = 1;
 							passives["AttackSpeed"] = 1;
 							passives["BlurringStrikes"] = 1;
@@ -147,8 +147,8 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 							speed = 1
 							offense = 1
 						if("Feather Knife")
-							owner.passive_handler.Increase("PureReduction", 1)
-							owner.passive_handler.Increase("PureDamage", 2)
+							owner.passive_handler.Increase("PureReduction", 0.25)
+							owner.passive_handler.Increase("PureDamage", 0.5)
 							owner.passive_handler.Increase("Musoken", 1)
 							owner.passive_handler.Increase("AttackSpeed", 1)
 							owner.passive_handler.Increase("BlurringStrikes", 1);

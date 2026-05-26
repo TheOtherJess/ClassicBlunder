@@ -331,7 +331,7 @@ obj/Skills
 		verb/Transform()
 			set name="Transform!"
 			set category="Utility"
-			if(usr.StandardTransformRequirements())
+			if(usr.StandardTransformRequirements()&&!usr.isRace(HUMAN))
 				usr.Transform()
 		verb/Revert()
 			set name="Revert!"

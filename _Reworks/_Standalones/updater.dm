@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 25
+	var/UPDATE_VERSION = 26
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -585,6 +585,10 @@ update
 						p.passive_handler.Increase("BlurringStrikes", 1);
 						p.passive_handler.Decrease("CriticalChance", 10);
 						p.passive_handler.Decrease("CriticalDamage", 0.1);
+	version25
+		version = 25;
+		updateMob(mob/p)
+			. = ..()
 
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25

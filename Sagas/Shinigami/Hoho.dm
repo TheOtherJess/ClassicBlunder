@@ -72,6 +72,7 @@
 		// Create decoy clone at user's current position
 		var/mob/Player/HohoClone/c = new(User.loc)
 		c.initClone(User)
+		c.fade_owner = User
 
 		// Redirect all players currently targeting the user to the clone
 		for(var/mob/Players/P in players)
@@ -93,15 +94,10 @@
 
 		User << "You slip away behind an afterimage with Utsusemi."
 
-		// Fade back in after 1 second
-		spawn(10)
-			if(User && User.loc)
-				animate(User, alpha=255, time=5)
-
 		// Clone expires after 5 seconds
 		spawn(50)
 			if(c && c.loc)
-				c.cleanup()
+				c.fadeAndDelete()
 
 // TIER 4
 
@@ -135,6 +131,7 @@
 			var/mob/Player/HohoClone/c = new(User.loc)
 			c.initClone(User)
 			var/dir = pick(dirs)
+			dirs -= dir
 			var/turf/start = User.loc
 			var/spread_dist = rand(3, 5)
 			for(var/step = 1 to spread_dist)
@@ -153,7 +150,7 @@
 
 		spawn(0)
 			while(clones_active && cloneList && User && User.loc)
-				sleep(2)
+				sleep(1)
 				if(!User || !User.loc) break
 				if(world.time >= end_time) break
 
@@ -177,8 +174,14 @@
 						if(swap_c && swap_c.loc)
 							var/turf/user_turf = User.loc
 							var/turf/clone_turf = swap_c.loc
-							User.loc = clone_turf
-							swap_c.loc = user_turf
+							// Skip if a clone is already at the swap destination
+							var/blocked = FALSE
+							for(var/mob/Player/HohoClone/other in user_turf)
+								blocked = TRUE
+								break
+							if(!blocked)
+								User.loc = clone_turf
+								swap_c.loc = user_turf
 
 					last_x = User.x
 					last_y = User.y
@@ -188,7 +191,7 @@
 			if(cloneList)
 				for(var/mob/Player/HohoClone/c in cloneList)
 					if(c && c.loc)
-						c.cleanup()
+						c.fadeAndDelete()
 				cloneList = null
 
 mob/Player/HohoClone
@@ -196,6 +199,7 @@ mob/Player/HohoClone
 	density = 1
 	Grabbable = 1
 	var/mob/owner = null
+	var/mob/fade_owner = null
 
 	New(loc)
 		..()
@@ -207,15 +211,45 @@ mob/Player/HohoClone
 		src.name = User.name
 		src.dir = User.dir
 		src.owner = User
+		src.Health = User.Health
+		src.VaizardHealth = User.VaizardHealth
+		spawn(0)
+			while(src && src.loc && !fading && owner && owner.loc)
+				src.Health = owner.Health
+				src.VaizardHealth = owner.VaizardHealth
+				sleep(1)
 
-	proc/cleanup()
+	var/tmp/fading = FALSE
+
+	proc/fadeAndDelete()
+		if(fading) return
+		fading = TRUE
 		for(var/mob/m in players)
 			if(m.Target == src)
 				m.Target = null
-		del src
+		if(fade_owner && fade_owner.loc && fade_owner.alpha < 255)
+			animate(fade_owner, alpha=255, time=10)
+		animate(src, alpha=0, time=10)
+		spawn(10)
+			if(src) del src
 
-	Unconscious(mob/P, text)
-		cleanup()
+	LoseHealth(amount)
+		fadeAndDelete()
+
+	HasGodKi()
+		if(owner && owner.loc)
+			return owner.HasGodKi()
+		return 0
+
+	GetGodKi()
+		if(owner && owner.loc)
+			return owner.GetGodKi()
+		return 0
+
+	HasMaouKi()
+		if(owner && owner.loc)
+			return owner.HasMaouKi()
+		return 0
 
 	Del()
 		for(var/mob/m in players)

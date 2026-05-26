@@ -11611,7 +11611,7 @@ NEW VARIABLES
 						ElementalOffense = "Light"
 						strAdd = 0.075 * asc
 						endAdd = 0.075 * asc
-						passives = list("Wrathful Tenacity" = asc*0.2, "HolyMod" = asc/2, \
+						passives = list("Wrathful Tenacity" = asc*0.3, "HolyMod" = asc, \
 							"LifeGeneration" = asc+1, "CallousedFeet" = asc+1, "HardenedFrame" = 1, "SoftStyle" = asc/2)
 					Trigger(mob/User, Override = FALSE)
 						if(!User.BuffOn(src))

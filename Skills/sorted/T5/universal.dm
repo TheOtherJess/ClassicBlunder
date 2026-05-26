@@ -82,7 +82,7 @@
 	AdaptRate = 1
 	EndDefense = 0.75
 	Copyable=6
-	Cooldown = 75
+	Cooldown = 360
 	ComboMaster = 1
 	GuardBreak = 1
 	NoLock = 1
@@ -106,8 +106,8 @@
 	PostShockwave=1
 	ShockIcon='KenShockwavePurple.dmi'
 	HitSparkIcon='KenShockwavePurple.dmi'
-//	HitSparkX=-32
-//	HitSparkY=-32
+	HitSparkX=-96
+	HitSparkY=-96
 	HitSparkTurns=1
 	HitSparkSize=1
 	HitSparkDispersion=1
@@ -139,6 +139,7 @@
 		if(ChantNumber==6)
 			src.ActiveMessage="chants: <b>UNITE!</b>"
 			src.DamageMult=40
+			p.Suspended=1
 		if(ChantNumber==7)
 			src.ActiveMessage="chants: <b>REPULSE!</b>"
 			src.DamageMult=45
@@ -159,10 +160,12 @@
 		p.Activate(src, ignoreCuck=TRUE, ignoreAttackLock=TRUE)
 		src.Cooldown(1, null, p)
 		ActiveMessage = "starts chanting..."
+		p.Suspended=0
 
 	OnHeldFizzle(mob/p)
 		src.ChantNumber=0
 		ActiveMessage = "starts chanting..."
+		p.Suspended=0
 
 	verb/Kurohitsugi()
 		set category = "Skills"

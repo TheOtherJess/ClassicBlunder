@@ -34,6 +34,7 @@ mob/proc/gainShinigami()
 
 	src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shinigami_Form)
 	src.AddSkill(new/obj/Skills/Buffs/NuStyle/SwordStyle/Zanjutsu)
+	src << "Your training grants you access to Kidō. You can currently select 2 Tier 1 spells."
 
 	if(src.ShinigamiRelease == "Nozarashi")
 		src << "A <b>[src.ZanpakutoClass]</b> Zanpakutō and <b>[src.ShihakushoClass]</b> Shihakushō have found their way into your possession, somehow."
@@ -69,6 +70,7 @@ mob/tierUpSaga(Path)
 				updateShinigamiAscended()
 
 			if(3)
+				src << "Your Kidō deepens. You can learn 2 more spells (Tier 2 or lower)."
 				switch(ShinigamiRelease)
 					if("Nozarashi")
 						src.AddSkill(new/obj/Skills/Queue/Two_Hands)
@@ -121,6 +123,7 @@ mob/tierUpSaga(Path)
 				updateShinigamiAscended()
 
 			if(5)
+				src << "Your mastery of Kidō sharpens. You can select 1 spell (Tier 3 or lower)."
 				if(ShinigamiRelease == "Nozarashi")
 					src << "You have mastered your Shikai. Its drain fades..."
 				else
@@ -142,6 +145,7 @@ mob/tierUpSaga(Path)
 				updateShinigamiAscended()
 
 			if(6)
+				src << "You are nearing the heights of Kidō. You can select 1 spell (Tier 4 or lower)."
 				switch(ShinigamiRelease)
 					if("Nozarashi")
 						src << "The full power of your soul erupts. <b>Bankai</b> is yours."
@@ -165,6 +169,7 @@ mob/tierUpSaga(Path)
 				updateShinigamiAscended()
 
 			if(7)
+				src << "The highest art of Kidō is within reach. You can select 1 spell (Tier 5 or lower)."
 				src.passive_handler.Increase("GodKi", 0.25)
 				if(ShinigamiRelease == "Nozarashi")
 					src << "Your body can finally withstand your Bankai's power."

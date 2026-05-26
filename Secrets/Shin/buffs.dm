@@ -12,6 +12,7 @@
     DefMult = 1.2
     ManaGlow = "#c7b921"
     ManaGlowSize = 2
+    CantHaveTheseBuffs = list("Mang Resonance")
     adjust(mob/p)
         var/secretLevel = p.secretDatum.currentTier
         var/mod = (secretLevel-5)

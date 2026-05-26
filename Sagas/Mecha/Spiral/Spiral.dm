@@ -101,3 +101,47 @@ mob/tierUpSaga(path)
 		adjust(usr)
 		usr.Activate(src)
 
+/obj/Skills/AutoHit/Anti_Spiral_Giga_Drill_Breaker
+	Area="Circle"
+	DamageMult=2
+	Rounds=10
+	Knockback = 1
+	ComboMaster=1
+	Cooldown=180
+	Size=1
+	EnergyCost=7
+	GuardBreak=1
+	SpecialAttack=1
+	Rush=5
+	WindUp = 0.75
+	ControlledRush=1
+	Instinct=1
+	TurfStrike=1
+	TurfShift='StarPixel.dmi'
+	TurfShiftDuration=2
+	ObjIcon = 1
+	Icon='antidrill.dmi'
+	IconX = -8
+	IconY = -8
+	ChargeTech = 1
+	WindupMessage= "yells: <b>HOW INTERESTING! ANTI-SPIRAL...</b>"
+	ActiveMessage="yells: <b>GIGA DRILL BREAKEEEEEERRRRR!!!!</b>"
+	adjust(mob/p)
+		var/sl = p.AscensionsAcquired
+		var/sp = p.AscensionsAcquired
+		var/dr = sl + sp
+		ControlledRush = 5 + dr
+		AdaptRate = 1.1 + (0.1 * sl) + (0.1 * sp)
+		Size = 1 + dr
+		TurfStrike = Size
+		WindUp = 0.1 + (0.15 * sl) + (0.1 * sp)
+		DamageMult = (1 + (round(dr/3)))
+		Rounds = 20
+		PullIn = dr
+		Primordial = round(dr/4)
+		Executor = max(dr, 3)
+		EnergyCost = 1 + (3 * dr)
+	verb/Anti_Spiral_Giga_Drill_Break()
+		set category="Skills"
+		adjust(usr)
+		usr.Activate(src)

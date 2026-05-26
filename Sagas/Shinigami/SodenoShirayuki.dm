@@ -307,7 +307,7 @@ obj/Skills/AutoHit
 		Distance=12
 		WindUp=2
 		ComboMaster=1
-		Guardbreak=1
+		GuardBreak=1
 		DamageMult=10
 		SpecialAttack=1
 		Freezing=100

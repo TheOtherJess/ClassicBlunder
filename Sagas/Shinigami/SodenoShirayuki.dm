@@ -88,7 +88,7 @@ Make it so that Bankai actually turns your sprite all white. Might need someone 
 			"ChillResist"    = 2 * SL, // This should make it so that Chill hurts you less.
 			"Freezing"       = 4 * SL, // This should be pretty self-explanatory, Rukia's release is an ice release. Brrr.
 			"SpiritSword"    = 0.5 * SL, //Rukia always comes off as a proper hybrid as a Shinigami should be, so give users of her release soem Spirit Sword.
-			"CriticalChance" = 1 * SL,
+			"CriticalChance" = 10 * SL,
 			"CriticalDamage" = 0.1 * SL,
 			"AbsoluteZero"   = 1, // This gives other debuffs scaling off Chill stacks.
 			"IceHerald"      = 1, // Lets you use IceHerald in Bankai, Always.

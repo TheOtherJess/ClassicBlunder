@@ -3,7 +3,7 @@
 #define MANG_MANA_COST 10 // Determines the cost of activating a Mang Ring/Level
 
 /obj/Skills/Buffs/SlotlessBuffs/Shin_Radiance
-    passives = list("GiantForm" = 1, "Harden" = 1, "PureReduction" = 1, "Godspeed" = 1, "Deflection" = 1, "ManaGeneration" = 1, "Unnerve" = 1, "Skimming" = 1) // SOME OF THESE GET CHANGED IN THE ADJUST
+    passives = list("Harden" = 1, "PureReduction" = 1, "Godspeed" = 1, "Deflection" = 1, "ManaGeneration" = 1, "Skimming" = 1) // SOME OF THESE GET CHANGED IN THE ADJUST
     ActiveMessage="radiates a soft, warding glow of Light."
     OffMessage="suppresses the glow of the Light, letting their emotions flow on."
     TextColor=rgb(203, 198, 47)
@@ -25,7 +25,6 @@
         passives["Godspeed"] = secretLevel
         passives["Deflection"] = (0.5 * secretLevel) //Goes from 1 to 3
         passives["ManaGeneration"] = secretLevel
-        passives["Unnerve"] = secretLevel // Aura Farming as a passive.
         passives["Skimming"] = clamp(secretLevel / 2, 1, 2)
         // It also replaces your mana name to Shin but REPLACEMANA IS A STUPID FUCKING PASSIVE SO I DID IT IN THE UPDATE_STAT_LABELS PROC FUCK FUCK FUCK
 
@@ -49,7 +48,7 @@
     IconLock = 'Icons/Buffs/SecretBuffs/Mang/MangRing1.dmi'
     var/image/currentImage;
     // THESE GET CHANGED IN THE ADJUST
-    passives = list("GiantForm" = 1, "Harden" = 1, "PureReduction" = 1, "Godspeed" = 1, "Deflection" = 1, "Unnerve" = 1, "Skimming" = 1) // SOME OF THESE GET CHANGED IN THE ADJUST
+    passives = list("Harden" = 1, "PureReduction" = 1, "Deflection" = 1, "Skimming" = 1) // SOME OF THESE GET CHANGED IN THE ADJUST
     adjust(mob/p)
         var/secretLevel = p.secretDatum.currentTier
         var/mod = (secretLevel-5)
@@ -60,9 +59,7 @@
         // Tier Adjusted Passives
         passives["Harden"] = clamp(secretLevel*2, 1, 5)/2 // starts at 1, adds 2 per tier, caps at 5 (tier 3)
         passives["PureReduction"] = clamp(secretLevel >= 3 ? (secretLevel+mod) : 0, 0, 5)/2; //Scales from tier 3 (1) to tier 5 (5)
-        passives["Godspeed"] = secretLevel/2
         passives["Deflection"] = (0.5 * secretLevel)/2 //Goes from 1 to 3
-        passives["Unnerve"] = secretLevel/2 // Aura Farming as a passive.
         passives["Skimming"] = 1
    // IconApart = 1
 

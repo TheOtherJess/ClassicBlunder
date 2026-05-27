@@ -39,10 +39,13 @@
         if(usr.equippedFlask.Charges == 0)
             usr << "You have no Flask Charges left!"
             return
-        usr.reduceCharge() // mob proc that reduces charges
-        if(!usr.CheckSlotless("Flask Charge")) // If no buff,
+        if(!usr.CheckSlotless("Flask Charge")) // If no buff, 
             for(var/typesFromTechniques in src.Techniques) // We want to go fishing
                 var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Flask_Charge/usedFlask = usr.findOrAddSkill(typesFromTechniques); // then we assign our fish to a var
+                if(usedFlask.Using)
+                    usr << "You cannot imbibe more right now!"
+                    return // FUCK YOU FUCK YOU FUCK YOU 
+                if(!usr.reduceCharge()) return // mob proc that reduces charges
                 usedFlask.adjust(usr); // We can now pass adjust and trigger procs as if we were in the buff (kind of)
                 usedFlask.Trigger(usr);
 
@@ -60,7 +63,6 @@
     MagicNeeded=1
     ActiveMessage="imbibes a concoction from their Flask!"
     TextColor=rgb(149, 255, 0)
-    AlwaysOn=1
     CooldownStatic = 1 // No, you will not use technique mastery.
     Cooldown = 0 // THIS IS HANDLED IN ADJUST FUCK MY CHUD LIFE
     TimerLimit = 60
@@ -93,15 +95,15 @@
         if(P.equippedFlask.Hallucinogen == 1) // This gives you immediate anger and anger buffs at expense of defense
             AutoAnger=1 // Makes you angry instantly
             // Please note: the comments will tell you what the math does
-            AngerMult = 1 + (P.equippedFlask.Tier+1)/4 // T0 = +25%, T1 = +50%  T2 = +75% anger multiplier
             EndMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 endurance mult (DOWNSIDE)
             DefMult = 0.6 + (P.equippedFlask.Tier+1)/10 // T0 = 0.7, T1 = 0.8, T3 = 0.9 Defense mult (DOWNSIDE)
-            passives["PureReduction"] += -10 + (P.equippedFlask.Tier+1) // T0 = -9, T1 = -8 T2 = -7, PS: -1 PureReduction = 5% extra damage taken,
+            passives["PureReduction"] += -7 + (P.equippedFlask.Tier+1) // T0 = -6, T1 = -5 T2 = -4, PS: -1 PureReduction = 5% extra damage taken,
             passives["AngerAdaptiveForce"] += ((P.equippedFlask.Tier+1)/10) // T0 0.1 AAF, T1 0.2, T2 0.3 PS: 0.1 AAF = 10% increase of strongest dmg stat
+            passives["AngerThreshold"] += 2 + ((P.equippedFlask.Tier/2)) // t0 = 200 Anger, T1 = 250 Anger, T2 = 300 Anger
         if(P.equippedFlask.Searing == 1) // Damage
             StrMult = 1 + (P.equippedFlask.Tier+1)/10 // T0 = 1.1, T1 = 1.2, T2 = 1.3
             ForMult = 1 + (P.equippedFlask.Tier+1)/10 // Same as above
-            passives["PureDamage"] += (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3 // 10% to 30% dmg boost
+            passives["PureDamage"] += (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3 // 5% to 15% dmg boost
             passives["Steady"] += (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["PureReduction"] += -5 + (P.equippedFlask.Tier+1) // T0 = -4, T1= -3 T2 = -2 // 20% to 10% extra damage taken (DOWNSIDE)
         if(P.equippedFlask.Flowy == 1) // Dodging
@@ -113,7 +115,7 @@
         if(P.equippedFlask.Hard == 1) // Defense
             EndMult = 1 + (P.equippedFlask.Tier+1)/10 //T0 = 1.1, T1 = 1.2, T3 = 1.3 endurance mult
             SpdMult = 0.85 + (P.equippedFlask.Tier+1)/20 // T0 = 0.9, T1 = 0.95, T3 = 1 (DOWNSIDE)
-            passives["Harden"] += (P.equippedFlask.Tier+1)/2 // T0 = 0.5, T1 = 1, T2 = 1.5
+            passives["PureReduction"] += (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Unnerve"] += (P.equippedFlask.Tier+1) // T0 = 1, T1 = 2, T2 = 3
             passives["Godspeed"] += -4 + (P.equippedFlask.Tier+1) // T0 = -3, T1 = -2, T2 = -1 (DOWNSIDE)
         if(P.equippedFlask.Quicksilver == 1) // Speed, you must be feeling pretty stupid restricting magic now huh Jess?
@@ -135,6 +137,7 @@ mob/proc/reduceCharge() // Reduces charges, fuck this gave me a headache
             equippedFlask.Charges = GetMaxFlaskCharges()
         return
     --equippedFlask.Charges // The whole reason we're here
+    return 1;
 
 
 mob/proc/GetMaxFlaskCharges() // adds tier to the define, used in Gains.dm line 237

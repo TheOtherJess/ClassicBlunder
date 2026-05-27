@@ -120,6 +120,7 @@ obj/Skills/Grapple
 					ThrowMult = 2
 					ThrowSpeed = 2
 					TriggerMessage = "launches"
+					BuffSelf = "/obj/Skills/Buffs/SlotlessBuffs/Spiral/CombustionOfTheSoul"
 				else
 					resetValues()
 				src.Activate(usr)

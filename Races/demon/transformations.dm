@@ -67,7 +67,7 @@ transformation
 					forceadd = 0.5
 					speedadd = 0.5
 				if(mastery >= 50)
-					passives = list("HellRisen" = 0.75, "DemonicDurability" = 3, "Brutalize" = 2, "PureDamage" = 4, "PureReduction" = 4, "MovementMastery" = 6)
+					passives = list("HellRisen" = 0.75, "DemonicDurability" = 3, "Brutalize" = 2, "PureDamage" = 6, "PureReduction" = 6, "MovementMastery" = 6)
 					enduranceadd = 0.75
 					offenseadd = 0.75
 					defenseadd = 0.75

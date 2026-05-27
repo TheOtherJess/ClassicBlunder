@@ -97,12 +97,12 @@ transformation
 
 		spectral_tension // temp
 			passives = list("Instinct" = 1, "Flow" = 1, "Flicker" = 1, "Pursuer" = 2,  "BuffMastery" = 3, "PureDamage" = 1, "PureReduction" = 1)
-			speedadd = 0.75
-			enduranceadd = 0.75
-			offenseadd = 0.75
-			defenseadd = 0.75
-			strengthadd = 0.75
-			forceadd = 0.75
+			speedadd = 0.35
+			enduranceadd = 0.35
+			offenseadd = 0.35
+			defenseadd = 0.35
+			strengthadd = 0.35
+			forceadd = 0.35
 			pot_trans = 20
 			transformation_message = "usrName manifests the true nature of their body!"
 			adjust_transformation_visuals(mob/user)

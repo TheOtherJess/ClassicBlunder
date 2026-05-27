@@ -3455,7 +3455,7 @@ mob
 					if(Trg.Knockbacked)
 						src.NextAttack=0
 						Trg.StopKB()
-						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash"))
+						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash")||passive_handler.Get("SpiralImpact"))
 							for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Clash_Defensive/DC in Trg)
 								if(!Trg.BuffOn(DC))
 									var/pursuerBoon = Trg.HasPursuer()

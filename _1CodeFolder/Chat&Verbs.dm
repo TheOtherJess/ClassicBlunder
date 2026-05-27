@@ -29,6 +29,55 @@
 		if(NewRPP>=0)
 			usr.RPPSpendable=NewRPP
 			Log("Admin","[ExtractInfo(usr)] set [ExtractInfo(usr)]'s total RPP (Spent and Unused) from [Commas(OldRPP)] to [Commas(NewRPP)]. (RPP mult of x[EMult])")*/
+mob
+	proc/MultReset()
+		if(!(world.time > src.verb_delay))
+			return FALSE
+
+		is_dashing = 0
+		if(src.isRace(BEASTKIN) && src.race?:Racial == "Feather Knife")
+			src.passive_handler.passives["Extra Secret Knives"] = "Feathers"
+		if(src.isRace(BEASTKIN) && src.race?:Racial == "Fox Fire")
+			src.passive_handler.passives["Heavy Strike"] = "Fox Fire"
+		if(src.isRace(BEASTKIN) && src.race?:Racial == "Monkey King")
+			var/obj/Skills/Buffs/s = src.findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Racial/Beastkin/Never_Fall/)
+			if(!s.Using)
+				s.Trigger(src, TRUE)
+
+		if(src.isRace(BEASTKIN) && src.race?:Racial == "Heart of The Beastkin")
+			src.passive_handler.Set("Grit", 1)
+
+		src.verb_delay=world.time+1
+		for(var/b in src.SlotlessBuffs)
+			var/obj/Skills/Buffs/x = src.SlotlessBuffs[b]
+			if(x==null)
+				src.SlotlessBuffs.Remove(null)
+			if(x)
+				if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament))
+					x:Trigger(src)
+				if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation))
+					x:Trigger(src)
+		if(src.Power_Multiplier==1&&src.StrMultTotal==1&&src.EndMultTotal==1&&src.SpdMultTotal==1&&src.ForMultTotal==1&&src.OffMultTotal==1&&src.DefMultTotal==1&&src.RecovMultTotal==1)
+			return FALSE
+		if(src.StanceBuff||src.StyleBuff||src.ActiveBuff||src.SpecialBuff||src.SlotlessBuffs.len>0)
+			src <<"Cannot reset Mult while buffs are active."
+			return FALSE
+		if(src.transActive)
+			src<<"Cannot reset Mult while a transformation is active."
+			return FALSE
+		src<<"Reseting stat and power multipliers."
+		src.Splits=new/list()
+		src.Power_Multiplier=1
+		src.StrMultTotal=1
+		src.EndMultTotal=1
+		src.SpdMultTotal=1
+		src.ForMultTotal=1
+		src.OffMultTotal=1
+		src.DefMultTotal=1
+		src.RecovMultTotal=1
+		sleep(20)
+		src<<"Stats and power successfully reset to normal."
+		return TRUE
 
 atom/proc/Examined(mob/user)
 mob/Players/var/tmp/current_party_target_index = 1
@@ -695,50 +744,13 @@ mob/Players/verb
 		var/Z=input(usr,"Choose an icon for your Charge effect, that shows when charging a beam or Charge skill. The icon must have a blank named icon state in the file.","ChangeIcon")as icon | null
 		if(!Z) return
 		usr.ChargeIcon=Z
+
 	Reset_Multipliers()
 		set category="Other"
 		set name="Reset Multipliers"
-		if(!(world.time > usr.verb_delay)) return
-		is_dashing = 0
-		if(isRace(BEASTKIN) && race?:Racial == "Feather Knife")
-			passive_handler.passives["Extra Secret Knives"] = "Feathers"
-		if(isRace(BEASTKIN) && race?:Racial == "Fox Fire")
-			passive_handler.passives["Heavy Strike"] = "Fox Fire"
-		if(isRace(BEASTKIN) && race?:Racial == "Monkey King")
-			var/obj/Skills/Buffs/s = findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Racial/Beastkin/Never_Fall/)
-			if(!s.Using)
-				s.Trigger(src, TRUE)
-		if(isRace(BEASTKIN) && race?:Racial == "Heart of The Beastkin")
-			passive_handler.Set("Grit", 1)
 
-		usr.verb_delay=world.time+1
-		for(var/b in usr.SlotlessBuffs)
-			var/obj/Skills/Buffs/x = usr.SlotlessBuffs[b]
-			if(x==null)
-				usr.SlotlessBuffs.Remove(null)
-			if(x)
-				if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Armament))
-					x:Trigger(src)
-				if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation))
-					x:Trigger(src)
-		if(usr.StanceBuff||usr.StyleBuff||usr.ActiveBuff||usr.SpecialBuff||usr.SlotlessBuffs.len>0)
-			usr<<"You must disable all buffs before using this command."
-			return
-		if(usr.transActive)
-			usr<<"You cannot do this while transed! Revert first!"
-			return
-		usr<<"Reseting stat and power multipliers."
-		usr.Splits=new/list()
-		usr.Power_Multiplier=1
-		usr.StrMultTotal=1
-		usr.EndMultTotal=1
-		usr.SpdMultTotal=1
-		usr.ForMultTotal=1
-		usr.OffMultTotal=1
-		usr.DefMultTotal=1
-		usr.RecovMultTotal=1
-		sleep(20)
-		usr<<"Stats and power successfully reset to normal."
+		src.MultReset()
+
 	Reset_Overlays()
 		set category="Other"
 		if(!(world.time > usr.verb_delay)) return

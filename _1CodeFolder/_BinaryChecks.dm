@@ -884,8 +884,7 @@ mob
 			if(passive_handler.Get("Null")) return 1;
 			return 0;
 		HasNullTarget()
-			if(isRace(DEMIFIEND) || istype(src, /mob/Player/AI/Demon)) return 0;
-			if(Target) if(Target.HasNull() && !HasMaouKi()) return 1;
+			if(Target) if(Target.HasNull()) return 1;
 			return 0;
 		HasBleedHit()
 			if(passive_handler.Get("Half Manifestation")&&AscensionsAcquired<3)
@@ -1425,6 +1424,8 @@ mob
 			return 0
 		HasSpecialBuffLock()
 			if(passive_handler.Get("SpecialBuffLock"))
+				return 1
+			if(InShikai() || InBankai())
 				return 1
 			if(src.InfinityModule)
 				return 1
@@ -2086,18 +2087,7 @@ mob
 					Total+=src.Target.GetGodKi()/4
 				else if(src.Target&&!src.Target.CheckSlotless("Saiyan Soul")&&src.Target.HasGodKi()&&!src.Target.passive_handler.Get("CreateTheHeavens")&&!src.Target.passive_handler.Get("Hidden Potential")&&!src.Target.passive_handler.Get("Orange Namekian"))
 					Total+=src.Target.GetGodKi()/3*/
-			if(HasGodKiCopy())
-				if(src.Target)
-					if(src.Target.HasGodKi()&&!src.Target.HasGodKiCopy()&&!src.Target.passive_handler.Get("To Govern Strength"))
-						if(Target.GetGodKi() > Total)
-							Total=Target.GetGodKi()*src.GodKiCopyValue()
-						else
-							if(src.passive_handler.Get("AbsoluteDespair"))
-								Total+=0.1
-							else
-								Total+=(Potential/100)*src.GodKiCopyValue()
-					else
-						Total+=(Potential/100)*src.GodKiCopyValue()
+
 			if(passive_handler.Get("GodCloth"))
 				if(src.Target&&(Health+VaizardHealth)<(Target.Health+Target.VaizardHealth))
 					Total*=clamp((Target.Health+Target.VaizardHealth)/(Health+VaizardHealth),1, 3)
@@ -2121,6 +2111,18 @@ mob
 						Total=glob.T4_STYLES_GODKI_VALUE*1.2+OSGK
 			if(Total>=glob.GOD_KI_CAP && !passive_handler.Get("God"))
 				Total=glob.GOD_KI_CAP
+			if(HasGodKiCopy())
+				if(src.Target)
+					if(src.Target.HasGodKi()&&!src.Target.HasGodKiCopy()&&!src.Target.passive_handler.Get("To Govern Strength"))
+						if(Target.GetGodKi() > Total)
+							Total=Target.GetGodKi()*src.GodKiCopyValue()
+						else
+							if(src.passive_handler.Get("AbsoluteDespair"))
+								Total+=0.1
+							else
+								Total+=(Potential/100)*src.GodKiCopyValue()
+					else
+						Total+=(Potential/100)*src.GodKiCopyValue()
 			if(glob.T3_STYLES_GODKI_VALUE>0 && StyleBuff?.SignatureTechnique>=3)
 				if(src.SagaLevel<1&&!glob.T3_SAGA_STLYE_GODKI||src.Secret=="Ultra Instinct")
 					if(Total<=glob.T3_STYLES_GODKI_VALUE)
@@ -2210,6 +2212,8 @@ mob
 		HasManaCapMult()
 			if(passive_handler.Get("ManaCapMult"))
 				return 1
+			if(Saga=="Keyblade")
+				return 1
 			return 0
 		HasManaLeak()
 			if(passive_handler.Get("ManaLeak"))
@@ -2222,7 +2226,10 @@ mob
 				Return/=4
 			return Return
 		GetManaCapMult()
-			return 1 + passive_handler.Get("ManaCapMult")
+			var/Return= 1 + passive_handler.Get("ManaCapMult")
+			if(Saga=="Keyblade")
+				Return+=0.25*SagaLevel
+			return Return
 		HasManaStats()
 			if(passive_handler.Get("ManaStats"))
 				return 1
@@ -2593,11 +2600,15 @@ mob
 				return 1
 			if(InfinityModule)
 				return 1
+			if(src.Saga=="Keyblade")
+				return 1
 			return 0
 		GetSpiritFlow()
 			var/Return = passive_handler.Get("SpiritFlow")
 			if(src.TarotFate=="The Emperor")
 				Return += 4
+			if(src.Saga=="Keyblade")
+				Return += src.SagaLevel
 			if(InfinityModule)
 				Return += AscensionsAcquired/2
 			if(Class=="Heroic"&&ActiveBuff)
@@ -2609,6 +2620,8 @@ mob
 			return 0
 		GetSpiritSword()//Str(0.75)+For(0.75)
 			var/Return=passive_handler.Get("SpiritSword")
+			if(src.Saga=="Keyblade")
+				Return += src.SagaLevel*0.25
 			if(Class=="Heroic"&&ActiveBuff)
 				Return*=1.25
 			return Return

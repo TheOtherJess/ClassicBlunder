@@ -181,11 +181,11 @@ transformation
 					mastery=100
 				if(mastery >= 100)
 					passives = list("Instinct" = 2, "Flow" = 2, "Flicker" = 1, "Pursuer" = 2, "PureDamage" = 3, "PureReduction" = 3, "SaiyanPower2"=0.75)
-				if(user.Potential>=55&&user.transUnlocked<3)
+				if(user.Potential>=65&&user.transUnlocked<3)
 					if(user.isRace(SAIYAN)||user.isRace(HALFSAIYAN)&&user.Class=="Justice"&&(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/half_saiyan/dominating))
 						user.transUnlocked=3
 						user<<"<b>Through your staggering mastery over Super Saiyan Two, you have naturally unlocked Super Saiyan Three!</b>"
-				if(user.Potential>=60&& user.Class == "Compassion")
+				if(user.Potential>=70&& user.Class == "Compassion")
 					if(user.isRace(HALFSAIYAN))
 						user.transUnlocked=3
 						user<<"<b>Your unsurpassed potential is now yours to command! (Unlocked Ultimate Form)</b>"
@@ -253,6 +253,15 @@ transformation
 			defenseadd = 0.5
 			strengthadd = 0.5
 			forceadd = 0.5
+			mastery_boons(mob/user)
+				if(user.Potential>=52&&mastery<25)
+					mastery=25
+				if(user.Potential>=54&&mastery<50)
+					mastery=50
+				if(user.Potential>=56&&mastery<75)
+					mastery=75
+				if(user.Potential>=58&&mastery<100)
+					mastery=100
 			class_boons(mob/user)
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
 					class_passives = list("EnergyGeneration" = 3, "Instinct" = 3, "Flow" = 3)

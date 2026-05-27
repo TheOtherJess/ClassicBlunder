@@ -1258,15 +1258,15 @@ obj
 
 
 			Symbiote_Hammer
-				DamageMult=7
+				DamageMult=8
 				AccuracyMult = 1.2
 				Duration=10
 				Cooldown=90
 				Instinct=2
 				KBAdd=3
 				Stunner=1
-				Shearing = 5
-				Crippling = 5
+				Shearing = 10
+				Crippling = 10
 				HitMessage="'s symbiotic hammer swings dead center into their enemy!"
 				ActiveMessage="'s symbiotic mass takes the shape of a hammer!"
 				verb/Symbiote_Hammer()

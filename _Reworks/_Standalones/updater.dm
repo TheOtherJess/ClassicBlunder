@@ -17,7 +17,7 @@ proc/generateVersionDatum()
 		glob.currentUpdate = updateversion
 
 globalTracker
-	var/UPDATE_VERSION = 26
+	var/UPDATE_VERSION = 27
 	var/tmp/update/currentUpdate
 
 	proc/updatePlayer(mob/p)
@@ -622,8 +622,12 @@ update
 						p.passive_handler.Increase("PureDamage", 0.25);
 					p << "Your pure damage and pure reduction have been reduced."
 					p << "bird down..."
-				
-
+	version27
+		version = 27;
+		updateMob(mob/p)
+			. = ..()
+			if(p.passive_handler.Get("SpiralPowerUnlocked"))
+				p.passive_handler.Set("SpiralPowerUnlocked", 0)
 /globalTracker/var/COOL_GAJA_PLAYERS = list("Thorgigamax", "Gemenilove" )
 /globalTracker/var/GAJA_PER_ASC_CONVERSION = 0.25
 /globalTracker/var/GAJA_MAX_EXCHANGE = 1

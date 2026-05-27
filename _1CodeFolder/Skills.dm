@@ -125,6 +125,7 @@ obj/Skills
 	var/Doom=0
 	var/Combustion=0 //Flat Combustion threshold bonus the attacker gains while this skill resolves damage. Implementation subject to change
 	var/IceAge=0 //Flat IceAge threshold bonus the attacker gains while this skill resolves damage.
+	var/Disarm=0 //If set, this skill will attempt to disarm the target on hit
 	//Spell passive vars (populated by SpellSlotModification on enchanted spells)
 	var/NerveOverload=0 //Air Paralyzer: adds Shock per hit
 	var/CriticalParalyze=0 //Air Synapse: % chance to stun on hit
@@ -157,6 +158,7 @@ obj/Skills
 	 //only projectiles have this function rn
 	var/FollowUp = null //holds a text path of a skill that will be triggered...
 	var/FollowUpDelay = 0  //after waiting this amt of time
+	var/OnMobHit = null 
 	var/ThrowOnCounter
 	var/Controlling //Love potion effects TODO: Remove/discontinue for...
 	var/BuffSelf
@@ -331,7 +333,7 @@ obj/Skills
 		verb/Transform()
 			set name="Transform!"
 			set category="Utility"
-			if(usr.StandardTransformRequirements())
+			if(usr.StandardTransformRequirements()&&!usr.isRace(HUMAN))
 				usr.Transform()
 		verb/Revert()
 			set name="Revert!"
@@ -1019,6 +1021,35 @@ turf/Click(turf/T)
 					usr.dir=formerdir
 					if(usr.Energy<1)
 						usr.Energy=1
+
+		else if(locate(/obj/Skills/Hoho/Shunpo,usr.contents))
+			var/obj/Skills/Hoho/Shunpo/s = locate(/obj/Skills/Hoho/Shunpo, usr.contents)
+			if(s.ShunpoToggle)
+				if(T) if(T.icon)
+					for(var/turf/A in view(0,usr))
+						if(A==src)
+							return
+					if(!T.density&&usr.icon_state!="Meditate"&&!usr.Observing&&(usr.Beaming!=2))
+						if(s.Charges <= 0) return
+						var/upgrades = 0
+						if(locate(/obj/Skills/Hoho/Shunpo_Upgrade1,usr.contents)) upgrades++
+						if(locate(/obj/Skills/Hoho/Shunpo_Upgrade2,usr.contents)) upgrades++
+						if(locate(/obj/Skills/Hoho/Shunpo_Upgrade3,usr.contents)) upgrades++
+						if(locate(/obj/Skills/Hoho/Shunpo_Upgrade4,usr.contents)) upgrades++
+						var/mana_cost = max(0.2, 1.0 - 0.2*upgrades)
+						if(usr.ManaAmount < mana_cost) return
+						VanishImage(usr)
+						var/formerdir = usr.dir
+						usr.Move(src)
+						usr.dir = formerdir
+						if(usr.Energy < 1)
+							usr.Energy = 1
+						usr.LoseMana(mana_cost)
+						var/recharge_ticks = max(20, (10 - 2*upgrades) * 10)
+						s.Charges--
+						if(s.Charges <= 0)
+							s.Using = 1
+						s.Recharge(recharge_ticks, usr)
 
 		else if(locate(/obj/Skills/Blink,usr.contents))
 			for(var/obj/Skills/Blink/W in usr.contents)

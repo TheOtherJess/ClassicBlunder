@@ -485,25 +485,19 @@ obj/Skills/Utility
 					continue
 				if(!M.AdminInviso&&M.PowerControl>25)
 					if((usr.Saga=="Unlimited Blade Works" && usr.SagaLevel >= 2)||(!M.HasVoid()&&!M.HasMechanized()&&!M.passive_handler.Get("Masquerade")))
-						if((!locate(M.EnergySignature) in usr.EnergySignaturesKnown)&&!usr.passive_handler.Get("SpiritPower"))
-							var/distancecalc=abs(M.x-usr.x)+abs(M.y-usr.y)
-							if(distancecalc<16)
-								if(usr.HasEmptyGrimoire())
-									usr << "<b>[M.name]</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)] - ([M.x], [M.y], [M.z])"
-								else
-									usr << "<b>[M.name]</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)]"
-								if(M.EnergySignature)
-									usr.EnergySignaturesKnown.Add(M.EnergySignature)
-							else
-								if(usr.HasEmptyGrimoire())
-									usr << "<b>???</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)] - ([M.x], [M.y], [M.z])"
-								else
-									usr << "<b>???</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)]"
-						else
+						var/distancecalc=abs(M.x-usr.x)+abs(M.y-usr.y)
+						if(distancecalc<16&&M.EnergySignature&&!(M.EnergySignature in usr.EnergySignaturesKnown))
+							usr.EnergySignaturesKnown.Add(M.EnergySignature)
+						if((M.EnergySignature in usr.EnergySignaturesKnown)||distancecalc<16||usr.passive_handler.Get("SpiritPower"))
 							if(usr.HasEmptyGrimoire())
 								usr << "<b>[M.name]</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)] - ([M.x], [M.y], [M.z])"
 							else
 								usr << "<b>[M.name]</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)]"
+						else
+							if(usr.HasEmptyGrimoire())
+								usr << "<b>???</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)] - ([M.x], [M.y], [M.z])"
+							else
+								usr << "<b>???</b> - [usr.Get_Sense_Reading(M)] - [usr.CheckDirection(M)]"
 
 			if(usr.HasEmptyGrimoire())
 				usr << "Location: ([usr.x], [usr.y], [usr.z])"

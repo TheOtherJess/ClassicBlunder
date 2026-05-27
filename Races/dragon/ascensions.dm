@@ -47,7 +47,7 @@ ascension
 						speed = 0.5
 						offense = 0.5
 					if("Light")
-						passives += list("SoulFire" = 1.5, "Siphon" = 1)
+						passives += list("SoulFire" = 1.5, "DemonicDurability" = 1)
 						defense = 1.0
 						endurance = 1.0
 						strength = 0.5
@@ -98,7 +98,7 @@ ascension
 						speed = 1
 						offense = 0.5
 					if("Light")
-						passives += list("VoidField" = 2, "EnergySteal" = 15, "Harden" = 1)
+						passives += list("VoidField" = 3, "EnergySteal" = 15, "Harden" = 1)
 						defense = 1.0
 						endurance = 1.0
 						strength = 0.5
@@ -151,7 +151,7 @@ ascension
 						speed = 1.5
 						offense = 1.5
 					if("Light")
-						passives += list("CallousedHands" = 0.2, "Siphon" = 1, "SoulFire" = 1.5)
+						passives += list("CallousedHands" = 0.2, "DemonicDurability" = 1, "SoulFire" = 1.5, "BeyondPurity" = 1)
 						defense = 1.0
 						endurance = 1.5
 						strength = 1
@@ -204,7 +204,7 @@ ascension
 						speed = 2
 						offense = 1
 					if("Light")
-						passives += list("CallousedHands" = 0.2, "VoidField" = 2, "EnergySteal" = 15, "Harden" = 1)
+						passives += list("CallousedHands" = 0.2, "VoidField" = 3, "EnergySteal" = 15, "Harden" = 1)
 						defense = 1.5
 						endurance = 2
 						strength = 1
@@ -256,7 +256,7 @@ ascension
 						speed = 1
 						offense = 2
 					if("Light")
-						passives += list("DebuffReversal" = 1, "Siphon" = 1, "SoulFire" = 1.5)
+						passives += list("DebuffReversal" = 1, "DemonicDurability" = 1, "SoulFire" = 1.5)
 						defense = 1.5
 						endurance = 2.0
 						strength = 1
@@ -307,7 +307,7 @@ ascension
 						speed = 2
 						offense = 2
 					if("Light")
-						passives += list("CallousedHands" = 0.2, "VoidField" = 2, "EnergySteal" = 15, "Harden" = 1)
+						passives += list("CallousedHands" = 0.2, "VoidField" = 3, "EnergySteal" = 15, "Harden" = 1)
 						defense = 1.5
 						endurance = 2
 						strength = 1

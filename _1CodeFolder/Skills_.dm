@@ -241,6 +241,7 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 					spawn(20)
 						Z.Using=0
 					src.Meditation()
+					src.MultReset()
 				else
 					if(Z.Using==1)
 						return
@@ -336,6 +337,8 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 						src.Oxygen=(src.OxygenMax)*2
 				else if(src.StyleActive == "Crane Style")
 					src.OMessage(10,"[src] backflips away from [src.Target]!","<font color=red>[src]([src.key]) used  Back Dash.")
+				else if(src.Secret=="Spiral")
+					src.OMessage(10,"[src] dashes towards [src.Target], as a true Spiral Warrior never runs from battle!!!!","<font color=red>[src]([src.key]) used  Back Dash.")
 				else
 					src.OMessage(10,"[src] dashes away from [src.Target]!","<font color=red>[src]([src.key]) used  Back Dash.")
 				while(Distance>0)
@@ -345,12 +348,17 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 						src.icon_state="Train"
 					else
 						src.icon_state="Flight"
-					step_away(src,src.Target,68)
+					if(src.Secret=="Spiral")
+						src.DashTo(src.Target, 20, 0.5, Clashable=1)
+					else
+						step_away(src,src.Target,68)
 					for(var/atom/a in get_step(src,dir))
 						if(a==src)
 							continue
 						if(a.density)
 							Distance=0
+					if(src.Secret=="Spiral")
+						Distance=0
 					Distance-=1
 					sleep(Delay*world.tick_lag)
 				src.dir=get_dir(src,src.Target)

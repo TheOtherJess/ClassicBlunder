@@ -1750,7 +1750,7 @@ NEW VARIABLES
 			KenWave=5
 			KenWaveSize=0.5
 			KenWaveIcon='KenShockwaveDivine.dmi'
-			passives = list("GodKi" = 0.1, "EnergyGeneration" = 3, "SlayerMod" = 1.5, "FavoredPrey" = "Mortal")
+			passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.25, "GodKi" = 0.1, "EnergyGeneration" = 3, "SlayerMod" = 1.5, "FavoredPrey" = "Mortal")
 			ActiveMessage="manifests the superiority of their birthright!"
 			OffMessage="lets their contempt for mortal life regress."
 			adjust(mob/p)
@@ -1758,21 +1758,109 @@ NEW VARIABLES
 				if(rose)
 					if(rose.mastery >= 25)
 						ActiveMessage="anger at their Lessers manifests into sparks of godhood!"
-						passives = list("GodKi" = 0.2, "EnergyGeneration" = 3, "SlayerMod" = 2, "FavoredPrey" = "Mortal", "Heavensent" = 1)
+						passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.35, "GodKi" = 0.2, "EnergyGeneration" = 3, "SlayerMod" = 2, "FavoredPrey" = "Mortal", "Heavensent" = 1)
 						AngerMult=1.1
+						StrMult=1.4
+						ForMult=1.4
+						OffMult=1.35
 					if(rose.mastery >= 50)
 						ActiveMessage="manifests true animosity towards mortalss!"
-						passives = list("GodKi" = 0.3, "EnergyGeneration" = 4, "SlayerMod" = 3, "FavoredPrey" = "Mortal", "Heavensent" = 2)
+						passives = list("WrathfulTenacity" = 0.2, "HellRisen" = 0.50, "GodKi" = 0.3, "EnergyGeneration" = 4, "SlayerMod" = 3, "FavoredPrey" = "Mortal", "Heavensent" = 2)
 						AngerMult=1.3
+						StrMult=1.5
+						ForMult=1.5
+						OffMult=1.45
 					if(rose.mastery >= 75)
 						ActiveMessage="'s animosity manifests them as close to perfection as they can get!"
-						passives = list("GodKi" = 0.4, "EnergyGeneration" = 5, "SlayerMod" = 4, "FavoredPrey" = "Mortal", "Heavensent" = 3)
+						passives = list("WrathfulTenacity" = 0.3, "HellRisen" = 0.75, "GodKi" = 0.4, "EnergyGeneration" = 5, "SlayerMod" = 4, "FavoredPrey" = "Mortal", "Heavensent" = 3)
 						AngerMult=1.4
+						StrMult=1.6
+						ForMult=1.6
+						OffMult=1.55
 					if(rose.mastery >= 100)
 						ActiveMessage="becomes the perfect image of Godhood!"
-						passives = list("GodKi" = 0.5, "EnergyGeneration" = 5, "SlayerMod" = 5, "FavoredPrey" = "All", "Purity" = 1, "BeyondPurity" = 1, "Heavensent" = 4)
+						passives = list("WrathfulTenacity" = 0.3, "HellRisen" = 1, "GodKi" = 0.5, "EnergyGeneration" = 5, "SlayerMod" = 5, "FavoredPrey" = "All", "Heavensent" = 4)
 						AngerMult=1.5
+						StrMult=1.7
+						ForMult=1.7
+						OffMult=1.65
 			verb/Saiyan_Purity()
+				set category="Skills"
+				src.Trigger(usr)
+		Sickle_of_Sorrow//scaling dimensionsword sidegrade that also summon clones
+			MakesSword=3
+			SpecialSlot=0
+			Slotless=1
+			SwordX=-16
+			SwordY=-16
+			FlashDraw=1
+			BladeFisting = 1
+			SwordName="Sickle of Sorrow"
+			SwordIcon='Sorrowful Sickle.dmi'
+			passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 1, "SwordAscension" = 3, "SwordAscensionSecond" = 3, "SwordAscensionThird" = 3, "MonkeyKing" = 1)
+			ActiveMessage="draws spirit energy into their hand to form a spacetime-rending blade!"
+			OffMessage="dispels their Sickle of Sorrow!"
+			adjust(mob/p)
+				var/asc=p.AscensionsAcquired
+				switch(asc)
+					if(4)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 1, "Extend" = 1, "SwordAscension" = 4, "SwordAscensionSecond" = 4, "SwordAscensionThird" = 4, "MonkeyKing" = 1)
+					if(5)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "Extend" = 1, "SwordAscension" = 5, "SwordAscensionSecond" = 5, "SwordAscensionThird" = 5, "MonkeyKing" = 2)
+					if(6)
+						passives = list("BladeFisting" = 1, "SpiritSword" = 2, "Extend" = 1, "SwordAscension" = 6, "SwordAscensionSecond" = 6, "SwordAscensionThird" = 6, "MonkeyKing" = 2)
+			verb/Transfigure_Sickle_of_Sorrow()
+				set category="Utility"
+				var/Choice
+				if(!usr.BuffOn(src))
+					var/modify_sword_num = 1
+					if((locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Nito_Ichi_Style) in src) || (locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Santoryu) in src))
+						var/list/options = list("Primary","Secondary")
+						if((locate(/obj/Skills/Buffs/NuStyle/SwordStyle/Santoryu) in src)) options += "Tertiary"
+						switch(input("Which sword would you like to modify?") in options)
+							if("Secondary") modify_sword_num=2
+							if("Tertiary") modify_sword_num=3
+					var/Lock=alert(usr, "Do you wish to alter the icon used?", "Weapon Icon", "No", "Yes")
+					if(Lock=="Yes")
+						switch(modify_sword_num)
+							if(1)
+								src.SwordIcon=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordX=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordY=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+							if(2)
+								src.SwordIconSecond=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordXSecond=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordYSecond=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+							if(3)
+								src.SwordIconThird=input(usr, "What icon will your Sickle use?", "Sickle Icon") as icon|null
+								src.SwordXThird=input(usr, "Pixel X offset.", "Spirit Sword Icon") as num
+								src.SwordYThird=input(usr, "Pixel Y offset.", "Spirit Sword Icon") as num
+					Choice=input(usr, "What class of blade do you want your Sickle to be?", "Transfigure Sickle of Sorrow") in list("Blunt", "Saber", "Longsword", "Greatsword")
+					switch(Choice)
+						if("Blunt")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Wooden"
+								if(2) src.SwordClassSecond="Wooden"
+								if(3) src.SwordClassThird="Wooden"
+						if("Saber")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Light"
+								if(2) src.SwordClassSecond="Light"
+								if(3) src.SwordClassThird="Light"
+						if("Longsword")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Medium"
+								if(2) src.SwordClassSecond="Medium"
+								if(3) src.SwordClassThird="Medium"
+						if("Greatsword")
+							switch(modify_sword_num)
+								if(1) src.SwordClass="Heavy"
+								if(2) src.SwordClassSecond="Heavy"
+								if(3) src.SwordClassThird="Heavy"
+					usr << "Sickle class set as [Choice]!"
+				else
+					usr << "You can't set this while using Sickle."
+			verb/Sickle_of_Sorrow()
 				set category="Skills"
 				src.Trigger(usr)
 		SuperSaiyanPerfected
@@ -2129,6 +2217,9 @@ NEW VARIABLES
 				OffMessage="violently rips off their mask as it shatters into fragments..."
 				proc/changeVariables(mob/p)
 					if(altered) return
+					if(p.Saga=="Shinigami")
+						Slotless=1
+						SpecialSlot=0
 					var/SuperSaiyanBuff=1
 					if((p.isRace(SAIYAN) && p.transActive >= 1) || (p.isRace(HALFSAIYAN) && p.transActive >= 1) || p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race && p.race.transformations && p.race.transformations.len >= 1)
@@ -2192,7 +2283,7 @@ NEW VARIABLES
 			DefMult=0.8
 			passives = list("SlayerMod" = 3, "LifeSteal" = 10, "FavoredPrey" = "Depths", "MovementMastery" = 3, "TechniqueMastery" = 3, "Deicide"= 5)
 			ManaGlowSize=3
-			ManaGlow="C03434"
+			ManaGlow="#C03434"
 			TextColor=rgb(192, 52, 52)
 			ActiveMessage="manifests a demonic symbol on their chest, striking terror into the hearts of the wicked..."
 			OffMessage="discards the mark of the Slayer, returning to normal."
@@ -2940,7 +3031,8 @@ NEW VARIABLES
 				SagaSignature=1
 				TimerLimit=30
 				Cooldown=30
-				ManaCost=10
+				Slotless=1
+				SpecialSlot=0
 				passives = list("Heavy Strike" = "GetsugaClad", "CriticalChance" = 25, "CriticalDamage" = 0.25, "Brutalize" = 2, "SwordAscension" = 1, "SpiritSword" = 0.5, "HybridStrike" = 1, "SpiritFlow" = 4)
 				StrMult=1.3
 				OffMult=1.3
@@ -2954,6 +3046,8 @@ NEW VARIABLES
 						usr << "Getsuga Clad can only be used in Bankai."
 						return
 					if(!altered)
+						Slotless=1
+						SpecialSlot=0
 						passives = list("Heavy Strike" = "GetsugaClad", "CriticalChance" = 25, "CriticalDamage" = 0.25, "Brutalize" = 2, "SwordAscension" = 1, "SpiritSword" = 0.5, "HybridStrike" = 1)
 					src.Trigger(usr)
 			Final_Getsuga_Tenshou
@@ -2961,6 +3055,8 @@ NEW VARIABLES
 				TimerLimit=600
 				EnergyCut=0.99
 				ManaCut=0.99
+				Slotless=1
+				SpecialSlot=0
 				StrCut=0.5
 				EndCut=0.5
 				ForCut=0.5
@@ -4280,7 +4376,10 @@ NEW VARIABLES
 			EnergyMult=1.5
 			RegenMult=1.25
 			RecovMult=1.25
-			passives = list("Flow" = 2)
+			StrMult=1.3
+			EndMult=1.3
+			OffMult=1.2
+			passives = list("Flow" = 3, "Persistence" = 4)
 			BuffTechniques = list("/obj/Skills/Buffs/SlotlessBuffs/Regeneration")
 			ActiveMessage="forces their symbiote out!"
 			OffMessage="restrains their symbiotic companion..."
@@ -9963,7 +10062,7 @@ NEW VARIABLES
 							MovementMastery = p.secretDatum.currentTier * 2
 							Godspeed = p.secretDatum.currentTier * 2
 							StrMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							EndMult = 1.25
+							EndMult = 0.75
 							SpdMult = 1.25 + (p.secretDatum.currentTier * 0.25)
 							OffMult = 1.25 + (p.secretDatum.currentTier * 0.25)
 							DefMult = 0.75
@@ -10030,7 +10129,7 @@ NEW VARIABLES
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
 						if(p.Target && ismob(p.Target))
-							healthDiff = p.Target.Health-p.Health
+							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health
 						switch(healthDiff)
 							if(-100 to 5)
 								secretLevel += 0
@@ -10064,19 +10163,19 @@ NEW VARIABLES
 							if(7)
 								SpiralPower=7
 						SpiralPotential=SpiralPower
-						if(Tyrant)
-							SpiralPotential=2
-						if(p.PilotingProwess<SpiralPotential)
-							p.PilotingProwess=SpiralPotential
+						if(Tyrant||healthDiff<25)
+							SpiralPotential=1
+						if(p.PilotingProwess<SpiralPower)
+							p.PilotingProwess=SpiralPower
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
 						PowerMult = 1+(0.015*secretLevel*secretLevel) + (0.005*asc*asc)
 						StrMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						ForMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						EndMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
-						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
-						TimerLimit= (15 * (secretLevel)) * TyrantBonus
-						Cooldown = 61 - ((5 * p.AscensionsAcquired))
+						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower, "EnergyGeneration" = SpiralPower)
+						TimerLimit= (30 * (SpiralPotential)) * TyrantBonus
+						Cooldown = 90 - (SpiralPotential*5)
 				KenWave = 2
 				KenWaveIcon='SparkleGreen.dmi'
 				HitSpark='Spiral_Hitspark.dmi'
@@ -11524,7 +11623,7 @@ NEW VARIABLES
 						ElementalOffense = "Light"
 						strAdd = 0.075 * asc
 						endAdd = 0.075 * asc
-						passives = list("Wrathful Tenacity" = asc*0.2, "HolyMod" = asc/2, \
+						passives = list("Wrathful Tenacity" = asc*0.3, "HolyMod" = asc, \
 							"LifeGeneration" = asc+1, "CallousedFeet" = asc+1, "HardenedFrame" = 1, "SoftStyle" = asc/2)
 					Trigger(mob/User, Override = FALSE)
 						if(!User.BuffOn(src))
@@ -11617,9 +11716,9 @@ NEW VARIABLES
 				adjust(mob/p)
 					if(altered) return
 					var/asc = p.AscensionsAcquired
-					passives = list("Unstoppable" = 1, "Harden" = 1 + (0.5 * asc), "LifeSteal" = 2*asc, "Godspeed" = 1+(asc), "SweepingStrike" = 1, "Gum Gum" = 1 + (0.5 * asc), "Blubber" = 1 + (0.5 * asc), "KillerInstinct" = 0.1 + (0.1 * asc),)
-					VaizardHealth = 5 + p.GetEnd() + (p.TotalInjury/25) + (asc)
-					// this was 17.5% guys lol
+					passives = list("Unstoppable" = 1, "Harden" = 1 + (0.5 * asc), "LifeSteal" = 5*asc, "Godspeed" = 1+(asc), "SweepingStrike" = 1, "Gum Gum" = 1 + (0.5 * asc), "Blubber" = 1 + (0.5 * asc), "KillerInstinct" = 0.1 + (0.15 * asc), \
+						"Brutalize" = 1 + asc, "AttackSpeed" = asc/2)
+					VaizardHealth = 10 + p.GetEnd() + (p.TotalInjury/25) + (asc)
 					if(asc>=1)
 						if(!locate(/obj/Skills/AutoHit/Symbiote_Tendril_Wave, p.AutoHits))
 							p.AddSkill(new/obj/Skills/AutoHit/Symbiote_Tendril_Wave)

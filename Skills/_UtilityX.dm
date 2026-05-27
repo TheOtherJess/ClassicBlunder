@@ -16,7 +16,6 @@
 	Slow=0
 	Shock=0
 	Shatter=0
-	Bleed=0
 	HealthAnnounce25=0
 	HealthAnnounce10=0
 	seventhSenseTriggered = 0
@@ -698,20 +697,6 @@ obj/Skills/Utility
 				usr.Observing=0
 				return
 			else
-				if(selector.passive_handler.Get("Anti-Scrying"))
-					var/antiscry = 1
-					if(usr.passive_handler.Get("God's Gaze"))
-						antiscry = 0
-					else if(usr.HasGodKi())
-						if(usr.passive_handler.Get("GodKi") > selector.passive_handler.Get("GodKi"))
-							antiscry = 0
-					if(antiscry)
-						usr << "<b><font color=[selector.Text_Color]><font size=+1>[selector] reflects your attempt at Scrying-- You feel yourself struck with retribution!</b></font color></font size>"
-						selector << "<b>[usr] has attempted to observe you!</b>"
-						usr.DoDamage(usr, 25)
-						if (usr.Health <= 0)
-							usr.Unconscious(null, "scrying disruption!")
-						return
 				Observify(usr,selector)
 				if(usr.HasEmptyGrimoire())
 					usr << "[selector] - ([selector.x], [selector.y], [selector.z])"
@@ -1552,14 +1537,11 @@ obj/Skills/Utility
 				var/herbchoice = input(P, "Choose an herb.", "Alter Existing Flask") in Choices
 				if(herbchoice == "Cancel")
 					return
-				P.TakeMineral(glob.POTIONCOST)
-				if(ChosenFlask.Slots <= 0)
-					P << "You have no more flask slots!"
-					return
+				P.TakeMineral(glob.POTIONCOST/5)
 				TheEvilAssIfWall(P, herbchoice, ChosenFlask)
 				--ChosenFlask.Slots
-			if(ChosenFlask.Slots == 0) // This will only happen if you complete the while loop has intended or someone bugged shit
-				P.TakeMineral(glob.POTIONCOST) // 5k if you don't edit this you dipshit
+				if(ChosenFlask.Slots <= 0)
+					P << "You have no more flask slots!"
 		// War crime Proc
 		proc/TheEvilAssIfWall(mob/P, herbchoice, obj/Items/Flask/ChosenFlask)  //You have no idea how much I loathed making this
 			if(herbchoice == "Healing Herb")
@@ -1612,7 +1594,12 @@ obj/Skills/Utility
 			++Option.Tier
 			P << "You have upgraded your flask. It is now a Tier [Option.Tier] Flask."
 			//
-
+	Bestow_Inkwork //Inkworks Related Interactions go here
+		// This gives us an Inkwork
+		verb/Bestow_Inkwork()
+			set category = "Utility"
+			var/choice = input(usr, "Choose an Option", "Bestow Inkwork") in list("Cancel")
+			if(choice == "Cancel") return
 
 // 	Summon_Spirit
 // 		desc="Summon a spirit!  Doesn't work on those with contracts already established."

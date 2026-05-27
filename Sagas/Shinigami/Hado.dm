@@ -17,13 +17,22 @@
 
 /obj/Skills/Projectile/Hado/Byakurai
 	name = "Byakurai"
+	Area = "Beam"
 	ChargeRate = 0.5
-	BeamTime = 10
+	BeamTime = 50
 	DamageMult = 10
 	Shocking = 10
 	Piercing = 1
-	Distance = 20
+	Distance = 50
+	Variation = 0
+	IconSize = 1
+	AccMult = 1.175
+	Knockback = 0
+	Deflectable = -1
+	density = 0
 	IconLock = 'LightningWave.dmi'
+	LockY = -24
+	LockX = -24
 	ManaCost = 5
 	Cooldown = 30
 
@@ -34,6 +43,8 @@
 
 /obj/Skills/Buffs/ActiveBuffs/Hado/Tsuzuri_Raiden
 	name = "Tsuzuri Raiden"
+	ActiveSlot = 0
+	Slotless = 1
 	TimerLimit = 15
 	Cooldown = 30
 	ManaCost = 5
@@ -119,10 +130,17 @@
 
 /obj/Skills/Projectile/Hado/Oukasen
 	name = "Oukasen"
+	Area = "Beam"
 	ChargeRate = 1
-	BeamTime = 15
+	BeamTime = 50
 	DamageMult = 15
-	Distance = 20
+	Distance = 50
+	Variation = 0
+	IconSize = 1
+	AccMult = 1.175
+	Knockback = 1
+	Deflectable = -1
+	density = 0
 	IconLock = 'BeamFKH.dmi'
 	ManaCost = 10
 	Cooldown = 45
@@ -228,10 +246,17 @@
 
 /obj/Skills/Projectile/Hado/Tenran
 	name = "Tenran"
+	Area = "Beam"
 	ChargeRate = 1
-	BeamTime = 15
+	BeamTime = 50
 	DamageMult = 25
-	Distance = 20
+	Distance = 50
+	Variation = 0
+	IconSize = 1
+	AccMult = 1.175
+	Knockback = 1
+	Deflectable = -1
+	density = 0
 	IconLock = 'Tenran.dmi'
 	ManaCost = 20
 	Cooldown = 60
@@ -538,10 +563,21 @@
 
 /obj/Skills/Projectile/Hado/Hiryu
 	name = "Hiryu Gekizoku Shinten Raihou"
+	Area = "Beam"
+	Radius = 1
+	Variation = 0
+	IconSize = 1
+	AccMult = 1.175
+	Knockback = 1
+	Deflectable = -1
+	AllOutAttack = 1
+	Dodgeable = -1
+	ComboMaster = 1
+	density = 0
 	ChargeRate = 1
-	BeamTime = 20
-	DamageMult = 40
-	Distance = 30
+	BeamTime = 50
+	DamageMult = 50
+	Distance = 50
 	IconLock = 'BeamBig5.dmi'
 	ManaCost = 50
 	Cooldown = 120

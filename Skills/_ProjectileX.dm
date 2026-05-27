@@ -4838,9 +4838,9 @@ obj
 					set category="Skills"
 					if(!altered)
 						Blasts = 5 + (usr.AscensionsAcquired)
-						DamageMult = 2.0 + (usr.AscensionsAcquired * 1.5)
+						DamageMult = 3 + (usr.AscensionsAcquired * 1.5)
 						Radius = clamp(usr.AscensionsAcquired, 1, 5)
-						Silencing = 2 + clamp(usr.AscensionsAcquired*2, 0.5, 2.5)
+						Silencing = 5 + clamp(usr.AscensionsAcquired*2, 1, 8)
 						DamageMult = DamageMult/Blasts
 						Cooldown = 60 - ( 5 * usr.AscensionsAcquired)
 					usr.UseProjectile(src)

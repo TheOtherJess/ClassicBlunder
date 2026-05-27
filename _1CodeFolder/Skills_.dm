@@ -241,6 +241,7 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 					spawn(20)
 						Z.Using=0
 					src.Meditation()
+					src.MultReset()
 				else
 					if(Z.Using==1)
 						return

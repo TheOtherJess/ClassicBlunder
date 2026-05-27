@@ -51,6 +51,6 @@ race
 					passives["Maki"] = 1
 				if("Light")
 					skills = list(/obj/Skills/AutoHit/Dragon_Roar, /obj/Skills/Projectile/Consuming_Light, /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Rage/Radiant_Aegis)
-					passives["Siphon"] = 1
+					passives["DemonicDurability"] = 1
 					passives["SoulFire"] = 1.5
 			..()

@@ -1024,12 +1024,12 @@ obj
 			Symbiote_Tendril_Wave
 				Distance=10
 				Knockback=5
-				Slow=5
+				Slow=10
 				Area="Wave"
 				ActiveMessage="bursts out with tendrils of symbiotic matter!"
 				StrOffense = 1
 				Cooldown = 60
-				DamageMult= 5
+				DamageMult= 7
 				GuardBreak=1
 				TurfStrike=3
 				HitSparkIcon='Slash - Vampire.dmi'

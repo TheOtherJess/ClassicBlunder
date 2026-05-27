@@ -140,6 +140,7 @@
 			passives["ManaLeak"] = 4
 		if(SL >= 7)
 			passives["Deicide"]  = 15
+			passives["EndlessNine"]  = 0.5
 		StrMult = 1.3 + (0.1 * SL)
 		ForMult = 1.3 + (0.1 * SL)
 		SpdMult = 1.3 + (0.1 * SL)

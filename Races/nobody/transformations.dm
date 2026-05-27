@@ -123,12 +123,12 @@ transformation
 				var/mdivS = mastery/50
 				var/mdivP = mastery/100
 				if(mastery >= 25 && asc > 2)
-					speedadd = 0.75 + (0.35 * asc)
-					enduranceadd = 0.75 + (0.35 * asc)
-					offenseadd = 0.75 + (0.35 * asc)
-					defenseadd = 0.75 + (0.35 * asc)
-					strengthadd = 0.75 + (0.35 * asc)
-					forceadd = 0.75 + (0.35 * asc)
+					speedadd = 0.35 + (0.25 * asc)
+					enduranceadd = 0.35 + (0.25 * asc)
+					offenseadd = 0.35 + (0.25 * asc)
+					defenseadd = 0.35 + (0.25 * asc)
+					strengthadd = 0.35 + (0.25 * asc)
+					forceadd = 0.35 + (0.25 * asc)
 					passives = list("Instinct" = 1+(mdivP*14), "Flow" = 1+(mdivP*11), "Flicker" = 1+(mdivP*11), "Pursuer" = 2+(mdivP*12), "PureDamage" = 1+(2.5*asc), "PureReduction" = 1+(2.5*asc))
 
 			transform_animation(mob/user)

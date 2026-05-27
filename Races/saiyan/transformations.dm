@@ -253,6 +253,15 @@ transformation
 			defenseadd = 0.5
 			strengthadd = 0.5
 			forceadd = 0.5
+			mastery_boons(mob/user)
+				if(user.Potential>=52&&mastery<25)
+					mastery=25
+				if(user.Potential>=54&&mastery<50)
+					mastery=50
+				if(user.Potential>=56&&mastery<75)
+					mastery=75
+				if(user.Potential>=58&&mastery<100)
+					mastery=100
 			class_boons(mob/user)
 				if(user.race.ascensions[1].choiceSelected == /ascension/sub_ascension/saiyan/zeal)
 					class_passives = list("EnergyGeneration" = 3, "Instinct" = 3, "Flow" = 3)

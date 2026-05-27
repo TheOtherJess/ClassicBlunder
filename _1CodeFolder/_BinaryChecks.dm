@@ -2211,6 +2211,8 @@ mob
 		HasManaCapMult()
 			if(passive_handler.Get("ManaCapMult"))
 				return 1
+			if(Saga=="Keyblade")
+				return 1
 			return 0
 		HasManaLeak()
 			if(passive_handler.Get("ManaLeak"))
@@ -2223,7 +2225,10 @@ mob
 				Return/=4
 			return Return
 		GetManaCapMult()
-			return 1 + passive_handler.Get("ManaCapMult")
+			var/Return= 1 + passive_handler.Get("ManaCapMult")
+			if(Saga=="Keyblade")
+				Return+=0.25*SagaLevel
+			return Return
 		HasManaStats()
 			if(passive_handler.Get("ManaStats"))
 				return 1
@@ -2594,11 +2599,15 @@ mob
 				return 1
 			if(InfinityModule)
 				return 1
+			if(src.Saga=="Keyblade")
+				return 1
 			return 0
 		GetSpiritFlow()
 			var/Return = passive_handler.Get("SpiritFlow")
 			if(src.TarotFate=="The Emperor")
 				Return += 4
+			if(src.Saga=="Keyblade")
+				Return += src.SagaLevel
 			if(InfinityModule)
 				Return += AscensionsAcquired/2
 			if(Class=="Heroic"&&ActiveBuff)
@@ -2610,6 +2619,8 @@ mob
 			return 0
 		GetSpiritSword()//Str(0.75)+For(0.75)
 			var/Return=passive_handler.Get("SpiritSword")
+			if(src.Saga=="Keyblade")
+				Return += src.SagaLevel*0.25
 			if(Class=="Heroic"&&ActiveBuff)
 				Return*=1.25
 			return Return

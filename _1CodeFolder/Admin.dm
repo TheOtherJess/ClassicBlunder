@@ -1399,7 +1399,7 @@ mob/Admin2/verb
 	Observe_(atom/A as mob|obj in world)
 		set category="Admin"
 		set name="AObserve"
-		if(istype(A, /mob))
+		/*if(istype(A, /mob))
 			var/mob/M = A
 			if(M.passive_handler.Get("Anti-Scrying") && M.passive_handler.Get("Rank-Down Protection"))
 				var/antiscry = 1
@@ -1411,7 +1411,7 @@ mob/Admin2/verb
 				if(antiscry)
 					usr << "<b><font color=[M.Text_Color]><font size=+1>[M] reflects your attempt at Scrying!</b></font color></font size>"
 					M << "<b>A metaphysical entity has attempted to observe you!</b>"
-					return
+					return*/
 		Observify(usr,A)
 		if(A!=src)
 			src.Observing=2

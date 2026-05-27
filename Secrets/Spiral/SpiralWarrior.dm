@@ -23,6 +23,19 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/Clobber
 			adjust(usr)
 			applyToTarget?:adjust(usr)
 		src.Trigger(usr)
+obj/Skills/Buffs/SlotlessBuffs/Spiral/CombustionOfTheSoul
+	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
+	KenWave = 4
+	KenWaveIcon='SparkleGreen.dmi'
+	HitSpark='Spiral_Hitspark.dmi'
+	TimerLimit=30
+	ActiveMessage="<b>erupts with a blazing spirit!!!</b>"
+	OffMessage="quells the flames."
+	TextColor="green"
+	MagicNeeded=0
+	Cooldown=60
+	adjust(mob/p)
+		passives = list("MovementMastery" = 4, "EnergyGeneration" = 3, "PUSpike" = 20, "DrainlessPUSpike" = 1, "SpiralImpact" = 1, "Scoop" = 2, "Grippy" = 2)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	KenWave = 4
@@ -35,7 +48,7 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply
 	MagicNeeded=0
 	Cooldown=60
 	adjust(mob/p)
-		passives = list("MovementMastery" = 4, "EnergyGeneration" = 3, "PUSpike" = 20, "DrainlessPUSpike" = 1, "SpiralImpact" = 1)
+		passives = list("MovementMastery" = 4, "EnergyGeneration" = 3, "PUSpike" = 20, "DrainlessPUSpike" = 1, "SpiralImpact" = 1, "Scoop" = 2, "Grippy" = 2)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	KenWave = 4

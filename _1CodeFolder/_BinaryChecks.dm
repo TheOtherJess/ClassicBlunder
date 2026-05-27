@@ -1425,6 +1425,8 @@ mob
 		HasSpecialBuffLock()
 			if(passive_handler.Get("SpecialBuffLock"))
 				return 1
+			if(InShikai() || InBankai())
+				return 1
 			if(src.InfinityModule)
 				return 1
 			return 0

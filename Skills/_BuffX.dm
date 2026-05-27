@@ -10129,7 +10129,7 @@ NEW VARIABLES
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
 						if(p.Target && ismob(p.Target))
-							healthDiff = p.Target.Health-p.Health
+							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health
 						switch(healthDiff)
 							if(-100 to 5)
 								secretLevel += 0
@@ -10163,19 +10163,19 @@ NEW VARIABLES
 							if(7)
 								SpiralPower=7
 						SpiralPotential=SpiralPower
-						if(Tyrant)
-							SpiralPotential=2
-						if(p.PilotingProwess<SpiralPotential)
-							p.PilotingProwess=SpiralPotential
+						if(Tyrant||healthDiff<25)
+							SpiralPotential=1
+						if(p.PilotingProwess<SpiralPower)
+							p.PilotingProwess=SpiralPower
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
 						PowerMult = 1+(0.015*secretLevel*secretLevel) + (0.005*asc*asc)
 						StrMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						ForMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						EndMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
-						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
-						TimerLimit= (15 * (secretLevel)) * TyrantBonus
-						Cooldown = 61 - ((5 * p.AscensionsAcquired))
+						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower, "EnergyGeneration" = SpiralPower)
+						TimerLimit= (30 * (SpiralPotential)) * TyrantBonus
+						Cooldown = 90 - (SpiralPotential*5)
 				KenWave = 2
 				KenWaveIcon='SparkleGreen.dmi'
 				HitSpark='Spiral_Hitspark.dmi'

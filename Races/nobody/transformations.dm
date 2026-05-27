@@ -120,7 +120,6 @@ transformation
 				strength=1
 				force=1
 				var/asc = usr.AscensionsAcquired
-				var/mdivS = mastery/50
 				var/mdivP = mastery/100
 				if(mastery >= 25 && asc > 2)
 					speedadd = 0.35 + (0.25 * asc)

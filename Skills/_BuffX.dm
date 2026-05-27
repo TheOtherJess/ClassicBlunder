@@ -2217,6 +2217,9 @@ NEW VARIABLES
 				OffMessage="violently rips off their mask as it shatters into fragments..."
 				proc/changeVariables(mob/p)
 					if(altered) return
+					if(p.Saga=="Shinigami")
+						Slotless=1
+						SpecialSlot=0
 					var/SuperSaiyanBuff=1
 					if((p.isRace(SAIYAN) && p.transActive >= 1) || (p.isRace(HALFSAIYAN) && p.transActive >= 1) || p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race && p.race.transformations && p.race.transformations.len >= 1)

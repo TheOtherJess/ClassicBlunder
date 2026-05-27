@@ -3452,10 +3452,10 @@ mob
 					MaxDistance=0
 					Delay=0
 					src.dir=get_dir(src,Trg)
-					if(Trg.Knockbacked)
+					if(Trg.Knockbacked||src.passive_handler.Get("SpiralImpact"))
 						src.NextAttack=0
 						Trg.StopKB()
-						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash")||passive_handler.Get("SpiralImpact"))
+						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash")||src.passive_handler.Get("SpiralImpact"))
 							for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Clash_Defensive/DC in Trg)
 								if(!Trg.BuffOn(DC))
 									var/pursuerBoon = Trg.HasPursuer()

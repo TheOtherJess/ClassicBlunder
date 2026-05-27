@@ -35,7 +35,7 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply
 	MagicNeeded=0
 	Cooldown=60
 	adjust(mob/p)
-		p.passive_handler.Increase("SpiralPowerUnlocked", 1)
+		passives = list("MovementMastery" = 4, "EnergyGeneration" = 3, "PUSpike" = 20, "DrainlessPUSpike" = 1)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	KenWave = 4
@@ -48,8 +48,6 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	OffMessage="limits themselves once again."
 	TextColor="green"
 	MagicNeeded=0
-	adjust(mob/p)
-		p.passive_handler.Increase("SpiralPowerUnlocked", 1)
 obj/Skills/Buffs/SlotlessBuffs/Spiral/ImposedEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	BuffName="Desperate Evolution"
@@ -151,11 +149,11 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvo
 				if(1 to 2)//this will never happen unless the skill is given unnaturally
 					SpiralPower=1//which, i guess, given the subject matter, is more likely than you'd think
 				if(3)
-					SpiralPower=2
+					SpiralPower=1
 				if(4)
-					SpiralPower=3
+					SpiralPower=1
 				if(5)
-					SpiralPower=7
+					SpiralPower=2
 			applyBuff.PowerMult=1+(0.05*secretLevel*secretLevel)
 			applyBuff.StrMult=1.25
 			applyBuff.ForMult=1.25

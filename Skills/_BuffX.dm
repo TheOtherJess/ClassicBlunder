@@ -4370,7 +4370,7 @@ NEW VARIABLES
 			StrMult=1.3
 			EndMult=1.3
 			OffMult=1.2
-			passives = list("Flow" = 3, "Persistence" = 1 + asc)
+			passives = list("Flow" = 3, "Persistence" = 4)
 			BuffTechniques = list("/obj/Skills/Buffs/SlotlessBuffs/Regeneration")
 			ActiveMessage="forces their symbiote out!"
 			OffMessage="restrains their symbiotic companion..."

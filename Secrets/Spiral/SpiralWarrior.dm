@@ -48,6 +48,9 @@ obj/Skills/Buffs/SlotlessBuffs/Spiral/InspiredEvoApply
 	OffMessage="limits themselves once again."
 	TextColor="green"
 	MagicNeeded=0
+	adjust(mob/p)
+		if(p.Secret=="Spiral")
+			passives["SpiralPowerUnlocked"] = 0
 obj/Skills/Buffs/SlotlessBuffs/Spiral/ImposedEvoApply
 	PowerGlows=list(1,0.8,0.8, 0,1,0, 0.8,0.8,1, 0,0,0)
 	BuffName="Desperate Evolution"

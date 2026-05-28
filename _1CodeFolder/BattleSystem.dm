@@ -402,6 +402,10 @@ mob/proc/Unconscious(mob/P,var/text)
 			src<<"Being knocked out forced you to revert!"
 		if(src.isRace(SAIYAN))
 			src.Oozaru(0)
+		var/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi/ek = src.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi)
+		if(ek && ek.SlotlessOn)
+			ek.Trigger(src)
+			src << "Being knocked out collapsed your bankai!"
 	if(src.Grab)
 		src.Grab_Release()
 	Poison = 0

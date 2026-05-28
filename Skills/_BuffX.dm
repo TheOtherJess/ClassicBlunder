@@ -2383,8 +2383,9 @@ NEW VARIABLES
 				src.Trigger(usr)
 		Spirit_Pulse
 			SignatureTechnique=3
-			DefMult = 1.2
-			EndMult = 1.2
+			OffMult = 1.25
+			DefMult = 1.25
+			EndMult = 1.5
 			passives = list("Flow" = 4, "FluidForm" = 2, "MovementMastery" = 10, "PureReduction" = 2)
 			ActiveMessage="is enveloped in a cascading glow!!"
 			OffMessage="dissipates the glow..."
@@ -2396,6 +2397,8 @@ NEW VARIABLES
 		Spirit_Burst
 			SignatureTechnique=3
 			EnergyThreshold=25
+			StrMult=1.5
+			ForMult=1.5
 			passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 			ActiveMessage="spikes their energy in sudden bursts!"
 			OffMessage="quells their energy..."

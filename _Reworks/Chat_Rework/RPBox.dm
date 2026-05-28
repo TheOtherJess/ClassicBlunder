@@ -91,8 +91,8 @@ mob
 
 			msg = replacetext(msg, "\n", "<br>")
 
-			msg = replacetext(msg, "</center><br>", "</center><center></center>")
-			msg = replacetext(msg, "</CENTER><br>", "</CENTER><CENTER></CENTER>")
+			msg = replacetext(msg, "</center><br>", "</center>")
+			msg = replacetext(msg, "</CENTER><br>", "</CENTER>")
 
 			msg = FixCenterLeak(msg)
 

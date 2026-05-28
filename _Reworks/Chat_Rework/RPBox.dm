@@ -51,6 +51,28 @@ mob/verb/
 		winset(usr, "RPWindow.rpbox","text=")
 		rping = 0
 
+mob/proc/FixCenterLeak(t as text)
+	var/close_tag = "</center>"
+	var/reset_tag = "<center></center>"
+	var/out = ""
+	var/pos = 1
+
+	while(TRUE)
+		var/found = findtext(lowertext(t), close_tag, pos)
+
+		if(!found)
+			out += copytext(t, pos)
+			break
+
+		var/after = found + length(close_tag)
+		out += copytext(t, pos, after)
+		if(length(copytext(t, after)))
+			out += reset_tag
+
+		pos = after
+
+	return out
+
 mob
 	proc
 		SubmitRoleplay(msg)
@@ -64,10 +86,15 @@ mob
 				msg = replacetext(msg, "//", "", 1, 3)
 				msg = replacetext(msg, "||", "", 1, 3)
 				format = "thirdperson"
+
+			var/log_msg = msg
+
 			msg = replacetext(msg, "\n", "<br>")
 
 			msg = replacetext(msg, "</center><br>", "</center><center></center>")
 			msg = replacetext(msg, "</CENTER><br>", "</CENTER><CENTER></CENTER>")
+
+			msg = FixCenterLeak(msg)
 
 			var/regex/quotationTextColor = new(@{""[^"]*""}, "g")
 			if(findtext(msg, quotationTextColor))
@@ -88,8 +115,8 @@ mob
 				if(!E.Admin && E.Mapper && E.invisibility) continue
 				E.client.outputToChat("[E.Controlz(src)][formattedMessage]", IC_OUTPUT)
 
-				Log(E.ChatLog(),"<font color=red>*[name]([key]) [html_decode(formattedMessage)]*")
-				Log(E.sanitizedChatLog(),"<font color=red>*[name] [html_decode(formattedMessage)]*")
+				Log(E.ChatLog(),"<font color=red>*[name]([key]) [html_decode(log_msg)]*")
+				Log(E.sanitizedChatLog(),"<font color=red>*[name] [html_decode(log_msg)]*")
 				if(E.BeingObserved.len>0)
 					for(var/mob/m in E.BeingObserved)
 						m.client.outputToChat("[OBSERVE_HEADER][m.Controlz(src)][formattedMessage]", IC_OUTPUT)

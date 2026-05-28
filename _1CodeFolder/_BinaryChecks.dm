@@ -884,6 +884,7 @@ mob
 			if(passive_handler.Get("Null")) return 1;
 			return 0;
 		HasNullTarget()
+			if(istype(src, /mob/Player/AI/Demon)) return 0;
 			if(Target) if(Target.HasNull()) return 1;
 			return 0;
 		HasBleedHit()

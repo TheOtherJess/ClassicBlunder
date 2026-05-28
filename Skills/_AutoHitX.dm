@@ -4502,15 +4502,17 @@ obj
 				StyleNeeded="Ansatsuken"
 				proc/alter(mob/player)
 					ManaCost = 0
-					var/damage = 1 + (0.5 * player.SagaLevel)
+					var/damage = 1 + (2 * player.SagaLevel)
 					var/path = player.AnsatsukenPath == "Tatsumaki" ? 1 : 0
 					var/rounds = 3
 					var/cooldown = 40
 					var/launch = 0
+					Size = 2
 					if(path)
 						cooldown = 30
-						damage = 2 + (1.5 * player.SagaLevel)
+						damage = 2 + (2.5 * player.SagaLevel)
 						rounds = 3
+						Size = 3
 					DamageMult = damage
 					Cooldown = cooldown
 					Rounds = rounds
@@ -4530,7 +4532,7 @@ obj
 				IconY=-32
 				Cooldown=150
 				ManaCost = 25
-				Size=2
+				Size=4
 				Rush=3
 				ControlledRush=3
 				IgnoreAlreadyHit=1
@@ -4569,7 +4571,7 @@ obj
 				IconY=-32
 				Rounds=20
 				Cooldown=200
-				Size=3
+				Size=4
 				Distance=3
 				ManaCost=75
 				Rush=5
@@ -7871,6 +7873,7 @@ obj
 	GuardBreak = 1
 	NoLock = 1
 	NoAttackLock = 1
+	ChargeWaveIcon   = 'BLANK.dmi'
 	IconTime = 4
 	ActiveMessage = "tears through space with a Judgement Cut!"
 

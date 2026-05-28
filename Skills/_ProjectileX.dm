@@ -3323,7 +3323,7 @@ obj
 					Cooldown=40
 					ActiveMessage = "HADOKEN!"
 					activate(mob/player)
-						var/cooldown = 30
+						var/cooldown = 60
 						var/sagaLevel = player.SagaLevel
 						var/damage = 1 + (0.5 * sagaLevel)
 						var/ansatsukenPath = player.AnsatsukenPath == "Hadoken" ? 1 : 0

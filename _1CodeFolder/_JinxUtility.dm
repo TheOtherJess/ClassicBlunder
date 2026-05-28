@@ -1088,6 +1088,11 @@ mob
 				val/=src.EnergyExpenditure*src.Power_Multiplier
 			if(src.passive_handler.Get("EnergyLeak")>1)
 				val *= 0.5
+			if(src.passive_handler.Get("Kaioken"))
+				if(src.passive_handler.Get("Super Kaioken"))
+					val*=0.01
+				else
+					val*=0.1
 			src.Energy+=val
 			if(Energy<0)
 				Energy=0
@@ -1495,15 +1500,10 @@ mob
 				if(passive_handler.Get("Limited Rank-Up"))
 					mult *= 3
 
-			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.25*(Health/100))
-				mult = 0.25*(Health/100)
-			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
-				mult = 0
-
+			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.5)
+				mult = 0.5
 			if(mult < 0)
 				mult = 0
-			if(mult > 0.5 && Secret)
-				mult = 0.5
 			if(mult > 1)
 				mult = 1
 			return mult

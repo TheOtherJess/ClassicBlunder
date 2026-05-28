@@ -1742,7 +1742,7 @@ mob
 				var/obj/Skills/Buffs/S = P.findOrAddSkill(path)
 				S.Password=P.name
 				if(istype(S, /obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/Death_Mark))
-					S.adjust(StyleBuff.SignatureTechnique * 15, StyleBuff.SignatureTechnique)
+					S.adjust(StyleBuff.SignatureTechnique * 15, StyleBuff.SignatureTechnique/2)
 
 			if(src.AttackQueue.Projectile)
 				var/path=text2path(src.AttackQueue.Projectile)

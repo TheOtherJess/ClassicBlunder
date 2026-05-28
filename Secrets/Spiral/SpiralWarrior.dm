@@ -254,7 +254,6 @@ obj/Skills/AutoHit/Spiral
 		Earthshaking=15
 		ComboMaster=1
 		Cooldown=180
-		BuffSelf = "/obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply"
 	Lagann_Impact
 		AlwaysAnnounceCooldown = 1
 		Area="Arc"
@@ -310,6 +309,7 @@ obj/Skills/AutoHit/Spiral
 		WindupMessage="yells: <b>LAGANN...</b>"
 		ActiveMessage="yells: <b>...IMPAAAAAAAAAAAAACT!!</b>"
 		FollowUp="/obj/Skills/AutoHit/Spiral/Giga_Drill_Maximum"
+		BuffSelf = "/obj/Skills/Buffs/SlotlessBuffs/Spiral/LagannEvoApply"
 		FollowUpDelay=1
 /mob/proc/HandleSpiralUnlock(var/Stat, SL)
 	var/CA=AscensionsAcquired

@@ -10,7 +10,7 @@
 	density = 1
 	layer = EFFECTS_LAYER + 1
 	Lifetime = -1
-	var/mob/sword_owner
+	var/tmp/mob/sword_owner
 	var/launched = FALSE
 
 	proc/launch(mob/user, mob/target)

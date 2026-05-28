@@ -405,7 +405,7 @@ proc/hitApplyShitotsuSansen(mob/target, obj/Skills/Projectile/_Projectile/proj)
 	density = 1
 	layer = EFFECTS_LAYER + 1
 	Lifetime = -1
-	var/mob/owner
+	var/tmp/mob/owner
 
 	onBumped(atom/Obstacle)
 		if(istype(Obstacle, /obj/Skills/Projectile/_Projectile))

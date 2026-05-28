@@ -334,6 +334,10 @@ window "ICChatTab"
 		can-minimize = false
 		can-resize = false
 		is-pane = true
+		outer-size = 654x494
+		outer-pos = 291,0
+		inner-pos = 7,7
+		screen-size = 2560x1392
 	elem "icchat"
 		type = OUTPUT
 		pos = 0,0
@@ -2235,7 +2239,8 @@ window "previewrp"
 		size = 640x480
 		anchor1 = 0,0
 		anchor2 = 100,100
-		text-color = #969696
+		font-family = "Gotham Book"
+		text-color = #0080ff
 		background-color = #080808
 		saved-params = "max-lines"
 

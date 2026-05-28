@@ -792,6 +792,7 @@
 #include "Sagas\Shinigami\Shinso.dm"
 #include "Sagas\Shinigami\SodenoShirayuki.dm"
 #include "Sagas\Shinigami\Suzumushi.dm"
+#include "Sagas\Shinigami\Tachikaze.dm"
 #include "Sagas\Shinigami\Zangetsu.dm"
 #include "Sagas\Shinigami\Zanpakuto.dm"
 #include "Sagas\StarWarsForce\Force.dm"

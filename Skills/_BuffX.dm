@@ -10137,6 +10137,9 @@ NEW VARIABLES
 					if(!altered)
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
+						var/TrueUnderdog=1
+						if(p.race.locked||p.isMazokuPathHuman())		
+							TrueUnderdog=0
 						if(p.Target && ismob(p.Target))
 							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health
 						switch(healthDiff)
@@ -10172,7 +10175,7 @@ NEW VARIABLES
 							if(7)
 								SpiralPower=7
 						SpiralPotential=SpiralPower
-						if(Tyrant||healthDiff<25)
+						if(Tyrant||healthDiff<25&&!TrueUnderdog)
 							SpiralPotential=1
 						if(p.PilotingProwess<SpiralPower)
 							p.PilotingProwess=SpiralPower

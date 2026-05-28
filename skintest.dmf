@@ -534,11 +534,6 @@ window "RPWindow"
 		statusbar = false
 		can-close = false
 		can-minimize = false
-		outer-size = 656x518
-		outer-pos = 291,0
-		inner-size = 640x479
-		inner-pos = 8,31
-		screen-size = 2560x1392
 	elem "button8"
 		type = BUTTON
 		pos = 392,447
@@ -2220,6 +2215,30 @@ window "outputwindow"
 		command = "chatSettings"
 		is-flat = true
 
+window "previewrp"
+	elem "previewrp"
+		type = MAIN
+		pos = 291,0
+		size = 640x480
+		anchor1 = -1,-1
+		anchor2 = -1,-1
+		background-color = none
+		is-visible = false
+		saved-params = "pos;size;is-minimized;is-maximized"
+		outer-size = 656x538
+		outer-pos = 291,0
+		inner-pos = 8,31
+		screen-size = 2560x1392
+	elem "rp-preview"
+		type = OUTPUT
+		pos = 0,0
+		size = 640x480
+		anchor1 = 0,0
+		anchor2 = 100,100
+		text-color = #969696
+		background-color = #080808
+		saved-params = "max-lines"
+
 window "rpane"
 	elem "rpane"
 		type = MAIN
@@ -2235,10 +2254,6 @@ window "rpane"
 		can-minimize = false
 		can-resize = false
 		is-pane = true
-		outer-size = 654x494
-		outer-pos = 291,0
-		inner-pos = 7,7
-		screen-size = 2560x1392
 	elem "rpanewindow"
 		type = CHILD
 		pos = 0,0

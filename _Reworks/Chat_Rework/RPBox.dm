@@ -115,7 +115,9 @@ mob
 		previewRoleplay(msg)
 			msg = applyRoleplayParsing(msg)
 			msg = "<body style=\"background-color: black;\">[msg]</body>"
-			src << browse(msg,"size=600x600,window=Title")
+			src << output(null, "rp-preview")
+			winset(src, "previewrp", "is-visible=true")
+			src << output(msg, "rp-preview")
 
 		SubmitRoleplay(msg)
 			if(length(msg)==0)

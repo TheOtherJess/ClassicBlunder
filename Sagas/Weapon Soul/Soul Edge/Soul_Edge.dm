@@ -90,11 +90,11 @@ obj/Skills/AutoHit/Dark_Reconquista
 	layer = EFFECTS_LAYER
 	var/max_size = 4.0
 	var/wave_lifetime = 30
-	var/mob/Players/owner
+	var/tmp/mob/Players/owner
 	var/DamageMult = 1
 	var/StrOffense = 1
 	var/EndRes = 1
-	var/list/hitList = list()
+	var/tmp/list/hitList = list()
 
 	New()
 		animate(src)
@@ -143,9 +143,9 @@ obj/Skills/AutoHit/Dark_Reconquista
 				else
 					if(P in outsideSet)
 						outsideSet -= P
-						if(!(P in hitList))
+						if(!(P.ckey in hitList))
 							if(dist > prev_radius_tiles)
-								hitList += P
+								hitList += P.ckey
 								dealWaveDamage(P)
 
 			prev_radius_tiles = curr_radius_tiles

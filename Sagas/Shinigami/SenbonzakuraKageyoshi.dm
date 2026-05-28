@@ -236,9 +236,9 @@
 		if(p.inactive) return
 		for(var/mob/M in p.loc)
 			if(M == user) continue
-			if(M in p.already_hit) continue
+			if(M.ckey in p.already_hit) continue
 			if(M.Stasis) continue
-			p.already_hit += M
+			p.already_hit += M.ckey
 			user.Target = M
 			user.petal_attacking = TRUE
 			user.Melee1(forcedTarget=M, BreakAttackRate=1)

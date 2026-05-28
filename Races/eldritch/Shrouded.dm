@@ -219,7 +219,7 @@
 
 /mob/proc/findTetherPacts()
     var/list/l = list();
-    for(var/mob/Players/p in world)
+    for(var/mob/Players/p in players)
         if(p.TetherPactOwner == key)
             l.Add(p);
     if(l.len > 0) return l;

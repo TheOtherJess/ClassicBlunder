@@ -370,7 +370,7 @@ obj/Skills/Utility
 				src.Using=0
 				return
 			var/list/mob/Players/Pacted=list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)
 					Pacted.Add(P)
 			if(Pacted.len < 1)
@@ -492,7 +492,7 @@ obj/Skills/Utility
 				return
 			// Gather all pacted PCs in the world
 			var/list/mob/Players/Pacted = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in in players)
 				if(P == usr)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)
@@ -557,7 +557,7 @@ obj/Skills/Utility
 				src.Using=0
 				return
 			var/list/mob/Players/Pacted = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P == usr)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)
@@ -594,7 +594,7 @@ obj/Skills/Utility
 				src.Using = 0
 				return
 			var/list/mob/Players/Options = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P == usr)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key && !P.BaredSoul)
@@ -651,7 +651,7 @@ obj/Skills/Utility
 				src.Using = 0
 				return
 			var/list/mob/Players/Pacted = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P == usr)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)
@@ -785,7 +785,7 @@ obj/Skills/Utility
 				src.Using = 0
 				return
 			var/list/mob/Players/Pacted = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)
 					Pacted.Add(P)
 			if(Pacted.len < 1)
@@ -837,7 +837,7 @@ obj/Skills/Utility
 				return
 			var/mob/caster = usr
 			var/list/mob/Players/affected = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P == caster)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == caster.key && P.passive_handler)
@@ -882,7 +882,7 @@ obj/Skills/Utility
 				return
 			var/mob/caster = usr
 			var/list/types_applied = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P.EldritchPacted && P.ReflectedPactOwner == caster.key)
 					if(!(P.ReflectedPactType in types_applied))
 						types_applied.Add(P.ReflectedPactType)
@@ -921,7 +921,7 @@ obj/Skills/Utility
 				return
 			var/mob/caster = usr
 			var/list/mob/Players/affected = list()
-			for(var/mob/Players/P in world)
+			for(var/mob/Players/P in players)
 				if(P == caster)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == caster.key && P.passive_handler)

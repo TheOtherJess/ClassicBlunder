@@ -5625,6 +5625,7 @@ obj
 						src.MaxMultiHit=Z.TempHits
 						src.MultiHit=Z.TempHits
 					src.Stunner=Z.Stunner
+					src.ComboMaster=Z.ComboMaster
 					src.Launcher=Z.Launcher
 					src.Knockback=Z.Knockback
 					src.MiniDivide=Z.MiniDivide

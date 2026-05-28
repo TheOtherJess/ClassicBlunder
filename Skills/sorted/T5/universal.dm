@@ -13,12 +13,13 @@
 	AccMult=2
 	Homing=3
 	Explode=1
+	ZoneAttack=1
 	ZoneAttackX=8
 	ZoneAttackY=8
 	IconLock='Plasma.dmi'
 	LockX=0
 	LockY=0
-	Hover=7
+	Hover=10
 	Variation=0
 	Cooldown = 150
 	ActiveMessage="Kicks up a Barrage of Orbs, creating an inescapable trap!"

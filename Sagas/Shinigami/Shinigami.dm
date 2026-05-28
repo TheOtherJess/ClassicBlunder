@@ -3,7 +3,7 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
-	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi", "Shinso")
+	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi", "Shinso", "Suzumushi")
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -67,6 +67,9 @@ mob/tierUpSaga(Path)
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Hozukimaru)
 							if("Shinso")
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shinso)
+							if("Suzumushi")
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Suzumushi)
+								src.AddSkill(new/obj/Skills/AutoHit/Suzumushi)
 				updateShinigamiAscended()
 
 			if(3)
@@ -85,6 +88,10 @@ mob/tierUpSaga(Path)
 							if("Shirayuki")
 								src.AddSkill(new/obj/Skills/Buffs/ActiveBuffs/Shirafune)
 								src<<"You learn <i>San no mai, Shirafune!</i>"
+							if("Suzumushi")
+								if(!locate(/obj/Skills/Projectile/Benihiko, src))
+									src.AddSkill(new/obj/Skills/Projectile/Benihiko)
+									src << "Your blade's cry splits into countless blades of sound. You can now use <b>Benihiko</b>."
 				updateShinigamiAscended()
 
 			if(4)
@@ -120,6 +127,9 @@ mob/tierUpSaga(Path)
 							if("Shinso")
 								src.BankaiPrefix = input(src, "Your Bankai's true name reveals itself. What is it?", "Bankai True Name") as text
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Kamishini_no_Yari)
+							if("Suzumushi")
+								src.BankaiPrefix = input(src, "Your Bankai manifests. What suffix comes after your Zanpakutō's name?", "Bankai Suffix") as text
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi)
 				updateShinigamiAscended()
 
 			if(5)

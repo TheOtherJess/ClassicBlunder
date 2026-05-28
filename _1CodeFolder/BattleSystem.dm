@@ -2170,6 +2170,13 @@ mob/proc/Grab_Mob(var/mob/P, var/Forced=0)
 			src.OMessage(10,"[src] grabbed [P]!","[src]([src.key]) grabs [ExtractInfo(P)]")
 			src.Grab_Update()
 			src.Grab_Effects(P)
+			var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted/ns = src.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted)
+			if(ns && src.BuffOn(ns) && ns.source == P)
+				ns.stopNearSighted(src)
+				ns.Trigger(src, 1)
+				var/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi/ek = P.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi)
+				if(ek && ek.domain_active)
+					ek.ns_exempt |= src
 			return
 		if(!P.canBeGrabbed())
 			src.OMessage(10,"[src] fails to get a firm hold on [P]!","[src]([src.key]) fails to grab [ExtractInfo(P)]")
@@ -2180,6 +2187,13 @@ mob/proc/Grab_Mob(var/mob/P, var/Forced=0)
 	src.OMessage(10,"[src] grabbed [P]!","[src]([src.key]) grabs [ExtractInfo(P)]")
 	src.Grab_Update()
 	src.Grab_Effects(P)
+	var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted/ns = src.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted)
+	if(ns && src.BuffOn(ns) && ns.source == P)
+		ns.stopNearSighted(src)
+		ns.Trigger(src, 1)
+		var/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi/ek = P.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi)
+		if(ek && ek.domain_active)
+			ek.ns_exempt |= src
 
 /mob/proc/canBeGrabbed()
 	if(KO) return 1;

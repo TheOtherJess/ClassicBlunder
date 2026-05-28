@@ -2267,6 +2267,9 @@ NEW VARIABLES
 					Cooldown=60
 				verb/Don_Mask()
 					set category="Skills"
+					if(usr.CheckSlotless("Final Getsuga Tenshou")||usr.CheckSlotless("Getsuga Tenshou Clad")) //might make a skill var for this later)
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
+						return
 					if(!usr.BuffOn(src))
 						if(!usr.VaizardType)
 							usr.VaizardType = input(usr, "What type?") in list("Berserker", "Manipulator", "Hellion", "Phantasm")
@@ -3045,6 +3048,9 @@ NEW VARIABLES
 					if(!usr.InBankai())
 						usr << "Getsuga Clad can only be used in Bankai."
 						return
+					if(usr.CheckSlotless("Final Getsuga Tenshou")||usr.CheckSlotless("Vaizard Mask")) //might make a skill var for this later)
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
+						return
 					if(!altered)
 						Slotless=1
 						SpecialSlot=0
@@ -3093,6 +3099,9 @@ NEW VARIABLES
 					set category="Skills"
 					if(!usr.InBankai())
 						usr << "Final Getsuga Tenshou can only be used in Bankai."
+						return
+					if(usr.CheckSlotless("Getsuga Tenshou Clad")||usr.CheckSlotless("Vaizard Mask"))
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
 						return
 					var/wasOn = usr.BuffOn(src)
 					src.Trigger(usr)

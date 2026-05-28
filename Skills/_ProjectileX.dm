@@ -4003,7 +4003,7 @@ obj
 						usr.UseProjectile(src)
 
 				Scathing_Breeze
-					SkillCost=160
+					SkillCost=TIER_4_COST
 					Copyable=4
 					Distance=20
 					DamageMult=1.8
@@ -4026,7 +4026,7 @@ obj
 						set category="Skills"
 						usr.UseProjectile(src)
 				Wind_Scar
-					SkillCost=160
+					SkillCost=TIER_4_COST
 					Copyable=5
 					Distance=120
 					DamageMult=0.95
@@ -4051,7 +4051,7 @@ obj
 						set category="Skills"
 						usr.UseProjectile(src)
 				Backlash_Wave
-					SkillCost=160
+					SkillCost=TIER_4_COST
 					Copyable=5
 					Distance=30
 					DamageMult=1.2
@@ -4080,7 +4080,7 @@ obj
 						set category="Skills"
 						usr.UseProjectile(src)
 				Air_Carve
-					SkillCost=160
+					SkillCost=TIER_4_COST
 					Copyable=5
 					Distance=20
 					DamageMult=2.4
@@ -4099,7 +4099,7 @@ obj
 						set category="Skills"
 						usr.UseProjectile(src)
 				Phantom_Howl
-					SkillCost=160
+					SkillCost=TIER_4_COST
 					Copyable=5
 					Distance=20
 					DamageMult=2.2

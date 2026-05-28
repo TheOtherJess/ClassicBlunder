@@ -6088,7 +6088,7 @@ NEW VARIABLES
 				OffMessage="feels the magic protecting them fade away..."
 			Shell
 				ElementalClass = "Earth"
-				SkillCost = 120
+				SkillCost = TIER_4_COST
 				Copyable = 3
 				CastingTime = 2
 				ActiveMessage="invokes: <font size=+1>SHELL!</font size>"
@@ -6149,7 +6149,7 @@ NEW VARIABLES
 				TimerLimit=60
 			Barrier
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=4
 				PreRequisite=list("/obj/Skills/Buffs/SlotlessBuffs/Magic/Shell")
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/BarrierApply
@@ -6213,7 +6213,7 @@ NEW VARIABLES
 				TimerLimit=30
 			Protect
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=5
 				CastingTime=4
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/ProtectApply

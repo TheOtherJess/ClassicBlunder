@@ -1884,7 +1884,7 @@ obj
 					set category="Skills"
 					usr.Activate(src)
 			Power_Pillar
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=5
 				EnergyCost=10
 				Area="Circle"

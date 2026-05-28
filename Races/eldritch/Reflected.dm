@@ -492,7 +492,7 @@ obj/Skills/Utility
 				return
 			// Gather all pacted PCs in the world
 			var/list/mob/Players/Pacted = list()
-			for(var/mob/Players/P in in players)
+			for(var/mob/Players/P in players)
 				if(P == usr)
 					continue
 				if(P.EldritchPacted && P.ReflectedPactOwner == usr.key)

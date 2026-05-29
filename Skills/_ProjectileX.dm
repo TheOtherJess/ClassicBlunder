@@ -6133,7 +6133,7 @@ obj
 												a:Shielding=1
 												spawn()
 													a:ForceField()
-										Damage*=max(1-(0.25*a:GetDeflection()),0.25)
+										Damage*=max(1-(glob.DEFLECTION_DAMAGE_MULT*a:GetDeflection()),0.25)
 									else if(!Deflection_Formula(src.Owner, a, accmult*(src.MultiHit+1)/**(max(atkIntim, 1)/max(defIntim,1))*/, BaseChance=(100-glob.WorldWhiffRate), Backfire=src.Backfire))
 										Damage*=0.5
 

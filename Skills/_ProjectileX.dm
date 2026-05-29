@@ -729,7 +729,7 @@ obj
 				NoTransplant=1
 				Cooldown=60
 				Distance=100
-				DamageMult=0.2
+				DamageMult=0.25
 				Blasts=40
 				Dodgeable=-1
 				Stunner=1
@@ -741,6 +741,9 @@ obj
 				Striking=1
 				Charge=1
 				ChargeMessage="invokes Bolverk's Zero Gun form: Fenrir!"
+				Stunner=3;
+				ComboMaster=1;
+				ManaCost=10;
 				verb/Fenrir()
 					set category="Skills"
 					set name="Zero Gun: Fenrir"
@@ -749,7 +752,7 @@ obj
 				NoTransplant=1
 				Cooldown=150
 				Distance=150
-				DamageMult=5.5
+				DamageMult=15
 				Blasts=1
 				Radius=1
 				Dodgeable=0
@@ -762,6 +765,7 @@ obj
 				IconSize=2
 				Charge=1
 				ChargeMessage="invokes Bolverk's Zero Gun form: Thor!"
+				ManaCost=25;
 				verb/Thor()
 					set category="Skills"
 					set name="Zero Gun: Thor"

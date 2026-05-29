@@ -5034,7 +5034,7 @@ obj
 				Distance=5
 				Cooldown=20
 				ForOffense=1
-				DamageMult=2
+				DamageMult=3
 				HitSparkIcon='Hit Effect Ripple.dmi'
 				HitSparkX=-32
 				HitSparkY=-32
@@ -5044,6 +5044,7 @@ obj
 				HitSparkDispersion=1
 				HitSparkDelay=1
 				ActiveMessage="yells: OPTIC BARREL!"
+				ManaCost=5;
 				verb/Optic_Barrel()
 					set category="Skills"
 					usr.Activate(src)

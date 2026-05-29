@@ -2662,11 +2662,12 @@ obj/Items/Enchantment/Staff
 					icon='Bolverk.dmi'
 					pixel_x=-32
 					pixel_y=-32
-					passives = list("ManaGeneration" = 4, "CalmAnger" = 1)
+					Ascended = 6;
+					passives = list("ManaGeneration" = 5, "CalmAnger" = 1, "MovingCharge"=1, "Adrenaline"=1, "Flicker"=2, "Flow"=2, "BlurringStrikes"=2, "HybridStrike"=1)
 					Destructable=0
 					ShatterTier=0
 					NoSaga=1
-					ManaGeneration=4
+					ManaGeneration=5
 					CalmAnger=1
 					Techniques=list("/obj/Skills/Buffs/SlotlessBuffs/Grimoire/OverDrive/Chain_Quasar", "/obj/Skills/AutoHit/OpticBarrel", "/obj/Skills/Projectile/Fenrir", "/obj/Skills/Projectile/Thor", "/obj/Skills/Queue/ChainRevolver")
 		Staff

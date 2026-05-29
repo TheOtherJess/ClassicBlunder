@@ -7397,19 +7397,17 @@ NEW VARIABLES
 				Chain_Quasar
 					TimerLimit=30
 					Cooldown=120
-					passives = list("Godspeed" = 2, "SweepingStrike" = 1, "Warp" = 1, "SpiritStrike" = 1)
-					Godspeed=2
-					Afterimages=1
-					SweepingStrike=1
-					Warp=1
-					SpiritStrike=1
+					passives = list("CoolerAfterimages"=2, "Godspeed" = 8, "SweepingStrike" = 2, "Warp" = 1, "SpiritStrike" = 1, "ManaStats"=1)
 					HitSpark='Hit Effect Ripple.dmi'
 					HitX=-32
 					HitY=-32
 					ActiveMessage="overloads their Drive, turning their movement into a dancelike flow - <b>Chain Quasar</b>!"
 					OffMessage="seals the accuracy of Bolverk..."
+					adjust(mob/p)
+						passives = list("CoolerAfterimages"=2, "Godspeed" = 8, "SweepingStrike" = 2, "Warp" = 1, "SpiritStrike" = 1, "ManaStats"=1)
 					verb/Chain_Quasar()
 						set category="Skills"
+						if(!usr.BuffOn(src)) adjust(usr)
 						src.Trigger(usr)
 				Fierce_God
 					TimerLimit=30

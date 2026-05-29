@@ -10757,7 +10757,7 @@ NEW VARIABLES
 					Fever_Pitch
 						StrMult=1.5
 						OffMult=1.5
-						SpdMult=3
+						SpdMult=1.25
 						HotHundred = 1
 						Warping = 6
 						passives = list("TensionLock" = 1, "Steady" = 2, "BlurringStrikes" = 2)

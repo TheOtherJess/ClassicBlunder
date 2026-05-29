@@ -1105,7 +1105,7 @@ mob
 			if(src.passive_handler.Get("ManaLeak")>=0.25&&src.icon_state!="Meditate")
 				if(!hasSecret("Eldritch (Reflected)"))
 					val *= 0.1
-			if(hasSecret("Eldritch (Reflected)")
+			if(hasSecret("Eldritch (Reflected)"))
 				HealOmniTax(val/10000)
 			src.ManaAmount+=val
 			src.MaxMana()

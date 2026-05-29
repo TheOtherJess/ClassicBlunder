@@ -17,7 +17,7 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"Instinct"       = 1 + SL,
 			"ManaStats"      = 1 + SL,
 			"Pressure"       = 1 + SL,
-			"ManaLeak"       = 4
+			"ManaLeak"       = 4,
 			"ZenkaiPower"    = 0.15
 		)
 		StrMult = 1.15 + (0.1 * SL)
@@ -85,8 +85,8 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"Brutalize"     = 0.5 + (0.5 * SL),
 			"Zornhau"       = 1 + SL,
 			"Inevitable"    = 1 + SL,
-			"Instinct"      = 1 + SL
-			"UnderDog"      = 1 + (SL*1.25)
+			"Instinct"      = 1 + SL,
+			"UnderDog"      = 1 + (SL*1.25),
 			"ZenkaiPower" = 0.25
 		)
 		if(SL < 5)
@@ -235,8 +235,8 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"Instinct"          = 1 + SL,
 			"DemonicDurability" = 1 + SL,
 			"HellRisen"         = 0.25 + (0.25 * SL),
-			"Juggernaut"        = 1 + SL
-			"UnderDog"          = 1 + (SL*2)
+			"Juggernaut"        = 1 + SL,
+			"UnderDog"          = 1 + (SL*2),
 			"ZenkaiPower"       = 0.5
 		)
 		if(SL < 7)

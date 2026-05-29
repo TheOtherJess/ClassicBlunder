@@ -6,17 +6,18 @@ obj
 				name="Void Formation: Snow Wind"
 				ActiveMessage="enters a peerless stance!"
 				HitMessage="rends the opponent apart with <b>Kokujin: YUKIKAZE</b>!"
-				DamageMult=4.5
-				AccuracyMult = 1.175
+				DamageMult=15
+				AccuracyMult = 1.3
 				Counter=1
-				Warp=2
+				Warp=10
 				Duration=5
-				Cooldown=60
+				Cooldown=90
 				NeedsSword=1
 				HitSparkIcon='Slash - Power.dmi'
 				HitSparkX=-32
 				HitSparkY=-32
 				HitSparkSize=4
+				ManaCost=25;
 				verb/KokujinYukikaze()
 					set category="Skills"
 					set name="Void Formation: Snow Wind"

@@ -7384,14 +7384,15 @@ NEW VARIABLES
 				Frost_End
 					TimerLimit=30
 					Cooldown=-1
-					passives = list("StunningStrike" = 2, "Freezing" = 1, "Chilling" = 1)
-					StunningStrike=2
-					Freezing=1
-					Chilling=1
+					passives = list("StunningStrike" = 2, "Freezing" = 20, "ComboMaster"=1, "ManaStats"=2)
 					ActiveMessage="overloads their Drive, turning their swordsmanship into a slicing blizzard - <b>Frost End</b>!"
 					OffMessage="seals the frost of Yukianesa..."
+					adjust(mob/p)
+						passives = list("StunningStrike" = 2, "Freezing" = 20, "ComboMaster"=1, "ManaStats"=2);
+
 					verb/Frost_End()
 						set category="Skills"
+						if(!usr.BuffOn(src)) adjust(usr);
 						src.Trigger(usr)
 				Chain_Quasar
 					TimerLimit=30

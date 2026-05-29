@@ -988,9 +988,7 @@ obj/Items/Sword
 		Legendary
 			LegendaryItem=1
 			Unobtainable=1
-			Ascended=3
-			ShatterCounter=700
-			ShatterMax=700
+			Ascended=6
 			Yukianesa
 				name="Yukianesa"
 				icon='Yukianesa.dmi'
@@ -1001,10 +999,9 @@ obj/Items/Sword
 				MagicSword=1
 				Element="Water"
 				unsheatheIcon = 'Yukianesa.dmi'
-				passives = list("CalmAnger" = 1, "MagicSword" = 1, "ManaGeneration" = 3, "AngerThreshold" = 1.5)
+				passives = list("CalmAnger" = 1, "MagicSword" = 1, "ManaGeneration" = 5, "CriticalChance"=20, "CriticalDamage"=0.15, "IceHerald"=1, "Freezing"=5, "SpiritFlow"=2, "WaveDancer"=2, "RenameMana"="HEAT")
 				Destructable=0
 				ShatterTier=0
-				ManaGeneration=3
 				Techniques=list("/obj/Skills/Buffs/SlotlessBuffs/Grimoire/OverDrive/Frost_End", "/obj/Skills/AutoHit/FrostBite", "/obj/Skills/Projectile/Sword/TougaHyoujin", "/obj/Skills/Queue/KokujinYukikaze")
 
 

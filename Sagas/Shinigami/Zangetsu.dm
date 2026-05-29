@@ -133,8 +133,9 @@
 			"Godspeed"        = 1 + SL,
 			"Warping"         = 0.5 + (SL/2),
 			"HybridStrike"    = 0.5 + (SL/2),
-			"EmptyFlashStep"  = 1 + SL,
-			"PureDamage"      = 1 + SL
+			"EmptyFlashStep"  = 1,
+			"PureDamage"      = 1 + SL,
+			"SwordAscension"  = SL
 		)
 		if(SL < 5)
 			passives["ManaLeak"] = 4

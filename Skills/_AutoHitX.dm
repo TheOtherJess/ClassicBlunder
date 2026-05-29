@@ -239,6 +239,8 @@ obj
 				DirectWounds//Deals (this value) of wound % per hit.
 				FrenzyDebuff
 
+				KeepQueue = FALSE
+
 			skillDescription()
 				..()
 				if(StrOffense)
@@ -5573,7 +5575,7 @@ mob
 				else
 					Z.TempStrOff=1
 					Z.TempForOff=0
-			if(src.AttackQueue && !src.AttackQueue.FollowUp)
+			if(src.AttackQueue && !src.AttackQueue.FollowUp && !Z.KeepQueue)
 				src << "<b>You drop [src.AttackQueue.name] from your queue.</b>"
 				src.QueueOverlayRemove()
 				src.ClearQueue()

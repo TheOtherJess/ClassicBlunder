@@ -531,6 +531,7 @@ Today, another God of the Rifts is born."}
 							offense = 0.5
 							force = 0.5
 							speed = 0.25
+							defense = 0.25
 							endurance = 0.5
 
 				..()

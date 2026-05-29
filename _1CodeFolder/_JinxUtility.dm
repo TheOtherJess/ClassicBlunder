@@ -1103,7 +1103,10 @@ mob
 			if(src.passive_handler.Get("Unrelenting Wrath"))
 				val = 0
 			if(src.passive_handler.Get("ManaLeak")>=0.25&&src.icon_state!="Meditate")
-				val *= 0.1
+				if(!hasSecret("Eldritch (Reflected)"))
+					val *= 0.1
+			if(hasSecret("Eldritch (Reflected)")
+				HealOmniTax(val/10000)
 			src.ManaAmount+=val
 			src.MaxMana()
 		HealWounds(var/val, var/StableHeal=0)
@@ -1234,6 +1237,13 @@ mob
 		AddManaCut(Val)
 			ManaCut = clamp(ManaCut+Val, 0, 1);//This one doesn't kill
 		AddOmniTax(Val)
+			AddStrTax(Val)
+			AddForTax(Val)
+			AddEndTax(Val)
+			AddOffTax(Val)
+			AddDefTax(Val)
+			AddSpdTax(Val)
+		HealOmniTax(Val)
 			AddStrTax(Val)
 			AddForTax(Val)
 			AddEndTax(Val)
@@ -3472,6 +3482,8 @@ mob
 										DC.passives["Star Surge"] = 1
 										DC.passives["Steady"] = 2
 										DC.TimerLimit = 1.5 + clamp(0.5 * pursuerBoon, 0.001, glob.MAX_PURSUER_BOON)
+									if(src.hasSecret("Eldritch (Reflected)"))
+										DC.ManaHeal=3+(src.AscensionsAcquired*2)
 									DC.Trigger(src)
 					break
 				else

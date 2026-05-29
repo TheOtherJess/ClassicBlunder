@@ -3947,7 +3947,7 @@ obj
 					NoTransplant=1
 					name="Void Formation: Gale"
 					Distance=30
-					DamageMult=1
+					DamageMult=3
 					MultiHit=5
 					Knockback=1
 					Dodgeable=0
@@ -3957,6 +3957,8 @@ obj
 					IconSize=3
 					StrRate=1
 					Charge=0.5
+					Stunner=3
+					ManaCost=10;
 					ActiveMessage="aims to rend their opponents apart with <b>Kokujin: SHIPPU</b>!"
 					verb/Kokujin_Shippu()
 						set category="Skills"

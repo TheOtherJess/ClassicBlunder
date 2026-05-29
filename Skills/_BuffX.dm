@@ -7414,14 +7414,17 @@ NEW VARIABLES
 				Fierce_God
 					TimerLimit=30
 					Cooldown=-1
-					passives = list("TechniqueMastery" = 10)
+					passives = list("ComboMaster"=1, "TechniqueMastery" = 10, "EnergyHeal"=3, "ManaHeal"=3, "ManaStats"=1)
 					TechniqueMastery=10
 					EnergyHeal=3
 					ManaHeal=3
 					ActiveMessage="overloads their Drive, entering a tireless frenzy - <b>Kishin</b>!"
 					OffMessage="seals the justice of Ookami..."
+					adjust(mob/p)
+						passives = list("ComboMaster"=1, "TechniqueMastery" = 10, "EnergyHeal"=3, "ManaHeal"=3, "ManaStats"=1)
 					verb/Fierce_God()
 						set category="Skills"
+						if(!usr.BuffOn(src)) adjust(usr)
 						src.Trigger(usr)
 
 			Slaying_God

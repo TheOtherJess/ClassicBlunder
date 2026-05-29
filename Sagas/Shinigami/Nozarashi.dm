@@ -18,6 +18,7 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"ManaStats"      = 1 + SL,
 			"Pressure"       = 1 + SL,
 			"ManaLeak"       = 4
+			"ZenkaiPower"    = 0.15
 		)
 		StrMult = 1.15 + (0.1 * SL)
 		EndMult = 1.15 + (0.1 * SL)
@@ -78,13 +79,15 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 		passives = list(
 			"PureDamage"    = 1 + SL,
 			"PureReduction" = 1 + SL,
-			"Persistence"   = 1 + SL,
+			"Persistence"   = 1 + (SL/2),
 			"BulletKill"    = 1,
 			"NoDodge"       = 1,
 			"Brutalize"     = 0.5 + (0.5 * SL),
 			"Zornhau"       = 1 + SL,
 			"Inevitable"    = 1 + SL,
 			"Instinct"      = 1 + SL
+			"UnderDog"      = 1 + (SL*1.25)
+			"ZenkaiPower" = 0.25
 		)
 		if(SL < 5)
 			passives["ManaLeak"] = 2
@@ -224,7 +227,7 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 		var/SL = p.SagaLevel
 		passives = list(
 			"Duelist"           = 0.5 + (SL * 1.5),
-			"Persistence"       = 3 + SL,
+			"Persistence"       = 3 + (SL/2),
 			"PridefulRage"      = 1,
 			"BulletKill"        = 1,
 			"NoDodge"           = 1,
@@ -233,6 +236,8 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"DemonicDurability" = 1 + SL,
 			"HellRisen"         = 0.25 + (0.25 * SL),
 			"Juggernaut"        = 1 + SL
+			"UnderDog"          = 1 + (SL*2)
+			"ZenkaiPower"       = 0.5
 		)
 		if(SL < 7)
 			passives["BleedHit"] = 2

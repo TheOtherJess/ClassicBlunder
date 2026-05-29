@@ -6173,6 +6173,10 @@ obj
 							var/elem_dmg_bonus = Owner.getSpellElementDamageBonus(SpellElement)
 							if(elem_dmg_bonus)
 								atk *= (1 + elem_dmg_bonus)
+						if(Owner.HasSpiritFlow())
+							var/sf = Owner.GetSpiritFlow() / glob.SPIRIT_FLOW_DIVISOR
+							atk += Owner.GetFor(sf)
+
 						if(atk<1)
 							atk=1
 						if(glob.DMG_CALC_2)
@@ -6190,6 +6194,8 @@ obj
 						#if DEBUG_PROJECTILE
 						Owner.log2text("PROJ Damage final", Damage, "damageDebugs.txt", Owner.ckey)
 						#endif
+						if(Owner.HasUnarmedDamage()&&!Owner.EquippedSword()&&!Owner.EquippedStaff())
+							Damage *= 1 + (GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
 						if(Bounce)
 							Damage *= max(1-glob.BOUNCE_REDUCTION * CurrentBounce, 0.25)
 						if(src.Owner.RippleActive())

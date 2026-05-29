@@ -40,7 +40,7 @@ var/list/PassiveInfo = list("Extend"="increases the range of armed autohits base
 "SoulFire"= "dealing damage to someone also deals damage to their mana, mana capacity, and fatigues them at a rate based on passive value.",
 "Siphon"= "restores energy (and reduces the damage) when hit by a Projectile, spiritsword/spirithand, hybridstrike, spiritstrike",
 "ManaStats"= "increases your Stats based on your Mana.",
-"SpiritFlow"= "increases autohit damage based on your force",
+"SpiritFlow"= "increases autohit and projectile damage based on your force",
 "CallousedFeet"= "increases autohit damage based on your endurance",
 "ManaGeneration"= "increases mana regen, also allows you regain mana on being hit",
 "DualCast"= "spells hit again if you have the mana necessary to cast it again",

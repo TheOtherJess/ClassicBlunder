@@ -729,7 +729,7 @@ obj
 				NoTransplant=1
 				Cooldown=60
 				Distance=100
-				DamageMult=0.2
+				DamageMult=0.25
 				Blasts=40
 				Dodgeable=-1
 				Stunner=1
@@ -741,6 +741,9 @@ obj
 				Striking=1
 				Charge=1
 				ChargeMessage="invokes Bolverk's Zero Gun form: Fenrir!"
+				Stunner=3;
+				ComboMaster=1;
+				ManaCost=10;
 				verb/Fenrir()
 					set category="Skills"
 					set name="Zero Gun: Fenrir"
@@ -749,7 +752,7 @@ obj
 				NoTransplant=1
 				Cooldown=150
 				Distance=150
-				DamageMult=5.5
+				DamageMult=15
 				Blasts=1
 				Radius=1
 				Dodgeable=0
@@ -762,6 +765,7 @@ obj
 				IconSize=2
 				Charge=1
 				ChargeMessage="invokes Bolverk's Zero Gun form: Thor!"
+				ManaCost=25;
 				verb/Thor()
 					set category="Skills"
 					set name="Zero Gun: Thor"
@@ -3926,16 +3930,18 @@ obj
 				TougaHyoujin
 					NoTransplant=1
 					Distance=30
-					DamageMult=5//big boi damage that was from multihits
+					DamageMult=2//big boi damage that was from multihits
+					MultiHit=5;
 					Knockback=1
 					Dodgeable=0
-					Freezing=5
-					Stasis=1
+					Freezing=10
+					Stunner=3;
 					Cooldown=60
 					IconLock='Air Render.dmi'
 					Radius=2
 					IconSize=2
-					Charge=1
+					Charge=0.5
+					ManaCost=10;
 					ChargeMessage="evokes the power of Yukianesa into a freezing slash!"
 					verb/Touga_Hyoujin()
 						set category="Skills"
@@ -3945,7 +3951,7 @@ obj
 					NoTransplant=1
 					name="Void Formation: Gale"
 					Distance=30
-					DamageMult=1
+					DamageMult=3
 					MultiHit=5
 					Knockback=1
 					Dodgeable=0
@@ -3955,6 +3961,8 @@ obj
 					IconSize=3
 					StrRate=1
 					Charge=0.5
+					Stunner=3
+					ManaCost=10;
 					ActiveMessage="aims to rend their opponents apart with <b>Kokujin: SHIPPU</b>!"
 					verb/Kokujin_Shippu()
 						set category="Skills"
@@ -6125,7 +6133,7 @@ obj
 												a:Shielding=1
 												spawn()
 													a:ForceField()
-										Damage*=max(1-(0.25*a:GetDeflection()),0.25)
+										Damage*=max(1-(glob.DEFLECTION_DAMAGE_MULT*a:GetDeflection()),0.25)
 									else if(!Deflection_Formula(src.Owner, a, accmult*(src.MultiHit+1)/**(max(atkIntim, 1)/max(defIntim,1))*/, BaseChance=(100-glob.WorldWhiffRate), Backfire=src.Backfire))
 										Damage*=0.5
 
@@ -6173,6 +6181,10 @@ obj
 							var/elem_dmg_bonus = Owner.getSpellElementDamageBonus(SpellElement)
 							if(elem_dmg_bonus)
 								atk *= (1 + elem_dmg_bonus)
+						if(Owner.HasSpiritFlow())
+							var/sf = Owner.GetSpiritFlow() / glob.SPIRIT_FLOW_DIVISOR
+							atk += Owner.GetFor(sf)
+
 						if(atk<1)
 							atk=1
 						if(glob.DMG_CALC_2)
@@ -6190,6 +6202,10 @@ obj
 						#if DEBUG_PROJECTILE
 						Owner.log2text("PROJ Damage final", Damage, "damageDebugs.txt", Owner.ckey)
 						#endif
+						if(Owner.HasUnarmedDamage()&&!Owner.EquippedSword()&&!Owner.EquippedStaff())
+							Damage *= 1 + (Owner.GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
+						else if(Owner.HasMagicSword())
+							Damage *= 1 + (Owner.GetMagicSwordAscension()/glob.UNARMED_DAMAGE_DIVISOR)
 						if(Bounce)
 							Damage *= max(1-glob.BOUNCE_REDUCTION * CurrentBounce, 0.25)
 						if(src.Owner.RippleActive())

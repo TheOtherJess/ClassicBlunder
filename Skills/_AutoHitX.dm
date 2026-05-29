@@ -239,6 +239,8 @@ obj
 				DirectWounds//Deals (this value) of wound % per hit.
 				FrenzyDebuff
 
+				KeepQueue = FALSE
+
 			skillDescription()
 				..()
 				if(StrOffense)
@@ -5004,13 +5006,14 @@ obj
 ////Nox
 			FrostBite
 				NoTransplant=1
-				Area="Strike"
+				Area="Arc"
 				ControlledRush=1
-				Rush=3
+				Rush=7
 				Distance=1
-				StrOffense=1
+				StrOffense=0.5
 				ForOffense=0.5
-				DamageMult=4.5
+				AdaptRate=1
+				DamageMult=5
 				HitSparkIcon='Hit Effect Pearl.dmi'
 				HitSparkX=-32
 				HitSparkY=-32
@@ -5019,10 +5022,11 @@ obj
 				HitSparkCount=5
 				HitSparkDispersion=1
 				HitSparkDelay=1
-				Cooldown=60
+				Cooldown=30
 				ActiveMessage="thrusts their hand forward to freeze all within their grasp!"
 				Freezing=20
-				Stasis=10
+				Stasis=2
+				ManaCost=5
 				verb/Frost_Bite()
 					set category="Skills"
 					usr.Activate(src)
@@ -5032,7 +5036,7 @@ obj
 				Distance=5
 				Cooldown=20
 				ForOffense=1
-				DamageMult=2
+				DamageMult=3
 				HitSparkIcon='Hit Effect Ripple.dmi'
 				HitSparkX=-32
 				HitSparkY=-32
@@ -5042,6 +5046,7 @@ obj
 				HitSparkDispersion=1
 				HitSparkDelay=1
 				ActiveMessage="yells: OPTIC BARREL!"
+				ManaCost=5;
 				verb/Optic_Barrel()
 					set category="Skills"
 					usr.Activate(src)
@@ -5570,7 +5575,7 @@ mob
 				else
 					Z.TempStrOff=1
 					Z.TempForOff=0
-			if(src.AttackQueue && !src.AttackQueue.FollowUp)
+			if(src.AttackQueue && !src.AttackQueue.FollowUp && !Z.KeepQueue)
 				src << "<b>You drop [src.AttackQueue.name] from your queue.</b>"
 				src.QueueOverlayRemove()
 				src.ClearQueue()
@@ -6720,12 +6725,8 @@ obj
 							m.Shielding=1
 							spawn()
 								m.ForceField()
-					FinalDmg*=max(1-(0.25*m.GetDeflection()),0.3)
+					FinalDmg*=max(1-(glob.DEFLECTION_DAMAGE_MULT*m.GetDeflection()),0.3)
 					DEBUGMSG("after Deflection: [FinalDmg]")
-
-				if(m.HasBlastShielding()&&!src.CanBeDodged)
-					FinalDmg/=2**3
-					DEBUGMSG("after BlastShielding: [FinalDmg]")
 
 				var/list/Elements = list()
 				if(Scorching||Burning)

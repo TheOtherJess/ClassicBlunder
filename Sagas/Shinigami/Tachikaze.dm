@@ -80,7 +80,6 @@
 
 /obj/Skills/Projectile/Bakudantsuki
 	name = "Bakudantsuki"
-	SignatureTechnique = 1
 	Distance = 20
 	DamageMult = 15
 	AccMult = 1.15

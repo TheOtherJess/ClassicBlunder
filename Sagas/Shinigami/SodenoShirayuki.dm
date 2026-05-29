@@ -336,6 +336,30 @@ obj/Skills/AutoHit
 
 
 obj/Skills/Buffs/ActiveBuffs
+	Shirafune // Old Version that is an oversight. Delete this in the code after the new version is given to anyone who has the old version. This version doesn't allow stacking with PU, teehee.
+		name = "Shirafune"
+		SignatureTechnique=3
+		SagaSignature=1
+		TimerLimit=30
+		Cooldown=120
+		ManaCost=10
+		ManaDrain=0.01
+		ForMult=1.1
+		StrMult=1.1
+		passives=list("Extend" = 1, "SweepingStrike" = 1, "Freezing" = 3, "ManaLeak" = 2)
+		ActiveMessage="San no mai, Shirafune!"
+		OffMessage="lets their ice melt..."
+		adjust(mob/p)
+			if(!altered)
+				passives=list("Extend" = 1 + (p.SagaLevel/2), "SweepingStrike" = 1 + (p.SagaLevel/2), "Freezing" = 3 * p.SagaLevel, "ManaLeak" = 2)
+
+		verb/Shirafune()
+			set category="Skills"
+			usr<<"Giving you the new skill. If the new version doesn't work blame Marlon."
+			usr.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shirafune)
+			del src
+
+obj/Skills/Buffs/SlotlessBuffs
 	Shirafune // Unlocks at T3
 		name = "Shirafune"
 		SignatureTechnique=3

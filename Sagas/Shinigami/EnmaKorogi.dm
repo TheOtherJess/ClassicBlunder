@@ -15,7 +15,7 @@ proc/applyNearSighted(mob/target, mob/caster)
 	ActiveMessage = "is rendered nearly blind; only what lies within arm's reach is visible!"
 	OffMessage = "vision snaps back to full clarity."
 
-	var/mob/source
+	var/tmp/mob/source
 	var/list/cover_images = list()
 	var/tmp/ns_running = FALSE
 
@@ -81,12 +81,12 @@ proc/applyNearSighted(mob/target, mob/caster)
 	IsBankaiForm = 1
 	ManaThreshold = 2
 
-	var/list/domain_walls    = list()
-	var/list/old_turf_icons  = list()
-	var/list/old_density     = list()
-	var/list/ns_targets      = list()
-	var/list/ns_exempt       = list()
-	var/list/old_atom_alpha  = list()  // movable non-mob → original alpha
+	var/tmp/list/domain_walls    = list()
+	var/tmp/list/old_turf_icons  = list()
+	var/tmp/list/old_density     = list()
+	var/tmp/list/ns_targets      = list()
+	var/tmp/list/ns_exempt       = list()
+	var/tmp/list/old_atom_alpha  = list()  // movable non-mob → original alpha
 	var/tmp/domain_active    = FALSE
 
 	adjust(mob/p)

@@ -354,6 +354,11 @@ mob
 			Value *= getBurnResistValue()
 			Value = Value // this makes 100 impossible ?
 			src.Burn+=Value
+
+			// Track stacks from Erupting Blows sources separately
+			if(Attacker && Attacker.passive_handler.Get("EruptingBlows"))
+				src.SilentBurnAmount += Value
+
 			if(Value >=1 && !src.passive_handler.Get("BurningShot"))
 				animate(src, color = "#ff2643")
 				animate(src, color = src.MobColor, time=5)
@@ -363,12 +368,14 @@ mob
 					src.AddPoison(Value * 1 + (darkFlame * 0.125), Attacker=Attacker)
 			if(Attacker)
 				if(Attacker.passive_handler["Combustion"])
-					if(Attacker.passive_handler["Combustion"] <= 80)
-						if(Attacker.passive_handler["Combustion"] && Burn >= Attacker.passive_handler["Combustion"])
-							implodeDebuff(Attacker.passive_handler["Combustion"], "Burn")
+					var/combThresh = Attacker.passive_handler["Combustion"]
+					var/combMult = Attacker.passive_handler.Get("EruptingBlows") ? 1.5 : 1
+					if(combThresh <= 80)
+						if(Burn >= combThresh)
+							implodeDebuff(combThresh * combMult, "Burn")
 					else
-						if(Attacker.passive_handler["Combustion"] && Burn >= 80)
-							implodeDebuff(Attacker.passive_handler["Combustion"], "Burn")
+						if(Burn >= 80)
+							implodeDebuff(combThresh * combMult, "Burn")
 
 
 			if(Attacker)
@@ -380,8 +387,11 @@ mob
 
 			if(src.Burn>100)
 				src.Burn=100
+			if(src.SilentBurnAmount > src.Burn)
+				src.SilentBurnAmount = src.Burn
 			if(src.Burn<0)
 				src.Burn=0
+				src.SilentBurnAmount=0
 			for(var/obj/Items/Gear/Automated_Aid_Dispenser/AD in src)
 				if(AD.suffix&&AD.Uses)
 					AD.Uses--

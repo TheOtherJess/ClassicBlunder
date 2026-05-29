@@ -816,6 +816,7 @@ mob/proc/Death(mob/P,var/text,var/SuperDead=0, var/NoRemains=0, var/Zombie, extr
 		src.Poison=0
 		src.SilentPoisonAmount=0
 		src.Burn=0
+		src.SilentBurnAmount=0
 		src.Bleed=0
 		src.Slow=0
 		src.Shatter=0
@@ -1097,6 +1098,7 @@ mob/proc/Leave_Body(var/SuperDead=0, var/Zombie, var/ForceVoid=0)
 			src << "Your fate has been sealed by an overwhelming force; you move on immediately to the realm of the dead..."
 			src.loc=locate(glob.DEATH_LOCATION[1], glob.DEATH_LOCATION[2], glob.DEATH_LOCATION[3])
 	src.Burn=0
+	src.SilentBurnAmount=0
 	src.Bleed=0
 	src.Poison=0
 	src.SilentPoisonAmount=0
@@ -1313,6 +1315,7 @@ proc/getBackSide(mob/offender, mob/defender, diags = FALSE)
 				Target.Health=100
 				Target.Energy=Target.EnergyMax
 				Target.Burn=0
+				Target.SilentBurnAmount=0
 				Target.Poison=0
 				Target.SilentPoisonAmount=0
 				Target.Slow=0
@@ -1350,6 +1353,7 @@ The average damage was [average] over [looplength] times.
 			Target.Health=100
 			Target.Energy=Target.EnergyMax
 			Target.Burn=0
+			Target.SilentBurnAmount=0
 			Target.Poison=0
 			Target.SilentPoisonAmount=0
 			Target.Slow=0

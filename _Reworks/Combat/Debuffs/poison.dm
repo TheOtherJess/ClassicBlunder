@@ -36,6 +36,11 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 		debuff = max(0, debuff - src.SilentPoisonAmount)
 		if(debuff <= 0)
 			return 0
+	// For Burn, Erupting Blows stacks don't deal tick damage
+	if(typeOfDebuff == "Burn" && src.SilentBurnAmount > 0 && src.Burn > 0)
+		debuff = max(0, debuff - src.SilentBurnAmount)
+		if(debuff <= 0)
+			return 0
 	var/damage = (base * (debuff/stackDivisor)) * nerf
 	switch(typeOfDebuff)
 		if("Burn")
@@ -112,9 +117,15 @@ globalTracker/var/LOWER_DEBUFF_CLAMP = 0.001
 			if(Cooled)
 				base = 1.5
 			if(Burn>0)
-				Burn -= base * (1+ (GetDebuffResistance() / 4))
+				var/reduction = base * (1+ (GetDebuffResistance() / 4))
+				// Reduce Erupting Blows stacks proportionally
+				if(src.SilentBurnAmount > 0)
+					var/silentFrac = min(1.0, src.SilentBurnAmount / Burn)
+					src.SilentBurnAmount = max(0, src.SilentBurnAmount - (reduction * silentFrac))
+				Burn -= reduction
 			if(Burn<0)
 				Burn = 0
+				src.SilentBurnAmount = 0
 		if("Poison")
 			boon += passive_handler.Get("VenomResistance")
 			if(Antivenomed)
@@ -164,6 +175,7 @@ mob/proc/implodeDebuff(n, type)
 				vis_contents += b
 				Health -= Health * (n/glob.IMPLODE_DIVISOR) * 1.25
 				Burn = 0
+				SilentBurnAmount = 0
 			if("Chill")
 				var/obj/Effects/Freeze/b = new(overwrite_alpha = 255)
 				b.Target = src

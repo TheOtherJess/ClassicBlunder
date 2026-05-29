@@ -520,6 +520,7 @@ mob/var
 	SilentPoisonAmount=0
 	BlindingVenom = 0
 	Burn=0
+	SilentBurnAmount=0
 	Frenzy=0
 	Bleed=0
 	Slow=0

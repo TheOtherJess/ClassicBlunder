@@ -18,6 +18,7 @@
     else if((HasSweepingStrike() || passive_handler.Get("GiantSwings")) && !q)
         var/range = max(passive_handler.Get("GiantSwings"), passive_handler.Get("SweepingStrike"))
         range = max(range, 1);
+        if(passive_handler.Get("GiantSwings") && passive_handler.Get("SweepingStrike")) range += 1;
         for(var/mob/M in oview(range, src))
             if(M != src && M.density)
                 if(istype(M, /mob/irlNPC))

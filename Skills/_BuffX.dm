@@ -2383,8 +2383,9 @@ NEW VARIABLES
 				src.Trigger(usr)
 		Spirit_Pulse
 			SignatureTechnique=3
-			DefMult = 1.2
-			EndMult = 1.2
+			OffMult = 1.25
+			DefMult = 1.25
+			EndMult = 1.5
 			passives = list("Flow" = 4, "FluidForm" = 2, "MovementMastery" = 10, "PureReduction" = 2)
 			ActiveMessage="is enveloped in a cascading glow!!"
 			OffMessage="dissipates the glow..."
@@ -2396,6 +2397,8 @@ NEW VARIABLES
 		Spirit_Burst
 			SignatureTechnique=3
 			EnergyThreshold=25
+			StrMult=1.5
+			ForMult=1.5
 			passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 			ActiveMessage="spikes their energy in sudden bursts!"
 			OffMessage="quells their energy..."
@@ -6088,7 +6091,7 @@ NEW VARIABLES
 				OffMessage="feels the magic protecting them fade away..."
 			Shell
 				ElementalClass = "Earth"
-				SkillCost = 120
+				SkillCost = TIER_4_COST
 				Copyable = 3
 				CastingTime = 2
 				ActiveMessage="invokes: <font size=+1>SHELL!</font size>"
@@ -6149,7 +6152,7 @@ NEW VARIABLES
 				TimerLimit=60
 			Barrier
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=4
 				PreRequisite=list("/obj/Skills/Buffs/SlotlessBuffs/Magic/Shell")
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/BarrierApply
@@ -6213,7 +6216,7 @@ NEW VARIABLES
 				TimerLimit=30
 			Protect
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=5
 				CastingTime=4
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/ProtectApply
@@ -11640,7 +11643,7 @@ NEW VARIABLES
 					Trigger(mob/User, Override = FALSE)
 						if(!User.BuffOn(src))
 							adjust(User)
-							..()
+						..()
 				Hoarders_Riches
 					// Gold Dragon Racial. Have money? Be OP.
 					ActiveMessage = "gains the faint glitter of gold in their hues!"

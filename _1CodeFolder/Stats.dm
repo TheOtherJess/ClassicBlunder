@@ -481,6 +481,8 @@ mob/Players/Stat()
 		stat("Energy: ","[(Target.Energy/Target.EnergyMax)*100]%")
 	if(usr.passive_handler.Get("SilentPoison") && usr.Target && usr.Target.Poison > 0)
 		stat("Poison:","[round(usr.Target.Poison, 0.1)]")
+	if(usr.passive_handler.Get("EruptingBlows") && usr.Target && usr.Target.Burn > 0)
+		stat("Burn:","[round(usr.Target.Burn, 0.1)]")
 	stat("Origin:","[SpawnDisplay]");
 
 
@@ -1280,9 +1282,10 @@ mob/proc/Update_Stat_Labels()
 			src<<output("POI: [round(visiblePoison, 1)]","BarPoison")
 		else
 			winshow(src, "BarPoison",0)
-		if(src.Burn>0)
+		var/visibleBurn = max(0, src.Burn - src.SilentBurnAmount)
+		if(visibleBurn>0)
 			winshow(src, "BarBurning",1)
-			src<<output("BUR: [round(Burn, 1)]","BarBurning")
+			src<<output("BUR: [round(visibleBurn, 1)]","BarBurning")
 		else
 			winshow(src, "BarBurning",0)
 		if(src.Bleed>0)

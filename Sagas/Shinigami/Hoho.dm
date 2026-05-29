@@ -198,8 +198,8 @@ mob/Player/HohoClone
 	Health = 1
 	density = 1
 	Grabbable = 1
-	var/mob/owner = null
-	var/mob/fade_owner = null
+	var/tmp/mob/owner = null
+	var/tmp/mob/fade_owner = null
 
 	New(loc)
 		..()

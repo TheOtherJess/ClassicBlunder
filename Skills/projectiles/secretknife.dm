@@ -233,8 +233,8 @@
 				Cooldown = rand(6,10) - p.SagaLevel
 	FTG
 		AdaptRate=1
-		Blasts=8
-		DamageMult=0.25
+		Blasts=4
+		DamageMult=0.5
 		AccMult=1.5
 		AttackReplace=1
 		ZoneAttack=1
@@ -242,6 +242,7 @@
 		Homing=1
 		HomingCharge=2
 		HomingDelay=0.5
+		Knockback=0.05
 		HyperHoming=1
 		Striking=1
 		Instinct=2
@@ -253,7 +254,7 @@
 		IconLock='CheckmateKnives.dmi'
 		Variation=8
 		FlickBlast=0
-		Cooldown=3
+		Cooldown=5
 		takeAppearance = TRUE
 		adjust(mob/p)
 	UltimaLaser

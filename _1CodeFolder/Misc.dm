@@ -29,6 +29,12 @@ mob/Click()
 			return
 		if(src.Airborne)
 			return
+		// NearSighted blocks targeting anything more than 1 tile away
+		if(usr != src)
+			var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted/ns_click = usr.FindSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Debuff/NearSighted)
+			if(ns_click && usr.BuffOn(ns_click) && get_dist(usr, src) > 1)
+				usr << "<font color=red>Your limited vision prevents you from targeting anything more than 1 tile away.</font>"
+				return
 		usr.SetTarget(src)
 		for(var/sb in usr.SlotlessBuffs)
 			var/obj/Skills/Buffs/b = usr.SlotlessBuffs[sb]

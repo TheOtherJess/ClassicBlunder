@@ -2217,6 +2217,9 @@ NEW VARIABLES
 				OffMessage="violently rips off their mask as it shatters into fragments..."
 				proc/changeVariables(mob/p)
 					if(altered) return
+					if(p.Saga=="Shinigami")
+						Slotless=1
+						SpecialSlot=0
 					var/SuperSaiyanBuff=1
 					if((p.isRace(SAIYAN) && p.transActive >= 1) || (p.isRace(HALFSAIYAN) && p.transActive >= 1) || p.passive_handler.Get("SuperSaiyanSignature"))
 						if(p.race && p.race.transformations && p.race.transformations.len >= 1)
@@ -2264,6 +2267,9 @@ NEW VARIABLES
 					Cooldown=60
 				verb/Don_Mask()
 					set category="Skills"
+					if(usr.CheckSlotless("Final Getsuga Tenshou")||usr.CheckSlotless("Getsuga Tenshou Clad")) //might make a skill var for this later)
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
+						return
 					if(!usr.BuffOn(src))
 						if(!usr.VaizardType)
 							usr.VaizardType = input(usr, "What type?") in list("Berserker", "Manipulator", "Hellion", "Phantasm")
@@ -2377,8 +2383,9 @@ NEW VARIABLES
 				src.Trigger(usr)
 		Spirit_Pulse
 			SignatureTechnique=3
-			DefMult = 1.2
-			EndMult = 1.2
+			OffMult = 1.25
+			DefMult = 1.25
+			EndMult = 1.5
 			passives = list("Flow" = 4, "FluidForm" = 2, "MovementMastery" = 10, "PureReduction" = 2)
 			ActiveMessage="is enveloped in a cascading glow!!"
 			OffMessage="dissipates the glow..."
@@ -2390,6 +2397,8 @@ NEW VARIABLES
 		Spirit_Burst
 			SignatureTechnique=3
 			EnergyThreshold=25
+			StrMult=1.5
+			ForMult=1.5
 			passives = list("SweepingStrike"= 1, "Instinct" = 3, "PureDamage" = 4, "FatigueLeak" = 1, "PUSpike"=100)
 			ActiveMessage="spikes their energy in sudden bursts!"
 			OffMessage="quells their energy..."
@@ -3028,6 +3037,8 @@ NEW VARIABLES
 				SagaSignature=1
 				TimerLimit=30
 				Cooldown=30
+				Slotless=1
+				SpecialSlot=0
 				passives = list("Heavy Strike" = "GetsugaClad", "CriticalChance" = 25, "CriticalDamage" = 0.25, "Brutalize" = 2, "SwordAscension" = 1, "SpiritSword" = 0.5, "HybridStrike" = 1, "SpiritFlow" = 4)
 				StrMult=1.3
 				OffMult=1.3
@@ -3040,7 +3051,12 @@ NEW VARIABLES
 					if(!usr.InBankai())
 						usr << "Getsuga Clad can only be used in Bankai."
 						return
+					if(usr.CheckSlotless("Final Getsuga Tenshou")||usr.CheckSlotless("Vaizard Mask")) //might make a skill var for this later)
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
+						return
 					if(!altered)
+						Slotless=1
+						SpecialSlot=0
 						passives = list("Heavy Strike" = "GetsugaClad", "CriticalChance" = 25, "CriticalDamage" = 0.25, "Brutalize" = 2, "SwordAscension" = 1, "SpiritSword" = 0.5, "HybridStrike" = 1)
 					src.Trigger(usr)
 			Final_Getsuga_Tenshou
@@ -3048,6 +3064,8 @@ NEW VARIABLES
 				TimerLimit=600
 				EnergyCut=0.99
 				ManaCut=0.99
+				Slotless=1
+				SpecialSlot=0
 				StrCut=0.5
 				EndCut=0.5
 				ForCut=0.5
@@ -3084,6 +3102,9 @@ NEW VARIABLES
 					set category="Skills"
 					if(!usr.InBankai())
 						usr << "Final Getsuga Tenshou can only be used in Bankai."
+						return
+					if(usr.CheckSlotless("Getsuga Tenshou Clad")||usr.CheckSlotless("Vaizard Mask"))
+						usr<< "You can only use one augmentation technique (Final Getsuga Tenshou, Getsuga Clad, Vaizard) at a time!"
 						return
 					var/wasOn = usr.BuffOn(src)
 					src.Trigger(usr)
@@ -6070,7 +6091,7 @@ NEW VARIABLES
 				OffMessage="feels the magic protecting them fade away..."
 			Shell
 				ElementalClass = "Earth"
-				SkillCost = 120
+				SkillCost = TIER_4_COST
 				Copyable = 3
 				CastingTime = 2
 				ActiveMessage="invokes: <font size=+1>SHELL!</font size>"
@@ -6131,7 +6152,7 @@ NEW VARIABLES
 				TimerLimit=60
 			Barrier
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=4
 				PreRequisite=list("/obj/Skills/Buffs/SlotlessBuffs/Magic/Shell")
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/BarrierApply
@@ -6195,7 +6216,7 @@ NEW VARIABLES
 				TimerLimit=30
 			Protect
 				ElementalClass="Earth"
-				SkillCost=160
+				SkillCost=TIER_4_COST
 				Copyable=5
 				CastingTime=4
 				applyToTarget = new/obj/Skills/Buffs/SlotlessBuffs/Magic/ProtectApply
@@ -10119,8 +10140,11 @@ NEW VARIABLES
 					if(!altered)
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
+						var/TrueUnderdog=1
+						if(p.race.locked||p.isMazokuPathHuman())		
+							TrueUnderdog=0
 						if(p.Target && ismob(p.Target))
-							healthDiff = p.Target.Health-p.Health
+							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health
 						switch(healthDiff)
 							if(-100 to 5)
 								secretLevel += 0
@@ -10154,19 +10178,19 @@ NEW VARIABLES
 							if(7)
 								SpiralPower=7
 						SpiralPotential=SpiralPower
-						if(Tyrant)
-							SpiralPotential=2
-						if(p.PilotingProwess<SpiralPotential)
-							p.PilotingProwess=SpiralPotential
+						if(Tyrant||healthDiff<25&&!TrueUnderdog)
+							SpiralPotential=1
+						if(p.PilotingProwess<SpiralPower)
+							p.PilotingProwess=SpiralPower
 						if(SpiralPotential>=7)
 							OMsg(p, "<b>In response to impossible odds, [p] shatters their limits, evolving beyond their absolute potential!</b>")
 						PowerMult = 1+(0.015*secretLevel*secretLevel) + (0.005*asc*asc)
 						StrMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						ForMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
 						EndMult = 1.25 + (0.035*secretLevel*secretLevel) + (0.015*asc*asc)
-						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower)
-						TimerLimit= (15 * (secretLevel)) * TyrantBonus
-						Cooldown = 61 - ((5 * p.AscensionsAcquired))
+						passives = list("SpiralPowerUnlocked" = SpiralPotential, "PureDamage" = SpiralPower, "PureReduction" = SpiralPower, "EnergyGeneration" = SpiralPower)
+						TimerLimit= (30 * (SpiralPotential)) * TyrantBonus
+						Cooldown = 90 - (SpiralPotential*5)
 				KenWave = 2
 				KenWaveIcon='SparkleGreen.dmi'
 				HitSpark='Spiral_Hitspark.dmi'

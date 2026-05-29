@@ -91,18 +91,14 @@ obj/Skills/proc/Cooldown(var/modify=1, var/Time, mob/p, var/announce_cd=1)
 			if(src.SpellElement)
 				if(src.SpellElement == "Time")
 					if(m.hasMagePassive(/mage_passive/time/Past))
-						m.passive_handler.Increase("Godspeed", 2)
-						spawn(150)
-							if(m && m.passive_handler)
-								m.passive_handler.Decrease("Godspeed", 2)
+						if(!m.CheckSlotless("Outrunning the Past"))
+							m.findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Outrunning_the_Past);
 					if(m.hasMagePassive(/mage_passive/time/Present))
 						m.addTension(10, m.getMaxTensionValue())
 				else if(src.SpellElement == "Space")
 					if(m.hasMagePassive(/mage_passive/space/Linearity))
-						m.passive_handler.Increase("SuperDash", 1)
-						spawn(25)
-							if(m && m.passive_handler)
-								m.passive_handler.Decrease("SuperDash", 1)
+						if(!m.CheckSlotless("Distorted Space"))
+							m.findOrAddSkill(/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Distorted_Space);
 			Time=src.Cooldown*10*modify*(1+0.33*src.CooldownScalingCounter)
 			if(src.CooldownScaling)
 				src.CooldownScalingCounter++
@@ -337,6 +333,8 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 						src.Oxygen=(src.OxygenMax)*2
 				else if(src.StyleActive == "Crane Style")
 					src.OMessage(10,"[src] backflips away from [src.Target]!","<font color=red>[src]([src.key]) used  Back Dash.")
+				else if(src.Secret=="Spiral")
+					src.OMessage(10,"[src] dashes towards [src.Target], as a true Spiral Warrior never runs from battle!!!!","<font color=red>[src]([src.key]) used  Back Dash.")
 				else
 					src.OMessage(10,"[src] dashes away from [src.Target]!","<font color=red>[src]([src.key]) used  Back Dash.")
 				while(Distance>0)
@@ -346,12 +344,17 @@ mob/proc/SkillX(var/Wut,var/obj/Skills/Z,var/bypass=0)
 						src.icon_state="Train"
 					else
 						src.icon_state="Flight"
-					step_away(src,src.Target,68)
+					if(src.Secret=="Spiral")
+						src.DashTo(src.Target, 20, 0.5, Clashable=1)
+					else
+						step_away(src,src.Target,68)
 					for(var/atom/a in get_step(src,dir))
 						if(a==src)
 							continue
 						if(a.density)
 							Distance=0
+					if(src.Secret=="Spiral")
+						Distance=0
 					Distance-=1
 					sleep(Delay*world.tick_lag)
 				src.dir=get_dir(src,src.Target)

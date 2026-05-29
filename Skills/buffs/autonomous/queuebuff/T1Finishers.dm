@@ -8,6 +8,7 @@
     adjust(timer, lvl)
         TimerLimit = timer
         Level = lvl
+        ..()
     Trigger(mob/User, Override)
         if(User.BuffOn(src))
             // we r calling an end to it

@@ -57,11 +57,11 @@ mob
 					x:Trigger(src)
 				if(istype(x, /obj/Skills/Buffs/SlotlessBuffs/Haki/Haki_Observation))
 					x:Trigger(src)
+		if(src.Power_Multiplier==1&&src.StrMultTotal==1&&src.EndMultTotal==1&&src.SpdMultTotal==1&&src.ForMultTotal==1&&src.OffMultTotal==1&&src.DefMultTotal==1&&src.RecovMultTotal==1)
+			return FALSE
 		if(src.StanceBuff||src.StyleBuff||src.ActiveBuff||src.SpecialBuff||src.SlotlessBuffs.len>0)
-			src <<"Cannot reset Mult while buffs are active."
 			return FALSE
 		if(src.transActive)
-			src<<"Cannot reset Mult while a transformation is active."
 			return FALSE
 		src<<"Reseting stat and power multipliers."
 		src.Splits=new/list()
@@ -746,7 +746,15 @@ mob/Players/verb
 	Reset_Multipliers()
 		set category="Other"
 		set name="Reset Multipliers"
-
+		if(src.Power_Multiplier==1&&src.StrMultTotal==1&&src.EndMultTotal==1&&src.SpdMultTotal==1&&src.ForMultTotal==1&&src.OffMultTotal==1&&src.DefMultTotal==1&&src.RecovMultTotal==1)
+			src << "Your mults are already at 1!"
+			return FALSE
+		if(src.StanceBuff||src.StyleBuff||src.ActiveBuff||src.SpecialBuff||src.SlotlessBuffs.len>0)
+			src << "You have a buff on! You can't reset your mults! (Yes, including Power Armor and similar!)"
+			return FALSE
+		if(src.transActive)
+			src << "You're transformed, you can't reset your mults while transformed!"
+			return FALSE
 		src.MultReset()
 
 	Reset_Overlays()

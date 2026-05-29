@@ -1088,6 +1088,11 @@ mob
 				val/=src.EnergyExpenditure*src.Power_Multiplier
 			if(src.passive_handler.Get("EnergyLeak")>1)
 				val *= 0.5
+			if(src.passive_handler.Get("Kaioken"))
+				if(src.passive_handler.Get("Super Kaioken"))
+					val*=0.01
+				else
+					val*=0.1
 			src.Energy+=val
 			if(Energy<0)
 				Energy=0
@@ -1495,15 +1500,10 @@ mob
 				if(passive_handler.Get("Limited Rank-Up"))
 					mult *= 3
 
-			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.25*(Health/100))
-				mult = 0.25*(Health/100)
-			if(passive_handler && passive_handler.Get("PrideFactor" && Health<50))
-				mult = 0
-
+			if(passive_handler && passive_handler.Get("PrideFactor") && mult < 0.5)
+				mult = 0.5
 			if(mult < 0)
 				mult = 0
-			if(mult > 0.5 && Secret)
-				mult = 0.5
 			if(mult > 1)
 				mult = 1
 			return mult
@@ -2195,6 +2195,9 @@ mob
 				Mod *= 1+ (src.HealthAnnounce10/5)
 			if(src.StyleRating > 0)
 				Mod += 0.1 * src.StyleRating * src.getStyleBonusMult()
+			// Demon Devil Trigger sins bonus (additive)
+			Mod += getDevilTriggerSinBonusMult()
+			Mod += getMazokuSinBonusMult()
 			if(src.passive_handler.Get("Longing")&&src.Target)
 				if(Target.Anger>1&&Anger<=1&&!src.passive_handler.Get("LunarWrath")&&!src.Target.passive_handler.Get("LunarWrath"))
 					End*=1+((Target.Anger-1)/glob.LONGING_DIVISOR)
@@ -3452,10 +3455,10 @@ mob
 					MaxDistance=0
 					Delay=0
 					src.dir=get_dir(src,Trg)
-					if(Trg.Knockbacked)
+					if(Trg.Knockbacked||src.passive_handler.Get("SpiralImpact"))
 						src.NextAttack=0
 						Trg.StopKB()
-						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash"))
+						if(Clashable || Secret == "Heavenly Restriction" && secretDatum?:hasImprovement("Dragon Dash")||src.passive_handler.Get("SpiralImpact"))
 							for(var/obj/Skills/Buffs/SlotlessBuffs/Autonomous/Dragon_Clash_Defensive/DC in Trg)
 								if(!Trg.BuffOn(DC))
 									var/pursuerBoon = Trg.HasPursuer()

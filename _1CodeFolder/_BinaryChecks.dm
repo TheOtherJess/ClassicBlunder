@@ -884,6 +884,7 @@ mob
 			if(passive_handler.Get("Null")) return 1;
 			return 0;
 		HasNullTarget()
+			if(istype(src, /mob/Player/AI/Demon)) return 0;
 			if(Target) if(Target.HasNull()) return 1;
 			return 0;
 		HasBleedHit()
@@ -1207,7 +1208,7 @@ mob
 			if(passive_handler.Get("Compassion")&&Health<=50)
 				if(Target.Health>Health)
 					Return += 5*clamp((proportionalHealth("Lower")/10),1,4)
-			if(passive_handler.Get("SpiralPowerUnlocked")||passive_handler.Get("Longing"))
+			if(passive_handler.Get("SpiralPowerUnlocked")&&Target||passive_handler.Get("Longing")&&Target)
 				if(src.Target.HasGodKi())
 					if(Target.GetGodKi() > GetGodKi())
 						Return += 2*((1+Target.GetGodKi())/(1+GetGodKi()))
@@ -1243,7 +1244,7 @@ mob
 			if(passive_handler.Get("Compassion")&&Health>51)
 				if(Target.Health>Health)
 					Return += 3*clamp((proportionalHealth("Lower")/10),1,4)
-			if(passive_handler.Get("SpiralPowerUnlocked")||passive_handler.Get("Longing"))
+			if(passive_handler.Get("SpiralPowerUnlocked")&&Target||passive_handler.Get("Longing")&&Target)
 				if(src.Target.HasGodKi())
 					if(Target.GetGodKi() > GetGodKi())
 						Return += 2*((1+Target.GetGodKi())/(1+GetGodKi()))
@@ -1424,6 +1425,8 @@ mob
 			return 0
 		HasSpecialBuffLock()
 			if(passive_handler.Get("SpecialBuffLock"))
+				return 1
+			if(InShikai() || InBankai())
 				return 1
 			if(src.InfinityModule)
 				return 1

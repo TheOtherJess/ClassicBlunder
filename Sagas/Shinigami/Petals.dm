@@ -3,8 +3,8 @@
 	density = 0
 	layer = EFFECTS_LAYER
 	Lifetime = -1
-	var/mob/owner
-	var/list/already_hit
+	var/tmp/mob/owner
+	var/tmp/list/already_hit
 	var/wpx = 0
 	var/wpy = 0
 	var/inactive = FALSE
@@ -59,7 +59,7 @@ client
 	Lifetime = -1
 	pixel_x = -64
 	pixel_y = -64
-	var/mob/owner
+	var/tmp/mob/owner
 
 	onBumped(atom/Obstacle)
 		if(istype(Obstacle, /obj/Skills/Projectile/_Projectile))

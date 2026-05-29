@@ -16,7 +16,6 @@
 	Slow=0
 	Shock=0
 	Shatter=0
-	Bleed=0
 	HealthAnnounce25=0
 	HealthAnnounce10=0
 	seventhSenseTriggered = 0
@@ -1545,15 +1544,12 @@ obj/Skills/Utility
 				var/list/Choices = list("Cancel") + P.PotionTypes
 				var/herbchoice = input(P, "Choose an herb.", "Alter Existing Flask") in Choices
 				if(herbchoice == "Cancel")
-					P.TakeMineral(glob.POTIONCOST)
 					return
-				if(ChosenFlask.Slots <= 0)
-					P << "You have no more flask slots!"
-					return
+				P.TakeMineral(glob.POTIONCOST/5)
 				TheEvilAssIfWall(P, herbchoice, ChosenFlask)
 				--ChosenFlask.Slots
-			if(ChosenFlask.Slots == 0) // This will only happen if you complete the while loop has intended or someone bugged shit
-				P.TakeMineral(glob.POTIONCOST) // 5k if you don't edit this you dipshit
+				if(ChosenFlask.Slots <= 0)
+					P << "You have no more flask slots!"
 		// War crime Proc
 		proc/TheEvilAssIfWall(mob/P, herbchoice, obj/Items/Flask/ChosenFlask)  //You have no idea how much I loathed making this
 			if(herbchoice == "Healing Herb")
@@ -1606,7 +1602,12 @@ obj/Skills/Utility
 			++Option.Tier
 			P << "You have upgraded your flask. It is now a Tier [Option.Tier] Flask."
 			//
-
+	Bestow_Inkwork //Inkworks Related Interactions go here
+		// This gives us an Inkwork
+		verb/Bestow_Inkwork()
+			set category = "Utility"
+			var/choice = input(usr, "Choose an Option", "Bestow Inkwork") in list("Cancel")
+			if(choice == "Cancel") return
 
 // 	Summon_Spirit
 // 		desc="Summon a spirit!  Doesn't work on those with contracts already established."

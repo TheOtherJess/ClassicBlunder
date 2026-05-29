@@ -474,7 +474,7 @@
 	layer = EFFECTS_LAYER
 	var/max_size = 4.0
 	var/wave_lifetime = 20
-	var/mob/Players/owner
+	var/tmp/mob/Players/owner
 	var/DamageMult = 7
 	var/StrOffense = 2
 	var/EndRes = 1

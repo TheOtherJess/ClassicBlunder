@@ -44,13 +44,13 @@ transformation
 				strength=1
 				force=1
 				if(mastery >= 25 && asc > 2)
-					speedadd = 0.25 * asc
-					enduranceadd = 0.25 * asc
-					offenseadd = 0.25 * asc
-					defenseadd = 0.25 * asc
-					strengthadd = 0.25 * asc
-					forceadd = 0.25 * asc
-					passives = list("Instinct" = 1+(mdivP*12), "Flow" = 1+(mdivP*10), "Flicker" = 1+(mdivP*10), "Pursuer" = 2+(mdivP*10), "PureDamage" = 1+(2*asc), "PureReduction" = 1+(2*asc), "SaiyanPower" = 1, "SaiyanPowerVoid" = 1+(0.5*asc), "ZenkaiPower" = 0.5+(0.0025*mastery))
+					speedadd = 0.35 * asc
+					enduranceadd = 0.35 * asc
+					offenseadd = 0.35 * asc
+					defenseadd = 0.35 * asc
+					strengthadd = 0.35 * asc
+					forceadd = 0.35 * asc
+					passives = list("Instinct" = 1+(mdivP*12), "Flow" = 1+(mdivP*10), "Flicker" = 1+(mdivP*10), "Pursuer" = 2+(mdivP*10), "PureDamage" = 1+(2*asc), "PureReduction" = 1+(2*asc), "SaiyanPower" = 1, "SaiyanPowerVoid" = 1+(1.5*asc), "ZenkaiPower" = 0.5+(0.25*asc))
 
 			transform_animation(mob/user)
 				if(first_time && mastery<25)
@@ -120,15 +120,14 @@ transformation
 				strength=1
 				force=1
 				var/asc = usr.AscensionsAcquired
-				var/mdivS = mastery/50
 				var/mdivP = mastery/100
 				if(mastery >= 25 && asc > 2)
-					speedadd = 0.35 + (0.25 * asc)
-					enduranceadd = 0.35 + (0.25 * asc)
-					offenseadd = 0.35 + (0.25 * asc)
-					defenseadd = 0.35 + (0.25 * asc)
-					strengthadd = 0.35 + (0.25 * asc)
-					forceadd = 0.35 + (0.25 * asc)
+					speedadd = 0.45 + (0.35 * asc)
+					enduranceadd = 0.45 + (0.35 * asc)
+					offenseadd = 0.45 + (0.35 * asc)
+					defenseadd = 0.45 + (0.35 * asc)
+					strengthadd = 0.45 + (0.35 * asc)
+					forceadd = 0.45 + (0.35 * asc)
 					passives = list("Instinct" = 1+(mdivP*14), "Flow" = 1+(mdivP*11), "Flicker" = 1+(mdivP*11), "Pursuer" = 2+(mdivP*12), "PureDamage" = 1+(2.5*asc), "PureReduction" = 1+(2.5*asc))
 
 			transform_animation(mob/user)

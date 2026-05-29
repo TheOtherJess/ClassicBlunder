@@ -3,7 +3,7 @@ mob/proc/gainShinigami()
 	src.Saga = "Shinigami"
 	src.SagaLevel = 1
 
-	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi", "Shinso")
+	var/list/Releases = list("Zangetsu", "Senbonzakura", "Shirayuki", "Hozukimaru", "Nozarashi", "Shinso", "Suzumushi", "Tachikaze")
 	src.ShinigamiRelease = input("Which Release does [src] receive?", "Zanpakutō Release") in Releases
 
 	src.ZanpakutoClass = input(src, "What form does your Zanpakutō take?", "Zanpakutō Class") in list("Light", "Medium", "Heavy")
@@ -67,6 +67,12 @@ mob/tierUpSaga(Path)
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Hozukimaru)
 							if("Shinso")
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shinso)
+							if("Suzumushi")
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Suzumushi)
+								src.AddSkill(new/obj/Skills/AutoHit/Suzumushi)
+							if("Tachikaze")
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Tachikaze)
+								src.AddSkill(new/obj/Skills/Projectile/Air_Blades)
 				updateShinigamiAscended()
 
 			if(3)
@@ -85,6 +91,14 @@ mob/tierUpSaga(Path)
 							if("Shirayuki")
 								src.AddSkill(new/obj/Skills/Buffs/ActiveBuffs/Shirafune)
 								src<<"You learn <i>San no mai, Shirafune!</i>"
+							if("Suzumushi")
+								if(!locate(/obj/Skills/Projectile/Benihiko, src))
+									src.AddSkill(new/obj/Skills/Projectile/Benihiko)
+									src << "Your blade's cry splits into countless blades of sound. You can now use <b>Benihiko</b>."
+							if("Tachikaze")
+								if(!locate(/obj/Skills/Projectile/Bakudantsuki, src))
+									src.AddSkill(new/obj/Skills/Projectile/Bakudantsuki)
+									src << "Your blade learns to detonate the air itself. You can now use <b>Bakudantsuki</b>."
 				updateShinigamiAscended()
 
 			if(4)
@@ -120,6 +134,12 @@ mob/tierUpSaga(Path)
 							if("Shinso")
 								src.BankaiPrefix = input(src, "Your Bankai's true name reveals itself. What is it?", "Bankai True Name") as text
 								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Kamishini_no_Yari)
+							if("Suzumushi")
+								src.BankaiPrefix = input(src, "Your Bankai manifests. What suffix comes after your Zanpakutō's name?", "Bankai Suffix") as text
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Enma_Korogi)
+							if("Tachikaze")
+								src.BankaiPrefix = input(src, "Your Bankai takes shape. What prefix precedes your Zanpakutō's name?", "Bankai Prefix") as text
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Tekken_Tachikaze)
 				updateShinigamiAscended()
 
 			if(5)
@@ -142,6 +162,10 @@ mob/tierUpSaga(Path)
 						if(!locate(/obj/Skills/Butou, src))
 							src.AddSkill(new/obj/Skills/Butou)
 							src << "The accuracy of your blade's reach grows. You can now use <b>Butou</b>."
+					if("Tachikaze")
+						if(!locate(/obj/Skills/Queue/Enhanced_Sandbag_Beat, src))
+							src.AddSkill(new/obj/Skills/Queue/Enhanced_Sandbag_Beat)
+							src << "Your fists rage like a relentless storm. You can now use <b>Enhanced Sandbag Beat</b>."
 				updateShinigamiAscended()
 
 			if(6)

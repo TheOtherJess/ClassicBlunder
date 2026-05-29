@@ -114,7 +114,8 @@
 		if(p.Potential > OOZARU_POTENTIAL_TRANS&&p.oozaru_type!="Demonic")
 			passives["Transformation Power"] = p.AscensionsAcquired
 		if(length(p.race.transformations) >= 4 && p.race.transformations[4].type == /transformation/saiyan/super_saiyan_4 && p.Potential>=55||length(p.race.transformations) >= 2 && p.race.transformations[2].type == /transformation/saiyan/hellspawn_super_saiyan_2 && p.Potential>=55)
-			IconTransform = 'SSJOozaru.dmi'
+			if(!altered)
+				IconTransform = 'SSJOozaru.dmi'
 			passives["Transformation Power"] = clamp(p.AscensionsAcquired * 6, 1, 40)
 			passives["Flow"] = 4
 			passives["Instinct"] = 4
@@ -124,7 +125,8 @@
 			passives["Brutalize"] = 3
 			passives["DisableGodKi"] = 1
 			passives["Unstoppable"] = 1
-			passives["Deicide"] = 5
+			passives["Deicide"] = 10
+			passives["EndlessNine"] = 0.25
 			passives["PUSpike"] = 50
 			passives["KiControl"] = 1
 			AutoAnger = 0
@@ -136,9 +138,14 @@
 			OffMult = 1.5
 			EnergyHeal = 1
 			TimerLimit = 2400
-			VaizardHealth = 10 + (p.AscensionsAcquired*2)
+			VaizardHealth = 10 + (p.AscensionsAcquired*5)
 			PowerMult = 1.6
 			if(p.oozaru_type=="Demonic")
+				PowerMult=2.5
+				passives["BuffMastery"] = 5 + p.AscensionsAcquired
+				passives["PureReduction"] = 2 + (p.AscensionsAcquired*1.25)
+				passives["PureDamage"] = 2 + (p.AscensionsAcquired*1.25)
+				SpdMult=1
 				TimerLimit = 4800
 				if(!altered)
 					IconTransform = 'SDTBlue.dmi'

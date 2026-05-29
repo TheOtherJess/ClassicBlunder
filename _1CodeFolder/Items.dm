@@ -1134,7 +1134,7 @@ obj/Items/Sword
 		Legendary
 			LegendaryItem=1
 			Unobtainable=1
-			Ascended=3
+			Ascended=6
 			ShatterCounter=1000
 			ShatterMax=1000
 
@@ -1144,7 +1144,7 @@ obj/Items/Sword
 				pixel_x=-32
 				pixel_y=-32
 				NoSaga=1
-				passives = list("CalmAnger" = 1,"MagicSword" = 1, "Extend" = 1, "BulletKill" = 1, "ManaGeneration" = 3, "AngerThreshold" = 1.5)
+				passives = list("CalmAnger" = 1,"MagicSword" = 1, "Extend" = 1, "BulletKill" = 1, "ManaGeneration" = 5, "RenameMana"="HEAT", "BlockChance"=20, "CriticalBlock"=0.15, "Brutalize"=2, "Deflection"=2)
 				Destructable=0
 				ShatterTier=0
 				CalmAnger=1

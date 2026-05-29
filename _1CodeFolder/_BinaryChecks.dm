@@ -1417,8 +1417,6 @@ mob
 			return 0
 		HasCounterMaster()
 			return passive_handler.Get("CounterMaster")
-		GetCounterMaster()
-			return passive_handler.Get("CounterMaster")
 		HasActiveBuffLock()
 			if(passive_handler.Get("ActiveBuffLock"))
 				return 1

@@ -5004,13 +5004,14 @@ obj
 ////Nox
 			FrostBite
 				NoTransplant=1
-				Area="Strike"
+				Area="Arc"
 				ControlledRush=1
-				Rush=3
+				Rush=7
 				Distance=1
-				StrOffense=1
+				StrOffense=0.5
 				ForOffense=0.5
-				DamageMult=4.5
+				AdaptRate=1
+				DamageMult=5
 				HitSparkIcon='Hit Effect Pearl.dmi'
 				HitSparkX=-32
 				HitSparkY=-32
@@ -5019,10 +5020,11 @@ obj
 				HitSparkCount=5
 				HitSparkDispersion=1
 				HitSparkDelay=1
-				Cooldown=60
+				Cooldown=30
 				ActiveMessage="thrusts their hand forward to freeze all within their grasp!"
 				Freezing=20
-				Stasis=10
+				Stasis=2
+				ManaCost=5
 				verb/Frost_Bite()
 					set category="Skills"
 					usr.Activate(src)

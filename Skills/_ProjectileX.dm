@@ -3926,16 +3926,18 @@ obj
 				TougaHyoujin
 					NoTransplant=1
 					Distance=30
-					DamageMult=5//big boi damage that was from multihits
+					DamageMult=2//big boi damage that was from multihits
+					MultiHit=5;
 					Knockback=1
 					Dodgeable=0
-					Freezing=5
-					Stasis=1
+					Freezing=10
+					Stunner=3;
 					Cooldown=60
 					IconLock='Air Render.dmi'
 					Radius=2
 					IconSize=2
-					Charge=1
+					Charge=0.5
+					ManaCost=10;
 					ChargeMessage="evokes the power of Yukianesa into a freezing slash!"
 					verb/Touga_Hyoujin()
 						set category="Skills"
@@ -6195,7 +6197,7 @@ obj
 						Owner.log2text("PROJ Damage final", Damage, "damageDebugs.txt", Owner.ckey)
 						#endif
 						if(Owner.HasUnarmedDamage()&&!Owner.EquippedSword()&&!Owner.EquippedStaff())
-							Damage *= 1 + (GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
+							Damage *= 1 + (Owner.GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
 						if(Bounce)
 							Damage *= max(1-glob.BOUNCE_REDUCTION * CurrentBounce, 0.25)
 						if(src.Owner.RippleActive())

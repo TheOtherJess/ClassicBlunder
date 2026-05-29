@@ -2469,8 +2469,8 @@ mob
 				if(enemy.UsingMuken()) . *= (-1);
 			if(forced) . = forced;
 			if(passive_handler.Get("FavoredPrey") == "Transformations")
-				if(. < 2)
-					. = 2
+				if(. < AscensionsAcquired)
+					. = AscensionsAcquired
 			if(passive_handler.Get("FavoredPrey") == "ckey")
 				if(enemy.ckey==passive_handler.Get("That One Grudge From Ten Years Ago You Can't Let Go Like Come On Dude Move On With Your Fucking Life"))
 					if(. < 5000)

@@ -6728,10 +6728,6 @@ obj
 					FinalDmg*=max(1-(glob.DEFLECTION_DAMAGE_MULT*m.GetDeflection()),0.3)
 					DEBUGMSG("after Deflection: [FinalDmg]")
 
-				if(m.HasBlastShielding()&&!src.CanBeDodged)
-					FinalDmg/=2**3
-					DEBUGMSG("after BlastShielding: [FinalDmg]")
-
 				var/list/Elements = list()
 				if(Scorching||Burning)
 					Elements |= "Fire"

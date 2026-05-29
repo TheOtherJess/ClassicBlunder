@@ -1515,9 +1515,14 @@ mob
 		HasDeflection()
 			if(passive_handler.Get("Deflection"))
 				return 1
+			if(HasBlastShielding())
+				return 1
 			return 0
 		GetDeflection()
-			return passive_handler.Get("Deflection")
+			var/deflect = passive_handler.Get("Deflection")
+			if(HasBlastShielding())
+				deflect += 3
+			return deflect
 		HasBulletKill()
 			if(passive_handler.Get("BulletKill"))
 				return 1

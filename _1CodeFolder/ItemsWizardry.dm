@@ -2620,6 +2620,13 @@ obj/Items/Enchantment/Staff
 	EnchType="ToolEnchantment"
 	SubType="Spell Focii"
 	desc="Spell focii alter the effects of fighting with Spells and energy attacks; they are also required to cast more complex magic."
+	verb/Toggle_Hat()
+		if(IsHat)
+			usr << "Your focus will lay <font color='red'>beneath</font color> your hair now."
+			IsHat=0;
+		else
+			IsHat=1;
+			usr << "Your focus wil lay <font color='green'>atop</font color> your hair now."
 	NonElemental
 		Wand
 			name="Null Wand"

@@ -895,6 +895,13 @@ obj/Items/Sword
 	TechType="Forge"
 	UpdatesDescription=1
 	Repairable=1
+	verb/Toggle_Hat()
+		if(IsHat)
+			usr << "Your sword will lay <font color='red'>beneath</font color> your hair now."
+			IsHat=0;
+		else
+			usr << "Your sword wil lay <font color='green'>atop</font color> your hair now."
+			IsHat=1;
 	Wooden
 		name="Training Sword"
 		Unobtainable=0
@@ -1345,7 +1352,7 @@ obj/Items/proc/UnEquip(mob/A)
 	var/placement=FLOAT_LAYER-3
 	if(src.LayerPriority)
 		placement-=src.LayerPriority
-	if(istype(src,/obj/Items/Wearables))
+	if(istype(src,/obj/Items/Wearables) || istype(src,/obj/Items/Sword) || istype(src, /obj/Items/Enchantment/Staff))
 		if(src.IsHat)
 			placement=FLOAT_LAYER-1
 	if(istype(src, /obj/Items/Sword/Medium/Legendary/WeaponSoul/Blade_of_Ruin))
@@ -1418,7 +1425,7 @@ obj/Items/proc/Equip(mob/A)
 	var/placement=FLOAT_LAYER-3
 	if(src.LayerPriority)
 		placement-=src.LayerPriority
-	if(istype(src,/obj/Items/Wearables))
+	if(istype(src,/obj/Items/Wearables) || istype(src,/obj/Items/Sword) || istype(src,/obj/Items/Enchantment/Staff))
 		if(src.IsHat)
 			placement=FLOAT_LAYER-1
 	if(A==src.loc)

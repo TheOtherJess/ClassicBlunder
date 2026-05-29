@@ -741,7 +741,11 @@ mob
 
 				var/slowReduction = max(0.1, (src.GetEnd(0.25)+src.GetSpd(0.1))*(1+src.GetDebuffResistance()))
 				if(src.Cooled) slowReduction *= 2;
-				src.Slow -= slowReduction;
+				if(passive_handler["Shirayuki"]) //Rukia Zanpakuto Shenanigans.
+					if(!src.CheckActive("Ki Control")) // Shirayuki Passive + Ki Control Active = Slow does not decay.
+						src.Slow -= slowReduction * 2.5; //This should make it to where if you have the passive but aren't Powered-Up, it decays quicker.
+				else
+					src.Slow -= slowReduction;
 
 				if(src.Slow<0)
 					src.Slow=0

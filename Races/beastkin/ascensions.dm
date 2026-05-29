@@ -87,8 +87,13 @@ Or was it Infi, with the brand of the ring, endlessly energetic?"};
 						if("Fox Fire")
 							passives["SoftStyle"] = 1
 							passives["SoulFire"] = 1
-							offense = 1
-							force = 1
+							passives["SpiritFlow"] = 1 // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							passives["HybridStrike"] = 0.5 // Little bit more Force-scaling to damage.
+							passives["LifeSteal"] = 5 //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
+							offense = 0.5
+							force = 0.5
+							speed = 0.5
+							defense = 0.5
 				..()
 				if(!applied)
 					if(owner.Class == "Shapeshifter")
@@ -179,8 +184,14 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 						if("Fox Fire")
 							owner.passive_handler.Increase("SoftStyle", 1)
 							owner.passive_handler.Increase("SoulFire", 1)
-							offense = 1
-							force = 1
+							owner.passive_handler.Increase("SpiritFlow", 1) // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							owner.passive_handler.Increase("HybridStrike", 0.5) // Little bit more Force-scaling to damage.
+							owner.passive_handler.Increase("LifeSteal", 5) //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
+							offense = 0.25
+							force = 0.5
+							speed = 0.5
+							defense = 0.5
+							endurance = 0.25
 				..()
 		three
 			unlock_potential = ASCENSION_THREE_POTENTIAL
@@ -262,8 +273,14 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 						if("Fox Fire")
 							owner.passive_handler.Increase("SoftStyle", 1)
 							owner.passive_handler.Increase("SoulFire", 1)
-							offense = 1
-							force = 1
+							owner.passive_handler.Increase("SpiritFlow", 1) // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							owner.passive_handler.Increase("HybridStrike", 0.5) // Little bit more Force-scaling to damage.
+							owner.passive_handler.Increase("LifeSteal", 5) //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
+							offense = 0.5
+							force = 0.5
+							speed = 0.25
+							defense = 0.5
+							endurance = 0.25
 				..()
 		four
 			unlock_potential = ASCENSION_FOUR_POTENTIAL
@@ -341,9 +358,13 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 						if("Fox Fire")
 							owner.passive_handler.Increase("SoftStyle", 1)
 							owner.passive_handler.Increase("SoulFire", 1)
-							owner.passive_handler.Increase("SpiritStrike", 1)
-							offense = 1
-							force = 1
+							owner.passive_handler.Increase("SpiritFlow", 1) // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							owner.passive_handler.Increase("HybridStrike", 0.5) // Little bit more Force-scaling to damage.
+							owner.passive_handler.Increase("LifeSteal", 5) //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
+							offense = 0.5
+							force = 0.5
+							speed = 0.5
+							defense = 0.5
 				..()
 		five
 			unlock_potential = ASCENSION_FIVE_POTENTIAL
@@ -421,9 +442,13 @@ Or is it made of Mil? Not the admin. It's the defensive option. No offense, Mil.
 						if("Fox Fire")
 							owner.passive_handler.Increase("SoftStyle", 1)
 							owner.passive_handler.Increase("SoulFire", 1)
-							owner.passive_handler.Increase("SpiritStrike", 1)
+							owner.passive_handler.Increase("SpiritFlow", 2) // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							owner.passive_handler.Increase("HybridStrike", 1) // Little bit more Force-scaling to damage.
+							owner.passive_handler.Increase("LifeSteal", 5) //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
 							offense = 0.5
-							force = 1
+							force = 0.5
+							speed = 0.25
+							defense = 0.25
 							endurance = 0.5
 				..()
 		six
@@ -500,9 +525,13 @@ Today, another God of the Rifts is born."}
 						if("Fox Fire")
 							owner.passive_handler.Increase("SoftStyle", 1)
 							owner.passive_handler.Increase("SoulFire", 1)
-							owner.passive_handler.Increase("SpiritStrike", 1)
+							owner.passive_handler.Increase("SpiritFlow", 2) // Gives Autohits and Projectiles a bit more Force Scaling. Allows them to ACTUALLY use MA/Sword skills without them being dogshit.
+							owner.passive_handler.Increase("HybridStrike", 1) // Little bit more Force-scaling to damage.
+							owner.passive_handler.Increase("LifeSteal", 5) //Kitsunes are just fox-coded Succubi and I'm tired of pretending they aren't.
 							offense = 0.5
-							force = 1
+							force = 0.5
+							speed = 0.25
 							endurance = 0.5
+
 				..()
 

@@ -86,7 +86,7 @@ mob/var/tmp/LeapAttackSweetSpotActive = FALSE
 			"Zornhau"       = 1 + SL,
 			"Inevitable"    = 1 + SL,
 			"Instinct"      = 1 + SL,
-			"UnderDog"      = 1 + (SL*1.25),
+			"UnderDog"      = 1 + (SL*1.25)
 			"ZenkaiPower" = 0.25
 		)
 		if(SL < 5)

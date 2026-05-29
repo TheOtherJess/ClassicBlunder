@@ -317,6 +317,29 @@ mob
 			if(SwordAsc>glob.MAX_SWORD_ASCENSION)
 				SwordAsc=glob.MAX_SWORD_ASCENSION
 			return SwordAsc
+		HasMagicSword()
+			var/obj/Items/Sword/s=src.EquippedSword()
+			if(s)
+				if(s.MagicSword || passive_handler.Get("MagicSword"))
+					return 1
+			return 0
+		// Effective ascension of an equipped magic sword, used to boost projectile damage
+		GetMagicSwordAscension()
+			if(!src.HasMagicSword())
+				return 0
+			var/obj/Items/Sword/s=src.EquippedSword()
+			if(!s)
+				return 0
+			var/Ascensions=0
+			if(s.InnatelyAscended)
+				Ascensions=s.InnatelyAscended
+			else
+				Ascensions=s.Ascended
+			if(src.HasSwordAscension())
+				Ascensions+=src.GetSwordAscension()
+			if(Ascensions>6)
+				Ascensions=6
+			return Ascensions
 		HasSwordDamageBuff()
 			if(passive_handler.Get("SwordDamage"))
 				return 1

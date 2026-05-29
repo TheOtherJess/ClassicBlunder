@@ -6204,6 +6204,8 @@ obj
 						#endif
 						if(Owner.HasUnarmedDamage()&&!Owner.EquippedSword()&&!Owner.EquippedStaff())
 							Damage *= 1 + (Owner.GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
+						else if(Owner.HasMagicSword())
+							Damage *= 1 + (Owner.GetMagicSwordAscension()/glob.UNARMED_DAMAGE_DIVISOR)
 						if(Bounce)
 							Damage *= max(1-glob.BOUNCE_REDUCTION * CurrentBounce, 0.25)
 						if(src.Owner.RippleActive())

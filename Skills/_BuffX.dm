@@ -11643,7 +11643,7 @@ NEW VARIABLES
 					Trigger(mob/User, Override = FALSE)
 						if(!User.BuffOn(src))
 							adjust(User)
-							..()
+						..()
 				Hoarders_Riches
 					// Gold Dragon Racial. Have money? Be OP.
 					ActiveMessage = "gains the faint glitter of gold in their hues!"

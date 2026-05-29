@@ -1105,6 +1105,8 @@ mob
 			if(src.passive_handler.Get("ManaLeak")>=0.25&&src.icon_state!="Meditate")
 				if(!hasSecret("Eldritch (Reflected)"))
 					val *= 0.1
+			if(hasSecret("Eldritch (Reflected)")
+				HealOmniTax(val/10000)
 			src.ManaAmount+=val
 			src.MaxMana()
 		HealWounds(var/val, var/StableHeal=0)
@@ -1235,6 +1237,13 @@ mob
 		AddManaCut(Val)
 			ManaCut = clamp(ManaCut+Val, 0, 1);//This one doesn't kill
 		AddOmniTax(Val)
+			AddStrTax(Val)
+			AddForTax(Val)
+			AddEndTax(Val)
+			AddOffTax(Val)
+			AddDefTax(Val)
+			AddSpdTax(Val)
+		HealOmniTax(Val)
 			AddStrTax(Val)
 			AddForTax(Val)
 			AddEndTax(Val)

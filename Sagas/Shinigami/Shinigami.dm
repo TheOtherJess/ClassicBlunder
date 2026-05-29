@@ -89,7 +89,7 @@ mob/tierUpSaga(Path)
 									src.AddSkill(new/obj/Skills/SenbonzakuraPetalWall)
 									src << "Your control over your petals sharpens. You can now use <b>Petal Wall</b>."
 							if("Shirayuki")
-								src.AddSkill(new/obj/Skills/Buffs/ActiveBuffs/Shirafune)
+								src.AddSkill(new/obj/Skills/Buffs/SlotlessBuffs/Shirafune)
 								src<<"You learn <i>San no mai, Shirafune!</i>"
 							if("Suzumushi")
 								if(!locate(/obj/Skills/Projectile/Benihiko, src))

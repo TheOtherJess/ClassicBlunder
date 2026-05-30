@@ -10141,7 +10141,7 @@ NEW VARIABLES
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
 						var/TrueUnderdog=1
-						if(p.race.locked||p.isMazokuPathHuman())		
+						if(p.race.locked||p.isMazokuPathHuman())
 							TrueUnderdog=0
 						if(p.Target && ismob(p.Target))
 							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health

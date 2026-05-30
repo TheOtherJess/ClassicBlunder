@@ -153,6 +153,7 @@
 	name = "Dazzle"
 	Area = "Circle"
 	SpellElement = "Light"
+	Range = 3
 	AdaptRate = 1
 	DamageMult = 0
 	Flash = 18

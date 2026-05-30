@@ -239,6 +239,8 @@ obj
 				DirectWounds//Deals (this value) of wound % per hit.
 				FrenzyDebuff
 
+				KeepQueue = FALSE
+
 			skillDescription()
 				..()
 				if(StrOffense)
@@ -5573,7 +5575,7 @@ mob
 				else
 					Z.TempStrOff=1
 					Z.TempForOff=0
-			if(src.AttackQueue && !src.AttackQueue.FollowUp)
+			if(src.AttackQueue && !src.AttackQueue.FollowUp && !Z.KeepQueue)
 				src << "<b>You drop [src.AttackQueue.name] from your queue.</b>"
 				src.QueueOverlayRemove()
 				src.ClearQueue()
@@ -6723,12 +6725,8 @@ obj
 							m.Shielding=1
 							spawn()
 								m.ForceField()
-					FinalDmg*=max(1-(0.25*m.GetDeflection()),0.3)
+					FinalDmg*=max(1-(glob.DEFLECTION_DAMAGE_MULT*m.GetDeflection()),0.3)
 					DEBUGMSG("after Deflection: [FinalDmg]")
-
-				if(m.HasBlastShielding()&&!src.CanBeDodged)
-					FinalDmg/=2**3
-					DEBUGMSG("after BlastShielding: [FinalDmg]")
 
 				var/list/Elements = list()
 				if(Scorching||Burning)

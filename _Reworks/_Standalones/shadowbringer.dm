@@ -1,8 +1,6 @@
 // Shadow shit
 
 mob/proc/ShadowbringerPassiveActive()
-	if(HasPassive("Shadowbringer"))
-		return TRUE
 	if(passive_handler)
 		if(passive_handler.passives["Shadowbringer"] || passive_handler.tmp_passives["Shadowbringer"])
 			return TRUE

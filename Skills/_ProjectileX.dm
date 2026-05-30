@@ -6133,7 +6133,7 @@ obj
 												a:Shielding=1
 												spawn()
 													a:ForceField()
-										Damage*=max(1-(0.25*a:GetDeflection()),0.25)
+										Damage*=max(1-(glob.DEFLECTION_DAMAGE_MULT*a:GetDeflection()),0.25)
 									else if(!Deflection_Formula(src.Owner, a, accmult*(src.MultiHit+1)/**(max(atkIntim, 1)/max(defIntim,1))*/, BaseChance=(100-glob.WorldWhiffRate), Backfire=src.Backfire))
 										Damage*=0.5
 
@@ -6204,6 +6204,8 @@ obj
 						#endif
 						if(Owner.HasUnarmedDamage()&&!Owner.EquippedSword()&&!Owner.EquippedStaff())
 							Damage *= 1 + (Owner.GetUnarmedDamage()/glob.UNARMED_DAMAGE_DIVISOR)
+						else if(Owner.HasMagicSword())
+							Damage *= 1 + (Owner.GetMagicSwordAscension()/glob.UNARMED_DAMAGE_DIVISOR)
 						if(Bounce)
 							Damage *= max(1-glob.BOUNCE_REDUCTION * CurrentBounce, 0.25)
 						if(src.Owner.RippleActive())

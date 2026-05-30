@@ -192,17 +192,13 @@ transformation
 			transform_animation(mob/user)
 				if(first_time) // store the pre-form appearance and then the post-form appearance before calling the animation. also remove the hair set on overlay afterwards since it's not supposed to be an overlay
 					var/appearance1 = user.appearance
-					world << "app1 is [appearance1]"
 					user.overlays += form_icon_1
 					user.overlays += form_icon_2
 					user.overlays += form_glow
 					user.overlays += form_aura
 					user.underlays += form_aura_underlay
-					world << "[form_hair_icon]"
 					user.overlays += form_hair
-					world << "[user.Hair]"
 					var/appearance2 = user.appearance
-					world << "app2 is [appearance2]"
 					user.HellSSJ4Animation1(appearance1, appearance2)
 					user.overlays -= form_hair
 		hellspawn_super_full_power_saiyan_2_limit_breaker //it's super saiyan 5

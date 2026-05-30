@@ -725,6 +725,7 @@
 #include "Races\saiyan\hellssj4animation.dm"
 #include "Races\saiyan\race.dm"
 #include "Races\saiyan\racials.dm"
+#include "Races\saiyan\SaiyanPower.dm"
 #include "Races\saiyan\transformations.dm"
 #include "Races\saiyan\transformations_heavenspawn.dm"
 #include "Races\saiyan\transformations_hellspawn.dm"

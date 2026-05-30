@@ -258,7 +258,7 @@ obj/Skills/AutoHit
 			Chilling = 5 + p.SagaLevel
 		verb/Tsukishiro()
 			set category="Skills"
-			if(!usr.CheckSlotless("Sode-no-Shirayuki") && !usr.CheckSlotless("Hakka-no-Togame"))
+			if(!usr.InShikai() && !usr.InBankai())
 				usr << "You can only use this technique in Shikai or Bankai!"
 				return
 			else
@@ -294,7 +294,7 @@ obj/Skills/AutoHit
 				Area="Wide Wave"
 		verb/Hakuren()
 			set category="Skills"
-			if(!usr.CheckSlotless("Sode-no-Shirayuki") && !usr.CheckSlotless("Hakka-no-Togame"))
+			if(!usr.InShikai() && !usr.InBankai())
 				usr << "You can only use this technique in Shikai or Bankai!"
 				return
 			else
@@ -329,9 +329,9 @@ obj/Skills/AutoHit
 		adjust(mob/p)
 			DamageMult = 10 + (1.5 * p.SagaLevel)
 			Distance = 12 + (2 * p.SagaLevel)
-		verb/hakusen()
+		verb/Hakusen()
 			set category="Skills"
-			if(!usr.CheckSlotless("Hakka-no-Togame"))
+			if(!usr.InBankai())
 				usr << "You can only use this technique in Bankai!"
 				return
 			else
@@ -383,7 +383,11 @@ obj/Skills/Buffs/SlotlessBuffs
 		verb/Shirafune()
 			set category="Skills"
 			adjust(usr)
-			src.Trigger(usr)
+			if(!usr.InShikai() && !usr.InBankai())
+				usr << "You can only use this technique in Shikai or Bankai!"
+				return
+			else
+				src.Trigger(usr)
 
 
 /* Placeholdering this for now, for when I design the skills. Keeping this here for scaling purposes.

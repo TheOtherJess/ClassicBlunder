@@ -154,11 +154,11 @@ obj/Skills
 	var/DoubleStrike
 	var/TripleStrike
 
-
+	var/MasteryCheck=0
 	 //only projectiles have this function rn
 	var/FollowUp = null //holds a text path of a skill that will be triggered...
 	var/FollowUpDelay = 0  //after waiting this amt of time
-	var/OnMobHit = null 
+	var/OnMobHit = null
 	var/ThrowOnCounter
 	var/Controlling //Love potion effects TODO: Remove/discontinue for...
 	var/BuffSelf

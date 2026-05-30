@@ -589,6 +589,15 @@ obj/Skills/Utility
 				usr << "You toggle anonymous telepathy <font color='green'>ON</font color>."
 		verb/Telepathic_Link()
 			set category="Utility"
+			if(MasteryCheck==0)
+				usr << "Applying race-based increase on your Mastery!"
+				MasteryCheck=1
+				if(usr.RaceInRareList())
+					Mastery=2
+					usr << "Mastery set to 2. You can telepathy across Z-Planes!"
+				else
+					Mastery=1
+					usr << "Mastery kept to 1. You can only telepathy on the same Z-Plane."
 			if(usr.Secret == "Heavenly Restriction" && usr.secretDatum?:hasRestriction("Senses"))
 				return
 			var/list/who=list("Cancel")

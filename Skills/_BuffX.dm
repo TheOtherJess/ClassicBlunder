@@ -10057,13 +10057,13 @@ NEW VARIABLES
 				adjust(mob/p)
 					if(!altered)
 						if(p.Secret == "Werewolf")
-							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier, "TechniqueMastery" = 1, "MovementMastery" = p.secretDatum.currentTier * 1.25,"Skimming" = 2)
+							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier, "TechniqueMastery" = 1,"Skimming" = 2, "MovementMastery" = p.secretDatum.currentTier)
 							MovementMastery = p.secretDatum.currentTier * 1.5
 							Godspeed = p.secretDatum.currentTier
-							StrMult = 1 + (p.secretDatum.currentTier * 0.25)
-							EndMult = 1
-							SpdMult = 1 + (p.secretDatum.currentTier * 0.25)
-							OffMult = 1 + (p.secretDatum.currentTier * 0.25)
+							StrMult = 1 + (p.secretDatum.currentTier * 0.05)
+							EndMult = 0.75
+							SpdMult = 1 + (p.secretDatum.currentTier * 0.05)
+							OffMult = 1 + (p.secretDatum.currentTier * 0.05)
 				Trigger(mob/p, Override = 0 )
 					adjust(p)
 					..()
@@ -10072,15 +10072,15 @@ NEW VARIABLES
 					TimerLimit=180
 					if(!altered)
 						if(p.Secret == "Werewolf")
-							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier*2,\
-							 "Pursuer" = 2, "BlurringStrikes" = p.secretDatum.currentTier, "Skimming" = 2, p.secretDatum.currentTier * 1.5)
+							passives = list("Curse" = 1, "Godspeed" =  p.secretDatum.currentTier,\
+							 "Pursuer" = 2, "BlurringStrikes" = p.secretDatum.currentTier, "Skimming" = 2, "MovementMastery" = p.secretDatum.currentTier * 1.25)
 							MovementMastery = p.secretDatum.currentTier * 2
 							Godspeed = p.secretDatum.currentTier * 2
-							StrMult = 1.25 + (p.secretDatum.currentTier * 0.25)
+							StrMult = 1.05 + (p.secretDatum.currentTier * 0.15)
 							EndMult = 0.75
-							SpdMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							OffMult = 1.25 + (p.secretDatum.currentTier * 0.25)
-							DefMult = 0.75
+							SpdMult = 1.05 + (p.secretDatum.currentTier * 0.15)
+							OffMult = 1.05 + (p.secretDatum.currentTier * 0.15)
+							DefMult = 0.25
 
 				HealthThreshold=0.1
 				RegenMult=2

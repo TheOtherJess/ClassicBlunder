@@ -3061,6 +3061,7 @@ NEW VARIABLES
 					src.Trigger(usr)
 			Final_Getsuga_Tenshou
 				SignatureTechnique=4
+				SagaSignature=1
 				TimerLimit=600
 				EnergyCut=0.99
 				ManaCut=0.99
@@ -10143,7 +10144,7 @@ NEW VARIABLES
 						var/secretLevel = p.secretDatum.currentTier
 						var/asc = p.AscensionsAcquired
 						var/TrueUnderdog=1
-						if(p.race.locked||p.isMazokuPathHuman())		
+						if(p.race.locked||p.isMazokuPathHuman())
 							TrueUnderdog=0
 						if(p.Target && ismob(p.Target))
 							healthDiff = (p.Target.Health+p.Target.VaizardHealth)-p.Health

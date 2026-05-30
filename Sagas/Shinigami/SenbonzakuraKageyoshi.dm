@@ -15,7 +15,8 @@
 			"Brutalize"    = 1.5 + (0.5 * SL),
 			"DeathField"   = 1.5 + (1.5 * SL),
 			"Bloodletting" = 6 + (3 * SL),
-			"Parry"        = 1.5 + (0.5 * SL)
+			"Parry"        = 1.5 + (0.5 * SL),
+			"IdealStrike"  = 1
 		)
 		if(SL < 3)
 			passives["ManaLeak"] = 4

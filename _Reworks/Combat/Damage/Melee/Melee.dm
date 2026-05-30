@@ -1011,7 +1011,7 @@
 				if(P.Health<=TurfDamage)
 					Destroy(P)
 			return
-		if(src.HasSpecialStrike()||EquippedStaff()||src.passive_handler["Determination(Yellow)"]||src.passive_handler["Determination(White)"])
+		if(src.HasSpecialStrike()||EquippedStaff()||src.passive_handler["Determination(Yellow)"]||src.passive_handler["Determination(White)"]||hasSecret("Eldritch (Reflected)"))
 			flick("Attack",src)
 			NextAttack=world.time
 			if(src.passive_handler.Get("Gun Kata"))
@@ -1024,6 +1024,14 @@
 						GetAndUseSkill(/obj/Skills/Projectile/BIG_SHOT, Projectiles, TRUE)
 					else
 						GetAndUseSkill(/obj/Skills/Projectile/SmallLemonThing, Projectiles, TRUE)
+			if(hasSecret("Eldritch (Reflected)"))
+				if(src.AttackQueue)
+					if(src.AttackQueue.Warp)
+						GetAndUseSkill(/obj/Skills/Projectile/Convergence, Projectiles, TRUE)
+					else
+						GetAndUseSkill(/obj/Skills/AutoHit/The_Other_Side, AutoHits, TRUE)
+				else
+					GetAndUseSkill(/obj/Skills/Projectile/Realitys_Fickle_Shards, Projectiles, TRUE)
 			if(src.CheckSpecial("Ray Gear"))
 				if(src.AttackQueue)
 					if(src.AttackQueue.Warp)

@@ -70,7 +70,6 @@
 			"Zornhau"        = 1 + SL,
 			"HybridStrike"   = 0.5 + (SL/2),
 			"Half-Sword"     = 1 + SL,
-			"Steady"         = 1 + SL,
 			"Instinct"       = 1 + SL,
 			"HeavyHitter" 	 = 1 + (0.25 * SL),
 			"PureDamage"     = 1 + SL
@@ -132,9 +131,11 @@
 			"Afterimages"     = 1,
 			"Godspeed"        = 1 + SL,
 			"Warping"         = 0.5 + (SL/2),
-			"HybridStrike"    = 0.5 + (SL/2),
-			"EmptyFlashStep"  = 1 + SL,
-			"PureDamage"      = 1 + SL
+			"HybridStrike"    = 1.5 + (SL/2),
+			"EmptyFlashStep"  = 1,
+			"PureDamage"      = 1 + SL,
+			"SwordAscension"  = SL,
+			"Steady"          = 1 + SL
 		)
 		if(SL < 5)
 			passives["ManaLeak"] = 4

@@ -317,6 +317,29 @@ mob
 			if(SwordAsc>glob.MAX_SWORD_ASCENSION)
 				SwordAsc=glob.MAX_SWORD_ASCENSION
 			return SwordAsc
+		HasMagicSword()
+			var/obj/Items/Sword/s=src.EquippedSword()
+			if(s)
+				if(s.MagicSword || passive_handler.Get("MagicSword"))
+					return 1
+			return 0
+		// Effective ascension of an equipped magic sword, used to boost projectile damage
+		GetMagicSwordAscension()
+			if(!src.HasMagicSword())
+				return 0
+			var/obj/Items/Sword/s=src.EquippedSword()
+			if(!s)
+				return 0
+			var/Ascensions=0
+			if(s.InnatelyAscended)
+				Ascensions=s.InnatelyAscended
+			else
+				Ascensions=s.Ascended
+			if(src.HasSwordAscension())
+				Ascensions+=src.GetSwordAscension()
+			if(Ascensions>6)
+				Ascensions=6
+			return Ascensions
 		HasSwordDamageBuff()
 			if(passive_handler.Get("SwordDamage"))
 				return 1
@@ -1417,8 +1440,6 @@ mob
 			return 0
 		HasCounterMaster()
 			return passive_handler.Get("CounterMaster")
-		GetCounterMaster()
-			return passive_handler.Get("CounterMaster")
 		HasActiveBuffLock()
 			if(passive_handler.Get("ActiveBuffLock"))
 				return 1
@@ -1494,9 +1515,14 @@ mob
 		HasDeflection()
 			if(passive_handler.Get("Deflection"))
 				return 1
+			if(HasBlastShielding())
+				return 1
 			return 0
 		GetDeflection()
-			return passive_handler.Get("Deflection")
+			var/deflect = passive_handler.Get("Deflection")
+			if(HasBlastShielding())
+				deflect += 3
+			return deflect
 		HasBulletKill()
 			if(passive_handler.Get("BulletKill"))
 				return 1
@@ -2469,8 +2495,8 @@ mob
 				if(enemy.UsingMuken()) . *= (-1);
 			if(forced) . = forced;
 			if(passive_handler.Get("FavoredPrey") == "Transformations")
-				if(. < 2)
-					. = 2
+				if(. < AscensionsAcquired)
+					. = AscensionsAcquired
 			if(passive_handler.Get("FavoredPrey") == "ckey")
 				if(enemy.ckey==passive_handler.Get("That One Grudge From Ten Years Ago You Can't Let Go Like Come On Dude Move On With Your Fucking Life"))
 					if(. < 5000)

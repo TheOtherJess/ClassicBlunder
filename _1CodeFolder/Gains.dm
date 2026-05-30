@@ -921,6 +921,13 @@ mob
 					AddCrippling(abs(val)/(glob.HOTNCOLD_DEBUFF_DIVISOR*4))
 				else
 					AddBurn(abs(val)/(glob.HOTNCOLD_DEBUFF_DIVISOR))
+			if(passive_handler["Shirayuki"]) //Rukia Zanpakuto Shenanigans. This passive procks when the user's Shikai or Bankai is active.
+				if(src.CheckActive("Ki Control")) //Power Control effects this.
+					if(src.Slow < src.SagaLevel * 5)
+						src.Slow=src.SagaLevel * 5
+					AddSlow(0.2*glob.SLOW_INTENSITY) // Increases how much slow/chill you gain per tick.
+					if(src.Slow > SagaLevel * 10) // When you Power Up and get too cold, you start injurying yourself.
+						src.TotalInjury += 0.001 * (src.Slow-(SagaLevel * 10))
 			if(passive_handler["Grit"])
 				if(client&&hudIsLive("Grit", /obj/bar))
 					client.hud_ids["Grit"]?:Update()
